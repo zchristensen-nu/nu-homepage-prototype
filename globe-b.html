@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="16-b">
+<meta name="prototype-rev" content="17-b">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -959,7 +959,17 @@ function bUpdate() {
   if (idx !== bCapIdx) {
     bCapIdx = idx;
     bcap.classList.add("swap");
-    setTimeout(() => { bcap.innerHTML = idx >= 0 ? CAPS[idx].html : ""; bcap.classList.remove("swap"); }, 150);
+    setTimeout(() => {
+      bcap.innerHTML = idx >= 0 ? CAPS[idx].html : "";
+      bcap.classList.remove("swap");
+      const cc2 = $("#coopcount");
+      if (cc2) {
+        const r2 = scrollyEl.getBoundingClientRect();
+        const span2 = scrollyEl.offsetHeight - bstoryEl.offsetHeight - innerHeight;
+        const p2 = clamp01(-r2.top / span2);
+        cc2.textContent = fmt(Math.round(COOP_TOTAL * easeOut(clamp01((p2 - 0.66) / 0.28))));
+      }
+    }, 150);
   }
 }
 addEventListener("scroll", () => requestAnimationFrame(bUpdate), { passive: true });
