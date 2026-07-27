@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="27-td">
+<meta name="prototype-rev" content="28-td">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1116,34 +1116,59 @@ if (plx.length && !reduceMotion) {
 }
 
 /* student life imax: fly a corridor of angled photo walls, into a final billboard.
-   The headline arrives alone, rises to center, then the corridor ignites. */
+   The headline arrives alone, rises to center, then the corridor ignites.
+   Near passes blur out before frames get huge; fast scrolling widens the
+   field of view for a dome/warp feel. */
 const lzTrack = $(".lifeimax .lz-track");
 const iframes = $$(".iframe");
 const lzHead = $(".lifeimax .lz-text h2");
+const iscene = $(".iscene");
 if (lzTrack && iframes.length && !reduceMotion) {
   const N = iframes.length;
   const SPACING = 640, LEAD = 2200;
+  let lastP = -1, lastT = 0, vSm = 0, warpOn = false;
+  const applyFov = () => {
+    iscene.style.perspective = `${(950 - Math.min(340, vSm * 26000)).toFixed(0)}px`;
+  };
+  const warpDecay = () => {
+    vSm *= 0.9;
+    applyFov();
+    if (vSm > 0.0004) requestAnimationFrame(warpDecay);
+    else { warpOn = false; vSm = 0; applyFov(); }
+  };
   const imaxUpd = () => {
     const r = lzTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
     lzHead.style.transform = `translateY(${((1 - easeOut(clamp01(p / 0.14))) * 30).toFixed(2)}vh)`;
+    const now = performance.now();
+    if (lastP >= 0 && now > lastT) {
+      const vInst = Math.abs(p - lastP) / Math.max(16, now - lastT) * 16.7;
+      vSm += (vInst - vSm) * 0.2;
+      if (!warpOn && vSm > 0.0006) { warpOn = true; requestAnimationFrame(warpDecay); }
+    }
+    lastP = p; lastT = now;
+    applyFov();
     const pd = clamp01((p - 0.10) / 0.90);
     const camZ = pd * (SPACING * N + LEAD + 400);
     iframes.forEach((el, i) => {
       const rel = camZ - (i * SPACING + LEAD);
       const last = i === N - 1;
       const side = last ? 0 : (i % 2 ? 1 : -1);
-      /* wall frames sweep slightly wider as they near; the finale stays centered */
+      /* wall frames sweep wider and whip to a steeper angle as they near */
       const approach = clamp01((rel + 1500) / 2000);
       const x = side * (26 + 14 * approach);
       const y = (i % 3 - 1) * 3;
-      const rot = side * -32;
+      const rot = side * -(30 + 26 * approach);
+      const nearT = clamp01((rel - 80) / 420);
       const passDepth = last ? 900 : 620;
-      const o = Math.min(clamp01((rel + 2100) / 500), clamp01((passDepth - rel) / (last ? 420 : 300)));
+      const o = Math.min(clamp01((rel + 2100) / 500), clamp01((passDepth - rel) / (last ? 480 : 380)))
+        * (1 - 0.25 * nearT);
       el.style.opacity = o.toFixed(2);
-      el.style.transform = `translate(-50%,-50%) translate3d(${(x * innerWidth / 100).toFixed(1)}px, ${(y * innerHeight / 100).toFixed(1)}px, ${rel.toFixed(1)}px) rotateY(${rot}deg)`;
+      el.style.transform = `translate(-50%,-50%) translate3d(${(x * innerWidth / 100).toFixed(1)}px, ${(y * innerHeight / 100).toFixed(1)}px, ${rel.toFixed(1)}px) rotateY(${rot.toFixed(1)}deg)`;
       el.style.zIndex = 100 + Math.round(rel / 10);
-      el.style.filter = `brightness(${(0.5 + 0.5 * clamp01((rel + 1800) / 1800)).toFixed(2)})`;
+      const blur = nearT * 9;
+      el.style.filter = `brightness(${(0.5 + 0.5 * clamp01((rel + 1800) / 1800)).toFixed(2)})` +
+        (blur > 0.2 ? ` blur(${blur.toFixed(1)}px)` : "");
     });
   };
   addEventListener("scroll", () => requestAnimationFrame(imaxUpd), { passive: true });
