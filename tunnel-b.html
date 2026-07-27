@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="25-c">
+<meta name="prototype-rev" content="25-tb">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -150,45 +150,6 @@
     .gt-card img{aspect-ratio:16/7}
   }
 
-  .gt-h{font-size:clamp(38px,4.8vw,68px);font-weight:200;letter-spacing:-.025em;line-height:1.03;color:#fff}
-  .gt-h b{font-weight:600}
-  .gt-loc{display:flex;align-items:center;gap:8px;font-size:13px;color:#A9A9B2;margin-bottom:10px}
-  .gt-loc::before{content:"";width:7px;height:7px;border-radius:50%;background:#EE5566;
-    box-shadow:0 0 0 3px rgba(238,85,102,.22);flex-shrink:0}
-  .gt-stories[hidden]{display:none}
-  .gt-stories{display:flex;gap:12px;overflow-x:auto;padding:14px clamp(20px,5vw,72px) 20px;scrollbar-width:none}
-  .gt-stories::-webkit-scrollbar{display:none}
-  .gt-story{flex:0 0 260px;display:grid;grid-template-columns:76px 1fr;gap:3px 12px;align-items:center;
-    text-align:left;font:inherit;color:#fff;background:rgba(16,16,20,.74);backdrop-filter:blur(10px);
-    border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px;cursor:pointer;transition:.2s}
-  .gt-story:hover{border-color:rgba(255,255,255,.4)}
-  .gt-story img{grid-row:1/3;width:76px;height:56px;object-fit:cover;border-radius:7px}
-  .gt-story .tt{font-size:12.5px;line-height:1.3}
-  .gt-story .ll{font-size:11px;color:#A9A9B2}
-  .gt-story.sel{border-color:#EE5566}
-  /* split scrolly */
-  .csplit{position:relative;z-index:5;display:grid;grid-template-columns:46% 54%;
-    background:var(--dark);color:#fff;border-radius:28px 28px 0 0;margin-top:-28px}
-  .csplit .stage{grid-column:1;position:sticky;top:0;height:100svh}
-  .c-stream{grid-column:2;padding:10vh clamp(20px,4vw,64px) 14vh;z-index:5}
-  .cstep{min-height:58vh;display:flex;align-items:center}
-  .ccard{max-width:440px;opacity:.25;transform:translateY(10px);
-    transition:opacity .6s var(--ease),transform .6s var(--ease)}
-  .cstep.active .ccard{opacity:1;transform:none}
-  .ccard p{margin-top:12px;color:#C9C9CF;font-size:15.5px;max-width:40ch}
-  .cstory{max-width:470px;background:rgba(16,16,20,.6);border:1px solid rgba(255,255,255,.12);
-    border-radius:16px;overflow:hidden}
-  .cstory img{width:100%;aspect-ratio:16/9;object-fit:cover}
-  .cstory .cbody{padding:18px 20px 22px}
-  .cstory h3{font-size:20px;font-weight:400;line-height:1.3;margin-top:8px;color:#fff}
-  .cstory .storylink{color:#fff;font-weight:500}
-  @media(max-width:820px){
-    .csplit{grid-template-columns:1fr}
-    .csplit .stage{grid-column:1;height:44svh;z-index:4}
-    .c-stream{grid-column:1;padding-top:4vh}
-    .cstep{min-height:46vh}
-  }
-
   /* ---------- SHEET SECTIONS (Adobe pattern) ---------- */
   .sheet{position:relative;z-index:6;background:var(--paper);border-radius:28px 28px 0 0;margin-top:-28px}
   section.block{padding:clamp(72px,10vh,130px) 0}
@@ -250,22 +211,29 @@
   .qdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);border:0;cursor:pointer;padding:0;transition:.3s}
   .qdot[aria-current="true"]{background:#fff;width:26px;border-radius:99px}
 
-  /* ---------- STUDENT LIFE ZOOM TUNNEL ---------- */
+  /* ---------- STUDENT LIFE DECK ---------- */
   .lifezoom{position:relative;z-index:6;background:var(--dark);border-radius:28px 28px 0 0;margin-top:-28px}
-  .lz-track{height:420vh}
+  .lz-track{height:320vh}
   .lz-stage{position:sticky;top:0;height:100vh;overflow:hidden}
-  .lz-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    z-index:3;text-align:center;pointer-events:none;padding:0 20px}
-  .lz-text h2{color:#fff;font-size:clamp(40px,6vw,88px);font-weight:200;letter-spacing:-.025em;line-height:1.05}
-  .lz{position:absolute;left:50%;top:50%;width:min(38vw,500px);border-radius:14px;overflow:hidden;
-    opacity:0;transform:translate(-50%,-50%) scale(.2);will-change:transform,opacity;z-index:2}
-  .lz img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
-  @media(max-width:720px){.lz{width:66vw}}
+  .lz-text{position:absolute;inset:0;display:flex;align-items:center;z-index:2;
+    pointer-events:none;padding-left:clamp(20px,7vw,110px)}
+  .lz-text h2{color:#fff;font-size:clamp(40px,5.5vw,80px);font-weight:200;letter-spacing:-.025em;line-height:1.05;text-align:left}
+  .deck{position:absolute;left:63%;top:50%;z-index:3}
+  .dcard{position:absolute;left:0;top:0;width:min(42vw,540px);margin-left:calc(min(42vw,540px) / -2);
+    border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);
+    will-change:transform,opacity;display:block}
+  .dcard img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+  @media(max-width:820px){
+    .lz-text{align-items:flex-start;padding-top:14vh}
+    .deck{left:50%;top:58%}
+    .dcard{width:78vw;margin-left:-39vw}
+  }
   @media (prefers-reduced-motion: reduce){
     .lz-track{height:auto}
-    .lz-stage{position:static;height:auto;padding:90px 0 40px}
+    .lz-stage{position:static;height:auto;padding:90px 0 60px}
     .lz-text{position:static;margin-bottom:40px}
-    .lz{position:static;opacity:1;transform:none;width:auto;display:block;margin:16px auto;max-width:720px}
+    .deck{position:static}
+    .dcard{position:static;margin:16px auto;transform:none !important;opacity:1 !important}
   }
 
   /* ---------- ADMISSIONS CTA ---------- */
@@ -340,73 +308,65 @@
   <span class="cap">The co-op experience, from northeastern.edu</span>
 </section>
 
-<div class="csplit" id="experience">
+<div class="scrolly" id="experience">
   <div class="stage" id="stage">
-    <canvas id="globe" aria-label="Interactive globe of Northeastern's campuses, N.U.in cities, and Fall 2026 co-op placements. Drag to explore."></canvas>
+    <canvas id="globe" aria-label="Interactive globe showing Northeastern's 13 campuses, 8 N.U.in locations, and 4,705 Fall 2026 co-op placements. Scroll for the tour, click a red pin for a story, drag to rotate."></canvas>
     <div class="hint" id="hint">drag to spin &middot; hover a dot for details</div>
+    <aside class="gt-card" id="gt-card" hidden aria-label="Co-op story">
+      <img id="gtc-img" alt="">
+      <div class="gtc-body">
+        <div class="gt-loc" id="gtc-loc"></div>
+        <h3 id="gtc-t"></h3>
+        <a class="storylink" id="gtc-url" href="#">Read the story on NGN</a>
+      </div>
+      <div class="gt-step">
+        <button class="gt-arrow" id="gtc-prev" aria-label="Previous story">&#8592;</button>
+        <span id="gtc-n"></span>
+        <button class="gt-arrow" id="gtc-next" aria-label="Next story">&#8594;</button>
+      </div>
+    </aside>
   </div>
-  <div class="c-stream">
-    <div class="cstep" data-step="intro"><div class="ccard">
-      <div class="gt-h">The whole planet.</div>
-      <p>Campuses, launch cities, and thousands of co-ops. Every dot is a Husky, somewhere in the world, right now.</p>
-    </div></div>
-    <div class="cstep" data-step="campuses"><div class="ccard">
-      <div class="gt-h"><b>13</b> campuses</div>
-      <p>Boston to London, Silicon Valley to Toronto. One university system, and counting.</p>
-    </div></div>
-    <div class="cstep" data-step="nuin"><div class="ccard">
-      <div class="gt-h"><b>8</b> ways to start abroad</div>
-      <p>First semester, first stamp in the passport. N.U.in launches new Huskies from eight European cities.</p>
-    </div></div>
-    <div class="cstep" data-step="coops"><div class="ccard">
-      <div class="gt-h"><b id="coopcount">0</b> co&#8209;ops</div>
-      <p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>
-    </div></div>
-    <div class="cstep" data-step="s0"><div class="ccard cstory">
-      <img src="https://news.northeastern.edu/wp-content/uploads/2023/04/NASA1400.jpg" alt="" loading="lazy">
-      <div class="cbody">
-        <div class="gt-loc">Kennedy Space Center, Florida</div>
-        <h3>Loading a spacecraft bound for the International Space Station, on co-op</h3>
-        <a class="storylink" href="https://news.northeastern.edu/2023/05/03/nasa-engineering-intern/">Read the story on NGN</a>
+  <div class="steps" id="steps">
+
+    <div class="step" data-step="intro">
+      <div class="card">
+        <div class="big">The whole planet.</div>
+        <p>Campuses, semester-one launch cities, and thousands of co-ops. Every dot is a Husky, somewhere in the world, right now.</p>
       </div>
-    </div></div>
-    <div class="cstep" data-step="s1"><div class="ccard cstory">
-      <img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg" alt="" loading="lazy">
-      <div class="cbody">
-        <div class="gt-loc">Phnom Penh, Cambodia</div>
-        <h3>Teacher, mentor, big sister: six months in a Cambodian dormitory</h3>
-        <a class="storylink" href="https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/">Read the story on NGN</a>
+    </div>
+
+    <div class="step" data-step="campuses">
+      <div class="card">
+        <div class="big"><b>13</b> campuses</div>
+        <p>Boston to London, Silicon Valley to Toronto. One university system spanning two countries&hellip; and counting.</p>
+        <div class="legend"><span><span class="sw" style="background:#C8102E"></span>Northeastern campus</span></div>
       </div>
-    </div></div>
-    <div class="cstep" data-step="s2"><div class="ccard cstory">
-      <img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy">
-      <div class="cbody">
-        <div class="gt-loc">Geneva, Switzerland</div>
-        <h3>Learning how global negotiation really works</h3>
-        <a class="storylink" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/">Read the story on NGN</a>
+    </div>
+
+    <div class="step" data-step="nuin">
+      <div class="card">
+        <div class="big"><b>8</b> ways to start abroad</div>
+        <p>First semester, first stamp in the passport. N.U.in launches new Huskies from eight European cities.</p>
+        <div class="legend"><span><span class="sw" style="background:#fff"></span>N.U.in Fall 2026 location</span></div>
       </div>
-    </div></div>
-    <div class="cstep" data-step="s3"><div class="ccard cstory">
-      <img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg" alt="" loading="lazy">
-      <div class="cbody">
-        <div class="gt-loc">Vienna, Austria</div>
-        <h3>Coffeehouses, Mozart and international finance, on co-op</h3>
-        <a class="storylink" href="https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/">Read the story on NGN</a>
+    </div>
+
+    <div class="step" data-step="coops">
+      <div class="card">
+        <div class="big"><b id="coopcount">0</b> co&#8209;ops</div>
+        <p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>
+        <div class="pinhint">Red pins hold stories. Click one, or step through the card.</div>
       </div>
-    </div></div>
-    <div class="cstep" data-step="s4"><div class="ccard cstory">
-      <img src="https://news.northeastern.edu/wp-content/uploads/2020/02/IMG_20200123_130319.jpg" alt="" loading="lazy">
-      <div class="cbody">
-        <div class="gt-loc">Elephant Island, Antarctica</div>
-        <h3>Counting penguin colonies at the bottom of the world</h3>
-        <a class="storylink" href="https://news.northeastern.edu/2020/02/11/penguins-are-starving-as-antarctica-gets-warmer-drones-are-counting-the-losses/">Read the story on NGN</a>
+    </div>
+
+    <div class="step" data-step="outro">
+      <div class="card">
+        <div class="big">Where will yours be?</div>
+        <p>3,000+ employers. 151 countries. One application.</p>
+        <a class="pill ghostw" style="margin-top:22px" href="#admit">Start at Northeastern</a>
       </div>
-    </div></div>
-    <div class="cstep" data-step="outro"><div class="ccard">
-      <div class="gt-h">Where will yours be?</div>
-      <p>3,000+ employers. 151 countries. One application.</p>
-      <a class="pill ghostw" style="margin-top:22px" href="#admit">Start at Northeastern</a>
-    </div></div>
+    </div>
+
   </div>
 </div>
 
@@ -520,27 +480,17 @@
   </div>
 </section>
 
-<section class="lifezoom" id="life">
+<section class="lifezoom lifedeck" id="life">
   <div class="lz-track">
     <div class="lz-stage">
-      <div class="lz-text">
-        <h2>Class is only half of it.</h2>
+      <div class="lz-text"><h2>Class is only<br>half of it.</h2></div>
+      <div class="deck">
+      <a class="dcard" href="https://news.northeastern.edu/2025/07/01/battle-of-wits/" aria-label="Rock, paper, Paws. Orientation on Snell Quad"><img src="https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg" alt="An incoming student faces off against Paws the mascot in rock-paper-scissors at orientation." loading="lazy"></a>
+      <a class="dcard" href="https://news.northeastern.edu/2025/04/30/winners-take-all/" aria-label="Beanpot champions at Fenway Park"><img src="https://news.northeastern.edu/wp-content/uploads/2025/04/JIM28826.jpg" alt="Northeastern's baseball team raises the Beanpot championship trophy under stadium lights at Fenway Park." loading="lazy"></a>
+      <a class="dcard" href="https://news.northeastern.edu/2024/02/13/the-sweet-taste-of-victory/" aria-label="The trophy doubles as a cereal bowl, the morning after"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg" alt="Hockey players eat cereal out of the Beanpot trophy in a dining hall." loading="lazy"></a>
+      <a class="dcard" href="https://news.northeastern.edu/2024/02/14/mens-beanpot-2024-video/" aria-label="Overtime at TD Garden"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021224_MM_M_beanpot_083.jpg" alt="Northeastern men's hockey players celebrate their Beanpot title on the ice at TD Garden." loading="lazy"></a>
+      <a class="dcard" href="https://news.northeastern.edu/2023/09/06/convocation-2023/" aria-label="Day one, from the floor"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="A crowd of students cheer as confetti falls at convocation at MGM Music Hall at Fenway." loading="lazy"></a>
       </div>
-      <a class="lz" style="--dx:-24vw;--dy:-16vh" href="https://news.northeastern.edu/2025/07/01/battle-of-wits/">
-        <img src="https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg" alt="An incoming student faces off against Paws the mascot in rock-paper-scissors at orientation on Snell Quad.">
-      </a>
-      <a class="lz" style="--dx:24vw;--dy:-12vh" href="https://news.northeastern.edu/2025/04/30/winners-take-all/">
-        <img src="https://news.northeastern.edu/wp-content/uploads/2025/04/JIM28826.jpg" alt="Northeastern's baseball team raises the Beanpot championship trophy under stadium lights at Fenway Park.">
-      </a>
-      <a class="lz" style="--dx:-22vw;--dy:14vh" href="https://news.northeastern.edu/2024/02/13/the-sweet-taste-of-victory/">
-        <img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg" alt="Hockey players eat cereal out of the Beanpot trophy in a dining hall.">
-      </a>
-      <a class="lz" style="--dx:24vw;--dy:16vh" href="https://news.northeastern.edu/2024/02/14/mens-beanpot-2024-video/">
-        <img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021224_MM_M_beanpot_083.jpg" alt="Northeastern men's hockey players celebrate their Beanpot title on the ice at TD Garden.">
-      </a>
-      <a class="lz" style="--dx:0vw;--dy:-4vh" href="https://news.northeastern.edu/2023/09/06/convocation-2023/">
-        <img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="A crowd of students cheer as confetti falls at convocation at MGM Music Hall at Fenway.">
-      </a>
     </div>
   </div>
 </section>
@@ -964,7 +914,7 @@ function pickDot(e) {
   gtip.style.top = Math.min(my + 14, H - 60) + "px";
 }
 
-/* ============ split scrolly ============ */
+/* ============ scrollytelling ============ */
 const NGN = "https://news.northeastern.edu";
 const TOUR_STORIES = [
   { loc: "Kennedy Space Center, Florida", view: { lon: -80.65, lat: 28.57, k: 2.4 }, focus: [28.57, -80.65],
@@ -988,35 +938,83 @@ const TOUR_STORIES = [
     t: "Counting penguin colonies at the bottom of the world",
     url: NGN + "/2020/02/11/penguins-are-starving-as-antarctica-gets-warmer-drones-are-counting-the-losses/" },
 ];
+const STORY_PINS = TOUR_STORIES.map(st => st.focus);
+LAYER_KEYS.push("spins");
+cur.spins = 0; tgt.spins = 0;
+let storySel = -1;
+const gtCard = $("#gt-card");
 
-const CVIEWS = {
-  intro:    { lat: 25, k: 1, coops: .3, campus: .3, nuin: .3, labelC: 0, labelN: 0, auto: true },
-  campuses: { lon: -78, lat: 42, k: 1.35, coops: .06, campus: 1, nuin: .1, labelC: 1, labelN: 0 },
-  nuin:     { lon: 5, lat: 48, k: 1.6, coops: .06, campus: .25, nuin: 1, labelC: 0, labelN: 1 },
-  coops:    { lon: -55, lat: 22, k: 1, coops: 1, campus: .35, nuin: .35, labelC: 0, labelN: 0, count: true, auto: true },
-  outro:    { lat: 10, k: .92, coops: .8, campus: .9, nuin: .9, labelC: 0, labelN: 0, auto: true },
-};
-TOUR_STORIES.forEach((st, i) => {
-  CVIEWS["s" + i] = { lon: st.view.lon, lat: st.view.lat, k: st.view.k,
-    coops: .55, campus: .12, nuin: 0, labelC: 0, labelN: 0, focus: st.focus };
+function fillCard(i) {
+  const st = TOUR_STORIES[i];
+  $("#gtc-img").src = st.img;
+  $("#gtc-img").alt = st.t;
+  $("#gtc-loc").textContent = st.loc;
+  $("#gtc-t").textContent = st.t;
+  $("#gtc-url").href = st.url;
+  $("#gtc-n").textContent = `${i + 1} of ${TOUR_STORIES.length}`;
+}
+function openStory(i) {
+  storySel = (i + TOUR_STORIES.length) % TOUR_STORIES.length;
+  fillCard(storySel);
+  const st = TOUR_STORIES[storySel];
+  startFly({ lon: st.view.lon, lat: st.view.lat, k: st.view.k });
+  for (const [k2, v] of Object.entries({ coops: .5, campus: .1, nuin: 0, labelC: 0, labelN: 0, spins: 1 })) tgt[k2] = v;
+  autorotate = false;
+  gtCard.hidden = false;
+}
+$("#gtc-prev").addEventListener("click", () => openStory(storySel - 1));
+$("#gtc-next").addEventListener("click", () => openStory(storySel + 1));
+
+/* click a pulsing pin (ignore clicks that were drags) */
+let downPt = null;
+canvas.addEventListener("pointerdown", e => { downPt = [e.clientX, e.clientY]; }, true);
+canvas.addEventListener("click", e => {
+  if (downPt && Math.hypot(e.clientX - downPt[0], e.clientY - downPt[1]) > 6) return;
+  if (cur.spins < .3) return;
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const R = Math.min(W, H) * 0.42 * cur.k;
+  const cx = W > 900 ? W * 0.62 : W * 0.5;
+  const cy = H * 0.52;
+  for (let i = 0; i < STORY_PINS.length; i++) {
+    const [x, y, v] = project(STORY_PINS[i][0], STORY_PINS[i][1], R, cx, cy);
+    if (v > 0 && Math.hypot(mx - x, my - y) < 16) { openStory(i); return; }
+  }
 });
+
+const VIEWS = {
+  intro:    { lat: 25, k: 1, coops: .3, campus: .3, nuin: .3, labelC: 0, labelN: 0, spins: 0, auto: true },
+  campuses: { lon: -78, lat: 42, k: 1.35, coops: .06, campus: 1, nuin: .1, labelC: 1, labelN: 0, spins: 0 },
+  nuin:     { lon: 5, lat: 48, k: 1.6, coops: .06, campus: .25, nuin: 1, labelC: 0, labelN: 1, spins: 0 },
+  coops:    { lon: -55, lat: 22, k: 1, coops: 1, campus: .35, nuin: .35, labelC: 0, labelN: 0, spins: 1, count: true, auto: true },
+  outro:    { lat: 10, k: .92, coops: .8, campus: .9, nuin: .9, labelC: 0, labelN: 0, spins: 0, auto: true },
+};
+
 let counted = false;
 const stepIO = new IntersectionObserver(es => es.forEach(e => {
   if (!e.isIntersecting) { e.target.classList.remove("active"); return; }
   e.target.classList.add("active");
-  const v = CVIEWS[e.target.dataset.step];
+  const v = VIEWS[e.target.dataset.step];
   if (!v) return;
   startFly({ lon: v.lon !== undefined ? v.lon : cur.lon, lat: v.lat !== undefined ? v.lat : cur.lat, k: v.k });
   for (const key of LAYER_KEYS) tgt[key] = v[key];
-  focus = v.focus || null;
+  focus = null;
   autorotate = !!v.auto;
   if (v.count && !counted) {
     counted = true;
     ignite = 0;
-    igniteT0 = performance.now() + 400;
+    igniteT0 = performance.now() + 500;
+  }
+  /* the story card is a fixture of the co-op beat */
+  if (e.target.dataset.step === "coops") {
+    if (storySel < 0) storySel = 0;
+    fillCard(storySel);
+    gtCard.hidden = false;
+  } else {
+    gtCard.hidden = true;
   }
 }), { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
-$$(".cstep").forEach(el => stepIO.observe(el));
+$$(".step").forEach(el => stepIO.observe(el));
 
 /* ============ research counters ============ */
 function countUp(el, to, ms) {
@@ -1120,25 +1118,33 @@ if (plx.length && !reduceMotion) {
   plxUpd();
 }
 
-/* student life zoom tunnel: images scale up and pass the camera as you scroll */
-const lzTrack = $(".lz-track");
-const lzImgs = $$(".lz");
-if (lzTrack && !reduceMotion) {
-  const lzUpd = () => {
+/* student life deck: the top card peels away to reveal the next */
+const lzTrack = $(".lifedeck .lz-track");
+const dcards = $$(".dcard");
+const DECK_ROT = [-3, 2.2, -1.6, 3, 0];
+if (lzTrack && dcards.length && !reduceMotion) {
+  const N = dcards.length;
+  const deckUpd = () => {
     const r = lzTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    lzImgs.forEach((el, i) => {
-      const t = clamp01((p - i * 0.16) / 0.36);
-      if (t <= 0 || t >= 1) { el.style.opacity = 0; return; }
-      const scale = 0.25 + Math.pow(t, 1.6) * 2.1;
-      const fade = Math.min(clamp01(t / 0.12), clamp01((1 - t) / 0.18));
-      el.style.opacity = fade.toFixed(2);
-      el.style.transform = `translate(calc(-50% + var(--dx) * ${t.toFixed(3)}), calc(-50% + var(--dy) * ${t.toFixed(3)})) scale(${scale.toFixed(3)})`;
+    const pAll = clamp01(-r.top / (r.height - innerHeight)) * N;
+    dcards.forEach((el, i) => {
+      const t = clamp01(pAll - i);
+      const rot = DECK_ROT[i];
+      if (t >= 1) { el.style.opacity = 0; return; }
+      if (t > 0) {
+        el.style.opacity = (1 - clamp01((t - 0.5) / 0.45)).toFixed(2);
+        el.style.transform = `translateY(calc(-50% + ${(-t * 56).toFixed(2)}vh)) rotate(${(rot + t * 6).toFixed(2)}deg) scale(${(1 + t * 0.3).toFixed(3)})`;
+      } else {
+        const settle = i - pAll;
+        el.style.opacity = 1;
+        el.style.transform = `translateY(calc(-50% + ${(settle * 1.5).toFixed(2)}vh)) rotate(${rot}deg) scale(${(1 - settle * 0.04).toFixed(3)})`;
+      }
+      el.style.zIndex = 100 - i;
     });
   };
-  addEventListener("scroll", () => requestAnimationFrame(lzUpd), { passive: true });
-  addEventListener("resize", lzUpd);
-  lzUpd();
+  addEventListener("scroll", () => requestAnimationFrame(deckUpd), { passive: true });
+  addEventListener("resize", deckUpd);
+  deckUpd();
 }
 
 /* smooth scrolling via Lenis; anchors route through it so they glide too */
@@ -1162,6 +1168,6 @@ resize();
 requestAnimationFrame(frame);
 </script>
 
-<div class="verbar"><span class="lbl">Globe:</span><a href="index.html">Scrolly</a><a href="globe-a.html">Tour</a><a href="globe-c.html" class="cur">Split</a><span class="lbl">Life:</span><a href="index.html">Tunnel</a><a href="tunnel-a.html">Dolly</a><a href="tunnel-b.html">Deck</a><a href="tunnel-c.html">Lanes</a><a href="life-a.html">Filmstrip</a><a href="life-b.html">Cinema</a><a href="life-c.html">Columns</a></div>
+<div class="verbar"><span class="lbl">Globe:</span><a href="index.html">Scrolly</a><a href="globe-a.html">Tour</a><a href="globe-c.html">Split</a><span class="lbl">Life:</span><a href="index.html">Tunnel</a><a href="tunnel-a.html">Dolly</a><a href="tunnel-b.html" class="cur">Deck</a><a href="tunnel-c.html">Lanes</a><a href="life-a.html">Filmstrip</a><a href="life-b.html">Cinema</a><a href="life-c.html">Columns</a></div>
 </body>
 </html>
