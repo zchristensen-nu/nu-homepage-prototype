@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="27-lb">
+<meta name="prototype-rev" content="27-td">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -211,21 +211,25 @@
   .qdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.35);border:0;cursor:pointer;padding:0;transition:.3s}
   .qdot[aria-current="true"]{background:#fff;width:26px;border-radius:99px}
 
-  /* ---------- STUDENT LIFE CINEMA ---------- */
+  /* ---------- STUDENT LIFE IMAX ---------- */
   .lifezoom{position:relative;z-index:6;background:var(--dark);border-radius:28px 28px 0 0;margin-top:-28px}
-  .lz-track{height:320vh}
+  .lz-track{height:420vh}
   .lz-stage{position:sticky;top:0;height:100vh;overflow:hidden}
   .lz-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    z-index:4;text-align:center;pointer-events:none;padding:0 20px}
+    z-index:4000;text-align:center;pointer-events:none;padding:0 20px}
   .lz-text h2{color:#fff;font-size:clamp(40px,6vw,88px);font-weight:200;letter-spacing:-.025em;line-height:1.05;
-    text-shadow:0 2px 30px rgba(0,0,0,.45)}
-  .cine{position:absolute;inset:0;opacity:0;will-change:opacity;display:block}
-  .cine img{width:100%;height:100%;object-fit:cover;filter:brightness(.72);will-change:transform}
-  .ccap{position:absolute;left:clamp(20px,4vw,48px);bottom:22px;font-size:13px;color:rgba(255,255,255,.75)}
+    will-change:transform}
+  .iscene{position:absolute;inset:0;perspective:950px;perspective-origin:50% 50%}
+  .iframe{position:absolute;left:50%;top:50%;width:min(44vw,620px);border-radius:12px;overflow:hidden;
+    opacity:0;will-change:transform,opacity;display:block}
+  .iframe img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  @media(max-width:720px){.iframe{width:70vw}}
   @media (prefers-reduced-motion: reduce){
     .lz-track{height:auto}
-    .lz-stage{position:static;height:70vh}
-    .cine:first-child{opacity:1}
+    .lz-stage{position:static;height:auto;padding:90px 0 60px}
+    .lz-text{position:static;margin-bottom:40px}
+    .iscene{position:static;perspective:none}
+    .iframe{position:static;opacity:1 !important;transform:none !important;margin:16px auto}
   }
 
   /* ---------- ADMISSIONS CTA ---------- */
@@ -472,14 +476,17 @@
   </div>
 </section>
 
-<section class="lifezoom lifecine" id="life">
+<section class="lifezoom lifeimax" id="life">
   <div class="lz-track">
     <div class="lz-stage">
-      <a class="cine" data-i="0" href="https://news.northeastern.edu/2025/07/01/battle-of-wits/"><img src="https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg" alt="An incoming student faces off against Paws the mascot in rock-paper-scissors at orientation." loading="lazy"><span class="ccap">Rock, paper, Paws. Orientation on Snell Quad</span></a>
-      <a class="cine" data-i="1" href="https://news.northeastern.edu/2025/04/30/winners-take-all/"><img src="https://news.northeastern.edu/wp-content/uploads/2025/04/JIM28826.jpg" alt="Northeastern's baseball team raises the Beanpot championship trophy under stadium lights at Fenway Park." loading="lazy"><span class="ccap">Beanpot champions at Fenway Park</span></a>
-      <a class="cine" data-i="2" href="https://news.northeastern.edu/2024/02/13/the-sweet-taste-of-victory/"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg" alt="Hockey players eat cereal out of the Beanpot trophy in a dining hall." loading="lazy"><span class="ccap">The trophy doubles as a cereal bowl, the morning after</span></a>
-      <a class="cine" data-i="3" href="https://news.northeastern.edu/2024/02/14/mens-beanpot-2024-video/"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021224_MM_M_beanpot_083.jpg" alt="Northeastern men's hockey players celebrate their Beanpot title on the ice at TD Garden." loading="lazy"><span class="ccap">Overtime at TD Garden</span></a>
-      <a class="cine" data-i="4" href="https://news.northeastern.edu/2023/09/06/convocation-2023/"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="A crowd of students cheer as confetti falls at convocation at MGM Music Hall at Fenway." loading="lazy"><span class="ccap">Day one, from the floor</span></a>
+      <div class="iscene">
+      <a class="iframe" data-i="0" href="https://news.northeastern.edu/2025/07/01/battle-of-wits/" aria-label="Rock, paper, Paws. Orientation on Snell Quad"><img src="https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg" alt="An incoming student faces off against Paws the mascot in rock-paper-scissors at orientation." loading="lazy"></a>
+      <a class="iframe" data-i="1" href="https://news.northeastern.edu/2025/04/30/winners-take-all/" aria-label="Beanpot champions at Fenway Park"><img src="https://news.northeastern.edu/wp-content/uploads/2025/04/JIM28826.jpg" alt="Northeastern's baseball team raises the Beanpot championship trophy under stadium lights at Fenway Park." loading="lazy"></a>
+      <a class="iframe" data-i="2" href="https://news.northeastern.edu/2024/02/13/the-sweet-taste-of-victory/" aria-label="The trophy doubles as a cereal bowl, the morning after"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg" alt="Hockey players eat cereal out of the Beanpot trophy in a dining hall." loading="lazy"></a>
+      <a class="iframe" data-i="3" href="https://news.northeastern.edu/2024/02/14/mens-beanpot-2024-video/" aria-label="Overtime at TD Garden"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021224_MM_M_beanpot_083.jpg" alt="Northeastern men's hockey players celebrate their Beanpot title on the ice at TD Garden." loading="lazy"></a>
+      <a class="iframe" data-i="4" href="https://news.northeastern.edu/2026/06/30/rock-paper-paws/" aria-label="Husky 101"><img src="https://news.northeastern.edu/wp-content/uploads/2026/06/063026_AS_Husky101_019.jpg" alt="An incoming student plays rock-paper-scissors against Paws at Husky 101." loading="lazy"></a>
+      <a class="iframe" data-i="5" href="https://news.northeastern.edu/2023/09/06/convocation-2023/" aria-label="Day one, from the floor"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="A crowd of students cheer as confetti falls at convocation at MGM Music Hall at Fenway." loading="lazy"></a>
+      </div>
       <div class="lz-text"><h2>Class is only half of it.</h2></div>
     </div>
   </div>
@@ -1108,28 +1115,40 @@ if (plx.length && !reduceMotion) {
   plxUpd();
 }
 
-/* student life cinema: full-bleed crossfades with a slow push-in */
-const lzTrack = $(".lifecine .lz-track");
-const cines = $$(".cine");
-if (lzTrack && cines.length && !reduceMotion) {
-  const N = cines.length;
-  const cineUpd = () => {
+/* student life imax: fly a corridor of angled photo walls, into a final billboard.
+   The headline arrives alone, rises to center, then the corridor ignites. */
+const lzTrack = $(".lifeimax .lz-track");
+const iframes = $$(".iframe");
+const lzHead = $(".lifeimax .lz-text h2");
+if (lzTrack && iframes.length && !reduceMotion) {
+  const N = iframes.length;
+  const SPACING = 640, LEAD = 2200;
+  const imaxUpd = () => {
     const r = lzTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
-    cines.forEach((el, i) => {
-      const t = clamp01((p - i / N) * N);            /* 0..1 inside this frame's window */
-      const fadeIn = clamp01(t / 0.18);
-      const fadeOut = i === N - 1 ? 1 : clamp01((1 - t) / 0.18);
-      const o = t <= 0 ? 0 : Math.min(fadeIn, fadeOut);
+    lzHead.style.transform = `translateY(${((1 - easeOut(clamp01(p / 0.14))) * 30).toFixed(2)}vh)`;
+    const pd = clamp01((p - 0.10) / 0.90);
+    const camZ = pd * (SPACING * N + LEAD + 400);
+    iframes.forEach((el, i) => {
+      const rel = camZ - (i * SPACING + LEAD);
+      const last = i === N - 1;
+      const side = last ? 0 : (i % 2 ? 1 : -1);
+      /* wall frames sweep slightly wider as they near; the finale stays centered */
+      const approach = clamp01((rel + 1500) / 2000);
+      const x = side * (26 + 14 * approach);
+      const y = (i % 3 - 1) * 3;
+      const rot = side * -32;
+      const passDepth = last ? 900 : 620;
+      const o = Math.min(clamp01((rel + 2100) / 500), clamp01((passDepth - rel) / (last ? 420 : 300)));
       el.style.opacity = o.toFixed(2);
-      const active = o > 0.5;
-      el.querySelector("img").style.transform = `scale(${(1.04 + t * 0.07).toFixed(3)})`;
-      el.style.pointerEvents = active ? "auto" : "none";
+      el.style.transform = `translate(-50%,-50%) translate3d(${(x * innerWidth / 100).toFixed(1)}px, ${(y * innerHeight / 100).toFixed(1)}px, ${rel.toFixed(1)}px) rotateY(${rot}deg)`;
+      el.style.zIndex = 100 + Math.round(rel / 10);
+      el.style.filter = `brightness(${(0.5 + 0.5 * clamp01((rel + 1800) / 1800)).toFixed(2)})`;
     });
   };
-  addEventListener("scroll", () => requestAnimationFrame(cineUpd), { passive: true });
-  addEventListener("resize", cineUpd);
-  cineUpd();
+  addEventListener("scroll", () => requestAnimationFrame(imaxUpd), { passive: true });
+  addEventListener("resize", imaxUpd);
+  imaxUpd();
 }
 
 /* smooth scrolling via Lenis; anchors route through it so they glide too */
@@ -1153,6 +1172,6 @@ resize();
 requestAnimationFrame(frame);
 </script>
 
-<div class="verbar"><span class="lbl">Globe:</span><a href="index.html">Scrolly</a><a href="globe-a.html">Tour</a><a href="globe-c.html">Split</a><span class="lbl">Life:</span><a href="index.html">Tunnel</a><a href="tunnel-a.html">Dolly</a><a href="tunnel-b.html">Deck</a><a href="tunnel-c.html">Lanes</a><a href="tunnel-d.html">IMAX</a><a href="life-a.html">Filmstrip</a><a href="life-b.html" class="cur">Cinema</a><a href="life-c.html">Columns</a></div>
+<div class="verbar"><span class="lbl">Globe:</span><a href="index.html">Scrolly</a><a href="globe-a.html">Tour</a><a href="globe-c.html">Split</a><span class="lbl">Life:</span><a href="index.html">Tunnel</a><a href="tunnel-a.html">Dolly</a><a href="tunnel-b.html">Deck</a><a href="tunnel-c.html">Lanes</a><a href="tunnel-d.html" class="cur">IMAX</a><a href="life-a.html">Filmstrip</a><a href="life-b.html">Cinema</a><a href="life-c.html">Columns</a></div>
 </body>
 </html>
