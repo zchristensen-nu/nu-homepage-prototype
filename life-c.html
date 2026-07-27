@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="22-lc">
+<meta name="prototype-rev" content="23-lc">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -224,8 +224,9 @@
   .cols{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);
     gap:2vw;padding:0 4vw;z-index:2}
   .col{display:flex;flex-direction:column;gap:2vw;will-change:transform}
-  .col a{display:block;border-radius:12px;overflow:hidden}
-  .col img{width:100%;display:block}
+  .col:nth-child(2){margin-top:-16vh}
+  .col a{display:block;border-radius:12px;overflow:hidden;aspect-ratio:4/5}
+  .col img{width:100%;height:100%;object-fit:cover;display:block}
   @media (prefers-reduced-motion: reduce){
     .lz-track{height:auto}
     .lz-stage{position:static;height:auto;padding:90px 0 60px}
@@ -1124,7 +1125,7 @@ if (plx.length && !reduceMotion) {
 /* student life column wall: three lanes drift at different speeds */
 const lzTrack = $(".lifecols .lz-track");
 const lanes = $$(".lifecols .col");
-const LANE_RANGE = [[14, -40], [-34, 16], [10, -30]];   /* vh: from -> to */
+const LANE_RANGE = [[6, -22], [-14, 12], [4, -18]];   /* vh: from -> to */
 if (lzTrack && lanes.length && !reduceMotion) {
   const laneUpd = () => {
     const r = lzTrack.getBoundingClientRect();
