@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="25-ta">
+<meta name="prototype-rev" content="26-ta">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -219,7 +219,7 @@
     z-index:4000;text-align:center;pointer-events:none;padding:0 20px}
   .lz-text h2{color:#fff;font-size:clamp(40px,6vw,88px);font-weight:200;letter-spacing:-.025em;line-height:1.05}
   .dscene{position:absolute;inset:0;perspective:1100px;perspective-origin:50% 50%}
-  .dframe{position:absolute;left:50%;top:50%;width:min(30vw,430px);border-radius:12px;overflow:hidden;
+  .dframe{position:absolute;left:50%;top:50%;width:min(36vw,500px);border-radius:12px;overflow:hidden;
     opacity:0;will-change:transform,opacity;display:block}
   .dframe img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
   @media(max-width:720px){.dframe{width:56vw}}
@@ -1118,7 +1118,7 @@ const lzTrack = $(".lifedolly .lz-track");
 const dframes = $$(".dframe");
 if (lzTrack && dframes.length && !reduceMotion) {
   const SLOTS = [[-21, -7], [21, 6], [-24, -3], [22, 8], [0, -2]];
-  const SPACING = 720, LEAD = 600;
+  const SPACING = 560, LEAD = 500;
   const dollyUpd = () => {
     const r = lzTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
@@ -1126,9 +1126,12 @@ if (lzTrack && dframes.length && !reduceMotion) {
     dframes.forEach((el, i) => {
       const rel = camZ - (i * SPACING + LEAD);
       const [dx, dy] = SLOTS[i];
-      const o = Math.min(clamp01((rel + 2800) / 700), clamp01((420 - rel) / 260));
+      /* frames drift outward as they near the camera, like the original tunnel */
+      const approach = clamp01((rel + 1500) / 2000);
+      const spread = 0.75 + 0.55 * approach;
+      const o = Math.min(clamp01((rel + 2600) / 600), clamp01((560 - rel) / 300));
       el.style.opacity = o.toFixed(2);
-      el.style.transform = `translate(-50%,-50%) translate3d(${(dx * innerWidth / 100).toFixed(1)}px, ${(dy * innerHeight / 100).toFixed(1)}px, ${rel.toFixed(1)}px)`;
+      el.style.transform = `translate(-50%,-50%) translate3d(${(dx * spread * innerWidth / 100).toFixed(1)}px, ${(dy * spread * innerHeight / 100).toFixed(1)}px, ${rel.toFixed(1)}px)`;
       el.style.zIndex = 100 + Math.round(rel / 10);
       el.style.filter = `brightness(${(0.55 + 0.45 * clamp01((rel + 1800) / 1800)).toFixed(2)})`;
     });
