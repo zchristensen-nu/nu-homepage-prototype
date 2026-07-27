@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="27-a">
+<meta name="prototype-rev" content="31-a">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -348,7 +348,6 @@
 <section class="gtour" id="experience">
   <div class="stage" id="stage">
     <canvas id="globe" aria-label="Interactive globe of Northeastern's campuses, N.U.in cities, and Fall 2026 co-op placements. Use the tour buttons, click a red pin for a story, or drag to explore."></canvas>
-    <div class="hint" id="hint">drag to spin &middot; hover a dot for details</div>
     <div class="gt-panel">
       <div class="gt-text" id="gt-text"></div>
       <div class="gt-chips" role="tablist" aria-label="Globe tour">
@@ -873,7 +872,8 @@ canvas.addEventListener("pointerdown", e => {
   lastPt = [e.clientX, e.clientY]; lastT = performance.now();
   canvas.classList.add("dragging");
   canvas.setPointerCapture(e.pointerId);
-  $("#hint").style.opacity = 0;
+  const hintEl = $("#hint");
+  if (hintEl) hintEl.style.opacity = 0;
   hideGtip();
 });
 canvas.addEventListener("pointermove", e => {
@@ -967,8 +967,7 @@ const TOURS = {
   nuin:     { view: { lon: 5, lat: 48, k: 1.6 }, layers: { coops: .06, campus: .25, nuin: 1, labelC: 0, labelN: 1, spins: 0 },
               h: "<b>8</b> ways to start abroad", p: "N.U.in launches new Huskies from eight European cities before they ever set foot in Boston." },
   coops:    { view: { lon: -55, lat: 22, k: 1 }, layers: { coops: 1, campus: .35, nuin: .35, labelC: 0, labelN: 0, spins: 1 }, auto: true, count: true,
-              h: "<b id=\"coopcount\">0</b> co&#8209;ops", p: "Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.",
-              hint: "Red pins hold stories. Click one." },
+              h: "<b id=\"coopcount\">0</b> co&#8209;ops", p: "Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall." },
 };
 const gtText = $("#gt-text");
 const gtCard = $("#gt-card");

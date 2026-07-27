@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="27">
+<meta name="prototype-rev" content="31">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -304,7 +304,6 @@
 <div class="scrolly" id="experience">
   <div class="stage" id="stage">
     <canvas id="globe" aria-label="Interactive globe showing Northeastern's 13 campuses, 8 N.U.in locations, and 4,705 Fall 2026 co-op placements. Scroll for the tour, click a red pin for a story, drag to rotate."></canvas>
-    <div class="hint" id="hint">drag to spin &middot; hover a dot for details</div>
     <aside class="gt-card" id="gt-card" hidden aria-label="Co-op story">
       <img id="gtc-img" alt="">
       <div class="gtc-body">
@@ -321,18 +320,10 @@
   </div>
   <div class="steps" id="steps">
 
-    <div class="step" data-step="intro">
-      <div class="card">
-        <div class="big">The whole planet.</div>
-        <p>Campuses, semester-one launch cities, and thousands of co-ops. Every dot is a Husky, somewhere in the world, right now.</p>
-      </div>
-    </div>
-
     <div class="step" data-step="campuses">
       <div class="card">
         <div class="big"><b>13</b> campuses</div>
         <p>Boston to London, Silicon Valley to Toronto. One university system spanning two countries&hellip; and counting.</p>
-        <div class="legend"><span><span class="sw" style="background:#C8102E"></span>Northeastern campus</span></div>
       </div>
     </div>
 
@@ -340,7 +331,6 @@
       <div class="card">
         <div class="big"><b>8</b> ways to start abroad</div>
         <p>First semester, first stamp in the passport. N.U.in launches new Huskies from eight European cities.</p>
-        <div class="legend"><span><span class="sw" style="background:#fff"></span>N.U.in Fall 2026 location</span></div>
       </div>
     </div>
 
@@ -348,7 +338,6 @@
       <div class="card">
         <div class="big"><b id="coopcount">0</b> co&#8209;ops</div>
         <p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>
-        <div class="pinhint">Red pins hold stories. Click one, or step through the card.</div>
       </div>
     </div>
 
@@ -862,7 +851,8 @@ canvas.addEventListener("pointerdown", e => {
   lastPt = [e.clientX, e.clientY]; lastT = performance.now();
   canvas.classList.add("dragging");
   canvas.setPointerCapture(e.pointerId);
-  $("#hint").style.opacity = 0;
+  const hintEl = $("#hint");
+  if (hintEl) hintEl.style.opacity = 0;
   hideGtip();
 });
 canvas.addEventListener("pointermove", e => {

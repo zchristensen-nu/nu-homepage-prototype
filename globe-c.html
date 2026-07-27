@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="27-c">
+<meta name="prototype-rev" content="31-c">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -343,13 +343,8 @@
 <div class="csplit" id="experience">
   <div class="stage" id="stage">
     <canvas id="globe" aria-label="Interactive globe of Northeastern's campuses, N.U.in cities, and Fall 2026 co-op placements. Drag to explore."></canvas>
-    <div class="hint" id="hint">drag to spin &middot; hover a dot for details</div>
   </div>
   <div class="c-stream">
-    <div class="cstep" data-step="intro"><div class="ccard">
-      <div class="gt-h">The whole planet.</div>
-      <p>Campuses, launch cities, and thousands of co-ops. Every dot is a Husky, somewhere in the world, right now.</p>
-    </div></div>
     <div class="cstep" data-step="campuses"><div class="ccard">
       <div class="gt-h"><b>13</b> campuses</div>
       <p>Boston to London, Silicon Valley to Toronto. One university system, and counting.</p>
@@ -909,7 +904,8 @@ canvas.addEventListener("pointerdown", e => {
   lastPt = [e.clientX, e.clientY]; lastT = performance.now();
   canvas.classList.add("dragging");
   canvas.setPointerCapture(e.pointerId);
-  $("#hint").style.opacity = 0;
+  const hintEl = $("#hint");
+  if (hintEl) hintEl.style.opacity = 0;
   hideGtip();
 });
 canvas.addEventListener("pointermove", e => {
