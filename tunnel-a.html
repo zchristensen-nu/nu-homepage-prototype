@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="27-ta">
+<meta name="prototype-rev" content="30-ta">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1121,10 +1121,21 @@ const lzHead = $(".lifedolly .lz-text h2");
 if (lzTrack && dframes.length && !reduceMotion) {
   const SLOTS = [[-21, -7], [21, 6], [-24, -3], [22, 8], [0, -2]];
   const SPACING = 560, LEAD = 2200;
+  const qOut = t => t * (2 - t);
+  const warm = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    dframes.forEach(el => {
+      const im = el.querySelector("img");
+      im.loading = "eager";
+      if (im.decode) im.decode().catch(() => {});
+    });
+    warm.disconnect();
+  }), { rootMargin: "150% 0px" });
+  warm.observe(lzTrack);
   const dollyUpd = () => {
     const r = lzTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
-    lzHead.style.transform = `translateY(${((1 - easeOut(clamp01(p / 0.14))) * 30).toFixed(2)}vh)`;
+    lzHead.style.transform = `translateY(${((1 - qOut(clamp01(p / 0.2))) * 30).toFixed(2)}vh)`;
     const pd = clamp01((p - 0.10) / 0.90);
     const camZ = pd * (SPACING * dframes.length + LEAD + 200);
     dframes.forEach((el, i) => {

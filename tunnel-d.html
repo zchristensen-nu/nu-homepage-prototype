@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="29-td">
+<meta name="prototype-rev" content="30-td">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1126,6 +1126,20 @@ const iscene = $(".iscene");
 if (lzTrack && iframes.length && !reduceMotion) {
   const N = iframes.length;
   const SPACING = 640, LEAD = 2200;
+  /* rise curve: initial slope ~matches scroll speed at the pin, then decelerates,
+     so the headline never freezes or snaps at the section boundary */
+  const qOut = t => t * (2 - t);
+  /* decode images before the section arrives so ignition can't hitch the scroll */
+  const warm = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    iframes.forEach(el => {
+      const im = el.querySelector("img");
+      im.loading = "eager";
+      if (im.decode) im.decode().catch(() => {});
+    });
+    warm.disconnect();
+  }), { rootMargin: "150% 0px" });
+  warm.observe(lzTrack);
   let lastP = -1, lastT = 0, vSm = 0, warpOn = false;
   const applyFov = () => {
     iscene.style.perspective = `${(950 - Math.min(340, vSm * 26000)).toFixed(0)}px`;
@@ -1139,7 +1153,7 @@ if (lzTrack && iframes.length && !reduceMotion) {
   const imaxUpd = () => {
     const r = lzTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
-    lzHead.style.transform = `translateY(${((1 - easeIO(clamp01(p / 0.18))) * 30).toFixed(2)}vh)`;
+    lzHead.style.transform = `translateY(${((1 - qOut(clamp01(p / 0.2))) * 30).toFixed(2)}vh)`;
     const now = performance.now();
     if (lastP >= 0 && now > lastT) {
       const vInst = Math.abs(p - lastP) / Math.max(16, now - lastT) * 16.7;
