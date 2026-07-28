@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="36-nb">
+<meta name="prototype-rev" content="37-nb">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -163,13 +163,11 @@
   .nav.solid .nvicon{color:var(--ink)}
   .nvicon:hover{background:rgba(128,128,136,.18)}
   .nvright{margin-left:auto;display:flex;align-items:center;gap:10px}
-  /* full-screen takeover menu */
   .tkv-open{font:inherit;font-size:14px;font-weight:500;color:#fff;background:none;
     border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 20px;cursor:pointer;transition:.2s}
   .nav.solid .tkv-open{color:var(--ink);border-color:var(--ink)}
   .tkv-open:hover{background:rgba(128,128,136,.18)}
-  .tkv{position:fixed;inset:0;z-index:240;background:var(--dark);color:#fff;overflow-y:auto;
-    padding-bottom:70px}
+  .tkv{position:fixed;inset:0;z-index:240;background:var(--dark);color:#fff;overflow-y:auto;padding-bottom:70px}
   .tkv-head{display:flex;justify-content:space-between;align-items:center;height:72px}
   .tkv-title{font-size:14px;color:#8a8a92}
   .tkv-x{border:0;background:none;color:#fff;font-size:30px;cursor:pointer;padding:2px 8px}
@@ -352,10 +350,10 @@
         <a href="https://admissions.northeastern.edu/">Undergraduate</a>
         <a href="https://graduate.northeastern.edu/">Graduate</a>
         <a href="https://phd.northeastern.edu/">Doctoral</a>
-        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
-        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
-        <a href="https://online.northeastern.edu/">Online Education</a>
         <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+        <a href="https://online.northeastern.edu/">Online Education</a>
       </div>
     </div>
     <div class="tkv-grp">
@@ -384,12 +382,13 @@
     <div class="tkv-grp">
       <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-4">
+        <a href="https://www.northeastern.edu/our-global-university-system/">Global overview</a>
         <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
         <a href="https://www.northeastern.edu/our-global-campuses/">Our Global Campuses</a>
         <a href="https://geo.northeastern.edu/">Global Learning Experiences</a>
+        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
         <a href="https://international.northeastern.edu/ogs/">Office of Global Services</a>
         <a href="https://international.northeastern.edu/">International Student Hub</a>
-        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
         <a href="https://globalsafety.northeastern.edu/">Global Safety and Support</a>
       </div>
     </div>
@@ -416,23 +415,22 @@
       <button class="tkv-g" data-sub="tsub-6" aria-expanded="false">About<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-6">
         <a href="https://www.northeastern.edu/about/about-northeastern/">About Northeastern</a>
+        <a href="https://president.northeastern.edu/">President Aoun</a>
         <a href="https://www.northeastern.edu/about/senior-leadership/">Senior Leadership</a>
         <a href="https://partnerships.northeastern.edu/">Partnerships</a>
-        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
         <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
         <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
+        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
         <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
       </div>
     </div>
     <div class="tkv-more">
-      <a href="https://president.northeastern.edu/">President Aoun</a>
       <a href="https://calendar.northeastern.edu/">Events</a>
       <a href="https://nuhuskies.com/">Athletics</a>
       <a href="https://studentlife.northeastern.edu/">Student Life</a>
       <a href="https://alumni.northeastern.edu/">Alumni</a>
       <a href="https://facts.northeastern.edu/">Facts and Figures</a>
       <a href="https://giving.northeastern.edu/">Make a Gift</a>
-      <a href="https://admissions.northeastern.edu/visit/">Visit</a>
       <a href="https://about.me.northeastern.edu/select-your-destination/">The Hubs</a>
     </div>
   </div>
@@ -1353,12 +1351,10 @@ if (!reduceMotion && typeof Lenis !== "undefined") {
 
 /* search overlay */
 const srch = $("#srch");
-const srchOpenBtn = $("#srch-open");
 function srchOpen() { srch.hidden = false; nav.classList.add("solid"); setTimeout(() => $("#srch-in").focus(), 50); }
 function srchClose() { srch.hidden = true; nav.classList.toggle("solid", scrollY > 60); }
-srchOpenBtn.addEventListener("click", e => { e.stopPropagation(); srchOpen(); });
+$("#srch-open").addEventListener("click", e => { e.stopPropagation(); srchOpen(); });
 $("#srch-x").addEventListener("click", srchClose);
-
 /* takeover menu */
 const tkv = $("#tkv");
 const tkvOpenBtn = $("#tkv-open");
@@ -1367,11 +1363,11 @@ function tkvClose() { tkv.hidden = true; document.documentElement.style.overflow
 tkvOpenBtn.addEventListener("click", tkvOpen);
 $("#tkv-x").addEventListener("click", tkvClose);
 $$(".tkv-g").forEach(b => b.addEventListener("click", () => {
-  const sub = $("#" + b.dataset.sub);
-  const open = !sub.classList.contains("open");
+  const s = $("#" + b.dataset.sub);
+  const open = !s.classList.contains("open");
   $$(".tkv-sub").forEach(x => x.classList.remove("open"));
   $$(".tkv-g").forEach(x => x.setAttribute("aria-expanded", "false"));
-  if (open) { sub.classList.add("open"); b.setAttribute("aria-expanded", "true"); }
+  if (open) { s.classList.add("open"); b.setAttribute("aria-expanded", "true"); }
 }));
 addEventListener("keydown", e => { if (e.key === "Escape") { tkvClose(); srchClose(); } });
 

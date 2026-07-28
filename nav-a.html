@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="36-na">
+<meta name="prototype-rev" content="37-na">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -163,6 +163,33 @@
   .nav.solid .nvicon{color:var(--ink)}
   .nvicon:hover{background:rgba(128,128,136,.18)}
   .nvright{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .tkv-open{font:inherit;font-size:14px;font-weight:500;color:#fff;background:none;
+    border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 20px;cursor:pointer;transition:.2s}
+  .nav.solid .tkv-open{color:var(--ink);border-color:var(--ink)}
+  .tkv-open:hover{background:rgba(128,128,136,.18)}
+  .tkv{position:fixed;inset:0;z-index:240;background:var(--dark);color:#fff;overflow-y:auto;padding-bottom:70px}
+  .tkv-head{display:flex;justify-content:space-between;align-items:center;height:72px}
+  .tkv-title{font-size:14px;color:#8a8a92}
+  .tkv-x{border:0;background:none;color:#fff;font-size:30px;cursor:pointer;padding:2px 8px}
+  .tkv-x:hover{color:#FFB3BE}
+  .tkv-search{margin:14px 0 26px}
+  .tkv-search input{width:100%;font:inherit;font-size:clamp(18px,2vw,24px);font-weight:300;color:#fff;
+    background:none;border:0;border-bottom:1.5px solid rgba(255,255,255,.3);padding:12px 2px;outline:none}
+  .tkv-search input:focus{border-color:#fff}
+  .tkv-g{width:100%;display:flex;justify-content:space-between;align-items:center;
+    font:inherit;font-size:clamp(21px,2.4vw,28px);font-weight:300;color:#fff;background:none;
+    border:0;border-bottom:1px solid rgba(255,255,255,.14);padding:18px 0;cursor:pointer;text-align:left}
+  .tkv-g:hover{color:#FFB3BE}
+  .tkv-c{font-size:20px;font-weight:300;color:#8a8a92;transition:transform .3s var(--ease)}
+  .tkv-g[aria-expanded="true"] .tkv-c{transform:rotate(45deg)}
+  .tkv-sub{display:none;padding:8px 0 22px;border-bottom:1px solid rgba(255,255,255,.14)}
+  .tkv-sub.open{display:block;columns:2;column-gap:clamp(28px,5vw,72px)}
+  @media(max-width:720px){.tkv-sub.open{columns:1}}
+  .tkv-sub a{display:block;padding:7px 0;font-size:15px;color:#C9C9CF}
+  .tkv-sub a:hover{color:#fff}
+  .tkv-more{margin-top:34px;display:flex;flex-wrap:wrap;gap:4px 26px}
+  .tkv-more a{font-size:14.5px;color:#8a8a92;padding:5px 0}
+  .tkv-more a:hover{color:#fff}
   /* mega-dropdown bar */
   .mnav{display:flex;gap:22px;align-items:center}
   .mnav-btn{font:inherit;font-size:14px;font-weight:400;color:#fff;opacity:.85;background:none;border:0;
@@ -174,14 +201,29 @@
   .mpanel{position:absolute;left:0;right:0;top:100%;background:rgba(250,250,250,.98);
     backdrop-filter:blur(14px);border-bottom:1px solid var(--n2);box-shadow:0 30px 60px rgba(17,17,17,.1)}
   .mpanel[hidden]{display:none}
-  .mp-in{display:flex;gap:clamp(28px,5vw,80px);padding-top:34px;padding-bottom:42px;
-    max-height:72vh;overflow-y:auto}
+  .mp-in{display:flex;gap:clamp(26px,4vw,64px);padding-top:34px;padding-bottom:42px;
+    max-height:76vh;overflow-y:auto}
+  .mp-lead{max-width:230px}
+  .mp-title{font-size:22px;font-weight:300;letter-spacing:-.01em}
+  .mp-lead p{margin-top:8px;font-size:13.5px;color:var(--n5);line-height:1.5}
+  .mp-lead .storylink{font-size:13.5px;margin-top:14px}
   .mp-h{font-size:13px;font-weight:600;color:var(--n5);margin-bottom:10px}
   .mp-links a{display:block;padding:7px 0;font-size:14.5px;color:var(--ink);white-space:nowrap}
   .mp-links a:hover{color:var(--red)}
-  .mp-links a:first-child{font-weight:600}
-  .mp-col.cols2 .mp-links{columns:2;column-gap:clamp(28px,4vw,64px)}
-  @media(max-width:960px){.mnav{display:none}}
+  .mp-col.cols2 .mp-links{columns:2;column-gap:clamp(24px,3vw,48px)}
+  .mp-feat{display:block;margin-left:auto;width:min(300px,24vw);flex-shrink:0}
+  .mp-feat img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;
+    transition:transform .5s var(--ease)}
+  .mp-feat:hover img{transform:scale(1.02)}
+  .mp-feat .ft{display:block;margin-top:12px;font-size:14.5px;font-weight:500;line-height:1.35;color:var(--ink)}
+  .mp-feat .fl{display:block;margin-top:8px;font-size:13px;color:var(--n5);transition:.2s}
+  .mp-feat:hover .fl{color:var(--red)}
+  .navx .tkv-open{display:none}
+  @media(max-width:960px){
+    .mnav{display:none}
+    .navx .morebtn{display:none}
+    .navx .tkv-open{display:inline-flex}
+  }
 
   /* ---------- SHEET SECTIONS (Adobe pattern) ---------- */
   .sheet{position:relative;z-index:6;background:var(--paper);border-radius:28px 28px 0 0;margin-top:-28px}
@@ -311,65 +353,77 @@
     <div class="nvright">
       <button class="nvicon" id="srch-open" aria-label="Search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
       <button class="mnav-btn morebtn" data-panel="mp-more" aria-expanded="false">More</button>
+      <button class="tkv-open mobilemenu" id="tkv-open" aria-expanded="false">Menu</button>
       <span class="apply"><a class="pill" href="#admit">Apply</a></span>
     </div>
   </div>
   <div class="mpanel" id="mp-admissions" hidden><div class="wrap mp-in">
-      <div class="mp-col"><div class="mp-links">
-        <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
+      <div class="mp-lead"><div class="mp-title">Admissions</div><p>However you learn best, there is a path here.</p><a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions overview</a></div>
+      <div class="mp-col"><div class="mp-h">Apply</div><div class="mp-links">
         <a href="https://admissions.northeastern.edu/">Undergraduate Admissions</a>
         <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate Admissions</a>
         <a href="https://law.northeastern.edu/admissions/">Law School Admissions</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Get started</div><div class="mp-links">
         <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
         <a href="https://www.northeastern.edu/orientation/">Student Orientation and Family Programs</a>
+        <a href="https://admissions.northeastern.edu/visit/">Visit</a>
       </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/05/08/childhood-friends-india-america/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/05/050523_AS_best_friends_-1400.jpg" alt="" loading="lazy"><span class="ft">A life-changing year at Northeastern, as experienced by best friends from India</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-academics" hidden><div class="wrap mp-in">
-      <div class="mp-col cols2"><div class="mp-links">
-        <a href="https://www.northeastern.edu/academics/">Academics overview</a>
+      <div class="mp-lead"><div class="mp-title">Academics</div><p>150+ majors across nine colleges and schools.</p><a class="storylink" href="https://www.northeastern.edu/academics/">Academics overview</a></div>
+      <div class="mp-col"><div class="mp-h">Degrees</div><div class="mp-links">
         <a href="https://admissions.northeastern.edu/">Undergraduate</a>
         <a href="https://graduate.northeastern.edu/">Graduate</a>
         <a href="https://phd.northeastern.edu/">Doctoral</a>
-        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
-        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
-        <a href="https://online.northeastern.edu/">Online Education</a>
         <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
       </div></div>
+      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+        <a href="https://online.northeastern.edu/">Online Education</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2024/04/10/clara-wu-high-school-letter/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2024/04/Clara-Wu_1400.jpg" alt="" loading="lazy"><span class="ft">A 2023 graduate reflects on her Northeastern experience</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-experiential" hidden><div class="wrap mp-in">
-      <div class="mp-col"><div class="mp-links">
-        <a href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a>
+      <div class="mp-lead"><div class="mp-title">Experiential Learning</div><p>Learning that happens on the job, in the field, everywhere.</p><a class="storylink" href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a></div>
+      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
         <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
         <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
         <a href="#">Entrepreneurship</a>
         <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
       </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/05/03/nasa-engineering-intern/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/04/NASA1400.jpg" alt="" loading="lazy"><span class="ft">Loading a spacecraft bound for the International Space Station, on co‑op</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-research" hidden><div class="wrap mp-in">
-      <div class="mp-col cols2"><div class="mp-links">
-        <a href="https://research.northeastern.edu/">Research overview</a>
+      <div class="mp-lead"><div class="mp-title">Research</div><p>Discovery that solves real problems, with students in the work.</p><a class="storylink" href="https://research.northeastern.edu/">Research overview</a></div>
+      <div class="mp-col"><div class="mp-h">For researchers</div><div class="mp-links">
         <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
         <a href="https://research.northeastern.edu/phd-research/">PhD Research</a>
         <a href="https://research.northeastern.edu/ug-research/">Undergraduate Research</a>
         <a href="https://research.northeastern.edu/partnerships/">Research Partnerships</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Focus areas</div><div class="mp-links">
         <a href="https://research.northeastern.edu/health/">Health</a>
         <a href="https://research.northeastern.edu/security/">Security</a>
         <a href="https://research.northeastern.edu/sustainability/">Sustainability</a>
       </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2025/10/01/walking-the-future/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><span class="ft">Robots walk to class here. Student researchers are teaching them how</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-global" hidden><div class="wrap mp-in">
-      <div class="mp-col"><div class="mp-h">Global</div>
-<div class="mp-links">
+      <div class="mp-col"><div class="mp-h">Global</div><div class="mp-links">
         <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
         <a href="https://www.northeastern.edu/our-global-campuses/">Our Global Campuses</a>
         <a href="https://geo.northeastern.edu/">Global Learning Experiences</a>
+        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Student support</div><div class="mp-links">
         <a href="https://international.northeastern.edu/ogs/">Office of Global Services</a>
         <a href="https://international.northeastern.edu/">International Student Hub</a>
-        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
         <a href="https://globalsafety.northeastern.edu/">Global Safety and Support</a>
       </div></div>
-      <div class="mp-col cols2"><div class="mp-h">Campuses</div>
-<div class="mp-links">
+      <div class="mp-col cols2"><div class="mp-h">Campuses</div><div class="mp-links">
         <a href="https://arlington.northeastern.edu/">Arlington, VA</a>
         <a href="https://www.northeastern.edu/campuses/boston/">Boston, MA</a>
         <a href="https://www.burlington.northeastern.edu/">Burlington, MA</a>
@@ -385,30 +439,29 @@
         <a href="https://toronto.northeastern.edu/">Toronto, ON</a>
         <a href="https://vancouver.northeastern.edu/">Vancouver, BC</a>
       </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><span class="ft">Learning how global negotiation really works</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-more" hidden><div class="wrap mp-in">
-      <div class="mp-col"><div class="mp-h">About</div>
-<div class="mp-links">
+      <div class="mp-col"><div class="mp-h">About</div><div class="mp-links">
         <a href="https://www.northeastern.edu/about/about-northeastern/">About Northeastern</a>
+        <a href="https://president.northeastern.edu/">President Aoun</a>
         <a href="https://www.northeastern.edu/about/senior-leadership/">Senior Leadership</a>
         <a href="https://partnerships.northeastern.edu/">Partnerships</a>
-        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
         <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
         <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
+        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
         <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
       </div></div>
-      <div class="mp-col"><div class="mp-h">More from Northeastern</div>
-<div class="mp-links">
-        <a href="https://president.northeastern.edu/">President Aoun</a>
+      <div class="mp-col"><div class="mp-h">More from Northeastern</div><div class="mp-links">
         <a href="https://calendar.northeastern.edu/">Events</a>
         <a href="https://nuhuskies.com/">Athletics</a>
         <a href="https://studentlife.northeastern.edu/">Student Life</a>
         <a href="https://alumni.northeastern.edu/">Alumni</a>
         <a href="https://facts.northeastern.edu/">Facts and Figures</a>
         <a href="https://giving.northeastern.edu/">Make a Gift</a>
-        <a href="https://admissions.northeastern.edu/visit/">Visit</a>
         <a href="https://about.me.northeastern.edu/select-your-destination/">The Hubs</a>
       </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/09/06/convocation-2023/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="" loading="lazy"><span class="ft">President Aoun tells incoming students to embark on a ‘journey of reinvention’</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
 </header>
 <div class="srch" id="srch" hidden>
@@ -417,6 +470,118 @@
     <button type="submit" class="pill solid">Search</button>
     <button type="button" class="srch-x" id="srch-x" aria-label="Close search">&times;</button>
   </form>
+</div>
+<div class="tkv" id="tkv" hidden data-lenis-prevent>
+  <div class="wrap">
+    <div class="tkv-head">
+      <span class="tkv-title">Menu</span>
+      <button class="tkv-x" id="tkv-x" aria-label="Close menu">&times;</button>
+    </div>
+    <form action="https://search.northeastern.edu" method="get" role="search" class="tkv-search">
+      <input type="search" name="query" placeholder="Search Northeastern" autocomplete="off">
+    </form>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-0">
+        <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate Admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate Admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law School Admissions</a>
+        <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
+        <a href="https://www.northeastern.edu/orientation/">Student Orientation and Family Programs</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-1" aria-expanded="false">Academics<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-1">
+        <a href="https://www.northeastern.edu/academics/">Academics overview</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate</a>
+        <a href="https://graduate.northeastern.edu/">Graduate</a>
+        <a href="https://phd.northeastern.edu/">Doctoral</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+        <a href="https://online.northeastern.edu/">Online Education</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-2" aria-expanded="false">Experiential Learning<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-2">
+        <a href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a>
+        <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
+        <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
+        <a href="#">Entrepreneurship</a>
+        <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-3" aria-expanded="false">Research<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-3">
+        <a href="https://research.northeastern.edu/">Research overview</a>
+        <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
+        <a href="https://research.northeastern.edu/phd-research/">PhD Research</a>
+        <a href="https://research.northeastern.edu/ug-research/">Undergraduate Research</a>
+        <a href="https://research.northeastern.edu/partnerships/">Research Partnerships</a>
+        <a href="https://research.northeastern.edu/health/">Health</a>
+        <a href="https://research.northeastern.edu/security/">Security</a>
+        <a href="https://research.northeastern.edu/sustainability/">Sustainability</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-4">
+        <a href="https://www.northeastern.edu/our-global-university-system/">Global overview</a>
+        <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
+        <a href="https://www.northeastern.edu/our-global-campuses/">Our Global Campuses</a>
+        <a href="https://geo.northeastern.edu/">Global Learning Experiences</a>
+        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
+        <a href="https://international.northeastern.edu/ogs/">Office of Global Services</a>
+        <a href="https://international.northeastern.edu/">International Student Hub</a>
+        <a href="https://globalsafety.northeastern.edu/">Global Safety and Support</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-5" aria-expanded="false">Campuses<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-5">
+        <a href="https://arlington.northeastern.edu/">Arlington, VA</a>
+        <a href="https://www.northeastern.edu/campuses/boston/">Boston, MA</a>
+        <a href="https://www.burlington.northeastern.edu/">Burlington, MA</a>
+        <a href="https://charlotte.northeastern.edu/">Charlotte, NC</a>
+        <a href="https://www.nulondon.ac.uk/">London, UK</a>
+        <a href="https://miami.northeastern.edu/">Miami, FL</a>
+        <a href="https://csi.northeastern.edu/">Nahant, MA</a>
+        <a href="https://nyc.northeastern.edu/">New York City, NY</a>
+        <a href="https://oakland.northeastern.edu/">Oakland, CA</a>
+        <a href="https://roux.northeastern.edu/">Portland, ME</a>
+        <a href="https://seattle.northeastern.edu/">Seattle, WA</a>
+        <a href="https://siliconvalley.northeastern.edu/">Silicon Valley, CA</a>
+        <a href="https://toronto.northeastern.edu/">Toronto, ON</a>
+        <a href="https://vancouver.northeastern.edu/">Vancouver, BC</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-6" aria-expanded="false">About<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-6">
+        <a href="https://www.northeastern.edu/about/about-northeastern/">About Northeastern</a>
+        <a href="https://president.northeastern.edu/">President Aoun</a>
+        <a href="https://www.northeastern.edu/about/senior-leadership/">Senior Leadership</a>
+        <a href="https://partnerships.northeastern.edu/">Partnerships</a>
+        <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
+        <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
+        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
+        <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
+      </div>
+    </div>
+    <div class="tkv-more">
+      <a href="https://calendar.northeastern.edu/">Events</a>
+      <a href="https://nuhuskies.com/">Athletics</a>
+      <a href="https://studentlife.northeastern.edu/">Student Life</a>
+      <a href="https://alumni.northeastern.edu/">Alumni</a>
+      <a href="https://facts.northeastern.edu/">Facts and Figures</a>
+      <a href="https://giving.northeastern.edu/">Make a Gift</a>
+      <a href="https://about.me.northeastern.edu/select-your-destination/">The Hubs</a>
+    </div>
+  </div>
 </div>
 
 <section class="hero" id="top">
@@ -1334,33 +1499,62 @@ if (!reduceMotion && typeof Lenis !== "undefined") {
 
 /* search overlay */
 const srch = $("#srch");
-const srchOpenBtn = $("#srch-open");
 function srchOpen() { srch.hidden = false; nav.classList.add("solid"); setTimeout(() => $("#srch-in").focus(), 50); }
 function srchClose() { srch.hidden = true; nav.classList.toggle("solid", scrollY > 60); }
-srchOpenBtn.addEventListener("click", e => { e.stopPropagation(); srchOpen(); });
+$("#srch-open").addEventListener("click", e => { e.stopPropagation(); srchOpen(); });
 $("#srch-x").addEventListener("click", srchClose);
-
-/* mega panels: click-open, outside-click / Esc / scroll close */
+/* mega panels: hover-open with intent delays; click still works for touch */
 const mBtns = $$(".mnav-btn");
+let mHoverT = null;
 function mCloseAll() {
   $$(".mpanel").forEach(pn => pn.hidden = true);
   mBtns.forEach(b => b.setAttribute("aria-expanded", "false"));
   nav.classList.toggle("solid", scrollY > 60);
 }
-mBtns.forEach(b => b.addEventListener("click", e => {
-  e.stopPropagation();
+function mOpen(b) {
   const pn = $("#" + b.dataset.panel);
-  const wasOpen = !pn.hidden;
+  if (!pn || !pn.hidden) return;
   mCloseAll();
-  if (!wasOpen) {
-    pn.hidden = false;
-    b.setAttribute("aria-expanded", "true");
-    nav.classList.add("solid");
-  }
-}));
+  pn.hidden = false;
+  b.setAttribute("aria-expanded", "true");
+  nav.classList.add("solid");
+}
+mBtns.forEach(b => {
+  b.addEventListener("click", e => {
+    e.stopPropagation();
+    const pn = $("#" + b.dataset.panel);
+    const wasOpen = pn && !pn.hidden;
+    mCloseAll();
+    if (!wasOpen) mOpen(b);
+  });
+  b.addEventListener("mouseenter", () => {
+    clearTimeout(mHoverT);
+    mHoverT = setTimeout(() => mOpen(b), 90);
+  });
+});
+nav.addEventListener("mouseleave", () => {
+  clearTimeout(mHoverT);
+  mHoverT = setTimeout(mCloseAll, 280);
+});
+nav.addEventListener("mouseenter", () => clearTimeout(mHoverT));
 document.addEventListener("click", e => { if (!nav.contains(e.target)) mCloseAll(); });
 addEventListener("scroll", () => { if ($$(".mpanel").some(pn => !pn.hidden)) mCloseAll(); }, { passive: true });
-addEventListener("keydown", e => { if (e.key === "Escape") { mCloseAll(); srchClose(); } });
+addEventListener("keydown", e => { if (e.key === "Escape") mCloseAll(); });
+/* takeover menu */
+const tkv = $("#tkv");
+const tkvOpenBtn = $("#tkv-open");
+function tkvOpen() { tkv.hidden = false; document.documentElement.style.overflow = "hidden"; tkvOpenBtn.setAttribute("aria-expanded", "true"); }
+function tkvClose() { tkv.hidden = true; document.documentElement.style.overflow = ""; tkvOpenBtn.setAttribute("aria-expanded", "false"); }
+tkvOpenBtn.addEventListener("click", tkvOpen);
+$("#tkv-x").addEventListener("click", tkvClose);
+$$(".tkv-g").forEach(b => b.addEventListener("click", () => {
+  const s = $("#" + b.dataset.sub);
+  const open = !s.classList.contains("open");
+  $$(".tkv-sub").forEach(x => x.classList.remove("open"));
+  $$(".tkv-g").forEach(x => x.setAttribute("aria-expanded", "false"));
+  if (open) { s.classList.add("open"); b.setAttribute("aria-expanded", "true"); }
+}));
+addEventListener("keydown", e => { if (e.key === "Escape") { tkvClose(); srchClose(); } });
 
 /* ============ boot ============ */
 nav.classList.toggle("solid", scrollY > 60);
