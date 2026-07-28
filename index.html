@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="40">
+<meta name="prototype-rev" content="41">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -95,8 +95,8 @@
   .stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
   .stage canvas.dragging{cursor:grabbing}
   .stage .hint{position:absolute;right:24px;bottom:20px;font-size:12px;color:rgba(255,255,255,.45);transition:opacity .5s}
-  .steps{position:relative;z-index:5;pointer-events:none;padding:2vh 0 10vh}
-  .step{min-height:62vh;display:flex;align-items:center;max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+  .steps{position:relative;z-index:5;pointer-events:none;margin-top:-100svh;padding:6vh 0 14vh}
+  .step{min-height:72vh;display:flex;align-items:center;max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
   .step .card{pointer-events:auto;max-width:430px;opacity:0;transform:translateY(24px);
     transition:opacity .7s var(--ease),transform .7s var(--ease)}
   .step.active .card{opacity:1;transform:none}
@@ -910,14 +910,24 @@ function label(text, x, y, a) {
   ctx.font = "500 11px 'FF Real Head','Lato',sans-serif";
   ctx.textAlign = "left"; ctx.textBaseline = "middle";
   const w = ctx.measureText(text).width;
-  const box = { x: x + 10, y: y - 9, w: w + 12, h: 18 };
-  for (const b of labelBoxes)
-    if (box.x < b.x + b.w && b.x < box.x + box.w && box.y < b.y + b.h && b.y < box.y + box.h) return;
-  labelBoxes.push(box);
+  /* every city keeps its label: walk candidate positions until one fits */
+  const cand = [
+    [x + 10, y - 9], [x - w - 22, y - 9],
+    [x + 10, y - 28], [x + 10, y + 10],
+    [x - w - 22, y - 28], [x - w - 22, y + 10],
+    [x + 10, y - 47], [x + 10, y + 29],
+  ];
+  let bx = cand[0][0], by = cand[0][1];
+  for (const [tx, ty] of cand) {
+    const hit = labelBoxes.some(b =>
+      tx < b.x + b.w && b.x < tx + w + 12 && ty < b.y + b.h && b.y < ty + 18);
+    if (!hit) { bx = tx; by = ty; break; }
+  }
+  labelBoxes.push({ x: bx, y: by, w: w + 12, h: 18 });
   ctx.fillStyle = `rgba(11,11,14,${.55 * a})`;
-  ctx.fillRect(box.x, box.y, box.w, box.h);
+  ctx.fillRect(bx, by, w + 12, 18);
   ctx.fillStyle = `rgba(255,255,255,${.95 * a})`;
-  ctx.fillText(text, x + 16, y + .5);
+  ctx.fillText(text, bx + 6, by + 9.5);
 }
 
 function render(now) {
@@ -1313,6 +1323,27 @@ const stepIO = new IntersectionObserver(es => es.forEach(e => {
   }
 }), { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
 $$(".step").forEach(el => stepIO.observe(el));
+
+/* the campuses beat rides in with the globe: while the section is still
+   entering the viewport, scroll progress drives the camera from the idle
+   view to the campuses view, so the pin never snaps or crops the sphere */
+const scEl = $(".scrolly");
+const ENTRY_FROM = { lon: -50, lat: 25, k: 1 };
+const ENTRY_TO = { lon: -78, lat: 42, k: 1.35 };
+const entryUpd = () => {
+  const r = scEl.getBoundingClientRect();
+  if (r.top <= 0 || r.top >= innerHeight) return;
+  const p = easeIO(clamp01((innerHeight - r.top) / innerHeight));
+  fly = null; autorotate = false;
+  cur.lon = tgt.lon = ENTRY_FROM.lon + shortestDelta(ENTRY_FROM.lon, ENTRY_TO.lon) * p;
+  cur.lat = tgt.lat = ENTRY_FROM.lat + (ENTRY_TO.lat - ENTRY_FROM.lat) * p;
+  cur.k = tgt.k = ENTRY_FROM.k + (ENTRY_TO.k - ENTRY_FROM.k) * p;
+  tgt.campus = .3 + .7 * p;
+  tgt.labelC = p;
+  tgt.coops = .3 - .24 * p;
+  tgt.nuin = .3 - .2 * p;
+};
+addEventListener("scroll", () => requestAnimationFrame(entryUpd), { passive: true });
 
 /* ============ research counters ============ */
 function countUp(el, to, ms) {
