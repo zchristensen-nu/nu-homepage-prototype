@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="38">
+<meta name="prototype-rev" content="39">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -61,19 +61,14 @@
   .nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .35s,box-shadow .35s;padding:0}
   .nav .row{display:flex;align-items:center;gap:34px;height:72px}
   .nav .wordmark{display:flex;align-items:center}
-  .nav .wordmark svg{height:16px;width:auto;display:block}
-  .nav .wordmark svg path{fill:#fff;transition:fill .35s}
+  .nav .wordmark img{height:26px;width:auto;display:block}
   .nav nav{display:flex;gap:26px;font-size:14px;font-weight:400;color:#fff;transition:color .35s}
   .nav nav a{opacity:.85}
   .nav nav a:hover{opacity:1}
   .nav .apply{margin-left:auto}
   .nav .apply .pill{padding:9px 24px;font-size:13.5px;color:#fff;border-color:rgba(255,255,255,.75)}
   .nav .apply .pill:hover{background:var(--red);border-color:var(--red)}
-  .nav.solid{background:rgba(250,250,250,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--n2)}
-  .nav.solid .wordmark svg path{fill:var(--ink)}
-  .nav.solid nav{color:var(--ink)}
-  .nav.solid .apply .pill{color:var(--ink);border-color:var(--ink)}
-  .nav.solid .apply .pill:hover{color:#fff}
+  .nav.solid{background:rgba(11,11,14,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
   @media(max-width:960px){.nav nav{display:none}}
 
   /* ---------- HERO ---------- */
@@ -92,15 +87,6 @@
   @media (prefers-reduced-motion: reduce){.hero h1 .w{animation:none;opacity:1;transform:none}}
   .hero .sub{margin-top:22px;max-width:52ch;font-size:clamp(15px,1.6vw,19px);font-weight:300;color:#E5E5E5}
   .hero .ctas{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-  .hero .watch{display:inline-flex;align-items:center;gap:10px;color:#fff;font-size:14px;font-weight:400;opacity:.85}
-  .hero .watch:hover{opacity:1}
-  .hero .watch .play{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,.8);
-    display:inline-flex;align-items:center;justify-content:center;font-size:11px;padding-left:2px}
-  .hero .chips{margin-top:44px;display:flex;gap:10px;flex-wrap:wrap}
-  .hero .chip{font-size:13.5px;font-weight:500;color:#fff;background:rgba(255,255,255,.12);
-    border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:9px 20px;backdrop-filter:blur(8px);
-    transition:.2s;cursor:pointer}
-  .hero .chip:hover{background:#fff;color:var(--ink)}
   .hero .cap{position:absolute;right:clamp(20px,4vw,48px);bottom:14px;font-size:11px;color:rgba(255,255,255,.55)}
 
   /* ---------- GLOBE SCROLLY ---------- */
@@ -110,7 +96,7 @@
   .stage canvas.dragging{cursor:grabbing}
   .stage .hint{position:absolute;right:24px;bottom:20px;font-size:12px;color:rgba(255,255,255,.45);transition:opacity .5s}
   .steps{position:relative;z-index:5;pointer-events:none;padding:2vh 0 10vh}
-  .step{min-height:62vh;display:flex;align-items:center;padding:0 clamp(20px,5vw,72px)}
+  .step{min-height:62vh;display:flex;align-items:center;max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
   .step .card{pointer-events:auto;max-width:430px;opacity:0;transform:translateY(24px);
     transition:opacity .7s var(--ease),transform .7s var(--ease)}
   .step.active .card{opacity:1;transform:none}
@@ -123,9 +109,7 @@
   .pinhint::before{content:"";width:8px;height:8px;border-radius:50%;background:#EE5566;
     box-shadow:0 0 0 4px rgba(238,85,102,.25);flex-shrink:0}
   .gt-loc{display:flex;align-items:center;gap:8px;font-size:13px;color:#A9A9B2}
-  .gt-loc::before{content:"";width:7px;height:7px;border-radius:50%;background:#EE5566;
-    box-shadow:0 0 0 3px rgba(238,85,102,.22);flex-shrink:0}
-  .gt-card{position:absolute;right:clamp(20px,4vw,64px);top:50%;transform:translateY(-50%);width:min(330px,86vw);
+  .gt-card{position:absolute;right:max(24px, calc((100vw - 1280px) / 2));top:50%;transform:translateY(-50%);width:min(330px,86vw);
     z-index:7;background:rgba(16,16,20,.82);backdrop-filter:blur(14px);
     border:1px solid rgba(255,255,255,.14);border-radius:16px;overflow:hidden;
     opacity:1;transition:opacity .35s var(--ease),transform .35s var(--ease)}
@@ -149,23 +133,21 @@
     .gt-card img{aspect-ratio:16/7}
   }
 
-  .srch{position:fixed;top:0;left:0;right:0;z-index:220;background:rgba(250,250,250,.98);
-    backdrop-filter:blur(14px);border-bottom:1px solid var(--n2);box-shadow:0 24px 48px rgba(17,17,17,.08)}
+  .srch{position:fixed;top:0;left:0;right:0;z-index:220;background:rgba(11,11,14,.96);
+    backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 24px 48px rgba(0,0,0,.4)}
   .srch form{display:flex;align-items:center;gap:14px;padding-top:26px;padding-bottom:26px}
-  .srch input{flex:1;font:inherit;font-size:clamp(18px,2vw,26px);font-weight:300;color:var(--ink);
-    background:none;border:0;border-bottom:1.5px solid var(--n3);padding:10px 2px;outline:none}
-  .srch input:focus{border-color:var(--ink)}
+  .srch input{flex:1;font:inherit;font-size:clamp(18px,2vw,26px);font-weight:300;color:#fff;
+    background:none;border:0;border-bottom:1.5px solid rgba(255,255,255,.3);padding:10px 2px;outline:none}
+  .srch input:focus{border-color:#fff}
   .srch .pill{font-size:13.5px;padding:10px 24px}
-  .srch-x{border:0;background:none;font-size:26px;color:var(--n5);cursor:pointer;padding:4px 8px}
-  .srch-x:hover{color:var(--ink)}
+  .srch-x{border:0;background:none;font-size:26px;color:#8a8a92;cursor:pointer;padding:4px 8px}
+  .srch-x:hover{color:#fff}
   .nvicon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
     border:0;background:none;color:#fff;cursor:pointer;border-radius:50%;transition:.2s}
-  .nav.solid .nvicon{color:var(--ink)}
   .nvicon:hover{background:rgba(128,128,136,.18)}
   .nvright{margin-left:auto;display:flex;align-items:center;gap:10px}
   .tkv-open{font:inherit;font-size:14px;font-weight:500;color:#fff;background:none;
     border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 20px;cursor:pointer;transition:.2s}
-  .nav.solid .tkv-open{color:var(--ink);border-color:var(--ink)}
   .tkv-open:hover{background:rgba(128,128,136,.18)}
   .tkv{position:fixed;inset:0;z-index:240;background:var(--dark);color:#fff;overflow-y:auto;padding-bottom:70px}
   .tkv-head{display:flex;justify-content:space-between;align-items:center;height:72px}
@@ -196,28 +178,28 @@
     cursor:pointer;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s}
   .mnav-btn:hover{opacity:1}
   .mnav-btn[aria-expanded="true"]{opacity:1;border-bottom-color:currentColor}
-  .nav.solid .mnav-btn{color:var(--ink)}
   .morebtn{opacity:.7;font-size:13.5px}
-  .mpanel{position:absolute;left:0;right:0;top:100%;background:rgba(250,250,250,.98);
-    backdrop-filter:blur(14px);border-bottom:1px solid var(--n2);box-shadow:0 30px 60px rgba(17,17,17,.1)}
+  .mpanel{position:absolute;left:0;right:0;top:100%;background:rgba(11,11,14,.96);
+    backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 30px 60px rgba(0,0,0,.45)}
   .mpanel[hidden]{display:none}
   .mp-in{display:flex;gap:clamp(26px,4vw,64px);padding-top:34px;padding-bottom:42px;
     max-height:76vh;overflow-y:auto}
   .mp-lead{max-width:230px}
-  .mp-title{font-size:22px;font-weight:300;letter-spacing:-.01em}
-  .mp-lead p{margin-top:8px;font-size:13.5px;color:var(--n5);line-height:1.5}
-  .mp-lead .storylink{font-size:13.5px;margin-top:14px}
-  .mp-h{font-size:13px;font-weight:600;color:var(--n5);margin-bottom:10px}
-  .mp-links a{display:block;padding:7px 0;font-size:14.5px;color:var(--ink);white-space:nowrap}
-  .mp-links a:hover{color:var(--red)}
+  .mp-title{font-size:22px;font-weight:300;letter-spacing:-.01em;color:#fff}
+  .mp-lead p{margin-top:8px;font-size:13.5px;color:#A9A9B2;line-height:1.5}
+  .mp-lead .storylink{font-size:13.5px;margin-top:14px;color:#fff}
+  .mp-lead .storylink:hover{color:#FFB3BE}
+  .mp-h{font-size:13px;font-weight:600;color:#8a8a92;margin-bottom:10px}
+  .mp-links a{display:block;padding:7px 0;font-size:14.5px;color:#D4D4D4;white-space:nowrap}
+  .mp-links a:hover{color:#FFB3BE}
   .mp-col.cols2 .mp-links{columns:2;column-gap:clamp(24px,3vw,48px)}
   .mp-feat{display:block;margin-left:auto;width:min(300px,24vw);flex-shrink:0}
   .mp-feat img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;
     transition:transform .5s var(--ease)}
   .mp-feat:hover img{transform:scale(1.02)}
-  .mp-feat .ft{display:block;margin-top:12px;font-size:14.5px;font-weight:500;line-height:1.35;color:var(--ink)}
-  .mp-feat .fl{display:block;margin-top:8px;font-size:13px;color:var(--n5);transition:.2s}
-  .mp-feat:hover .fl{color:var(--red)}
+  .mp-feat .ft{display:block;margin-top:12px;font-size:14.5px;font-weight:500;line-height:1.35;color:#fff}
+  .mp-feat .fl{display:block;margin-top:8px;font-size:13px;color:#8a8a92;transition:.2s}
+  .mp-feat:hover .fl{color:#FFB3BE}
   .navx .tkv-open{display:none}
   @media(max-width:960px){
     .mnav{display:none}
@@ -262,10 +244,10 @@
   /* ---------- QUOTES (large-card carousel) ---------- */
   .quotes{position:relative;z-index:6;background:var(--dark);color:#fff;
     border-radius:28px 28px 0 0;margin-top:-28px;padding:clamp(70px,10vh,120px) 0 clamp(48px,7vh,80px)}
-  .qtrack{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;
-    padding:0 max(5vw,20px);scrollbar-width:none}
+  .qtrack{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;max-width:1440px;
+    margin:0 auto;padding:0 clamp(20px,4vw,48px);scrollbar-width:none}
   .qtrack::-webkit-scrollbar{display:none}
-  .qslide{position:relative;flex:0 0 min(88vw,1060px);min-height:min(70svh,620px);scroll-snap-align:center;
+  .qslide{position:relative;flex:0 0 min(88%,1240px);min-height:min(70svh,620px);scroll-snap-align:center;
     border-radius:24px;overflow:hidden;display:flex;align-items:flex-end}
   .qslide .bg{position:absolute;inset:-6% 0;background-size:cover;background-position:center;filter:brightness(.62)}
   .qslide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -276,8 +258,8 @@
   .qslide .who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
   .qslide .storylink{color:#fff;font-weight:500}
   .qslide .storylink:hover{color:#FFB3BE}
-  .qbar{display:flex;justify-content:space-between;align-items:center;gap:20px;
-    margin-top:30px;padding:0 max(5vw,20px)}
+  .qbar{display:flex;justify-content:space-between;align-items:center;gap:20px;max-width:1440px;
+    margin:30px auto 0;padding:0 clamp(20px,4vw,48px)}
   .qbtn{width:48px;height:48px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6);background:transparent;
     color:#fff;font-size:18px;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
   .qbtn:hover{background:#fff;color:var(--ink);border-color:#fff}
@@ -318,31 +300,26 @@
   .admit .cap a{text-decoration:underline;text-underline-offset:2px}
 
   /* ---------- FOOTER ---------- */
-  footer{position:relative;z-index:6;background:#000;color:var(--n4);padding:64px 0 44px;font-size:13.5px}
-  footer .top{display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;align-items:flex-start}
-  footer .wordmark svg{height:15px;width:auto}
-  footer .wordmark svg path{fill:#fff}
-  footer .cols{display:flex;gap:clamp(28px,6vw,90px);flex-wrap:wrap}
-  footer h5{color:#fff;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;font-weight:600}
-  footer li{list-style:none;margin:7px 0}
-  footer a:hover{color:#fff}
-  footer .base{border-top:1px solid #26262b;margin-top:48px;padding-top:22px;display:flex;
+  footer{position:relative;z-index:6;background:#000;color:var(--n4);padding:80px 0 0;font-size:13.5px;overflow:hidden}
+  .f-top{display:flex;gap:clamp(32px,5vw,90px);flex-wrap:wrap}
+  .f-brand{min-width:180px}
+  .f-n{height:36px;width:auto;display:block}
+  .f-brand p{margin-top:18px;line-height:1.7}
+  .f-cols{flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:30px 24px}
+  .f-col a{display:block;padding:5px 0;color:var(--n4)}
+  .f-col a:hover{color:#fff}
+  footer .base{border-top:1px solid #1e1e22;margin-top:56px;padding:22px 0;display:flex;
     justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--n5)}
-  .verbar{position:fixed;left:14px;bottom:14px;z-index:300;display:flex;gap:2px;align-items:center;
-    flex-wrap:wrap;max-width:min(94vw,600px);
-    background:rgba(16,16,20,.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);
-    border-radius:999px;padding:5px 8px;font-size:12px}
-  .verbar .lbl{padding:0 6px;color:#8a8a92}
-  .verbar a{padding:5px 11px;border-radius:999px;color:#ddd}
-  .verbar a:hover{background:rgba(255,255,255,.14)}
-  .verbar a.cur{background:#fff;color:#111}
+  .f-giant{line-height:0;margin-top:8px}
+  .f-giant svg{display:block;width:100%;height:auto;opacity:.045;transform:translateY(22%)}
+  .f-giant svg path,.f-giant svg polygon{fill:#fff}
 </style>
 </head>
 <body>
 
 <header class="nav navx" id="nav">
   <div class="wrap row">
-    <a class="wordmark" href="#" aria-label="Northeastern University home"><svg width="248" height="22" viewBox="0 0 248 22" aria-label="Northeastern University">                        <g clip-path="url(#clip0)">                            <path d="M242.06 18.59l4.05-9.02c.8-1.79 1.08-2.17 1.89-2.38v-.6h-4.27v.6c1.4.32 1.57 1.02.92 2.54l-1.62 3.89-2.06-4.6c-.43-1.02-.37-1.62 1.14-1.78V6.6h-5.68v.65c.65.16.92.43 1.52 1.68l3.62 7.78-.6 1.3c-.32.75-.64 1.3-1.02 1.62-.27-.87-.76-1.35-1.51-1.35-.76 0-1.47.54-1.47 1.5 0 .98.82 1.8 1.79 1.8 1.4.05 2.27-.66 3.3-2.98zm-5.73-2.7l-.33-.7c-.6.27-1.08.37-1.56.37-1.03 0-1.3-.54-1.3-1.24V7.84h2.76V6.59h-2.76v-2h-.38l-3.9 2.54v.7h1.58v7.09c0 1.4.8 2.16 2.37 2.16a6.1 6.1 0 003.52-1.2zm-8.22.32c-1.35-.21-1.51-.48-1.51-1.67V6.27h-1.08l-3.19 2.1v.5h1.51v5.72c0 1.19-.21 1.46-1.51 1.68v.64h5.78v-.7zm-3.13-11.56c.92 0 1.62-.76 1.62-1.68a1.5 1.5 0 00-1.46-1.51c-.97 0-1.67.76-1.67 1.62.05.87.64 1.57 1.5 1.57zm-3.73 9.08c0-2-1.68-2.65-3.24-3.14-1.52-.48-2.6-.8-2.6-1.94 0-.6.44-1.2 1.35-1.2 1.09 0 2.06.66 3.25 2l.54-.26-.81-2.7h-.33l-.38.32a4.97 4.97 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.59 3.24 3.07 1.51.54 2.6.81 2.6 1.95 0 .7-.55 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.37l.65-.43a5.7 5.7 0 002.38.54c2.16.1 4-1.19 4-3.24zm-11.3 2.48c-1.4-.21-1.62-.54-1.62-1.84V9.94c.44-.75.87-1.35 1.3-1.73 0 .87.6 1.4 1.3 1.4.75 0 1.46-.58 1.46-1.72 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.38h-.97l-3.13 2.05v.49h1.51v5.72c0 1.2-.22 1.52-1.4 1.68v.65h5.72v-.76zm-13.5-5.83c0-1.73.75-2.81 2.16-2.81.97 0 1.62.7 1.89 2.1l-4 1.4c-.06-.2-.06-.48-.06-.7zm6.75 4.59l-.6-.43a3.38 3.38 0 01-2.48 1.13c-2 0-3.14-1.51-3.52-3.46l6.49-2.16c-.1-2.27-1.84-3.56-3.94-3.51-3.03 0-5.2 2.43-5.2 5.46 0 2.97 1.9 5.24 5.25 5.24 2.05-.1 3.3-1.03 4-2.27zm-11.35-5.3c.81-1.78 1.08-2.16 1.9-2.37v-.6h-4.28v.6c1.4.32 1.57 1.02.92 2.53l-1.62 3.9-2.05-4.6c-.44-1.02-.38-1.62 1.13-1.78V6.7h-5.67v.65c.64.16.97.43 1.51 1.68l3.73 8h1.13l3.3-7.36zm-9.84 6.6c-1.35-.22-1.5-.49-1.5-1.68V6.32h-1.09l-3.19 2.11v.49h1.52v5.72c0 1.2-.22 1.46-1.52 1.68v.65h5.78v-.7zM178.93 4.7c.92 0 1.63-.75 1.63-1.67a1.5 1.5 0 00-1.46-1.52c-.98 0-1.68.76-1.68 1.62 0 .92.65 1.57 1.51 1.57zm-10.91 11.62c-1.25-.16-1.4-.49-1.4-1.67V9.67c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.52v4.92c0 1.18-.22 1.5-1.4 1.67v.65h5.56v-.65c-1.24-.16-1.4-.49-1.4-1.67v-5.2c0-1.72-.76-2.96-2.92-2.96-1.35 0-2.65.8-3.95 1.94V6.38h-.97l-3.13 2.05v.49h1.5v5.72c0 1.2-.2 1.52-1.4 1.68v.65h5.57l-.16-.65zm-23.56-12.7v6.49c0 4.21 2.21 7.13 7.72 7.08 5.52 0 7.68-2.92 7.68-7.03V4.97c0-2.54.7-3.19 1.94-3.51V.8h-5.24v.65c1.24.32 1.95.97 1.95 3.51v5.19c0 3.67-1.9 5.35-5.57 5.35-3.62 0-5.57-1.68-5.57-5.35v-6.6c0-1.61.49-1.94 1.84-2.1v-.7h-6.6v.7c1.41.27 1.84.54 1.84 2.16zM127.1 16.37c-1.25-.16-1.4-.48-1.4-1.67V9.73c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.51v4.92c0 1.19-.22 1.51-1.4 1.68v.64h5.56v-.64c-1.24-.17-1.4-.5-1.4-1.68V9.51c0-1.73-.76-2.97-2.92-2.97-1.35 0-2.65.81-3.95 1.95V6.43h-.97l-3.14 2.05v.5h1.52v5.72c0 1.19-.22 1.51-1.4 1.67v.65h5.56l-.16-.65zm-8.6 0c-1.4-.21-1.62-.54-1.62-1.83V10.1a6.8 6.8 0 011.3-1.73c0 .86.6 1.4 1.3 1.4.7 0 1.46-.6 1.46-1.73 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.54h-.97l-3.13 2.05v.49h1.51v5.73c0 1.19-.21 1.51-1.4 1.67v.65h5.72v-.75zm-13.56-5.83c0-1.73.76-2.81 2.16-2.81.97 0 1.62.7 1.9 2.1l-4 1.41c-.06-.22-.06-.49-.06-.7zm6.8 4.6l-.58-.44a3.38 3.38 0 01-2.5 1.13c-2 0-3.13-1.51-3.5-3.45l6.48-2.17c-.1-2.27-1.84-3.56-3.94-3.5-3.03 0-5.2 2.42-5.2 5.45 0 2.97 1.9 5.24 5.25 5.24 2-.1 3.24-1.03 4-2.27zm-9.99.96l-.32-.7c-.6.27-1.08.38-1.57.38-1.03 0-1.3-.54-1.3-1.24V8.05h2.76V6.81h-2.76v-2h-.38L94.3 7.35v.7h1.57v7.08c0 1.4.81 2.16 2.38 2.16 1.24 0 2.48-.38 3.51-1.19zm-8.16-2.16c0-2-1.67-2.64-3.24-3.13-1.51-.49-2.6-.81-2.6-1.95 0-.6.44-1.19 1.36-1.19 1.08 0 2.05.65 3.24 2l.54-.27-.81-2.7h-.33l-.38.32a4.98 4.98 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.6 3.24 3.08 1.51.54 2.6.81 2.6 1.95 0 .7-.54 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.38l.64-.44a5.7 5.7 0 002.38.55c2.16.16 4-1.14 4-3.25zm-16.64.43c0-1.08.48-1.62 3.02-2.32v3.14c-.6.48-1.13.7-1.67.7-.87 0-1.35-.43-1.35-1.52zm4.75 2.87a5.1 5.1 0 002.6-.87l-.22-.59c-1.08.22-1.46.05-1.46-.65V9.35c0-1.73-.76-2.65-3.19-2.65-2.75 0-4.75 1.46-4.75 2.86 0 .65.43 1.25 1.24 1.25.86 0 1.3-.6 1.46-1.2.1-.64-.11-1.18-.43-1.45.5-.25 1.06-.38 1.62-.38.92 0 1.4.33 1.4 1.2v2.15c-3.89.98-5.62 1.79-5.62 3.84 0 1.57 1.03 2.43 2.6 2.43 1.02 0 2.16-.43 3.18-1.24.11.7.65 1.08 1.57 1.08zm-15.35-6.65c0-1.73.76-2.8 2.16-2.8.98 0 1.63.7 1.9 2.1l-4 1.4c-.06-.21-.06-.43-.06-.7zm6.76 4.6l-.6-.44a3.38 3.38 0 01-2.48 1.14c-2 0-3.14-1.52-3.51-3.46L73 10.27c-.1-2.27-1.84-3.57-3.95-3.52-3.02 0-5.18 2.44-5.18 5.46 0 2.98 1.89 5.24 5.24 5.24 2.05-.1 3.3-1.02 4-2.26zm-17.19 1.3c-1.24-.17-1.4-.5-1.4-1.68V9.78c1.02-.97 1.83-1.4 2.75-1.4 1.09 0 1.35.54 1.35 1.51v4.92c0 1.19-.21 1.51-1.4 1.67v.65h5.57v-.65c-1.25-.16-1.4-.48-1.4-1.67V9.62c0-1.73-.77-2.97-2.93-2.97-1.3 0-2.6.75-3.89 1.89V0h-.8L50.3 2.27v.49h1.57v12.1c0 1.2-.22 1.51-1.4 1.68v.65h5.56l-.1-.7zm-6.21-.28l-.33-.7c-.6.27-1.08.38-1.56.38-1.03 0-1.3-.54-1.3-1.24V8.16h2.75V6.92h-2.75v-2h-.38l-3.9 2.54v.7h1.58v7.08c0 1.4.8 2.16 2.37 2.16 1.3 0 2.5-.43 3.52-1.19zm-10.6.33c-1.4-.22-1.62-.54-1.62-1.84v-4.43c.44-.76.87-1.35 1.3-1.73 0 .86.6 1.4 1.3 1.4.76 0 1.46-.6 1.46-1.73 0-.97-.54-1.5-1.52-1.5-1.08 0-1.89.86-2.64 2.15V6.7h-.98l-3.08 1.95v.48h1.52v5.73c0 1.2-.22 1.51-1.4 1.68v.65h5.72l-.05-.65zm-15.61-5.52c0-1.94.8-3.18 2.6-3.18 2.26 0 2.96 2.8 2.96 5.4 0 1.95-.8 3.19-2.59 3.19-2.27-.06-2.97-2.87-2.97-5.4zm8.27.92c0-2.8-1.9-5.18-5.4-5.18-3.52 0-5.63 2.54-5.58 5.45 0 2.81 1.9 5.2 5.4 5.2a5.22 5.22 0 005.58-5.47zm-14.1-6.7c0-2.54.7-3.19 1.94-3.51v-.65h-5.24v.65c1.24.32 1.94.97 1.94 3.51v7.62L5.35 1.73c-.65-.6-.86-.65-1.24-.65H0v.65c.92.1 1.4.43 2.43 1.4.33.33.65.65.65 1.3v8.65c0 2.54-.7 3.19-1.95 3.51v.65h5.25v-.65c-1.25-.32-1.95-.97-1.95-3.51V4.92l12.43 12.43h.87l-.06-12.1z" fill="currentColor" />                        </g>                    </svg></a>
+    <a class="wordmark" href="#" aria-label="Northeastern University home"><img src="data:image/png;base64,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" alt=""></a>
     <nav class="mnav" aria-label="Primary">
       <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>
       <button class="mnav-btn" data-panel="mp-academics" aria-expanded="false">Academics</button>
@@ -467,7 +444,7 @@
 <div class="srch" id="srch" hidden>
   <form action="https://search.northeastern.edu" method="get" role="search" class="wrap">
     <input type="search" name="query" id="srch-in" placeholder="Search Northeastern" autocomplete="off">
-    <button type="submit" class="pill solid">Search</button>
+    <button type="submit" class="pill ghostw">Search</button>
     <button type="button" class="srch-x" id="srch-x" aria-label="Close search">&times;</button>
   </form>
 </div>
@@ -594,25 +571,16 @@
       <p class="sub">Huskies don't wait until graduation to do work that matters. They're doing it right now, on all seven continents.</p>
       <div class="ctas">
         <a class="pill red" href="#experience">See where they are</a>
-        <a class="watch" href="https://news.northeastern.edu/2024/03/25/co-op-experience/">
-          <span class="play">&#9654;</span> Watch: the co&#8209;op experience
-        </a>
-      </div>
-      <div class="chips">
-        <a class="chip" href="#experience">Co&#8209;op &amp; global campuses</a>
-        <a class="chip" href="#research">Research &amp; AI</a>
-        <a class="chip" href="#life">Student life</a>
-        <a class="chip" href="#admit">Admissions</a>
       </div>
     </div>
   </div>
-  <span class="cap">The co&#8209;op experience, from northeastern.edu</span>
+  <span class="cap">The co‑op experience, from northeastern.edu</span>
 </section>
 
 <div class="scrolly" id="experience">
   <div class="stage" id="stage">
-    <canvas id="globe" aria-label="Interactive globe showing Northeastern's 13 campuses, 8 N.U.in locations, and 4,705 Fall 2026 co&#8209;op placements. Scroll for the tour, click a red pin for a story, drag to rotate."></canvas>
-    <aside class="gt-card" id="gt-card" hidden aria-label="Co&#8209;op story">
+    <canvas id="globe" aria-label="Interactive globe showing Northeastern's 13 campuses, 8 N.U.in locations, and 4,705 Fall 2026 co‑op placements. Scroll for the tour, click a red pin for a story, drag to rotate."></canvas>
+    <aside class="gt-card" id="gt-card" hidden aria-label="Co‑op story">
       <img id="gtc-img" alt="">
       <div class="gtc-body">
         <div class="gt-loc" id="gtc-loc"></div>
@@ -644,7 +612,7 @@
 
     <div class="step" data-step="coops">
       <div class="card">
-        <div class="big"><b id="coopcount">0</b> co&#8209;ops</div>
+        <div class="big"><b id="coopcount">0</b> co‑ops</div>
         <p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>
       </div>
     </div>
@@ -697,10 +665,10 @@
           <span class="xtag">Physical AI</span>
         </article>
         <article class="xcard" tabindex="0">
-          <img src="https://news.northeastern.edu/wp-content/uploads/2024/06/062624_MM_Maura_Healey_014.jpg" alt="Massachusetts Gov. Maura Healey takes a selfie with Northeastern's InnovateMA co&#8209;op students at the Statehouse." loading="lazy">
+          <img src="https://news.northeastern.edu/wp-content/uploads/2024/06/062624_MM_Maura_Healey_014.jpg" alt="Massachusetts Gov. Maura Healey takes a selfie with Northeastern's InnovateMA co‑op students at the Statehouse." loading="lazy">
           <div class="xshade"></div>
           <div class="xbody">
-            <h3>Co&#8209;op students build AI tools for the Commonwealth</h3>
+            <h3>Co‑op students build AI tools for the Commonwealth</h3>
             <a class="storylink" href="https://news.northeastern.edu/2024/06/26/ai-for-impact/">AI for Impact</a>
           </div>
           <span class="xtag">AI for Impact</span>
@@ -734,7 +702,7 @@
       <div class="bg" data-plx="22" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/NASA1400.jpg')"></div>
       <div class="inner">
         <blockquote>&ldquo;It is one of the craziest experiences of my life. This has really cemented what I want to do.&rdquo;</blockquote>
-        <div class="who"><b>Jonah Saunders</b> Electrical engineering &middot; Co&#8209;op at NASA Kennedy Space Center</div>
+        <div class="who"><b>Jonah Saunders</b> Electrical engineering &middot; Co‑op at NASA Kennedy Space Center</div>
         <a class="storylink" href="https://news.northeastern.edu/2023/05/03/nasa-engineering-intern/">Read Jonah's story</a>
       </div>
     </div>
@@ -742,8 +710,8 @@
     <div class="qslide">
       <div class="bg" data-plx="22" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/041923_AS_Isabella_Welch_022.jpg')"></div>
       <div class="inner">
-        <blockquote>&ldquo;I created my own co&#8209;op. I like learning by doing.&rdquo;</blockquote>
-        <div class="who"><b>Isabella Welch</b> Ecology, evolution &amp; biology &middot; Co&#8209;op at the New England Aquarium</div>
+        <blockquote>&ldquo;I created my own co‑op. I like learning by doing.&rdquo;</blockquote>
+        <div class="who"><b>Isabella Welch</b> Ecology, evolution &amp; biology &middot; Co‑op at the New England Aquarium</div>
         <a class="storylink" href="https://news.northeastern.edu/2023/04/25/new-england-aquarium-co-op-boston/">Read Isabella's story</a>
       </div>
     </div>
@@ -752,7 +720,7 @@
       <div class="bg" data-plx="22" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg')"></div>
       <div class="inner">
         <blockquote>&ldquo;I really wanted the chance to go out into the field. You just have to push past it, and that's something I've gotten pretty good at.&rdquo;</blockquote>
-        <div class="who"><b>Paris Graff</b> International affairs &middot; Co&#8209;op with the Landmine Relief Fund, Cambodia</div>
+        <div class="who"><b>Paris Graff</b> International affairs &middot; Co‑op with the Landmine Relief Fund, Cambodia</div>
         <a class="storylink" href="https://news.northeastern.edu/2023/04/25/landmine-relief-fund-cambodia-co-op/">Read Paris's story</a>
       </div>
     </div>
@@ -799,19 +767,61 @@
 
 <footer>
   <div class="wrap">
-    <div class="top">
-      <a class="wordmark" href="#top" aria-label="Northeastern University"><svg width="248" height="22" viewBox="0 0 248 22" aria-label="Northeastern University">                        <g clip-path="url(#clip0)">                            <path d="M242.06 18.59l4.05-9.02c.8-1.79 1.08-2.17 1.89-2.38v-.6h-4.27v.6c1.4.32 1.57 1.02.92 2.54l-1.62 3.89-2.06-4.6c-.43-1.02-.37-1.62 1.14-1.78V6.6h-5.68v.65c.65.16.92.43 1.52 1.68l3.62 7.78-.6 1.3c-.32.75-.64 1.3-1.02 1.62-.27-.87-.76-1.35-1.51-1.35-.76 0-1.47.54-1.47 1.5 0 .98.82 1.8 1.79 1.8 1.4.05 2.27-.66 3.3-2.98zm-5.73-2.7l-.33-.7c-.6.27-1.08.37-1.56.37-1.03 0-1.3-.54-1.3-1.24V7.84h2.76V6.59h-2.76v-2h-.38l-3.9 2.54v.7h1.58v7.09c0 1.4.8 2.16 2.37 2.16a6.1 6.1 0 003.52-1.2zm-8.22.32c-1.35-.21-1.51-.48-1.51-1.67V6.27h-1.08l-3.19 2.1v.5h1.51v5.72c0 1.19-.21 1.46-1.51 1.68v.64h5.78v-.7zm-3.13-11.56c.92 0 1.62-.76 1.62-1.68a1.5 1.5 0 00-1.46-1.51c-.97 0-1.67.76-1.67 1.62.05.87.64 1.57 1.5 1.57zm-3.73 9.08c0-2-1.68-2.65-3.24-3.14-1.52-.48-2.6-.8-2.6-1.94 0-.6.44-1.2 1.35-1.2 1.09 0 2.06.66 3.25 2l.54-.26-.81-2.7h-.33l-.38.32a4.97 4.97 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.59 3.24 3.07 1.51.54 2.6.81 2.6 1.95 0 .7-.55 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.37l.65-.43a5.7 5.7 0 002.38.54c2.16.1 4-1.19 4-3.24zm-11.3 2.48c-1.4-.21-1.62-.54-1.62-1.84V9.94c.44-.75.87-1.35 1.3-1.73 0 .87.6 1.4 1.3 1.4.75 0 1.46-.58 1.46-1.72 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.38h-.97l-3.13 2.05v.49h1.51v5.72c0 1.2-.22 1.52-1.4 1.68v.65h5.72v-.76zm-13.5-5.83c0-1.73.75-2.81 2.16-2.81.97 0 1.62.7 1.89 2.1l-4 1.4c-.06-.2-.06-.48-.06-.7zm6.75 4.59l-.6-.43a3.38 3.38 0 01-2.48 1.13c-2 0-3.14-1.51-3.52-3.46l6.49-2.16c-.1-2.27-1.84-3.56-3.94-3.51-3.03 0-5.2 2.43-5.2 5.46 0 2.97 1.9 5.24 5.25 5.24 2.05-.1 3.3-1.03 4-2.27zm-11.35-5.3c.81-1.78 1.08-2.16 1.9-2.37v-.6h-4.28v.6c1.4.32 1.57 1.02.92 2.53l-1.62 3.9-2.05-4.6c-.44-1.02-.38-1.62 1.13-1.78V6.7h-5.67v.65c.64.16.97.43 1.51 1.68l3.73 8h1.13l3.3-7.36zm-9.84 6.6c-1.35-.22-1.5-.49-1.5-1.68V6.32h-1.09l-3.19 2.11v.49h1.52v5.72c0 1.2-.22 1.46-1.52 1.68v.65h5.78v-.7zM178.93 4.7c.92 0 1.63-.75 1.63-1.67a1.5 1.5 0 00-1.46-1.52c-.98 0-1.68.76-1.68 1.62 0 .92.65 1.57 1.51 1.57zm-10.91 11.62c-1.25-.16-1.4-.49-1.4-1.67V9.67c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.52v4.92c0 1.18-.22 1.5-1.4 1.67v.65h5.56v-.65c-1.24-.16-1.4-.49-1.4-1.67v-5.2c0-1.72-.76-2.96-2.92-2.96-1.35 0-2.65.8-3.95 1.94V6.38h-.97l-3.13 2.05v.49h1.5v5.72c0 1.2-.2 1.52-1.4 1.68v.65h5.57l-.16-.65zm-23.56-12.7v6.49c0 4.21 2.21 7.13 7.72 7.08 5.52 0 7.68-2.92 7.68-7.03V4.97c0-2.54.7-3.19 1.94-3.51V.8h-5.24v.65c1.24.32 1.95.97 1.95 3.51v5.19c0 3.67-1.9 5.35-5.57 5.35-3.62 0-5.57-1.68-5.57-5.35v-6.6c0-1.61.49-1.94 1.84-2.1v-.7h-6.6v.7c1.41.27 1.84.54 1.84 2.16zM127.1 16.37c-1.25-.16-1.4-.48-1.4-1.67V9.73c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.51v4.92c0 1.19-.22 1.51-1.4 1.68v.64h5.56v-.64c-1.24-.17-1.4-.5-1.4-1.68V9.51c0-1.73-.76-2.97-2.92-2.97-1.35 0-2.65.81-3.95 1.95V6.43h-.97l-3.14 2.05v.5h1.52v5.72c0 1.19-.22 1.51-1.4 1.67v.65h5.56l-.16-.65zm-8.6 0c-1.4-.21-1.62-.54-1.62-1.83V10.1a6.8 6.8 0 011.3-1.73c0 .86.6 1.4 1.3 1.4.7 0 1.46-.6 1.46-1.73 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.54h-.97l-3.13 2.05v.49h1.51v5.73c0 1.19-.21 1.51-1.4 1.67v.65h5.72v-.75zm-13.56-5.83c0-1.73.76-2.81 2.16-2.81.97 0 1.62.7 1.9 2.1l-4 1.41c-.06-.22-.06-.49-.06-.7zm6.8 4.6l-.58-.44a3.38 3.38 0 01-2.5 1.13c-2 0-3.13-1.51-3.5-3.45l6.48-2.17c-.1-2.27-1.84-3.56-3.94-3.5-3.03 0-5.2 2.42-5.2 5.45 0 2.97 1.9 5.24 5.25 5.24 2-.1 3.24-1.03 4-2.27zm-9.99.96l-.32-.7c-.6.27-1.08.38-1.57.38-1.03 0-1.3-.54-1.3-1.24V8.05h2.76V6.81h-2.76v-2h-.38L94.3 7.35v.7h1.57v7.08c0 1.4.81 2.16 2.38 2.16 1.24 0 2.48-.38 3.51-1.19zm-8.16-2.16c0-2-1.67-2.64-3.24-3.13-1.51-.49-2.6-.81-2.6-1.95 0-.6.44-1.19 1.36-1.19 1.08 0 2.05.65 3.24 2l.54-.27-.81-2.7h-.33l-.38.32a4.98 4.98 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.6 3.24 3.08 1.51.54 2.6.81 2.6 1.95 0 .7-.54 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.38l.64-.44a5.7 5.7 0 002.38.55c2.16.16 4-1.14 4-3.25zm-16.64.43c0-1.08.48-1.62 3.02-2.32v3.14c-.6.48-1.13.7-1.67.7-.87 0-1.35-.43-1.35-1.52zm4.75 2.87a5.1 5.1 0 002.6-.87l-.22-.59c-1.08.22-1.46.05-1.46-.65V9.35c0-1.73-.76-2.65-3.19-2.65-2.75 0-4.75 1.46-4.75 2.86 0 .65.43 1.25 1.24 1.25.86 0 1.3-.6 1.46-1.2.1-.64-.11-1.18-.43-1.45.5-.25 1.06-.38 1.62-.38.92 0 1.4.33 1.4 1.2v2.15c-3.89.98-5.62 1.79-5.62 3.84 0 1.57 1.03 2.43 2.6 2.43 1.02 0 2.16-.43 3.18-1.24.11.7.65 1.08 1.57 1.08zm-15.35-6.65c0-1.73.76-2.8 2.16-2.8.98 0 1.63.7 1.9 2.1l-4 1.4c-.06-.21-.06-.43-.06-.7zm6.76 4.6l-.6-.44a3.38 3.38 0 01-2.48 1.14c-2 0-3.14-1.52-3.51-3.46L73 10.27c-.1-2.27-1.84-3.57-3.95-3.52-3.02 0-5.18 2.44-5.18 5.46 0 2.98 1.89 5.24 5.24 5.24 2.05-.1 3.3-1.02 4-2.26zm-17.19 1.3c-1.24-.17-1.4-.5-1.4-1.68V9.78c1.02-.97 1.83-1.4 2.75-1.4 1.09 0 1.35.54 1.35 1.51v4.92c0 1.19-.21 1.51-1.4 1.67v.65h5.57v-.65c-1.25-.16-1.4-.48-1.4-1.67V9.62c0-1.73-.77-2.97-2.93-2.97-1.3 0-2.6.75-3.89 1.89V0h-.8L50.3 2.27v.49h1.57v12.1c0 1.2-.22 1.51-1.4 1.68v.65h5.56l-.1-.7zm-6.21-.28l-.33-.7c-.6.27-1.08.38-1.56.38-1.03 0-1.3-.54-1.3-1.24V8.16h2.75V6.92h-2.75v-2h-.38l-3.9 2.54v.7h1.58v7.08c0 1.4.8 2.16 2.37 2.16 1.3 0 2.5-.43 3.52-1.19zm-10.6.33c-1.4-.22-1.62-.54-1.62-1.84v-4.43c.44-.76.87-1.35 1.3-1.73 0 .86.6 1.4 1.3 1.4.76 0 1.46-.6 1.46-1.73 0-.97-.54-1.5-1.52-1.5-1.08 0-1.89.86-2.64 2.15V6.7h-.98l-3.08 1.95v.48h1.52v5.73c0 1.2-.22 1.51-1.4 1.68v.65h5.72l-.05-.65zm-15.61-5.52c0-1.94.8-3.18 2.6-3.18 2.26 0 2.96 2.8 2.96 5.4 0 1.95-.8 3.19-2.59 3.19-2.27-.06-2.97-2.87-2.97-5.4zm8.27.92c0-2.8-1.9-5.18-5.4-5.18-3.52 0-5.63 2.54-5.58 5.45 0 2.81 1.9 5.2 5.4 5.2a5.22 5.22 0 005.58-5.47zm-14.1-6.7c0-2.54.7-3.19 1.94-3.51v-.65h-5.24v.65c1.24.32 1.94.97 1.94 3.51v7.62L5.35 1.73c-.65-.6-.86-.65-1.24-.65H0v.65c.92.1 1.4.43 2.43 1.4.33.33.65.65.65 1.3v8.65c0 2.54-.7 3.19-1.95 3.51v.65h5.25v-.65c-1.25-.32-1.95-.97-1.95-3.51V4.92l12.43 12.43h.87l-.06-12.1z" fill="currentColor" />                        </g>                    </svg></a>
-      <div class="cols">
-        <div><h5>Explore</h5><ul><li><a href="#">Colleges &amp; schools</a></li><li><a href="#experience">Campuses</a></li><li><a href="#research">Research</a></li><li><a href="#experience">Co&#8209;op</a></li></ul></div>
-        <div><h5>Connect</h5><ul><li><a href="#admit">Admissions</a></li><li><a href="#">Alumni</a></li><li><a href="#">Careers</a></li><li><a href="#">Give</a></li></ul></div>
-        <div><h5>Resources</h5><ul><li><a href="https://news.northeastern.edu">News</a></li><li><a href="#">Events</a></li><li><a href="#">Libraries</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div class="f-top">
+      <div class="f-brand">
+        <img class="f-n" src="data:image/png;base64,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" alt="Northeastern University">
+        <p>360 Huntington Ave<br>Boston, MA 02115<br>617.373.2000</p>
+      </div>
+      <div class="f-cols">
+        <div class="f-col"><div class="mp-h">Admissions</div>
+          <a href="https://admissions.northeastern.edu/">Undergraduate</a>
+          <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate</a>
+          <a href="https://law.northeastern.edu/admissions/">Law School</a>
+          <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
+          <a href="https://admissions.northeastern.edu/visit/">Visit</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Academics</div>
+          <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+          <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+          <a href="https://online.northeastern.edu/">Online Education</a>
+          <a href="https://phd.northeastern.edu/">Doctoral</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Experiential Learning</div>
+          <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
+          <a href="https://www.northeastern.edu/co-op">Co‑op</a>
+          <a href="#">Entrepreneurship</a>
+          <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Research</div>
+          <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
+          <a href="https://research.northeastern.edu/ug-research/">Undergraduate Research</a>
+          <a href="https://research.northeastern.edu/phd-research/">PhD Research</a>
+          <a href="https://research.northeastern.edu/partnerships/">Partnerships</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Global</div>
+          <a href="https://www.northeastern.edu/our-global-university-system/">Global University System</a>
+          <a href="https://www.northeastern.edu/our-global-campuses/">Global Campuses</a>
+          <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
+          <a href="https://international.northeastern.edu/">International Student Hub</a>
+        </div>
+        <div class="f-col"><div class="mp-h">University</div>
+          <a href="https://www.northeastern.edu/about/about-northeastern/">About</a>
+          <a href="https://president.northeastern.edu/">President Aoun</a>
+          <a href="https://hr.northeastern.edu/">Careers</a>
+          <a href="https://nuhuskies.com/">Athletics</a>
+          <a href="https://studentlife.northeastern.edu/">Student Life</a>
+          <a href="https://alumni.northeastern.edu/">Alumni</a>
+          <a href="https://calendar.northeastern.edu/">Events</a>
+          <a href="https://giving.northeastern.edu/">Make a Gift</a>
+        </div>
       </div>
     </div>
     <div class="base">
-      <span>360 Huntington Ave, Boston, MA 02115 &middot; 617.373.2000</span>
-      <span>&copy; 2026 Northeastern University &middot; Privacy &middot; Accessibility</span>
+      <span>&copy; 2026 Northeastern University</span>
+      <span>Privacy &middot; Accessibility &middot; Emergency Info</span>
     </div>
   </div>
+  <div class="f-giant" aria-hidden="true"><svg width="248" height="22" viewBox="0 0 248 22" aria-label="Northeastern University">                        <g clip-path="url(#clip0)">                            <path d="M242.06 18.59l4.05-9.02c.8-1.79 1.08-2.17 1.89-2.38v-.6h-4.27v.6c1.4.32 1.57 1.02.92 2.54l-1.62 3.89-2.06-4.6c-.43-1.02-.37-1.62 1.14-1.78V6.6h-5.68v.65c.65.16.92.43 1.52 1.68l3.62 7.78-.6 1.3c-.32.75-.64 1.3-1.02 1.62-.27-.87-.76-1.35-1.51-1.35-.76 0-1.47.54-1.47 1.5 0 .98.82 1.8 1.79 1.8 1.4.05 2.27-.66 3.3-2.98zm-5.73-2.7l-.33-.7c-.6.27-1.08.37-1.56.37-1.03 0-1.3-.54-1.3-1.24V7.84h2.76V6.59h-2.76v-2h-.38l-3.9 2.54v.7h1.58v7.09c0 1.4.8 2.16 2.37 2.16a6.1 6.1 0 003.52-1.2zm-8.22.32c-1.35-.21-1.51-.48-1.51-1.67V6.27h-1.08l-3.19 2.1v.5h1.51v5.72c0 1.19-.21 1.46-1.51 1.68v.64h5.78v-.7zm-3.13-11.56c.92 0 1.62-.76 1.62-1.68a1.5 1.5 0 00-1.46-1.51c-.97 0-1.67.76-1.67 1.62.05.87.64 1.57 1.5 1.57zm-3.73 9.08c0-2-1.68-2.65-3.24-3.14-1.52-.48-2.6-.8-2.6-1.94 0-.6.44-1.2 1.35-1.2 1.09 0 2.06.66 3.25 2l.54-.26-.81-2.7h-.33l-.38.32a4.97 4.97 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.59 3.24 3.07 1.51.54 2.6.81 2.6 1.95 0 .7-.55 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.37l.65-.43a5.7 5.7 0 002.38.54c2.16.1 4-1.19 4-3.24zm-11.3 2.48c-1.4-.21-1.62-.54-1.62-1.84V9.94c.44-.75.87-1.35 1.3-1.73 0 .87.6 1.4 1.3 1.4.75 0 1.46-.58 1.46-1.72 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.38h-.97l-3.13 2.05v.49h1.51v5.72c0 1.2-.22 1.52-1.4 1.68v.65h5.72v-.76zm-13.5-5.83c0-1.73.75-2.81 2.16-2.81.97 0 1.62.7 1.89 2.1l-4 1.4c-.06-.2-.06-.48-.06-.7zm6.75 4.59l-.6-.43a3.38 3.38 0 01-2.48 1.13c-2 0-3.14-1.51-3.52-3.46l6.49-2.16c-.1-2.27-1.84-3.56-3.94-3.51-3.03 0-5.2 2.43-5.2 5.46 0 2.97 1.9 5.24 5.25 5.24 2.05-.1 3.3-1.03 4-2.27zm-11.35-5.3c.81-1.78 1.08-2.16 1.9-2.37v-.6h-4.28v.6c1.4.32 1.57 1.02.92 2.53l-1.62 3.9-2.05-4.6c-.44-1.02-.38-1.62 1.13-1.78V6.7h-5.67v.65c.64.16.97.43 1.51 1.68l3.73 8h1.13l3.3-7.36zm-9.84 6.6c-1.35-.22-1.5-.49-1.5-1.68V6.32h-1.09l-3.19 2.11v.49h1.52v5.72c0 1.2-.22 1.46-1.52 1.68v.65h5.78v-.7zM178.93 4.7c.92 0 1.63-.75 1.63-1.67a1.5 1.5 0 00-1.46-1.52c-.98 0-1.68.76-1.68 1.62 0 .92.65 1.57 1.51 1.57zm-10.91 11.62c-1.25-.16-1.4-.49-1.4-1.67V9.67c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.52v4.92c0 1.18-.22 1.5-1.4 1.67v.65h5.56v-.65c-1.24-.16-1.4-.49-1.4-1.67v-5.2c0-1.72-.76-2.96-2.92-2.96-1.35 0-2.65.8-3.95 1.94V6.38h-.97l-3.13 2.05v.49h1.5v5.72c0 1.2-.2 1.52-1.4 1.68v.65h5.57l-.16-.65zm-23.56-12.7v6.49c0 4.21 2.21 7.13 7.72 7.08 5.52 0 7.68-2.92 7.68-7.03V4.97c0-2.54.7-3.19 1.94-3.51V.8h-5.24v.65c1.24.32 1.95.97 1.95 3.51v5.19c0 3.67-1.9 5.35-5.57 5.35-3.62 0-5.57-1.68-5.57-5.35v-6.6c0-1.61.49-1.94 1.84-2.1v-.7h-6.6v.7c1.41.27 1.84.54 1.84 2.16zM127.1 16.37c-1.25-.16-1.4-.48-1.4-1.67V9.73c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.51v4.92c0 1.19-.22 1.51-1.4 1.68v.64h5.56v-.64c-1.24-.17-1.4-.5-1.4-1.68V9.51c0-1.73-.76-2.97-2.92-2.97-1.35 0-2.65.81-3.95 1.95V6.43h-.97l-3.14 2.05v.5h1.52v5.72c0 1.19-.22 1.51-1.4 1.67v.65h5.56l-.16-.65zm-8.6 0c-1.4-.21-1.62-.54-1.62-1.83V10.1a6.8 6.8 0 011.3-1.73c0 .86.6 1.4 1.3 1.4.7 0 1.46-.6 1.46-1.73 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.54h-.97l-3.13 2.05v.49h1.51v5.73c0 1.19-.21 1.51-1.4 1.67v.65h5.72v-.75zm-13.56-5.83c0-1.73.76-2.81 2.16-2.81.97 0 1.62.7 1.9 2.1l-4 1.41c-.06-.22-.06-.49-.06-.7zm6.8 4.6l-.58-.44a3.38 3.38 0 01-2.5 1.13c-2 0-3.13-1.51-3.5-3.45l6.48-2.17c-.1-2.27-1.84-3.56-3.94-3.5-3.03 0-5.2 2.42-5.2 5.45 0 2.97 1.9 5.24 5.25 5.24 2-.1 3.24-1.03 4-2.27zm-9.99.96l-.32-.7c-.6.27-1.08.38-1.57.38-1.03 0-1.3-.54-1.3-1.24V8.05h2.76V6.81h-2.76v-2h-.38L94.3 7.35v.7h1.57v7.08c0 1.4.81 2.16 2.38 2.16 1.24 0 2.48-.38 3.51-1.19zm-8.16-2.16c0-2-1.67-2.64-3.24-3.13-1.51-.49-2.6-.81-2.6-1.95 0-.6.44-1.19 1.36-1.19 1.08 0 2.05.65 3.24 2l.54-.27-.81-2.7h-.33l-.38.32a4.98 4.98 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.6 3.24 3.08 1.51.54 2.6.81 2.6 1.95 0 .7-.54 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.38l.64-.44a5.7 5.7 0 002.38.55c2.16.16 4-1.14 4-3.25zm-16.64.43c0-1.08.48-1.62 3.02-2.32v3.14c-.6.48-1.13.7-1.67.7-.87 0-1.35-.43-1.35-1.52zm4.75 2.87a5.1 5.1 0 002.6-.87l-.22-.59c-1.08.22-1.46.05-1.46-.65V9.35c0-1.73-.76-2.65-3.19-2.65-2.75 0-4.75 1.46-4.75 2.86 0 .65.43 1.25 1.24 1.25.86 0 1.3-.6 1.46-1.2.1-.64-.11-1.18-.43-1.45.5-.25 1.06-.38 1.62-.38.92 0 1.4.33 1.4 1.2v2.15c-3.89.98-5.62 1.79-5.62 3.84 0 1.57 1.03 2.43 2.6 2.43 1.02 0 2.16-.43 3.18-1.24.11.7.65 1.08 1.57 1.08zm-15.35-6.65c0-1.73.76-2.8 2.16-2.8.98 0 1.63.7 1.9 2.1l-4 1.4c-.06-.21-.06-.43-.06-.7zm6.76 4.6l-.6-.44a3.38 3.38 0 01-2.48 1.14c-2 0-3.14-1.52-3.51-3.46L73 10.27c-.1-2.27-1.84-3.57-3.95-3.52-3.02 0-5.18 2.44-5.18 5.46 0 2.98 1.89 5.24 5.24 5.24 2.05-.1 3.3-1.02 4-2.26zm-17.19 1.3c-1.24-.17-1.4-.5-1.4-1.68V9.78c1.02-.97 1.83-1.4 2.75-1.4 1.09 0 1.35.54 1.35 1.51v4.92c0 1.19-.21 1.51-1.4 1.67v.65h5.57v-.65c-1.25-.16-1.4-.48-1.4-1.67V9.62c0-1.73-.77-2.97-2.93-2.97-1.3 0-2.6.75-3.89 1.89V0h-.8L50.3 2.27v.49h1.57v12.1c0 1.2-.22 1.51-1.4 1.68v.65h5.56l-.1-.7zm-6.21-.28l-.33-.7c-.6.27-1.08.38-1.56.38-1.03 0-1.3-.54-1.3-1.24V8.16h2.75V6.92h-2.75v-2h-.38l-3.9 2.54v.7h1.58v7.08c0 1.4.8 2.16 2.37 2.16 1.3 0 2.5-.43 3.52-1.19zm-10.6.33c-1.4-.22-1.62-.54-1.62-1.84v-4.43c.44-.76.87-1.35 1.3-1.73 0 .86.6 1.4 1.3 1.4.76 0 1.46-.6 1.46-1.73 0-.97-.54-1.5-1.52-1.5-1.08 0-1.89.86-2.64 2.15V6.7h-.98l-3.08 1.95v.48h1.52v5.73c0 1.2-.22 1.51-1.4 1.68v.65h5.72l-.05-.65zm-15.61-5.52c0-1.94.8-3.18 2.6-3.18 2.26 0 2.96 2.8 2.96 5.4 0 1.95-.8 3.19-2.59 3.19-2.27-.06-2.97-2.87-2.97-5.4zm8.27.92c0-2.8-1.9-5.18-5.4-5.18-3.52 0-5.63 2.54-5.58 5.45 0 2.81 1.9 5.2 5.4 5.2a5.22 5.22 0 005.58-5.47zm-14.1-6.7c0-2.54.7-3.19 1.94-3.51v-.65h-5.24v.65c1.24.32 1.94.97 1.94 3.51v7.62L5.35 1.73c-.65-.6-.86-.65-1.24-.65H0v.65c.92.1 1.4.43 2.43 1.4.33.33.65.65.65 1.3v8.65c0 2.54-.7 3.19-1.95 3.51v.65h5.25v-.65c-1.25-.32-1.95-.97-1.95-3.51V4.92l12.43 12.43h.87l-.06-12.1z" fill="currentColor" />                        </g>                    </svg></div>
 </footer>
 <script>/* Lenis v1.1.14 (studio-freight), vendored */
 var k="1.1.14";function w(r,t,e){return Math.max(r,Math.min(t,e))}function _(r,t,e){return(1-e)*r+e*t}function z(r,t,e,i){return _(r,t,1-Math.exp(-e*i))}function x(r,t){return(r%t+t)%t}var y=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(t){if(!this.isRunning)return;let e=!1;if(this.duration&&this.easing){this.currentTime+=t;let i=w(0,this.currentTime/this.duration,1);e=i>=1;let s=e?1:this.easing(i);this.value=this.from+(this.to-this.from)*s}else this.lerp?(this.value=z(this.value,this.to,this.lerp*60,t),Math.round(this.value)===this.to&&(this.value=this.to,e=!0)):(this.value=this.to,e=!0);e&&this.stop(),this.onUpdate?.(this.value,e)}stop(){this.isRunning=!1}fromTo(t,e,{lerp:i,duration:s,easing:o,onStart:l,onUpdate:m}){this.from=this.value=t,this.to=e,this.lerp=i,this.duration=s,this.easing=o,this.currentTime=0,this.isRunning=!0,l?.(),this.onUpdate=m}};function N(r,t){let e;return function(...i){let s=this;clearTimeout(e),e=setTimeout(()=>{e=void 0,r.apply(s,i)},t)}}var E=class{constructor(t,e,{autoResize:i=!0,debounce:s=250}={}){this.wrapper=t;this.content=e;i&&(this.debouncedResize=N(this.resize,s),this.wrapper instanceof Window?window.addEventListener("resize",this.debouncedResize,!1):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener("resize",this.debouncedResize,!1)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}};var g=class{events={};emit(t,...e){let i=this.events[t]||[];for(let s=0,o=i.length;s<o;s++)i[s]?.(...e)}on(t,e){return this.events[t]?.push(e)||(this.events[t]=[e]),()=>{this.events[t]=this.events[t]?.filter(i=>e!==i)}}off(t,e){this.events[t]=this.events[t]?.filter(i=>e!==i)}destroy(){this.events={}}};var R=100/6,p={passive:!1},T=class{constructor(t,e={wheelMultiplier:1,touchMultiplier:1}){this.element=t;this.options=e;window.addEventListener("resize",this.onWindowResize,!1),this.onWindowResize(),this.element.addEventListener("wheel",this.onWheel,p),this.element.addEventListener("touchstart",this.onTouchStart,p),this.element.addEventListener("touchmove",this.onTouchMove,p),this.element.addEventListener("touchend",this.onTouchEnd,p)}touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new g;on(t,e){return this.emitter.on(t,e)}destroy(){this.emitter.destroy(),window.removeEventListener("resize",this.onWindowResize,!1),this.element.removeEventListener("wheel",this.onWheel,p),this.element.removeEventListener("touchstart",this.onTouchStart,p),this.element.removeEventListener("touchmove",this.onTouchMove,p),this.element.removeEventListener("touchend",this.onTouchEnd,p)}onTouchStart=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:0,y:0},this.emitter.emit("scroll",{deltaX:0,deltaY:0,event:t})};onTouchMove=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t,s=-(e-this.touchStart.x)*this.options.touchMultiplier,o=-(i-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:s,y:o},this.emitter.emit("scroll",{deltaX:s,deltaY:o,event:t})};onTouchEnd=t=>{this.emitter.emit("scroll",{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:t})};onWheel=t=>{let{deltaX:e,deltaY:i,deltaMode:s}=t,o=s===1?R:s===2?this.window.width:1,l=s===1?R:s===2?this.window.height:1;e*=o,i*=l,e*=this.options.wheelMultiplier,i*=this.options.wheelMultiplier,this.emitter.emit("scroll",{deltaX:e,deltaY:i,event:t})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};var L=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;isTouching;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new y;emitter=new g;dimensions;virtualScroll;constructor({wrapper:t=window,content:e=document.documentElement,eventsTarget:i=t,smoothWheel:s=!0,syncTouch:o=!1,syncTouchLerp:l=.075,touchInertiaMultiplier:m=35,duration:v,easing:u=C=>Math.min(1,1.001-Math.pow(2,-10*C)),lerp:h=.1,infinite:c=!1,orientation:b="vertical",gestureOrientation:n="vertical",touchMultiplier:a=1,wheelMultiplier:f=1,autoResize:S=!0,prevent:d,virtualScroll:M,overscroll:O=!0,__experimental__naiveDimensions:H=!1}={}){window.lenisVersion=k,(!t||t===document.documentElement||t===document.body)&&(t=window),this.options={wrapper:t,content:e,eventsTarget:i,smoothWheel:s,syncTouch:o,syncTouchLerp:l,touchInertiaMultiplier:m,duration:v,easing:u,lerp:h,infinite:c,gestureOrientation:n,orientation:b,touchMultiplier:a,wheelMultiplier:f,autoResize:S,prevent:d,virtualScroll:M,overscroll:O,__experimental__naiveDimensions:H},this.dimensions=new E(t,e,{autoResize:S}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.addEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll=new T(i,{touchMultiplier:a,wheelMultiplier:f}),this.virtualScroll.on("scroll",this.onVirtualScroll)}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.removeEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName()}on(t,e){return this.emitter.on(t,e)}off(t,e){return this.emitter.off(t,e)}setScroll(t){this.isHorizontal?this.rootElement.scrollLeft=t:this.rootElement.scrollTop=t}onPointerDown=t=>{t.button===1&&this.reset()};onVirtualScroll=t=>{if(typeof this.options.virtualScroll=="function"&&this.options.virtualScroll(t)===!1)return;let{deltaX:e,deltaY:i,event:s}=t;if(this.emitter.emit("virtual-scroll",{deltaX:e,deltaY:i,event:s}),s.ctrlKey||s.lenisStopPropagation)return;let o=s.type.includes("touch"),l=s.type.includes("wheel");if(this.isTouching=s.type==="touchstart"||s.type==="touchmove",this.options.syncTouch&&o&&s.type==="touchstart"&&!this.isStopped&&!this.isLocked){this.reset();return}let v=e===0&&i===0,u=this.options.gestureOrientation==="vertical"&&i===0||this.options.gestureOrientation==="horizontal"&&e===0;if(v||u)return;let h=s.composedPath();h=h.slice(0,h.indexOf(this.rootElement));let c=this.options.prevent;if(h.find(d=>d instanceof HTMLElement&&(typeof c=="function"&&c?.(d)||d.hasAttribute?.("data-lenis-prevent")||o&&d.hasAttribute?.("data-lenis-prevent-touch")||l&&d.hasAttribute?.("data-lenis-prevent-wheel"))))return;if(this.isStopped||this.isLocked){s.preventDefault();return}if(!(this.options.syncTouch&&o||this.options.smoothWheel&&l)){this.isScrolling="native",this.animate.stop(),s.lenisStopPropagation=!0;return}let n=i;this.options.gestureOrientation==="both"?n=Math.abs(i)>Math.abs(e)?i:e:this.options.gestureOrientation==="horizontal"&&(n=e),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&i>0||this.animatedScroll===this.limit&&i<0))&&(s.lenisStopPropagation=!0),s.preventDefault();let a=o&&this.options.syncTouch,S=o&&s.type==="touchend"&&Math.abs(n)>5;S&&(n=this.velocity*this.options.touchInertiaMultiplier),this.scrollTo(this.targetScroll+n,{programmatic:!1,...a?{lerp:S?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit("scroll",this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling==="native"){let t=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-t,this.direction=Math.sign(this.animatedScroll-t),this.isScrolling="native",this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){this.isStopped&&(this.isStopped=!1,this.reset())}stop(){this.isStopped||(this.isStopped=!0,this.animate.stop(),this.reset())}raf(t){let e=t-(this.time||t);this.time=t,this.animate.advance(e*.001)}scrollTo(t,{offset:e=0,immediate:i=!1,lock:s=!1,duration:o=this.options.duration,easing:l=this.options.easing,lerp:m=this.options.lerp,onStart:v,onComplete:u,force:h=!1,programmatic:c=!0,userData:b}={}){if(!((this.isStopped||this.isLocked)&&!h)){if(typeof t=="string"&&["top","left","start"].includes(t))t=0;else if(typeof t=="string"&&["bottom","right","end"].includes(t))t=this.limit;else{let n;if(typeof t=="string"?n=document.querySelector(t):t instanceof HTMLElement&&t?.nodeType&&(n=t),n){if(this.options.wrapper!==window){let f=this.rootElement.getBoundingClientRect();e-=this.isHorizontal?f.left:f.top}let a=n.getBoundingClientRect();t=(this.isHorizontal?a.left:a.top)+this.animatedScroll}}if(typeof t=="number"){if(t+=e,t=Math.round(t),this.options.infinite?c&&(this.targetScroll=this.animatedScroll=this.scroll):t=w(0,t,this.limit),t===this.targetScroll){v?.(this),u?.(this);return}if(this.userData=b??{},i){this.animatedScroll=this.targetScroll=t,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),u?.(this),this.userData={};return}c||(this.targetScroll=t),this.animate.fromTo(this.animatedScroll,t,{duration:o,easing:l,lerp:m,onStart:()=>{s&&(this.isLocked=!0),this.isScrolling="smooth",v?.(this)},onUpdate:(n,a)=>{this.isScrolling="smooth",this.lastVelocity=this.velocity,this.velocity=n-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=n,this.setScroll(this.scroll),c&&(this.targetScroll=n),a||this.emit(),a&&(this.reset(),this.emit(),u?.(this),this.userData={},this.preventNextNativeScrollEvent())}})}}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.__experimental__naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?"x":"y"]}get isHorizontal(){return this.options.orientation==="horizontal"}get actualScroll(){return this.isHorizontal?this.rootElement.scrollLeft:this.rootElement.scrollTop}get scroll(){return this.options.infinite?x(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(t){this._isScrolling!==t&&(this._isScrolling=t,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(t){this._isStopped!==t&&(this._isStopped=t,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(t){this._isLocked!==t&&(this._isLocked=t,this.updateClassName())}get isSmooth(){return this.isScrolling==="smooth"}get className(){let t="lenis";return this.isStopped&&(t+=" lenis-stopped"),this.isLocked&&(t+=" lenis-locked"),this.isScrolling&&(t+=" lenis-scrolling"),this.isScrolling==="smooth"&&(t+=" lenis-smooth"),t}updateClassName(){this.cleanUpClassName(),this.rootElement.className=`${this.rootElement.className} ${this.className}`.trim()}cleanUpClassName(){this.rootElement.className=this.rootElement.className.replace(/lenis(-\w+)?/g,"").trim()}};globalThis.Lenis=L;
@@ -997,7 +1007,7 @@ function render(now) {
   ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7);
   ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 1.2; ctx.stroke();
 
-  /* co&#8209;op dots: crisp cartographic marks; hubs get a quiet ring */
+  /* co‑op dots: crisp cartographic marks; hubs get a quiet ring */
   if (cur.coops > .01) {
     for (let i = 0; i < COOPS.length; i++) {
       const [lat, lng, n] = COOPS[i];
@@ -1131,8 +1141,7 @@ function frame(now) {
     if (igniteT0 !== null) {
       const p = clamp01((now - igniteT0) / 1800);
       ignite = reduceMotion ? 1 : easeOut(p);
-      const cc = $("#coopcount");
-      if (cc) cc.textContent = fmt(Math.round(COOP_TOTAL * (reduceMotion ? 1 : easeOut(p))));
+      $("#coopcount").textContent = fmt(Math.round(COOP_TOTAL * (reduceMotion ? 1 : easeOut(p))));
       if (p >= 1) igniteT0 = null;
     }
     render(now);
@@ -1197,7 +1206,7 @@ function pickDot(e) {
   }
   if (!best) { hideGtip(); return; }
   const place = best[3] + (best[4] !== "United States" && best[4] !== best[3] ? " · " + best[4] : "");
-  gtip.innerHTML = `${place}<br><b>${fmt(best[2])}</b> co&#8209;op placement${best[2] === 1 ? "" : "s"}`;
+  gtip.innerHTML = `${place}<br><b>${fmt(best[2])}</b> co‑op placement${best[2] === 1 ? "" : "s"}`;
   gtip.style.display = "block";
   gtip.style.left = Math.min(mx + 14, W - 200) + "px";
   gtip.style.top = Math.min(my + 14, H - 60) + "px";
@@ -1208,7 +1217,7 @@ const NGN = "https://news.northeastern.edu";
 const TOUR_STORIES = [
   { loc: "Kennedy Space Center, Florida", view: { lon: -80.65, lat: 28.57, k: 2.4 }, focus: [28.57, -80.65],
     img: NGN + "/wp-content/uploads/2023/04/NASA1400.jpg",
-    t: "Loading a spacecraft bound for the International Space Station, on co&#8209;op",
+    t: "Loading a spacecraft bound for the International Space Station, on co‑op",
     url: NGN + "/2023/05/03/nasa-engineering-intern/" },
   { loc: "Phnom Penh, Cambodia", view: { lon: 104.92, lat: 11.56, k: 2.4 }, focus: [11.56, 104.92],
     img: NGN + "/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg",
@@ -1220,7 +1229,7 @@ const TOUR_STORIES = [
     url: NGN + "/2023/11/27/dialogue-of-civilizations-geneva-anniversary/" },
   { loc: "Vienna, Austria", view: { lon: 16.37, lat: 48.21, k: 2.6 }, focus: [48.21, 16.37],
     img: NGN + "/wp-content/uploads/2023/09/Vienna1400.jpg",
-    t: "Coffeehouses, Mozart and international finance, on co&#8209;op",
+    t: "Coffeehouses, Mozart and international finance, on co‑op",
     url: NGN + "/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" },
   { loc: "Elephant Island, Antarctica", view: { lon: -55, lat: -63, k: 1.7 }, focus: [-61.1, -55.1],
     img: NGN + "/wp-content/uploads/2020/02/IMG_20200123_130319.jpg",
@@ -1294,7 +1303,7 @@ const stepIO = new IntersectionObserver(es => es.forEach(e => {
     ignite = 0;
     igniteT0 = performance.now() + 500;
   }
-  /* the story card is a fixture of the co&#8209;op beat */
+  /* the story card is a fixture of the co‑op beat */
   if (e.target.dataset.step === "coops") {
     if (storySel < 0) storySel = 0;
     fillCard(storySel);
@@ -1562,6 +1571,5 @@ resize();
 requestAnimationFrame(frame);
 </script>
 
-<div class="verbar"><span class="lbl">Globe:</span><a href="index.html" class="cur">Scrolly</a><a href="globe-a.html">Tour</a><a href="globe-c.html">Split</a></div>
 </body>
 </html>
