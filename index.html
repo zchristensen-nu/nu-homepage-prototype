@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="44">
+<meta name="prototype-rev" content="45">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -295,13 +295,21 @@
 
   /* ---------- ADMISSIONS CTA ---------- */
   .admit{position:relative;z-index:6;min-height:92svh;display:flex;align-items:center;overflow:hidden;color:#fff}
-  .admit .bg{position:absolute;inset:-8% 0;background-size:cover;background-position:center 30%;filter:brightness(.5)}
+  .admit .bg{position:absolute;inset:-8% 0;background-size:cover;background-position:center 30%;
+    filter:brightness(.5);opacity:0;transition:opacity 1.4s var(--ease)}
+  .admit.in .bg{opacity:1}
+  .admit .inner > *{opacity:0;transform:translateY(26px);
+    transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .admit .inner > :nth-child(2){transition-delay:.18s}
+  .admit .inner > :nth-child(3){transition-delay:.36s}
+  .admit.in .inner > *{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    .admit .bg,.admit .inner > *{opacity:1;transform:none;transition:none}
+  }
   .admit .inner{position:relative;z-index:2;text-align:center;width:100%;padding:100px 20px}
   .admit h2{font-size:clamp(56px,10vw,140px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .admit p{margin:18px auto 0;font-size:17px;color:#E5E5E5;max-width:44ch}
   .admit .ctas{margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .admit .cap{position:absolute;right:20px;bottom:12px;font-size:11px;color:rgba(255,255,255,.55);z-index:3}
-  .admit .cap a{text-decoration:underline;text-underline-offset:2px}
 
   /* ---------- FOOTER ---------- */
   footer{position:relative;z-index:6;background:#000;color:var(--n4);padding:76px 0 0;font-size:13.5px;overflow:hidden}
@@ -776,7 +784,6 @@
       <a class="pill ghostw" href="#">Request info</a>
     </div>
   </div>
-  <span class="cap"><a href="https://news.northeastern.edu/2025/05/09/fenway-park-commencement-2025/">Commencement at Fenway Park, Northeastern Global News</a></span>
 </section>
 
 <footer>
@@ -876,6 +883,13 @@ const rvIO = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add("in"); rvIO.unobserve(e.target); }
 }), { threshold: 0.18 });
 $$(".rv").forEach(el => rvIO.observe(el));
+
+/* the closing section arrives as a moment: image fades up, content rises staggered */
+const admitEl = $(".admit");
+const admitIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { admitEl.classList.add("in"); admitIO.disconnect(); }
+}), { threshold: 0.35 });
+admitIO.observe(admitEl);
 
 /* ============ globe data ============ */
 const CAMPUSES = [
