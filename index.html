@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="prototype-rev" content="45">
+<meta name="prototype-rev" content="46">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -222,7 +222,7 @@
   .xcard:nth-child(2) img{object-position:62% 28%}
   .xcard:nth-child(3) img{object-position:40% 30%}
   .xcard:nth-child(4) img{object-position:40% 28%}
-  .xcard:nth-child(5) img{object-position:50% 18%}
+  .xcard:nth-child(5) img{object-position:60% 30%}
   .xcard:hover img{transform:scale(1.03)}
   .xshade{position:absolute;inset:0;background:linear-gradient(200deg,transparent 42%,rgba(5,5,8,.74) 92%)}
   .xtag{position:absolute;left:18px;bottom:16px;color:#fff;font-size:13.5px;font-weight:500;white-space:nowrap;
@@ -392,7 +392,7 @@
         <a href="#">Entrepreneurship</a>
         <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
       </div></div>
-      <a class="mp-feat" href="https://news.northeastern.edu/2023/05/03/nasa-engineering-intern/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/04/NASA1400.jpg" alt="" loading="lazy"><span class="ft">Loading a spacecraft bound for the International Space Station, on co‑op</span><span class="fl">Read on NGN &#8594;</span></a>
+      <a class="mp-feat" href="https://news.northeastern.edu/2024/10/16/high-speed-satellite-network-research/"><div class="mp-h">From the newsroom</div><img src="img/satellite-testbed.jpg" alt="" loading="lazy"><span class="ft">Students and faculty build a satellite testbed for ultra-fast internet from space</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-research" hidden><div class="wrap mp-in">
       <div class="mp-lead"><div class="mp-title">Research</div><p>Discovery that solves real problems, with students in the work.</p><a class="storylink" href="https://research.northeastern.edu/">Research overview</a></div>
@@ -696,13 +696,13 @@
           <span class="xtag">AI for Impact</span>
         </article>
         <article class="xcard" tabindex="0">
-          <img src="https://news.northeastern.edu/wp-content/uploads/2026/01/drone-thumbnail.jpg" alt="Engineers work on a 400-kilometer-per-hour racing drone." loading="lazy">
+          <img src="img/sccrub-robot.jpg" alt="A student researcher adjusts SCCRUB, a flexible robotic arm inspired by an elephant's trunk." loading="lazy">
           <div class="xshade"></div>
           <div class="xbody">
-            <h3>Building one of the world's fastest drones</h3>
-            <a class="storylink" href="https://news.northeastern.edu/2026/01/15/worlds-fastest-drones-video/">Watch the video</a>
+            <h3>A robotic arm that cleans like an elephant's trunk</h3>
+            <a class="storylink" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/">Meet SCCRUB</a>
           </div>
-          <span class="xtag">Drones</span>
+          <span class="xtag">Soft robotics</span>
         </article>
       </div>
 
@@ -721,11 +721,11 @@
   <div class="qtrack" id="qtrack">
 
     <div class="qslide">
-      <div class="bg" data-plx="22" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/NASA1400.jpg')"></div>
+      <div class="bg" data-plx="22" style="background-image:url('img/microscopy-coop.jpg');background-position:center 30%"></div>
       <div class="inner">
-        <blockquote>&ldquo;It is one of the craziest experiences of my life. This has really cemented what I want to do.&rdquo;</blockquote>
-        <div class="who"><b>Jonah Saunders</b> Electrical engineering &middot; Co‑op at NASA Kennedy Space Center</div>
-        <a class="storylink" href="https://news.northeastern.edu/2023/05/03/nasa-engineering-intern/">Read Jonah's story</a>
+        <blockquote>&ldquo;I really enjoyed the process of research from my previous co‑op. But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</blockquote>
+        <div class="who"><b>Cameron D’Mello</b> Bioengineering &middot; Co‑ops at Beth Israel Medical Center and QuantumScape</div>
+        <a class="storylink" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/">Read Cameron’s story</a>
       </div>
     </div>
 
@@ -1266,10 +1266,10 @@ function pickDot(e) {
 /* ============ scrollytelling ============ */
 const NGN = "https://news.northeastern.edu";
 const TOUR_STORIES = [
-  { loc: "Kennedy Space Center, Florida", view: { lon: -80.65, lat: 28.57, k: 2.4 }, focus: [28.57, -80.65],
-    img: NGN + "/wp-content/uploads/2023/04/NASA1400.jpg",
-    t: "Loading a spacecraft bound for the International Space Station, on co‑op",
-    url: NGN + "/2023/05/03/nasa-engineering-intern/" },
+  { loc: "Cupertino, California", view: { lon: -122.03, lat: 37.32, k: 2.4 }, focus: [37.32, -122.03],
+    img: "img/apple-coop.jpg",
+    t: "Developing cameras for Apple products, on co‑op",
+    url: NGN + "/2025/01/15/apple-co-op-camera-process-engineer/" },
   { loc: "Phnom Penh, Cambodia", view: { lon: 104.92, lat: 11.56, k: 2.4 }, focus: [11.56, 104.92],
     img: NGN + "/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg",
     t: "Teacher, mentor, big sister: six months in a Cambodian dormitory",
@@ -1282,10 +1282,10 @@ const TOUR_STORIES = [
     img: NGN + "/wp-content/uploads/2023/09/Vienna1400.jpg",
     t: "Coffeehouses, Mozart and international finance, on co‑op",
     url: NGN + "/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" },
-  { loc: "Elephant Island, Antarctica", view: { lon: -55, lat: -63, k: 1.7 }, focus: [-61.1, -55.1],
-    img: NGN + "/wp-content/uploads/2020/02/IMG_20200123_130319.jpg",
-    t: "Counting penguin colonies at the bottom of the world",
-    url: NGN + "/2020/02/11/penguins-are-starving-as-antarctica-gets-warmer-drones-are-counting-the-losses/" },
+  { loc: "Scarborough, Maine", view: { lon: -70.33, lat: 43.58, k: 2.4 }, focus: [43.58, -70.33],
+    img: "img/oyster-coop.jpg",
+    t: "Harvesting oysters on Maine's Nonesuch River, on co‑op",
+    url: NGN + "/2022/11/01/oyster-harvesting-maine/" },
 ];
 const STORY_PINS = TOUR_STORIES.map(st => st.focus);
 LAYER_KEYS.push("spins");
