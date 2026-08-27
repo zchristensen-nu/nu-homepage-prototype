@@ -172,6 +172,25 @@ page and the variants deleted.
 - The rev-45 entrance animation was verified by computed styles + code review but not
   visually observed live (pane artifact above) — worth one human scroll-through.
 
+## Concept 2: the 24/7 homepage
+
+A second iteration lives at **https://zchristensen-nu.github.io/nu-homepage-prototype/concept-2/**
+(`concept-2/index.html`, rev meta `concept2-rev`). Direction from Zach's director: immersive,
+institution-first rather than student-first, global + research + AI/entrepreneurship forward,
+"something is always happening," and no dynamic globe.
+
+- Reuses v2's nav, search/takeover overlays, admissions closer, and footer verbatim; everything
+  between is new. Assembled by `tools/build_c2.py`, which extracts those blocks from
+  `northeastern-homepage-v2.html` with assert-guarded markers, so v2 edits can be re-pulled.
+- Scenes: live day/night world map hero (canvas equirect, real solar terminator recomputed
+  each minute, campus + N.U.in dots, five live city clocks), an NGN headline ticker with real
+  August 2026 dates, three infinite-scrolling research story belts, an AI + Entrepreneurship
+  band, a co-op stat row with an ambient photo marquee, and a 14-campus live clock grid.
+- All story/image pairings verified against the articles (each photo's shoot prefix was
+  grepped on its story page). Marquee photos are ambient and unlinked, so they carry no
+  story claims. The terminator math ignores the equation of time (commented as approximate).
+- All motion honors prefers-reduced-motion (belts/ticker/marquee go static).
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
