@@ -47,7 +47,7 @@ counters_js = cut("/* ============ research counters ============ */", "/* =====
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="11">')
+                    '<meta name="concept2-rev" content="12">')
 assert 'concept2-rev' in head
 
 old_h = "<h2>Class is only half of it.</h2>"
@@ -437,17 +437,19 @@ if (jTrack && jRail && !reduceMotion) {
 }
 
 /* ============ research collage: elements drift around the canvas ============ */
-const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift }));
+const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift, ty: 0 }));
 if (driftEls.length && !reduceMotion) {
   const featImg = document.querySelector(".re-item.feature img");
   const dUpd = () => {
     const mid = innerHeight / 2;
-    for (const { el, d } of driftEls) {
-      const r = el.getBoundingClientRect();
-      const c = (r.top + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
-      el.style.transform = `translateY(${(c * d).toFixed(1)}px)`;
-      if (featImg && el.contains(featImg))
-        featImg.style.transform = `scale(1.16) translateY(${(-c * d * 0.22).toFixed(1)}px)`;
+    for (const o of driftEls) {
+      /* rect includes our own transform; subtract it so the drift never feeds back */
+      const r = o.el.getBoundingClientRect();
+      const c = (r.top - o.ty + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
+      o.ty = c * o.d;
+      o.el.style.transform = `translateY(${o.ty.toFixed(1)}px)`;
+      if (featImg && o.el.contains(featImg))
+        featImg.style.transform = `scale(1.16) translateY(${(-c * o.d * 0.22).toFixed(1)}px)`;
     }
   };
   addEventListener("scroll", () => requestAnimationFrame(dUpd), { passive: true });
@@ -510,7 +512,7 @@ page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + t
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 for tok in ['id="srch"', 'id="tkv"', 'class="scrolly"', 'id="globe"', "gt-card", "coopcount",
             "j-rail", "w-logo", "re-flow", "data-drift", 'id="vTrack"', "v-slide",
-            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="11"',
+            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="12"',
             "data-count", "newspost", "500K+", "major in"]:
     assert tok in page, tok
 for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "One university. Fourteen campuses."]:
