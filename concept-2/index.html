@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="2">
+<meta name="concept2-rev" content="3">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -947,11 +947,18 @@ function runLoader() {
   };
   requestAnimationFrame(step);
 }
+let loaderDone = false;
 function finishLoader() {
-  if (loader) loader.classList.add("done");
+  if (loaderDone) return;
+  loaderDone = true;
+  if (loader) { loadN.textContent = 100; loader.classList.add("done"); }
   document.documentElement.classList.remove("is-loading");
   $$(".now .line > span").forEach((s, i) => setTimeout(() => s.parentElement.classList.add("in"), 150 + i * 120));
 }
+/* failsafes: a throttled tab must never stay black (rAF can freeze there) */
+addEventListener("load", () => setTimeout(finishLoader, 700));
+setTimeout(finishLoader, 4500);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) setTimeout(finishLoader, 1500); });
 
 /* ============ custom cursor (pointer-fine devices only) ============ */
 if (matchMedia("(pointer: fine)").matches && !reduceMotion) {
