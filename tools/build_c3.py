@@ -47,8 +47,19 @@ counters_js = cut("/* ============ research counters ============ */", "/* =====
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="12">')
+                    '<meta name="concept2-rev" content="13">')
 assert 'concept2-rev' in head
+
+outro_old_h = '<div class="big">Where will yours be?</div>'
+assert scrolly_mk.count(outro_old_h) == 1
+scrolly_mk = scrolly_mk.replace(outro_old_h, '<div class="big">And that&#8217;s just this fall.</div>')
+outro_old_p = "<p>3,000+ employers. 151 countries. One application.</p>"
+assert scrolly_mk.count(outro_old_p) == 1
+scrolly_mk = scrolly_mk.replace(outro_old_p, "")
+outro_pill = scrolly_mk.find('class="pill ghostw"')
+if outro_pill > 0:
+    a0 = scrolly_mk.rfind("<a", 0, outro_pill); a1 = scrolly_mk.find("</a>", outro_pill) + 4
+    scrolly_mk = scrolly_mk[:a0] + scrolly_mk[a1:]
 
 old_h = "<h2>Class is only half of it.</h2>"
 assert rest_mk.count(old_h) == 1
@@ -85,16 +96,38 @@ TICKER = [
  ("Jul 16","Can network science predict the World Cup?","/2026/07/16/world-cup-final-prediction/"),
 ]
 
-# editorial collage: (img, title, date, url, column 1|2, width%, drift px)
-RE_ITEMS = [
- (NGN+"/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/", 1, 100, -160, True),
- (NGN+"/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/", 2, 78, 240, False),
- ("../img/sccrub-robot.jpg","A robotic arm that cleans like an elephant's trunk","Feb 2026","/2026/02/05/cleaning-robot-arm/", 2, 88, -180, False),
- ("../img/mars-etch.jpg","Lighter, faster, more agile: a new Mars rover","May 2026","/2026/05/21/university-rover-challenge-team/", 1, 68, 200, False),
- ("../img/lunabotics.jpg","Lunabotics builds a robot for the moon's surface","May 2025","/2025/05/07/moon-robot-lunabotics/", 2, 100, -260, False),
- ("../img/aerobat.jpg","Aerobat flies like a bat to navigate tight spaces","Sep 2024","/2024/09/23/flying-bat-robot/", 1, 84, 150, False),
- ("../img/colosseum.jpg","Inside Colosseum, the wireless network emulator","Jan 2024","/2024/01/12/tech-savvy/", 2, 72, 200, False),
- (NGN+"/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/", 1, 76, -120, False),
+# the research wall: 30 real research newsposts, harvested 2026-08-31
+WALL = [
+ ("Researcher investigates how people get into the urban mix", "/2026/08/31/income-segregation-cities-diversity-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Mixing1400.jpg?resize=600,400"),
+ ("Scientists put algae to work making fuel. AI keeps watch.", "/2026/08/28/algae-biofuel-ai-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg?resize=600,400"),
+ ("Graduate student studies oyster genomics to preserve biodiversity", "/2026/08/26/oyster-restoration-genetics-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Oyster-genomics-1400x933-1.jpg?resize=600,400"),
+ ("Grandparents, teachers and even bus drivers can build resilient kids", "/2026/08/25/positive-childhood-experiences-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Bus1400.jpg?resize=600,400"),
+ ("Time2Learn, time to sleep: Evening practice may help language stick", "/2026/08/24/sleep-and-memory-language-learning/", "https://news.northeastern.edu/wp-content/uploads/2026/08/sleep1400.jpg?resize=600,400"),
+ ("This professor moonlights at NASA to bring lessons to class", "/2026/08/21/nasa-engineering-heat-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Yi-Zheng_1400.jpg?resize=600,400"),
+ ("This engineer sees AI and its power constraints in a new light", "/2026/08/19/photonics-ai-energy/", "https://news.northeastern.edu/wp-content/uploads/2026/08/phototics-1400x933-1.jpg?resize=600,400"),
+ ("This researcher is helping fend off quantum computing security risks", "/2026/08/18/post-quantum-cryptography-cyberattacks/", "https://news.northeastern.edu/wp-content/uploads/2026/08/081326_MM_Yunsi_Fei_018.jpg?resize=600,400"),
+ ("Who gets credit when AI joins the team? Rethinking collaboration", "/2026/08/14/human-ai-collaboration-credit/", "https://news.northeastern.edu/wp-content/uploads/2026/08/AI_stock.jpg?resize=600,400"),
+ ("Can a text message sway a voter? New research puts it to the test", "/2026/08/11/text-messages-get-out-the-vote/", "https://news.northeastern.edu/wp-content/uploads/2026/08/TextingVote1400.jpg?resize=600,400"),
+ ("These researchers seek to quiet ‘the noise’ in quantum computing", "/2026/08/07/modular-quantum-computing-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg?resize=600,400"),
+ ("This AI scientist can run experiments. Self-driving labs coming next", "/2026/08/06/ai-scientist-x-ray-experiment/", "https://news.northeastern.edu/wp-content/uploads/2026/08/AI-X-ray-Scientist-1400x933-1.jpg?resize=600,400"),
+ ("AI has been stepping out of bounds. Should you be worried?", "/2026/08/05/autonomous-ai-cybersecurity/", "https://news.northeastern.edu/wp-content/uploads/2026/08/080326_AS_AI_security_009.jpg?resize=600,400"),
+ ("Why it matters if a retailer has inaccurate personal data on you", "/2026/08/05/customer-data-collection-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/HomeDepot1400.jpg?resize=600,400"),
+ ("Aerobic fitness may be a teller of some brain health, study suggests", "/2026/08/04/physical-activity-brain-health-impulse-control/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Kids-inhibitory-contron-system-1400x933-1.jpg?resize=600,400"),
+ ("This researcher is using AI to help computers catch up with the brain", "/2026/08/03/memristors-supercomputer-research-ai/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072926_MM_Hossein_Mosallaei_012.jpg?resize=600,400"),
+ ("Why eGoT gets better answers: Teaching AI to connect the dots", "/2026/07/30/ai-reasoning-algorithm-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/071526_MM_eGoT_018.jpg?resize=600,400"),
+ ("This researcher is launching satellites to unlock faster data speeds", "/2026/07/29/satellite-internet-6g-speeds-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Josep-Jornet_1400.jpg?resize=600,400"),
+ ("This robot can snuff out wildfires with cryogenic liquid", "/2026/07/29/firefighting-robots-wildfires/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072926_MM_fire_robot_021.jpg?resize=600,400"),
+ ("How many children had a relative criminally charged? Study says 1 in 7", "/2026/07/28/children-of-incarcerated-parents/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Family-Criminal-Legal-Contact-1400x933-1.jpg?resize=600,400"),
+ ("Cracking the axolotl code: How to regrow limbs and stay young", "/2026/07/27/axolotl-regeneration-anti-aging/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg?resize=600,400"),
+ ("Mental health remains a struggle for AI chatbots, researchers find", "/2026/07/27/chatgpt-lawsuit-ai-mental-health/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Aibot1400.jpg?resize=600,400"),
+ ("Desktop browsing trends: Gmail first, everything else later", "/2026/07/23/top-websites-in-the-us-american-behavior/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072026_MM_Gmail_1400.jpg?resize=600,400"),
+ ("One of the oldest psychedelics meets modern brain imaging", "/2026/07/20/mescaline-drug-psychedelic/", "https://news.northeastern.edu/wp-content/uploads/2026/07/mescaline-updated-1400x933-1.jpg?resize=600,400"),
+ ("Northeastern professor pushes computers to solve ‘unsolvable’ problems", "/2026/07/17/optimization-problem-ising-model/", "https://news.northeastern.edu/wp-content/uploads/2026/07/071426_MM_Quantum_Computing_006.jpg?resize=600,400"),
+ ("Rideshare companies provide transportation, food, groceries…and sprawl", "/2026/07/15/rideshare-urban-sprawl-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/UBER1400.jpg?resize=600,400"),
+ ("Should you join the 5 AM Club? Why hitting snooze might be better", "/2026/07/14/5am-club-sleep-science/", "https://news.northeastern.edu/wp-content/uploads/2026/04/5am-club_1400x933.jpg?resize=600,400"),
+ ("Researchers aim to keep New England seafood local from boat to plate", "/2026/07/14/seafood-processing-nsf-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/MEFishing1400.jpg?resize=600,400"),
+ ("These researchers are demystifying oobleck, Dr. Seuss’s ‘green goo’", "/2026/07/10/these-researchers-are-demystifying-oobleck-dr-seusss-green-goo/", "https://news.northeastern.edu/wp-content/uploads/2026/07/droplet-1400x933-1.jpg?resize=600,400"),
+ ("A parasite is running rampant in Michigan. Will it spread elsewhere?", "/2026/07/08/parasite-outbreak-michigan/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Cyclospora-cayetanensis_1400.jpg?resize=600,400"),
 ]
 
 RAIL = [
@@ -154,14 +187,11 @@ def rail_panels():
                     '</div></div>\n')
     return out
 
-def re_items(col):
+def wall_tiles():
     out = ""
-    for img, t, d, u, c, w, drift, feature in RE_ITEMS:
-        if c != col: continue
-        cls = "re-item feature" if feature else "re-item"
-        out += (f'<a class="{cls}" href="{NGN}{u}" style="width:{w}%" data-drift="{drift}">'
-                f'<span class="re-im"><img src="{img}" alt="" loading="lazy"></span>'
-                f'<span class="b-body"><span class="b-d">{d}</span><span class="b-t">{t}</span></span></a>\n')
+    for t, u, img in WALL:
+        out += (f'<a class="wt" href="{NGN}{u}" aria-label="{t}">'
+                f'<img src="{img}" alt="" loading="lazy"><span class="wt-t">{t}</span></a>\n')
     return out
 
 def quote_slides():
@@ -249,9 +279,25 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .j-bar{display:none}
   }
 
-  /* ---------- research: counters + editorial drift collage ---------- */
-  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 130px;overflow:hidden}
-  .rc-grid{margin-top:70px;display:grid;grid-template-columns:repeat(3,1fr);
+  /* ---------- research: the wall you dive into ---------- */
+  .research2{position:relative;z-index:6;background:#FAFAFA}
+  .rw-track{height:380svh}
+  .rw-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .rw-wall{position:absolute;left:50%;top:50%;width:max(160vw,1900px);
+    transform:translate(-50%,-50%) scale(.42);transform-origin:50% 44%;will-change:transform;
+    display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  .wt{position:relative;display:block;border-radius:10px;overflow:hidden;background:#E5E5E5}
+  .wt img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  .wt-t{position:absolute;inset:auto 0 0 0;padding:26px 12px 10px;font-size:13px;line-height:1.3;color:#fff;
+    background:linear-gradient(to top,rgba(5,5,8,.8),rgba(5,5,8,0));opacity:0;transition:opacity .25s}
+  .wt:hover .wt-t{opacity:1}
+  .rw-head{position:relative;z-index:3;text-align:center;padding:0 20px;pointer-events:none;will-change:opacity}
+  .rw-head::before{content:"";position:absolute;inset:-90px -160px;z-index:-1;
+    background:radial-gradient(closest-side,rgba(250,250,250,.94) 30%,rgba(250,250,250,.75) 62%,rgba(250,250,250,0) 100%)}
+  .rw-head h2{font-size:clamp(38px,5vw,76px);font-weight:200;letter-spacing:-.03em;line-height:1.04;color:var(--ink)}
+  .rw-head .lede{margin:16px auto 0;max-width:44ch;color:#404040;font-size:clamp(15px,1.2vw,17.5px)}
+  .rw-land{position:relative;z-index:6;background:#FAFAFA;padding:90px 0 120px}
+  .rc-grid{display:grid;grid-template-columns:repeat(3,1fr);
     gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
   .rc{border-left:1px solid #E5E5E5;padding-left:clamp(18px,2vw,30px)}
   .rc:first-child{border-left:0;padding-left:0}
@@ -263,25 +309,12 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .rc{border-left:0;padding-left:0;border-top:1px solid #E5E5E5;padding-top:22px}
     .rc:first-child{border-top:0;padding-top:0}
   }
-  .rghead{margin-top:120px}
-  .rghead h3{font-size:clamp(24px,2.6vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--ink)}
-  .re-flow{margin-top:44px;padding:70px 0 90px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
-  .re-col{display:flex;flex-direction:column;gap:clamp(72px,10vw,170px)}
-  .re-col.two{margin-top:clamp(100px,16vw,260px)}
-  .re-item{display:block;will-change:transform}
-  .re-col .re-item:nth-child(even){align-self:flex-end}
-  .re-im{display:block;overflow:hidden;border-radius:14px}
-  .re-item img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;transition:transform .8s var(--ease)}
-  .re-item:not(.feature):hover img{transform:scale(1.04)}
-  .re-item.feature img{aspect-ratio:16/10;transform:scale(1.16);will-change:transform}
-  .re-item.feature .b-t{font-size:clamp(19px,1.9vw,28px);font-weight:300;max-width:24ch}
-  .b-body{display:block;padding:14px 2px 0}
-  .b-d{display:block;font-size:12px;color:#737373}
-  .b-t{display:block;margin-top:5px;font-size:16px;line-height:1.35;color:var(--ink);font-weight:400}
-  @media(max-width:760px){
-    .re-flow{grid-template-columns:1fr}
-    .re-col.two{margin-top:0}
-    .re-item{width:100% !important;transform:none !important}
+  @media (prefers-reduced-motion: reduce){
+    .rw-track{height:auto}
+    .rw-stage{position:static;height:auto;display:block;padding:80px 0 40px}
+    .rw-wall{position:static;width:auto;transform:none;grid-template-columns:repeat(3,1fr)}
+    .rw-wall .wt:nth-child(n+13){display:none}
+    .rw-head{padding:60px 20px}
   }
 
   /* ---------- voices: scroll-driven cinema ---------- */
@@ -323,6 +356,29 @@ NEW_BODY = f"""
 """
 
 AFTER_SCROLLY = f"""
+<section class="research2" id="research">
+  <div class="rw-track" id="rwTrack">
+    <div class="rw-stage">
+      <div class="rw-wall" id="rwWall">
+{wall_tiles()}      </div>
+      <div class="rw-head" id="rwHead">
+        <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
+        <p class="lede">Thirty stories from the last sixty days. Scroll in.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rw-land">
+    <div class="wrap">
+      <div class="rc-grid" id="counters">
+        <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
+        <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
+        <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
+      </div>
+      <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
+    </div>
+  </div>
+</section>
+
 <section class="journey" id="coop">
   <div class="j-track" id="jTrack">
     <div class="j-stage">
@@ -338,28 +394,6 @@ AFTER_SCROLLY = f"""
   </div>
 </section>
 
-<section class="research2" id="research">
-  <div class="wrap">
-    <div class="sechead rv">
-      <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-      <p class="lede">Students and professors choose Northeastern because the investment is real. The numbers are one year's worth.</p>
-    </div>
-    <div class="rc-grid" id="counters">
-      <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
-      <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
-      <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
-    </div>
-    <div class="rghead rv"><h3>In progress right now</h3></div>
-    <div class="re-flow">
-      <div class="re-col one">
-{re_items(1)}      </div>
-      <div class="re-col two">
-{re_items(2)}      </div>
-    </div>
-    <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
-  </div>
-</section>
-
 <section class="voices" id="voices" aria-label="Student voices">
   <div class="v-track" id="vTrack">
     <div class="v-stage">
@@ -368,7 +402,6 @@ AFTER_SCROLLY = f"""
 </section>
 
 """
-
 WIRE_FOOT = f"""
 <section class="wire foot" aria-label="Latest from Northeastern Global News">
   <div class="wire-in">
@@ -436,25 +469,20 @@ if (jTrack && jRail && !reduceMotion) {
   jUpd();
 }
 
-/* ============ research collage: elements drift around the canvas ============ */
-const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift, ty: 0 }));
-if (driftEls.length && !reduceMotion) {
-  const featImg = document.querySelector(".re-item.feature img");
-  const dUpd = () => {
-    const mid = innerHeight / 2;
-    for (const o of driftEls) {
-      /* rect includes our own transform; subtract it so the drift never feeds back */
-      const r = o.el.getBoundingClientRect();
-      const c = (r.top - o.ty + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
-      o.ty = c * o.d;
-      o.el.style.transform = `translateY(${o.ty.toFixed(1)}px)`;
-      if (featImg && o.el.contains(featImg))
-        featImg.style.transform = `scale(1.16) translateY(${(-c * o.d * 0.22).toFixed(1)}px)`;
-    }
+/* ============ research wall: dive into the mass ============ */
+const rwTrack = $("#rwTrack"), rwWall = $("#rwWall"), rwHead = $("#rwHead");
+if (rwTrack && rwWall && !reduceMotion) {
+  const rwUpd = () => {
+    const r = rwTrack.getBoundingClientRect();
+    const p = clamp01(-r.top / (r.height - innerHeight));
+    const e = easeIO(p);
+    const sc = 0.42 + e * 1.13;
+    rwWall.style.transform = `translate(-50%, ${(-50 - e * 6).toFixed(2)}%) scale(${sc.toFixed(4)})`;
+    if (rwHead) rwHead.style.opacity = clamp01(1 - p / 0.28).toFixed(2);
   };
-  addEventListener("scroll", () => requestAnimationFrame(dUpd), { passive: true });
-  addEventListener("resize", dUpd);
-  dUpd();
+  addEventListener("scroll", () => requestAnimationFrame(rwUpd), { passive: true });
+  addEventListener("resize", rwUpd);
+  rwUpd();
 }
 
 /* ============ voices: scroll-driven crossfade cinema ============ */
@@ -511,11 +539,12 @@ page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + t
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 for tok in ['id="srch"', 'id="tkv"', 'class="scrolly"', 'id="globe"', "gt-card", "coopcount",
-            "j-rail", "w-logo", "re-flow", "data-drift", 'id="vTrack"', "v-slide",
-            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="12"',
+            "j-rail", "w-logo", "rw-wall", 'class="wt"', 'id="vTrack"', "v-slide",
+            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="13"',
             "data-count", "newspost", "500K+", "major in"]:
     assert tok in page, tok
-for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "One university. Fourteen campuses."]:
+for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "re-flow", "data-drift",
+             "Where will yours be?</div>", "One university. Fourteen campuses."]:
     assert gone not in page, gone
 for out in OUT:
     os.makedirs(os.path.dirname(out), exist_ok=True)

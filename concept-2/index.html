@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="12">
+<meta name="concept2-rev" content="13">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -319,9 +319,25 @@
     .j-bar{display:none}
   }
 
-  /* ---------- research: counters + editorial drift collage ---------- */
-  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 130px;overflow:hidden}
-  .rc-grid{margin-top:70px;display:grid;grid-template-columns:repeat(3,1fr);
+  /* ---------- research: the wall you dive into ---------- */
+  .research2{position:relative;z-index:6;background:#FAFAFA}
+  .rw-track{height:380svh}
+  .rw-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .rw-wall{position:absolute;left:50%;top:50%;width:max(160vw,1900px);
+    transform:translate(-50%,-50%) scale(.42);transform-origin:50% 44%;will-change:transform;
+    display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+  .wt{position:relative;display:block;border-radius:10px;overflow:hidden;background:#E5E5E5}
+  .wt img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  .wt-t{position:absolute;inset:auto 0 0 0;padding:26px 12px 10px;font-size:13px;line-height:1.3;color:#fff;
+    background:linear-gradient(to top,rgba(5,5,8,.8),rgba(5,5,8,0));opacity:0;transition:opacity .25s}
+  .wt:hover .wt-t{opacity:1}
+  .rw-head{position:relative;z-index:3;text-align:center;padding:0 20px;pointer-events:none;will-change:opacity}
+  .rw-head::before{content:"";position:absolute;inset:-90px -160px;z-index:-1;
+    background:radial-gradient(closest-side,rgba(250,250,250,.94) 30%,rgba(250,250,250,.75) 62%,rgba(250,250,250,0) 100%)}
+  .rw-head h2{font-size:clamp(38px,5vw,76px);font-weight:200;letter-spacing:-.03em;line-height:1.04;color:var(--ink)}
+  .rw-head .lede{margin:16px auto 0;max-width:44ch;color:#404040;font-size:clamp(15px,1.2vw,17.5px)}
+  .rw-land{position:relative;z-index:6;background:#FAFAFA;padding:90px 0 120px}
+  .rc-grid{display:grid;grid-template-columns:repeat(3,1fr);
     gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
   .rc{border-left:1px solid #E5E5E5;padding-left:clamp(18px,2vw,30px)}
   .rc:first-child{border-left:0;padding-left:0}
@@ -333,25 +349,12 @@
     .rc{border-left:0;padding-left:0;border-top:1px solid #E5E5E5;padding-top:22px}
     .rc:first-child{border-top:0;padding-top:0}
   }
-  .rghead{margin-top:120px}
-  .rghead h3{font-size:clamp(24px,2.6vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--ink)}
-  .re-flow{margin-top:44px;padding:70px 0 90px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
-  .re-col{display:flex;flex-direction:column;gap:clamp(72px,10vw,170px)}
-  .re-col.two{margin-top:clamp(100px,16vw,260px)}
-  .re-item{display:block;will-change:transform}
-  .re-col .re-item:nth-child(even){align-self:flex-end}
-  .re-im{display:block;overflow:hidden;border-radius:14px}
-  .re-item img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;transition:transform .8s var(--ease)}
-  .re-item:not(.feature):hover img{transform:scale(1.04)}
-  .re-item.feature img{aspect-ratio:16/10;transform:scale(1.16);will-change:transform}
-  .re-item.feature .b-t{font-size:clamp(19px,1.9vw,28px);font-weight:300;max-width:24ch}
-  .b-body{display:block;padding:14px 2px 0}
-  .b-d{display:block;font-size:12px;color:#737373}
-  .b-t{display:block;margin-top:5px;font-size:16px;line-height:1.35;color:var(--ink);font-weight:400}
-  @media(max-width:760px){
-    .re-flow{grid-template-columns:1fr}
-    .re-col.two{margin-top:0}
-    .re-item{width:100% !important;transform:none !important}
+  @media (prefers-reduced-motion: reduce){
+    .rw-track{height:auto}
+    .rw-stage{position:static;height:auto;display:block;padding:80px 0 40px}
+    .rw-wall{position:static;width:auto;transform:none;grid-template-columns:repeat(3,1fr)}
+    .rw-wall .wt:nth-child(n+13){display:none}
+    .rw-head{padding:60px 20px}
   }
 
   /* ---------- voices: scroll-driven cinema ---------- */
@@ -756,15 +759,68 @@
 
     <div class="step" data-step="outro">
       <div class="card">
-        <div class="big">Where will yours be?</div>
-        <p>3,000+ employers. 151 countries. One application.</p>
-        <a class="pill ghostw" style="margin-top:22px" href="#admit">Start at Northeastern</a>
+        <div class="big">And that&#8217;s just this fall.</div>
+        
+        
       </div>
     </div>
 
   </div>
 </div>
 
+
+<section class="research2" id="research">
+  <div class="rw-track" id="rwTrack">
+    <div class="rw-stage">
+      <div class="rw-wall" id="rwWall">
+<a class="wt" href="https://news.northeastern.edu/2026/08/31/income-segregation-cities-diversity-research/" aria-label="Researcher investigates how people get into the urban mix"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Mixing1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Researcher investigates how people get into the urban mix</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/" aria-label="Scientists put algae to work making fuel. AI keeps watch."><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Scientists put algae to work making fuel. AI keeps watch.</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/26/oyster-restoration-genetics-research/" aria-label="Graduate student studies oyster genomics to preserve biodiversity"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Oyster-genomics-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Graduate student studies oyster genomics to preserve biodiversity</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/25/positive-childhood-experiences-research/" aria-label="Grandparents, teachers and even bus drivers can build resilient kids"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Bus1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Grandparents, teachers and even bus drivers can build resilient kids</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/24/sleep-and-memory-language-learning/" aria-label="Time2Learn, time to sleep: Evening practice may help language stick"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/sleep1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Time2Learn, time to sleep: Evening practice may help language stick</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/21/nasa-engineering-heat-research/" aria-label="This professor moonlights at NASA to bring lessons to class"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Yi-Zheng_1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This professor moonlights at NASA to bring lessons to class</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/19/photonics-ai-energy/" aria-label="This engineer sees AI and its power constraints in a new light"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/phototics-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This engineer sees AI and its power constraints in a new light</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/18/post-quantum-cryptography-cyberattacks/" aria-label="This researcher is helping fend off quantum computing security risks"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/081326_MM_Yunsi_Fei_018.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This researcher is helping fend off quantum computing security risks</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/14/human-ai-collaboration-credit/" aria-label="Who gets credit when AI joins the team? Rethinking collaboration"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/AI_stock.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Who gets credit when AI joins the team? Rethinking collaboration</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/11/text-messages-get-out-the-vote/" aria-label="Can a text message sway a voter? New research puts it to the test"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/TextingVote1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Can a text message sway a voter? New research puts it to the test</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/07/modular-quantum-computing-research/" aria-label="These researchers seek to quiet ‘the noise’ in quantum computing"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">These researchers seek to quiet ‘the noise’ in quantum computing</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/06/ai-scientist-x-ray-experiment/" aria-label="This AI scientist can run experiments. Self-driving labs coming next"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/AI-X-ray-Scientist-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This AI scientist can run experiments. Self-driving labs coming next</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/05/autonomous-ai-cybersecurity/" aria-label="AI has been stepping out of bounds. Should you be worried?"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/080326_AS_AI_security_009.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">AI has been stepping out of bounds. Should you be worried?</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/05/customer-data-collection-research/" aria-label="Why it matters if a retailer has inaccurate personal data on you"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/HomeDepot1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Why it matters if a retailer has inaccurate personal data on you</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/04/physical-activity-brain-health-impulse-control/" aria-label="Aerobic fitness may be a teller of some brain health, study suggests"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/Kids-inhibitory-contron-system-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Aerobic fitness may be a teller of some brain health, study suggests</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/08/03/memristors-supercomputer-research-ai/" aria-label="This researcher is using AI to help computers catch up with the brain"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072926_MM_Hossein_Mosallaei_012.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This researcher is using AI to help computers catch up with the brain</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/30/ai-reasoning-algorithm-research/" aria-label="Why eGoT gets better answers: Teaching AI to connect the dots"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/071526_MM_eGoT_018.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Why eGoT gets better answers: Teaching AI to connect the dots</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/29/satellite-internet-6g-speeds-research/" aria-label="This researcher is launching satellites to unlock faster data speeds"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/Josep-Jornet_1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This researcher is launching satellites to unlock faster data speeds</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/29/firefighting-robots-wildfires/" aria-label="This robot can snuff out wildfires with cryogenic liquid"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072926_MM_fire_robot_021.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">This robot can snuff out wildfires with cryogenic liquid</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/28/children-of-incarcerated-parents/" aria-label="How many children had a relative criminally charged? Study says 1 in 7"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/Family-Criminal-Legal-Contact-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">How many children had a relative criminally charged? Study says 1 in 7</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/" aria-label="Cracking the axolotl code: How to regrow limbs and stay young"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Cracking the axolotl code: How to regrow limbs and stay young</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/27/chatgpt-lawsuit-ai-mental-health/" aria-label="Mental health remains a struggle for AI chatbots, researchers find"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/Aibot1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Mental health remains a struggle for AI chatbots, researchers find</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/23/top-websites-in-the-us-american-behavior/" aria-label="Desktop browsing trends: Gmail first, everything else later"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072026_MM_Gmail_1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Desktop browsing trends: Gmail first, everything else later</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/20/mescaline-drug-psychedelic/" aria-label="One of the oldest psychedelics meets modern brain imaging"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/mescaline-updated-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">One of the oldest psychedelics meets modern brain imaging</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/17/optimization-problem-ising-model/" aria-label="Northeastern professor pushes computers to solve ‘unsolvable’ problems"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/071426_MM_Quantum_Computing_006.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Northeastern professor pushes computers to solve ‘unsolvable’ problems</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/15/rideshare-urban-sprawl-research/" aria-label="Rideshare companies provide transportation, food, groceries…and sprawl"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/UBER1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Rideshare companies provide transportation, food, groceries…and sprawl</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/14/5am-club-sleep-science/" aria-label="Should you join the 5 AM Club? Why hitting snooze might be better"><img src="https://news.northeastern.edu/wp-content/uploads/2026/04/5am-club_1400x933.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Should you join the 5 AM Club? Why hitting snooze might be better</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/14/seafood-processing-nsf-research/" aria-label="Researchers aim to keep New England seafood local from boat to plate"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/MEFishing1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">Researchers aim to keep New England seafood local from boat to plate</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/10/these-researchers-are-demystifying-oobleck-dr-seusss-green-goo/" aria-label="These researchers are demystifying oobleck, Dr. Seuss’s ‘green goo’"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/droplet-1400x933-1.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">These researchers are demystifying oobleck, Dr. Seuss’s ‘green goo’</span></a>
+<a class="wt" href="https://news.northeastern.edu/2026/07/08/parasite-outbreak-michigan/" aria-label="A parasite is running rampant in Michigan. Will it spread elsewhere?"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/Cyclospora-cayetanensis_1400.jpg?resize=600,400" alt="" loading="lazy"><span class="wt-t">A parasite is running rampant in Michigan. Will it spread elsewhere?</span></a>
+      </div>
+      <div class="rw-head" id="rwHead">
+        <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
+        <p class="lede">Thirty stories from the last sixty days. Scroll in.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rw-land">
+    <div class="wrap">
+      <div class="rc-grid" id="counters">
+        <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
+        <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
+        <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
+      </div>
+      <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
+    </div>
+  </div>
+</section>
 
 <section class="journey" id="coop">
   <div class="j-track" id="jTrack">
@@ -788,36 +844,6 @@
         <a class="storylink" style="color:#fff;margin-top:24px" href="https://www.northeastern.edu/co-op">Explore co&#8209;op</a>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="research2" id="research">
-  <div class="wrap">
-    <div class="sechead rv">
-      <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-      <p class="lede">Students and professors choose Northeastern because the investment is real. The numbers are one year's worth.</p>
-    </div>
-    <div class="rc-grid" id="counters">
-      <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
-      <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
-      <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
-    </div>
-    <div class="rghead rv"><h3>In progress right now</h3></div>
-    <div class="re-flow">
-      <div class="re-col one">
-<a class="re-item feature" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" style="width:100%" data-drift="-160"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Oct 2025</span><span class="b-t">Robots walk to class here. Researchers are teaching them how</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/" style="width:68%" data-drift="200"><span class="re-im"><img src="../img/mars-etch.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">Lighter, faster, more agile: a new Mars rover</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/" style="width:84%" data-drift="150"><span class="re-im"><img src="../img/aerobat.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Sep 2024</span><span class="b-t">Aerobat flies like a bat to navigate tight spaces</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/" style="width:76%" data-drift="-120"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Nov 2023</span><span class="b-t">The robotics high-bay open to every major</span></span></a>
-      </div>
-      <div class="re-col two">
-<a class="re-item" href="https://news.northeastern.edu/2026/05/21/robo-demo/" style="width:78%" data-drift="240"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">A new initiative where AI meets the physical world</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/" style="width:88%" data-drift="-180"><span class="re-im"><img src="../img/sccrub-robot.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Feb 2026</span><span class="b-t">A robotic arm that cleans like an elephant's trunk</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/" style="width:100%" data-drift="-260"><span class="re-im"><img src="../img/lunabotics.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2025</span><span class="b-t">Lunabotics builds a robot for the moon's surface</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2024/01/12/tech-savvy/" style="width:72%" data-drift="200"><span class="re-im"><img src="../img/colosseum.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Jan 2024</span><span class="b-t">Inside Colosseum, the wireless network emulator</span></span></a>
-      </div>
-    </div>
-    <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
   </div>
 </section>
 
@@ -1543,25 +1569,20 @@ if (jTrack && jRail && !reduceMotion) {
   jUpd();
 }
 
-/* ============ research collage: elements drift around the canvas ============ */
-const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift, ty: 0 }));
-if (driftEls.length && !reduceMotion) {
-  const featImg = document.querySelector(".re-item.feature img");
-  const dUpd = () => {
-    const mid = innerHeight / 2;
-    for (const o of driftEls) {
-      /* rect includes our own transform; subtract it so the drift never feeds back */
-      const r = o.el.getBoundingClientRect();
-      const c = (r.top - o.ty + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
-      o.ty = c * o.d;
-      o.el.style.transform = `translateY(${o.ty.toFixed(1)}px)`;
-      if (featImg && o.el.contains(featImg))
-        featImg.style.transform = `scale(1.16) translateY(${(-c * o.d * 0.22).toFixed(1)}px)`;
-    }
+/* ============ research wall: dive into the mass ============ */
+const rwTrack = $("#rwTrack"), rwWall = $("#rwWall"), rwHead = $("#rwHead");
+if (rwTrack && rwWall && !reduceMotion) {
+  const rwUpd = () => {
+    const r = rwTrack.getBoundingClientRect();
+    const p = clamp01(-r.top / (r.height - innerHeight));
+    const e = easeIO(p);
+    const sc = 0.42 + e * 1.13;
+    rwWall.style.transform = `translate(-50%, ${(-50 - e * 6).toFixed(2)}%) scale(${sc.toFixed(4)})`;
+    if (rwHead) rwHead.style.opacity = clamp01(1 - p / 0.28).toFixed(2);
   };
-  addEventListener("scroll", () => requestAnimationFrame(dUpd), { passive: true });
-  addEventListener("resize", dUpd);
-  dUpd();
+  addEventListener("scroll", () => requestAnimationFrame(rwUpd), { passive: true });
+  addEventListener("resize", rwUpd);
+  rwUpd();
 }
 
 /* ============ voices: scroll-driven crossfade cinema ============ */
