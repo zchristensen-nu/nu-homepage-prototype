@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="8">
+<meta name="concept2-rev" content="9">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -88,6 +88,50 @@
   .hero .sub{margin-top:22px;max-width:52ch;font-size:clamp(15px,1.6vw,19px);font-weight:300;color:#E5E5E5}
   .hero .ctas{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
   .hero .cap{position:absolute;right:clamp(20px,4vw,48px);bottom:14px;font-size:11px;color:rgba(255,255,255,.55)}
+
+  /* ---------- GLOBE SCROLLY ---------- */
+  .scrolly{position:relative;background:var(--dark);color:#fff;border-radius:28px 28px 0 0;margin-top:-28px}
+  .stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+  .stage canvas.dragging{cursor:grabbing}
+  .stage .hint{position:absolute;right:24px;bottom:20px;font-size:12px;color:rgba(255,255,255,.45);transition:opacity .5s}
+  .steps{position:relative;z-index:5;pointer-events:none;margin-top:-100svh;padding:6vh 0 14vh}
+  .step{min-height:72vh;display:flex;align-items:center;max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+  .step .card{pointer-events:auto;max-width:430px;opacity:0;transform:translateY(24px);
+    transition:opacity .7s var(--ease),transform .7s var(--ease)}
+  .step.active .card{opacity:1;transform:none}
+  .step .big{font-size:clamp(40px,5.6vw,72px);font-weight:200;letter-spacing:-.025em;line-height:1.02}
+  .step .big b{font-weight:600}
+  .step p{margin-top:12px;font-size:15.5px;color:#C9C9CF;max-width:40ch}
+  .step .legend{margin-top:16px;display:grid;gap:8px;font-size:13.5px;color:#C9C9CF}
+  .step .legend .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:9px;vertical-align:-1px}
+  .pinhint{margin-top:14px;font-size:13.5px;color:#A9A9B2;display:flex;align-items:center;gap:8px}
+  .pinhint::before{content:"";width:8px;height:8px;border-radius:50%;background:#EE5566;
+    box-shadow:0 0 0 4px rgba(238,85,102,.25);flex-shrink:0}
+  .gt-loc{display:flex;align-items:center;gap:8px;font-size:13px;color:#A9A9B2}
+  .gt-card{position:absolute;right:max(24px, calc((100vw - 1280px) / 2));top:50%;transform:translateY(-50%);width:min(330px,86vw);
+    z-index:7;background:rgba(16,16,20,.82);backdrop-filter:blur(14px);
+    border:1px solid rgba(255,255,255,.14);border-radius:16px;overflow:hidden;
+    opacity:1;transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  .gt-card[hidden]{display:block;opacity:0;pointer-events:none;transform:translateY(calc(-50% + 16px))}
+  .gt-card img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  .gtc-body{padding:16px 18px 14px}
+  .gtc-body h3{font-size:18.5px;font-weight:400;line-height:1.3;margin-top:8px;color:#fff}
+  .gtc-body .storylink{color:#fff;font-weight:500;margin-top:12px}
+  .gtc-body .storylink:hover{color:#FFB3BE}
+  .gt-step{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:10px 14px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px;color:#A9A9B2}
+  .gt-arrow{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+    background:transparent;color:#fff;font-size:15px;cursor:pointer;transition:.2s;
+    display:flex;align-items:center;justify-content:center}
+  .gt-arrow:hover{background:#fff;color:var(--ink);border-color:#fff}
+  @media(max-width:720px){
+    .step{align-items:flex-end;padding-bottom:6vh}
+    .step .card{max-width:100%}
+    .gt-card{top:auto;bottom:16px;transform:none;left:20px;right:20px;width:auto}
+    .gt-card[hidden]{transform:translateY(16px)}
+    .gt-card img{aspect-ratio:16/7}
+  }
 
   .srch{position:fixed;top:0;left:0;right:0;z-index:220;background:rgba(11,11,14,.96);
     backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 24px 48px rgba(0,0,0,.4)}
@@ -227,8 +271,6 @@
 
   /* ---------- NGN wire ---------- */
   .wire{background:var(--dark);color:#fff;overflow:hidden;position:relative;z-index:6}
-  .wire.top{border-bottom:1px solid rgba(255,255,255,.1);margin-top:-28px;border-radius:28px 28px 0 0}
-  .wire.top .wire-in{margin-top:14px}
   .wire.foot{border-top:1px solid rgba(255,255,255,.1)}
   .wire-in{display:flex;align-items:center;height:56px}
   .w-label{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:0 22px;height:100%}
@@ -248,20 +290,6 @@
     .w-track{animation:none}.w-belt{overflow-x:auto}
     .w-label::before{animation:none}
   }
-
-  /* ---------- campuses: the globe as centerpiece ---------- */
-  .campuses{position:relative;z-index:5;background:var(--dark);color:#fff;padding:130px 0 110px}
-  .campuses .sechead h2{color:#fff}
-  .campuses .lede{color:#C9C9CF}
-  .g-wrap{position:relative;width:min(88vw,760px);aspect-ratio:1;margin:24px auto 0}
-  .g-wrap .stage{position:absolute;inset:0}
-  .g-wrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
-  .g-wrap canvas.dragging{cursor:grabbing}
-  .g-caption{margin-top:6px;text-align:center;font-size:13.5px;color:#A9A9B2}
-  .g-clocks{margin-top:26px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px 34px}
-  .g-clock{display:flex;align-items:baseline;gap:9px}
-  .g-clock .c{font-size:15px;color:#fff}
-  .g-clock .t{font-size:14px;color:#A9A9B2;font-variant-numeric:tabular-nums}
 
   /* ---------- co-op rail ---------- */
   .journey{position:relative;z-index:5;background:var(--dark);color:#fff}
@@ -291,8 +319,8 @@
     .j-bar{display:none}
   }
 
-  /* ---------- research platform ---------- */
-  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 110px}
+  /* ---------- research: counters + editorial drift collage ---------- */
+  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 130px;overflow:hidden}
   .rc-grid{margin-top:70px;display:grid;grid-template-columns:repeat(3,1fr);
     gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
   .rc{border-left:1px solid #E5E5E5;padding-left:clamp(18px,2vw,30px)}
@@ -305,41 +333,48 @@
     .rc{border-left:0;padding-left:0;border-top:1px solid #E5E5E5;padding-top:22px}
     .rc:first-child{border-top:0;padding-top:0}
   }
-  .rghead{margin-top:110px}
+  .rghead{margin-top:120px}
   .rghead h3{font-size:clamp(24px,2.6vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--ink)}
-  .rgrid{margin-top:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px;grid-auto-flow:dense}
-  .rgcard{display:block;background:#fff;border:1px solid #E5E5E5;border-radius:14px;overflow:hidden;
-    transition:border-color .25s}
-  .rgcard:hover{border-color:#A3A3A3}
-  .rg-im{display:block;overflow:hidden}
-  .rgcard img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;
-    transition:transform .8s var(--ease)}
-  .rgcard:hover img{transform:scale(1.04)}
-  .rgcard.feature{grid-column:span 2;grid-row:span 2}
-  .rgcard.feature img{aspect-ratio:16/10;height:100%}
-  .rgcard.feature .b-t{font-size:clamp(19px,1.8vw,26px);font-weight:300}
-  .b-body{display:block;padding:14px 16px 16px}
+  .re-flow{margin-top:44px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
+  .re-col{display:flex;flex-direction:column;gap:clamp(40px,6vw,96px)}
+  .re-col.two{margin-top:clamp(60px,10vw,160px)}
+  .re-item{display:block;will-change:transform}
+  .re-col .re-item:nth-child(even){align-self:flex-end}
+  .re-im{display:block;overflow:hidden;border-radius:14px}
+  .re-item img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;transition:transform .8s var(--ease)}
+  .re-item:hover img{transform:scale(1.04)}
+  .re-item.feature img{aspect-ratio:16/10}
+  .re-item.feature .b-t{font-size:clamp(19px,1.9vw,28px);font-weight:300;max-width:24ch}
+  .b-body{display:block;padding:14px 2px 0}
   .b-d{display:block;font-size:12px;color:#737373}
-  .b-t{display:block;margin-top:5px;font-size:15.5px;line-height:1.35;color:var(--ink);font-weight:400}
-  @media(max-width:820px){
-    .rgrid{grid-template-columns:1fr 1fr}
-    .rgcard.feature{grid-column:span 2;grid-row:auto}
+  .b-t{display:block;margin-top:5px;font-size:16px;line-height:1.35;color:var(--ink);font-weight:400}
+  @media(max-width:760px){
+    .re-flow{grid-template-columns:1fr}
+    .re-col.two{margin-top:0}
+    .re-item{width:100% !important;transform:none !important}
   }
-  @media(max-width:560px){.rgrid{grid-template-columns:1fr}.rgcard.feature{grid-column:auto}}
 
-  /* ---------- voices: quotes stack with scroll ---------- */
+  /* ---------- voices: scroll-driven cinema ---------- */
   .voices{position:relative;z-index:6;background:var(--dark);color:#fff}
-  .vq{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden}
-  .vq-bg{position:absolute;inset:0;background-size:cover;filter:brightness(.52)}
-  .vq::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  .v-track{height:340svh}
+  .v-stage{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden}
+  .v-slide{position:absolute;inset:0;opacity:0;pointer-events:none;will-change:opacity}
+  .v-slide.is-active{pointer-events:auto}
+  .v-bg{position:absolute;inset:0;background-size:cover;filter:brightness(.52);will-change:transform}
+  .v-slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
     background:linear-gradient(to top right,rgba(5,5,8,.82) 0%,rgba(5,5,8,.38) 45%,rgba(5,5,8,0) 75%)}
-  .vq-in{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;
+  .v-in{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;
     height:100%;padding-bottom:96px}
-  .vq-in blockquote{font-size:clamp(24px,3.3vw,46px);font-weight:300;letter-spacing:-.015em;
+  .v-in blockquote{font-size:clamp(24px,3.3vw,46px);font-weight:300;letter-spacing:-.015em;
     line-height:1.18;max-width:24ch;text-wrap:balance}
   .v-who{margin-top:26px;font-size:15px;color:#D4D4D4}
   .v-who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
-  .vq-in .storylink{color:#fff;font-weight:500}
+  .v-in .storylink{color:#fff;font-weight:500}
+  @media (prefers-reduced-motion: reduce){
+    .v-track{height:auto}
+    .v-stage{position:static;height:auto;overflow:visible}
+    .v-slide{position:relative;opacity:1 !important;height:80svh;min-height:520px}
+  }
 
   /* ---------- STUDENT LIFE IMAX ---------- */
   .lifezoom{position:relative;z-index:6;background:var(--dark);border-radius:28px 28px 0 0;margin-top:-28px}
@@ -674,31 +709,63 @@
 </div>
 <div class="grain" aria-hidden="true"></div>
 
-<section class="wire top" aria-label="Latest from Northeastern Global News">
+<section class="wire" aria-label="Latest from Northeastern Global News">
   <div class="wire-in">
     <span class="w-label"><svg class="w-logo" viewBox="0 0 380 102" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Northeastern Global News"><path d="M330.519 1.38965V11.2966H362.874L334.034 40.1918L341.025 47.2092L370.112 18.0525V50.9655H380V1.38965H330.519Z" fill="#C8102E"></path><path d="M0 100.541V1.4585H17.8395L72.5255 69.4585V1.4585H92.1915V100.541H74.0636L19.6661 33.2707V100.541H0Z" fill="white"></path><path d="M107.751 50.9931C107.751 22.0291 129.587 0 158.496 0C175.607 0 191.414 8.17321 201.824 23.2675L186.319 34.3577C178.601 22.6896 168.548 18.2315 158.496 18.2315C140.505 18.2315 127.912 31.7985 127.912 50.9931C127.912 70.1878 141.013 83.7548 159.004 83.7548C175.456 83.7548 184.712 74.0542 186.965 63.5419H157.04V46.5488H206.85C207.139 49.1081 207.207 52.0251 207.207 54.5018C207.207 79.9709 189.299 102 159.004 102C128.708 102 107.737 79.9709 107.737 51.0069L107.751 50.9931Z" fill="white"></path><path d="M222.781 100.541V1.4585H240.621L295.307 69.4585V1.4585H314.973V100.541H296.845L242.447 33.2707V100.541H222.781V100.541Z" fill="white"></path></svg></span>
     <div class="w-belt"><div class="w-track"><a class="w-item" href="https://news.northeastern.edu/2026/08/28/wildlife-sanctuary-co-op-experience/"><span class="w-d">Aug 28</span>This student toiled in aviaries, barns and pens for his co-op</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/samantha-johnson-convocation-alumni-speaker/"><span class="w-d">Aug 28</span>Samantha Johnson '21, robotics CEO, to speak at Boston Convocation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"><span class="w-d">Aug 28</span>Scientists put algae to work making fuel. AI keeps watch.</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/kratom-ban-massachusetts/"><span class="w-d">Aug 28</span>Why Massachusetts banned this addictive Asian plant</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/nepal-tibet-flood/"><span class="w-d">Aug 27</span>Many causes for floods, many causes for their devastation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/boston-convocation-guide-2026/"><span class="w-d">Aug 27</span>Boston convocation welcomes new Huskies to Northeastern</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/oakland-convocation-guide-2026/"><span class="w-d">Aug 27</span>Everything to know about convocation 2026 at Northeastern Oakland</a><a class="w-item" href="https://news.northeastern.edu/2026/08/20/microfilm-research-archivist/"><span class="w-d">Aug 20</span>Slow down and zoom in: the case for microfilm research</a><a class="w-item" href="https://news.northeastern.edu/2026/08/12/northeastern-electric-racing-club-2/"><span class="w-d">Aug 12</span>These racing club students were given nine months to make their 'EV baby'</a><a class="w-item" href="https://news.northeastern.edu/2026/07/29/satellite-internet-6g-speeds-research/"><span class="w-d">Jul 29</span>This researcher is launching satellites to unlock faster data speeds</a><a class="w-item" href="https://news.northeastern.edu/2026/07/22/ai-career-amazon-graduate/"><span class="w-d">Jul 22</span>Northeastern graduate finds success and comfort in computer codes</a><a class="w-item" href="https://news.northeastern.edu/2026/07/16/world-cup-final-prediction/"><span class="w-d">Jul 16</span>Can network science predict the World Cup?</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/wildlife-sanctuary-co-op-experience/"><span class="w-d">Aug 28</span>This student toiled in aviaries, barns and pens for his co-op</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/samantha-johnson-convocation-alumni-speaker/"><span class="w-d">Aug 28</span>Samantha Johnson '21, robotics CEO, to speak at Boston Convocation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"><span class="w-d">Aug 28</span>Scientists put algae to work making fuel. AI keeps watch.</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/kratom-ban-massachusetts/"><span class="w-d">Aug 28</span>Why Massachusetts banned this addictive Asian plant</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/nepal-tibet-flood/"><span class="w-d">Aug 27</span>Many causes for floods, many causes for their devastation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/boston-convocation-guide-2026/"><span class="w-d">Aug 27</span>Boston convocation welcomes new Huskies to Northeastern</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/oakland-convocation-guide-2026/"><span class="w-d">Aug 27</span>Everything to know about convocation 2026 at Northeastern Oakland</a><a class="w-item" href="https://news.northeastern.edu/2026/08/20/microfilm-research-archivist/"><span class="w-d">Aug 20</span>Slow down and zoom in: the case for microfilm research</a><a class="w-item" href="https://news.northeastern.edu/2026/08/12/northeastern-electric-racing-club-2/"><span class="w-d">Aug 12</span>These racing club students were given nine months to make their 'EV baby'</a><a class="w-item" href="https://news.northeastern.edu/2026/07/29/satellite-internet-6g-speeds-research/"><span class="w-d">Jul 29</span>This researcher is launching satellites to unlock faster data speeds</a><a class="w-item" href="https://news.northeastern.edu/2026/07/22/ai-career-amazon-graduate/"><span class="w-d">Jul 22</span>Northeastern graduate finds success and comfort in computer codes</a><a class="w-item" href="https://news.northeastern.edu/2026/07/16/world-cup-final-prediction/"><span class="w-d">Jul 16</span>Can network science predict the World Cup?</a></div></div>
   </div>
 </section>
+<div class="scrolly" id="experience">
+  <div class="stage" id="stage">
+    <canvas id="globe" aria-label="Interactive globe showing Northeastern's 14 campuses, 8 N.U.in locations, and 4,705 Fall 2026 co‑op placements. Scroll for the tour, click a red pin for a story, drag to rotate."></canvas>
+    <aside class="gt-card" id="gt-card" hidden aria-label="Co‑op story">
+      <img id="gtc-img" alt="">
+      <div class="gtc-body">
+        <div class="gt-loc" id="gtc-loc"></div>
+        <h3 id="gtc-t"></h3>
+        <a class="storylink" id="gtc-url" href="#">Read the story on NGN</a>
+      </div>
+      <div class="gt-step">
+        <button class="gt-arrow" id="gtc-prev" aria-label="Previous story">&#8592;</button>
+        <span id="gtc-n"></span>
+        <button class="gt-arrow" id="gtc-next" aria-label="Next story">&#8594;</button>
+      </div>
+    </aside>
+  </div>
+  <div class="steps" id="steps">
 
-<section class="campuses" id="experience">
-  <div class="wrap sechead rv">
-    <h2 class="display"><span class="line"><span>Where you’ll find us.</span></span></h2>
-    <p class="lede">Four undergraduate campuses: Boston, our flagship, plus Oakland, New York City and London. Ten more campuses with graduate programs, and eight N.U.in launch cities across Europe.</p>
-  </div>
-  <div class="g-wrap"><div class="stage" id="stage">
-    <canvas id="globe" aria-label="Slowly spinning globe: campuses labeled in white, co-op cities as red dots. Drag to spin, hover a dot for details."></canvas>
-  </div></div>
-  <div class="wrap">
-    <p class="g-caption">Campuses in white. Every red dot: Huskies on co‑op this fall.</p>
-    <div class="g-clocks" aria-label="Local time on the undergraduate campuses">
-      <span class="g-clock"><span class="c">Boston</span><span class="t j-time" data-tz="America/New_York">--:--</span></span>
-      <span class="g-clock"><span class="c">Oakland</span><span class="t j-time" data-tz="America/Los_Angeles">--:--</span></span>
-      <span class="g-clock"><span class="c">New York City</span><span class="t j-time" data-tz="America/New_York">--:--</span></span>
-      <span class="g-clock"><span class="c">London</span><span class="t j-time" data-tz="Europe/London">--:--</span></span>
+    <div class="step" data-step="campuses">
+      <div class="card">
+        <div class="big"><b>14</b> campuses</div>
+        <p>Boston to London, Silicon Valley to Toronto. One university system spanning two countries&hellip; and counting.</p>
+      </div>
     </div>
+
+    <div class="step" data-step="nuin">
+      <div class="card">
+        <div class="big"><b>8</b> ways to start abroad</div>
+        <p>First semester, first stamp in the passport. N.U.in launches new Huskies from eight European cities.</p>
+      </div>
+    </div>
+
+    <div class="step" data-step="coops">
+      <div class="card">
+        <div class="big"><b id="coopcount">0</b> co‑ops</div>
+        <p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>
+      </div>
+    </div>
+
+    <div class="step" data-step="outro">
+      <div class="card">
+        <div class="big">Where will yours be?</div>
+        <p>3,000+ employers. 151 countries. One application.</p>
+        <a class="pill ghostw" style="margin-top:22px" href="#admit">Start at Northeastern</a>
+      </div>
+    </div>
+
   </div>
-</section>
+</div>
+
 
 <section class="journey" id="coop">
   <div class="j-track" id="jTrack">
@@ -737,23 +804,32 @@
       <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
     </div>
     <div class="rghead rv"><h3>In progress right now</h3></div>
-    <div class="rgrid rv">
-<a class="rgcard feature" href="https://news.northeastern.edu/2025/10/01/walking-the-future/"><span class="rg-im"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Oct 2025</span><span class="b-t">Robots walk to class here. Researchers are teaching them how</span></span></a>
-<a class="rgcard" href="https://news.northeastern.edu/2026/05/21/robo-demo/"><span class="rg-im"><img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">A new initiative where AI meets the physical world</span></span></a>
-<a class="rgcard" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/"><span class="rg-im"><img src="../img/sccrub-robot.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Feb 2026</span><span class="b-t">A robotic arm that cleans like an elephant's trunk</span></span></a>
-<a class="rgcard" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/"><span class="rg-im"><img src="../img/mars-etch.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">Lighter, faster, more agile: a new Mars rover</span></span></a>
-<a class="rgcard" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/"><span class="rg-im"><img src="../img/lunabotics.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2025</span><span class="b-t">Lunabotics builds a robot for the moon's surface</span></span></a>
-<a class="rgcard" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/"><span class="rg-im"><img src="../img/aerobat.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Sep 2024</span><span class="b-t">Aerobat flies like a bat to navigate tight spaces</span></span></a>
-<a class="rgcard" href="https://news.northeastern.edu/2024/01/12/tech-savvy/"><span class="rg-im"><img src="../img/colosseum.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Jan 2024</span><span class="b-t">Inside Colosseum, the wireless network emulator</span></span></a>
+    <div class="re-flow">
+      <div class="re-col one">
+<a class="re-item feature" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" style="width:100%" data-drift="-26"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Oct 2025</span><span class="b-t">Robots walk to class here. Researchers are teaching them how</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/" style="width:68%" data-drift="42"><span class="re-im"><img src="../img/mars-etch.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">Lighter, faster, more agile: a new Mars rover</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/" style="width:84%" data-drift="22"><span class="re-im"><img src="../img/aerobat.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Sep 2024</span><span class="b-t">Aerobat flies like a bat to navigate tight spaces</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/" style="width:76%" data-drift="-14"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Nov 2023</span><span class="b-t">The robotics high-bay open to every major</span></span></a>
+      </div>
+      <div class="re-col two">
+<a class="re-item" href="https://news.northeastern.edu/2026/05/21/robo-demo/" style="width:78%" data-drift="34"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">A new initiative where AI meets the physical world</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/" style="width:88%" data-drift="-18"><span class="re-im"><img src="../img/sccrub-robot.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Feb 2026</span><span class="b-t">A robotic arm that cleans like an elephant's trunk</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/" style="width:100%" data-drift="-30"><span class="re-im"><img src="../img/lunabotics.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2025</span><span class="b-t">Lunabotics builds a robot for the moon's surface</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2024/01/12/tech-savvy/" style="width:72%" data-drift="40"><span class="re-im"><img src="../img/colosseum.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Jan 2024</span><span class="b-t">Inside Colosseum, the wireless network emulator</span></span></a>
+      </div>
     </div>
-    <a class="storylink rv" style="margin-top:26px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
+    <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
   </div>
 </section>
 
 <section class="voices" id="voices" aria-label="Student voices">
-<div class="vq"><div class="vq-bg" style="background-image:url('../img/microscopy-coop.jpg');background-position:center 30%"></div><div class="wrap vq-in"><blockquote><span class="line"><span>&ldquo;I really enjoyed the process of research from my previous co‑op.</span></span><span class="line"><span>But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</span></span></blockquote><div class="v-who"><b>Cameron D’Mello</b> Bioengineering &middot; Co‑ops at Beth Israel Medical Center and QuantumScape</div><a class="storylink" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/">Read Cameron’s story</a></div></div>
-<div class="vq"><div class="vq-bg" style="background-image:url('../img/oyster-dock.jpg');background-position:20% 35%"></div><div class="wrap vq-in"><blockquote><span class="line"><span>&ldquo;I wanted to do this job and test myself and see</span></span><span class="line"><span>if I like working outdoors as much as I hoped. So far, so good.&rdquo;</span></span></blockquote><div class="v-who"><b>Maddy Russell</b> Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine</div><a class="storylink" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/">Read Maddy’s story</a></div></div>
-<div class="vq"><div class="vq-bg" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg');background-position:center"></div><div class="wrap vq-in"><blockquote><span class="line"><span>&ldquo;I really wanted the chance to go out into the field.</span></span><span class="line"><span>You just have to push past it, and that’s something I’ve gotten pretty good at.&rdquo;</span></span></blockquote><div class="v-who"><b>Paris Graff</b> International affairs &middot; Co‑op with the Landmine Relief Fund, Cambodia</div><a class="storylink" href="https://news.northeastern.edu/2023/04/25/landmine-relief-fund-cambodia-co-op/">Read Paris’s story</a></div></div>
+  <div class="v-track" id="vTrack">
+    <div class="v-stage">
+<div class="v-slide is-active"><div class="v-bg" style="background-image:url('../img/microscopy-coop.jpg');background-position:center 30%"></div><div class="wrap v-in"><blockquote><span class="line"><span>&ldquo;I really enjoyed the process of research from my previous co‑op.</span></span><span class="line"><span>But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</span></span></blockquote><div class="v-who"><b>Cameron D’Mello</b> Bioengineering &middot; Co‑ops at Beth Israel Medical Center and QuantumScape</div><a class="storylink" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/">Read Cameron’s story</a></div></div>
+<div class="v-slide"><div class="v-bg" style="background-image:url('../img/oyster-dock.jpg');background-position:20% 35%"></div><div class="wrap v-in"><blockquote><span class="line"><span>&ldquo;I wanted to do this job and test myself and see</span></span><span class="line"><span>if I like working outdoors as much as I hoped. So far, so good.&rdquo;</span></span></blockquote><div class="v-who"><b>Maddy Russell</b> Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine</div><a class="storylink" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/">Read Maddy’s story</a></div></div>
+<div class="v-slide"><div class="v-bg" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg');background-position:center"></div><div class="wrap v-in"><blockquote><span class="line"><span>&ldquo;I really wanted the chance to go out into the field.</span></span><span class="line"><span>You just have to push past it, and that’s something I’ve gotten pretty good at.&rdquo;</span></span></blockquote><div class="v-who"><b>Paris Graff</b> International affairs &middot; Co‑op with the Landmine Relief Fund, Cambodia</div><a class="storylink" href="https://news.northeastern.edu/2023/04/25/landmine-relief-fund-cambodia-co-op/">Read Paris’s story</a></div></div>
+    </div>
+  </div>
 </section>
 
 <section class="lifezoom lifeimax" id="life">
@@ -1186,7 +1262,7 @@ function frame(now) {
       if (Math.abs(spinV) > 0.004 && !dragging) {
         cur.lon += spinV; tgt.lon = cur.lon; spinV *= 0.945;
       } else if (autorotate && !dragging && !reduceMotion) {
-        tgt.lon += 0.02;
+        tgt.lon += 0.03;
       }
       const f = reduceMotion ? 1 : 0.055;
       cur.lon += shortestDelta(cur.lon, tgt.lon) * f;
@@ -1269,6 +1345,129 @@ function pickDot(e) {
   gtip.style.top = Math.min(my + 14, H - 60) + "px";
 }
 
+/* ============ scrollytelling ============ */
+const NGN = "https://news.northeastern.edu";
+const TOUR_STORIES = [
+  { loc: "Cupertino, California", view: { lon: -122.03, lat: 37.32, k: 2.4 }, focus: [37.32, -122.03],
+    img: "img/apple-coop.jpg",
+    t: "Developing cameras for Apple products, on co‑op",
+    url: NGN + "/2025/01/15/apple-co-op-camera-process-engineer/" },
+  { loc: "Phnom Penh, Cambodia", view: { lon: 104.92, lat: 11.56, k: 2.4 }, focus: [11.56, 104.92],
+    img: NGN + "/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg",
+    t: "Teacher, mentor, big sister: six months in a Cambodian dormitory",
+    url: NGN + "/2023/11/06/harpswell-foundation-co-op-cambodian-women/" },
+  { loc: "Geneva, Switzerland", view: { lon: 6.14, lat: 46.2, k: 2.6 }, focus: [46.2, 6.14],
+    img: NGN + "/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg",
+    t: "Learning how global negotiation really works",
+    url: NGN + "/2023/11/27/dialogue-of-civilizations-geneva-anniversary/" },
+  { loc: "Vienna, Austria", view: { lon: 16.37, lat: 48.21, k: 2.6 }, focus: [48.21, 16.37],
+    img: NGN + "/wp-content/uploads/2023/09/Vienna1400.jpg",
+    t: "Coffeehouses, Mozart and international finance, on co‑op",
+    url: NGN + "/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" },
+  { loc: "Scarborough, Maine", view: { lon: -70.33, lat: 43.58, k: 2.4 }, focus: [43.58, -70.33],
+    img: "img/oyster-coop.jpg",
+    t: "Harvesting oysters on Maine's Nonesuch River, on co‑op",
+    url: NGN + "/2022/11/01/oyster-harvesting-maine/" },
+];
+const STORY_PINS = TOUR_STORIES.map(st => st.focus);
+LAYER_KEYS.push("spins");
+cur.spins = 0; tgt.spins = 0;
+let storySel = -1;
+const gtCard = $("#gt-card");
+
+function fillCard(i) {
+  const st = TOUR_STORIES[i];
+  $("#gtc-img").src = st.img;
+  $("#gtc-img").alt = st.t;
+  $("#gtc-loc").textContent = st.loc;
+  $("#gtc-t").textContent = st.t;
+  $("#gtc-url").href = st.url;
+  $("#gtc-n").textContent = `${i + 1} of ${TOUR_STORIES.length}`;
+}
+function openStory(i) {
+  storySel = (i + TOUR_STORIES.length) % TOUR_STORIES.length;
+  fillCard(storySel);
+  const st = TOUR_STORIES[storySel];
+  startFly({ lon: st.view.lon, lat: st.view.lat, k: st.view.k });
+  for (const [k2, v] of Object.entries({ coops: .5, campus: .1, nuin: 0, labelC: 0, labelN: 0, spins: 1 })) tgt[k2] = v;
+  autorotate = false;
+  gtCard.hidden = false;
+}
+$("#gtc-prev").addEventListener("click", () => openStory(storySel - 1));
+$("#gtc-next").addEventListener("click", () => openStory(storySel + 1));
+
+/* click a pulsing pin (ignore clicks that were drags) */
+let downPt = null;
+canvas.addEventListener("pointerdown", e => { downPt = [e.clientX, e.clientY]; }, true);
+canvas.addEventListener("click", e => {
+  if (downPt && Math.hypot(e.clientX - downPt[0], e.clientY - downPt[1]) > 6) return;
+  if (cur.spins < .3) return;
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  const R = Math.min(W, H) * 0.42 * cur.k;
+  const cx = W > 900 ? W * 0.62 : W * 0.5;
+  const cy = H * 0.52;
+  for (let i = 0; i < STORY_PINS.length; i++) {
+    const [x, y, v] = project(STORY_PINS[i][0], STORY_PINS[i][1], R, cx, cy);
+    if (v > 0 && Math.hypot(mx - x, my - y) < 16) { openStory(i); return; }
+  }
+});
+
+const VIEWS = {
+  intro:    { lat: 25, k: 1, coops: .3, campus: .3, nuin: .3, labelC: 0, labelN: 0, spins: 0, auto: true },
+  campuses: { lon: -78, lat: 42, k: 1.35, coops: .06, campus: 1, nuin: .1, labelC: 1, labelN: 0, spins: 0 },
+  nuin:     { lon: 5, lat: 48, k: 1.6, coops: .06, campus: .25, nuin: 1, labelC: 0, labelN: 1, spins: 0 },
+  coops:    { lon: -55, lat: 22, k: 1, coops: 1, campus: .35, nuin: .35, labelC: 0, labelN: 0, spins: 1, count: true, auto: true },
+  outro:    { lat: 10, k: .92, coops: .8, campus: .9, nuin: .9, labelC: 0, labelN: 0, spins: 0, auto: true },
+};
+
+let counted = false;
+const stepIO = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) { e.target.classList.remove("active"); return; }
+  e.target.classList.add("active");
+  const v = VIEWS[e.target.dataset.step];
+  if (!v) return;
+  startFly({ lon: v.lon !== undefined ? v.lon : cur.lon, lat: v.lat !== undefined ? v.lat : cur.lat, k: v.k });
+  for (const key of LAYER_KEYS) tgt[key] = v[key];
+  focus = null;
+  autorotate = !!v.auto;
+  if (v.count && !counted) {
+    counted = true;
+    ignite = 0;
+    igniteT0 = performance.now() + 500;
+  }
+  /* the story card is a fixture of the co‑op beat */
+  if (e.target.dataset.step === "coops") {
+    if (storySel < 0) storySel = 0;
+    fillCard(storySel);
+    gtCard.hidden = false;
+  } else {
+    gtCard.hidden = true;
+  }
+}), { rootMargin: "-40% 0px -40% 0px", threshold: 0 });
+$$(".step").forEach(el => stepIO.observe(el));
+
+/* the campuses beat rides in with the globe: while the section is still
+   entering the viewport, scroll progress drives the camera from the idle
+   view to the campuses view, so the pin never snaps or crops the sphere */
+const scEl = $(".scrolly");
+const ENTRY_FROM = { lon: -50, lat: 25, k: 1 };
+const ENTRY_TO = { lon: -78, lat: 42, k: 1.35 };
+const entryUpd = () => {
+  const r = scEl.getBoundingClientRect();
+  if (r.top <= 0 || r.top >= innerHeight) return;
+  const p = easeIO(clamp01((innerHeight - r.top) / innerHeight));
+  fly = null; autorotate = false;
+  cur.lon = tgt.lon = ENTRY_FROM.lon + shortestDelta(ENTRY_FROM.lon, ENTRY_TO.lon) * p;
+  cur.lat = tgt.lat = ENTRY_FROM.lat + (ENTRY_TO.lat - ENTRY_FROM.lat) * p;
+  cur.k = tgt.k = ENTRY_FROM.k + (ENTRY_TO.k - ENTRY_FROM.k) * p;
+  tgt.campus = .3 + .7 * p;
+  tgt.labelC = p;
+  tgt.coops = .3 - .24 * p;
+  tgt.nuin = .3 - .2 * p;
+};
+addEventListener("scroll", () => requestAnimationFrame(entryUpd), { passive: true });
+
 /* ============ research counters ============ */
 function countUp(el, to, ms) {
   const t0 = performance.now();
@@ -1344,19 +1543,60 @@ if (jTrack && jRail && !reduceMotion) {
   addEventListener("resize", jUpd);
   jUpd();
 }
-function tickCityClocks() {
-  const now = new Date();
-  $$(".j-time").forEach(el => {
-    el.textContent = new Intl.DateTimeFormat("en-US",
-      { hour: "numeric", minute: "2-digit", timeZone: el.dataset.tz }).format(now);
-  });
+
+/* ============ research collage: elements drift around the canvas ============ */
+const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift }));
+if (driftEls.length && !reduceMotion) {
+  const dUpd = () => {
+    const mid = innerHeight / 2;
+    for (const { el, d } of driftEls) {
+      const r = el.getBoundingClientRect();
+      const c = (r.top + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
+      el.style.transform = `translateY(${(c * d).toFixed(1)}px)`;
+    }
+  };
+  addEventListener("scroll", () => requestAnimationFrame(dUpd), { passive: true });
+  addEventListener("resize", dUpd);
+  dUpd();
 }
 
-/* ============ clip-reveal lines ============ */
+/* ============ voices: scroll-driven crossfade cinema ============ */
+const vTrack = $("#vTrack"), vSlides = $$(".v-slide");
+if (vTrack && vSlides.length && !reduceMotion) {
+  const N = vSlides.length;
+  let vActive = 0;
+  const vUpd = () => {
+    const r = vTrack.getBoundingClientRect();
+    const p = clamp01(-r.top / (r.height - innerHeight));
+    vSlides.forEach((sl, i) => {
+      const t = clamp01((p - i / N) * N);
+      const fadeIn = clamp01(t / 0.16);
+      const fadeOut = i === N - 1 ? 1 : clamp01((1 - t) / 0.16);
+      sl.style.opacity = (t <= 0 && i !== 0 ? 0 : Math.min(fadeIn, fadeOut)).toFixed(2);
+      sl.querySelector(".v-bg").style.transform = `scale(${(1.05 + t * 0.05).toFixed(3)})`;
+    });
+    const idx = Math.min(N - 1, Math.floor(p * N));
+    if (idx !== vActive) {
+      vActive = idx;
+      vSlides.forEach((sl, i) => sl.classList.toggle("is-active", i === idx));
+      vSlides[idx].querySelectorAll(".line").forEach((ln, k) => {
+        ln.classList.remove("in");
+        void ln.offsetWidth;
+        setTimeout(() => ln.classList.add("in"), 90 + k * 120);
+      });
+    }
+  };
+  addEventListener("scroll", () => requestAnimationFrame(vUpd), { passive: true });
+  addEventListener("resize", vUpd);
+  vSlides[0].querySelectorAll(".line").forEach(ln => ln.classList.add("in"));
+  vUpd();
+}
+
+/* ============ clip-reveal lines (voices manage their own) ============ */
 const lineIO = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add("in"); lineIO.unobserve(e.target); }
 }), { threshold: 0.3 });
-$$(".line").forEach(el => lineIO.observe(el));
+$$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 /* ============ subtle scroll movement ============ */
 /* hero: content drifts and fades as it scrolls away */
@@ -1537,12 +1777,6 @@ addEventListener("keydown", e => { if (e.key === "Escape") { tkvClose(); srchClo
 /* ============ boot ============ */
 nav.classList.toggle("solid", scrollY > 60);
 runLoader();
-tickCityClocks();
-setInterval(tickCityClocks, 1000);
-/* globe: slow idle spin, campuses labeled, co-op dots on */
-Object.assign(tgt, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
-Object.assign(cur, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
-tgt.k = 1.02; cur.k = 1.02;
 resize();
 requestAnimationFrame(frame);
 </script>
