@@ -172,30 +172,30 @@ page and the variants deleted.
 - The rev-45 entrance animation was verified by computed styles + code review but not
   visually observed live (pane artifact above) — worth one human scroll-through.
 
-## Concept 2: the 24/7 homepage
+## Concept 2: the elevated v1 (current direction)
 
-A second iteration lives at **https://zchristensen-nu.github.io/nu-homepage-prototype/concept-2/**
-(`concept-2/index.html`, rev meta `concept2-rev`). Direction from Zach's director: immersive,
-institution-first rather than student-first, global + research + AI/entrepreneurship forward,
-"something is always happening," and no dynamic globe.
+Lives at **https://zchristensen-nu.github.io/nu-homepage-prototype/concept-2/**
+(`concept-2/index.html`, meta `concept2-rev`, rev 6). Direction settled after two
+discarded explorations (a 24/7 dashboard, then a literal one-day narrative): **take v1
+and raise it to award-site grammar** (references: landonorris.com, schemeengine.com),
+articulate the three pillars (Global network / Experiential / Research), tie in the NGN
+stream, and replace the globe with a different global expression. Zach's fixed point:
+the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it.
 
-- Reuses v2's nav, search/takeover overlays, admissions closer, and footer verbatim; everything
-  between is new. Assembled by `tools/build_c2.py`, which extracts those blocks from
-  `northeastern-homepage-v2.html` with assert-guarded markers, so v2 edits can be re-pulled.
-- Rev 2+ rebuilt the scenes to award-site grammar (references: landonorris.com,
-  schemeengine.com): preloader with count-up that lifts as a curtain (rAF-independent
-  failsafes so a throttled tab never sticks black), custom cursor (dot + lerped ring,
-  labels from data-cursor, pointer-fine only), SVG-turbulence grain overlay, clip-reveal
-  headline lines, a giant solid/outline type marquee, the NGN headline ticker, a
-  hover-reveal research index (image follows the cursor, Scheme Engine style), an AI +
-  Entrepreneurship diptych, a pinned horizontal co-op gallery interleaving photos with
-  giant stat numerals plus a progress bar, and the 14-campus live clock grid. The live
-  day/night map hero stays (canvas equirect fitted to a 336-degree window so Vancouver
-  through Sydney all fit, real solar terminator each minute, five live city clocks).
-- All story/image pairings verified against the articles (each photo's shoot prefix was
-  grepped on its story page). Marquee photos are ambient and unlinked, so they carry no
-  story claims. The terminator math ignores the equation of time (commented as approximate).
-- All motion honors prefers-reduced-motion (belts/ticker/marquee go static).
+- Built by `tools/build_c3.py` from the v1 canonical: keeps v1's hero video (path
+  rewritten to `../hero.mp4`), quotes, IMAX life, closer, footer, nav + overlays.
+- New: award motion layer (preloader with rAF-independent failsafes, custom cursor
+  with mix-blend difference, grain, clip-reveal lines); an NGN wire ticker under the
+  hero and above the footer that **fetches live headlines from the NGN REST API**
+  (CORS verified; baked August list is the fallback); the globe replaced by "Boston is
+  only the beginning.", a 560svh pinned rail: Boston (live clock) > 14 campuses >
+  London (live clock) > N.U.in cities > a canvas constellation of the real 519-city
+  co-op dataset igniting with rail progress > the loved photo/stat gallery (4,705 /
+  519 / 3,000+ / 151 with linked, verified co-op story captions) > "Where will yours
+  be?"; research rebuilt as a two-beat platform on light background: the approved
+  headline + investment line over giant count-up numerals ($296M / 50+ / 510, v1's
+  counter JS reused) + a drag shelf of 8 dated, verified research stories.
+- Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
 
