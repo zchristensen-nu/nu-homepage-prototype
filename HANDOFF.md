@@ -213,6 +213,14 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   co-op-only rail headed "Full-time, paid and real."; custom cursor removed;
   research shelf replaced by a static editorial grid (feature card + 6); quotes
   became three full-bleed sticky panels that stack on scroll, no controls/autoplay.
+- Rev 9/10: Zach called rev 8 unpolished; the v1 globe scrolly returned WHOLE (camera
+  flights, steps, staple story card, dot-ignition counter) in place of the static-globe
+  campus section, with the co-op photo/stat rail following it. Research became an
+  editorial two-column collage whose items drift at different rates on scroll
+  ([data-drift] parallax); quotes became a scroll-driven crossfade cinema (pinned
+  340svh track, push-in, per-slide line reveals, zero controls). Rev 53 of v1 removed
+  the stale "co-op experience" hero video credit (wrong since the video swap); concept 2
+  inherits the fix through the builder.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
