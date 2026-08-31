@@ -206,6 +206,13 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   carousel is now a full-bleed auto-advancing cinema with line reveals and progress bars;
   student life headline is "Some of this you can't major in."; the wire reads the
   `newspost` REST type (the editorial feed; `seen-around` is the photo-of-the-day type).
+- Rev 8: wire ticker centered in a 56px row with the NGN monogram SVG (from Zach's
+  design-system folder) replacing the text label; the mega-rail split into a static
+  campus section ("Where you'll find us.") with the globe as a 760px centered
+  centerpiece + centered caption + four live undergrad-campus clocks, and a short
+  co-op-only rail headed "Full-time, paid and real."; custom cursor removed;
+  research shelf replaced by a static editorial grid (feature card + 6); quotes
+  became three full-bleed sticky panels that stack on scroll, no controls/autoplay.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
