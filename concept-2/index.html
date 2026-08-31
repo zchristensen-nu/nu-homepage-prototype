@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="10">
+<meta name="concept2-rev" content="11">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -335,15 +335,15 @@
   }
   .rghead{margin-top:120px}
   .rghead h3{font-size:clamp(24px,2.6vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--ink)}
-  .re-flow{margin-top:44px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
-  .re-col{display:flex;flex-direction:column;gap:clamp(40px,6vw,96px)}
-  .re-col.two{margin-top:clamp(60px,10vw,160px)}
+  .re-flow{margin-top:44px;padding:70px 0 90px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
+  .re-col{display:flex;flex-direction:column;gap:clamp(72px,10vw,170px)}
+  .re-col.two{margin-top:clamp(100px,16vw,260px)}
   .re-item{display:block;will-change:transform}
   .re-col .re-item:nth-child(even){align-self:flex-end}
   .re-im{display:block;overflow:hidden;border-radius:14px}
   .re-item img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;transition:transform .8s var(--ease)}
-  .re-item:hover img{transform:scale(1.04)}
-  .re-item.feature img{aspect-ratio:16/10}
+  .re-item:not(.feature):hover img{transform:scale(1.04)}
+  .re-item.feature img{aspect-ratio:16/10;transform:scale(1.16);will-change:transform}
   .re-item.feature .b-t{font-size:clamp(19px,1.9vw,28px);font-weight:300;max-width:24ch}
   .b-body{display:block;padding:14px 2px 0}
   .b-d{display:block;font-size:12px;color:#737373}
@@ -805,16 +805,16 @@
     <div class="rghead rv"><h3>In progress right now</h3></div>
     <div class="re-flow">
       <div class="re-col one">
-<a class="re-item feature" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" style="width:100%" data-drift="-26"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Oct 2025</span><span class="b-t">Robots walk to class here. Researchers are teaching them how</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/" style="width:68%" data-drift="42"><span class="re-im"><img src="../img/mars-etch.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">Lighter, faster, more agile: a new Mars rover</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/" style="width:84%" data-drift="22"><span class="re-im"><img src="../img/aerobat.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Sep 2024</span><span class="b-t">Aerobat flies like a bat to navigate tight spaces</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/" style="width:76%" data-drift="-14"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Nov 2023</span><span class="b-t">The robotics high-bay open to every major</span></span></a>
+<a class="re-item feature" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" style="width:100%" data-drift="-160"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Oct 2025</span><span class="b-t">Robots walk to class here. Researchers are teaching them how</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/" style="width:68%" data-drift="200"><span class="re-im"><img src="../img/mars-etch.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">Lighter, faster, more agile: a new Mars rover</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/" style="width:84%" data-drift="150"><span class="re-im"><img src="../img/aerobat.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Sep 2024</span><span class="b-t">Aerobat flies like a bat to navigate tight spaces</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/" style="width:76%" data-drift="-120"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Nov 2023</span><span class="b-t">The robotics high-bay open to every major</span></span></a>
       </div>
       <div class="re-col two">
-<a class="re-item" href="https://news.northeastern.edu/2026/05/21/robo-demo/" style="width:78%" data-drift="34"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">A new initiative where AI meets the physical world</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/" style="width:88%" data-drift="-18"><span class="re-im"><img src="../img/sccrub-robot.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Feb 2026</span><span class="b-t">A robotic arm that cleans like an elephant's trunk</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/" style="width:100%" data-drift="-30"><span class="re-im"><img src="../img/lunabotics.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2025</span><span class="b-t">Lunabotics builds a robot for the moon's surface</span></span></a>
-<a class="re-item" href="https://news.northeastern.edu/2024/01/12/tech-savvy/" style="width:72%" data-drift="40"><span class="re-im"><img src="../img/colosseum.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Jan 2024</span><span class="b-t">Inside Colosseum, the wireless network emulator</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2026/05/21/robo-demo/" style="width:78%" data-drift="240"><span class="re-im"><img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2026</span><span class="b-t">A new initiative where AI meets the physical world</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/" style="width:88%" data-drift="-180"><span class="re-im"><img src="../img/sccrub-robot.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Feb 2026</span><span class="b-t">A robotic arm that cleans like an elephant's trunk</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/" style="width:100%" data-drift="-260"><span class="re-im"><img src="../img/lunabotics.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">May 2025</span><span class="b-t">Lunabotics builds a robot for the moon's surface</span></span></a>
+<a class="re-item" href="https://news.northeastern.edu/2024/01/12/tech-savvy/" style="width:72%" data-drift="200"><span class="re-im"><img src="../img/colosseum.jpg" alt="" loading="lazy"></span><span class="b-body"><span class="b-d">Jan 2024</span><span class="b-t">Inside Colosseum, the wireless network emulator</span></span></a>
       </div>
     </div>
     <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
@@ -1546,12 +1546,15 @@ if (jTrack && jRail && !reduceMotion) {
 /* ============ research collage: elements drift around the canvas ============ */
 const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift }));
 if (driftEls.length && !reduceMotion) {
+  const featImg = document.querySelector(".re-item.feature img");
   const dUpd = () => {
     const mid = innerHeight / 2;
     for (const { el, d } of driftEls) {
       const r = el.getBoundingClientRect();
       const c = (r.top + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
       el.style.transform = `translateY(${(c * d).toFixed(1)}px)`;
+      if (featImg && el.contains(featImg))
+        featImg.style.transform = `scale(1.16) translateY(${(-c * d * 0.22).toFixed(1)}px)`;
     }
   };
   addEventListener("scroll", () => requestAnimationFrame(dUpd), { passive: true });

@@ -47,7 +47,7 @@ counters_js = cut("/* ============ research counters ============ */", "/* =====
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="10">')
+                    '<meta name="concept2-rev" content="11">')
 assert 'concept2-rev' in head
 
 old_h = "<h2>Class is only half of it.</h2>"
@@ -87,14 +87,14 @@ TICKER = [
 
 # editorial collage: (img, title, date, url, column 1|2, width%, drift px)
 RE_ITEMS = [
- (NGN+"/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/", 1, 100, -26, True),
- (NGN+"/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/", 2, 78, 34, False),
- ("../img/sccrub-robot.jpg","A robotic arm that cleans like an elephant's trunk","Feb 2026","/2026/02/05/cleaning-robot-arm/", 2, 88, -18, False),
- ("../img/mars-etch.jpg","Lighter, faster, more agile: a new Mars rover","May 2026","/2026/05/21/university-rover-challenge-team/", 1, 68, 42, False),
- ("../img/lunabotics.jpg","Lunabotics builds a robot for the moon's surface","May 2025","/2025/05/07/moon-robot-lunabotics/", 2, 100, -30, False),
- ("../img/aerobat.jpg","Aerobat flies like a bat to navigate tight spaces","Sep 2024","/2024/09/23/flying-bat-robot/", 1, 84, 22, False),
- ("../img/colosseum.jpg","Inside Colosseum, the wireless network emulator","Jan 2024","/2024/01/12/tech-savvy/", 2, 72, 40, False),
- (NGN+"/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/", 1, 76, -14, False),
+ (NGN+"/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/", 1, 100, -160, True),
+ (NGN+"/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/", 2, 78, 240, False),
+ ("../img/sccrub-robot.jpg","A robotic arm that cleans like an elephant's trunk","Feb 2026","/2026/02/05/cleaning-robot-arm/", 2, 88, -180, False),
+ ("../img/mars-etch.jpg","Lighter, faster, more agile: a new Mars rover","May 2026","/2026/05/21/university-rover-challenge-team/", 1, 68, 200, False),
+ ("../img/lunabotics.jpg","Lunabotics builds a robot for the moon's surface","May 2025","/2025/05/07/moon-robot-lunabotics/", 2, 100, -260, False),
+ ("../img/aerobat.jpg","Aerobat flies like a bat to navigate tight spaces","Sep 2024","/2024/09/23/flying-bat-robot/", 1, 84, 150, False),
+ ("../img/colosseum.jpg","Inside Colosseum, the wireless network emulator","Jan 2024","/2024/01/12/tech-savvy/", 2, 72, 200, False),
+ (NGN+"/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/", 1, 76, -120, False),
 ]
 
 RAIL = [
@@ -265,15 +265,15 @@ NEW_CSS = """  /* ---------- award layer ---------- */
   }
   .rghead{margin-top:120px}
   .rghead h3{font-size:clamp(24px,2.6vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--ink)}
-  .re-flow{margin-top:44px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
-  .re-col{display:flex;flex-direction:column;gap:clamp(40px,6vw,96px)}
-  .re-col.two{margin-top:clamp(60px,10vw,160px)}
+  .re-flow{margin-top:44px;padding:70px 0 90px;display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,4vw,72px);align-items:start}
+  .re-col{display:flex;flex-direction:column;gap:clamp(72px,10vw,170px)}
+  .re-col.two{margin-top:clamp(100px,16vw,260px)}
   .re-item{display:block;will-change:transform}
   .re-col .re-item:nth-child(even){align-self:flex-end}
   .re-im{display:block;overflow:hidden;border-radius:14px}
   .re-item img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;transition:transform .8s var(--ease)}
-  .re-item:hover img{transform:scale(1.04)}
-  .re-item.feature img{aspect-ratio:16/10}
+  .re-item:not(.feature):hover img{transform:scale(1.04)}
+  .re-item.feature img{aspect-ratio:16/10;transform:scale(1.16);will-change:transform}
   .re-item.feature .b-t{font-size:clamp(19px,1.9vw,28px);font-weight:300;max-width:24ch}
   .b-body{display:block;padding:14px 2px 0}
   .b-d{display:block;font-size:12px;color:#737373}
@@ -439,12 +439,15 @@ if (jTrack && jRail && !reduceMotion) {
 /* ============ research collage: elements drift around the canvas ============ */
 const driftEls = $$("[data-drift]").map(el => ({ el, d: +el.dataset.drift }));
 if (driftEls.length && !reduceMotion) {
+  const featImg = document.querySelector(".re-item.feature img");
   const dUpd = () => {
     const mid = innerHeight / 2;
     for (const { el, d } of driftEls) {
       const r = el.getBoundingClientRect();
       const c = (r.top + r.height / 2 - mid) / innerHeight;   /* -0.5 top .. 0.5 bottom */
       el.style.transform = `translateY(${(c * d).toFixed(1)}px)`;
+      if (featImg && el.contains(featImg))
+        featImg.style.transform = `scale(1.16) translateY(${(-c * d * 0.22).toFixed(1)}px)`;
     }
   };
   addEventListener("scroll", () => requestAnimationFrame(dUpd), { passive: true });
@@ -507,7 +510,7 @@ page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + t
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 for tok in ['id="srch"', 'id="tkv"', 'class="scrolly"', 'id="globe"', "gt-card", "coopcount",
             "j-rail", "w-logo", "re-flow", "data-drift", 'id="vTrack"', "v-slide",
-            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="10"',
+            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="11"',
             "data-count", "newspost", "500K+", "major in"]:
     assert tok in page, tok
 for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "One university. Fourteen campuses."]:
