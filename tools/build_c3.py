@@ -1,8 +1,15 @@
-"""Concept 2 rev 5: the elevated v1. Keeps v1's hero video, quotes, IMAX life,
-closer and footer; replaces the globe with a pinned network-journey rail that
-ends in the liked photo/stat gallery; rebuilds research as a two-beat platform;
-adds preloader, cursor, grain, clip reveals, and a genuinely live NGN wire.
-Assembled from the v1 canonical by assert-guarded extraction."""
+"""Concept 2 rev 7: the elevated v1, second pass on Zach's notes.
+- Rail reframed around the real campus hierarchy (flagship + 3 more undergrad
+  campuses, 10 with grad programs, N.U.in), heading no longer Boston-first.
+- The constellation panel becomes the v1 globe engine, slow-spinning: white
+  campus labels, red co-op dots, hover tooltips, drag preserved.
+- Co-op stats switch to all-time figures (labeled clearly; VERIFY before
+  anyone external sees them).
+- Research counters respaced; drag hint removed.
+- Quote carousel rebuilt as a full-bleed cinema with line reveals.
+- Student life headline replaced.
+- Ticker reads the `newspost` editorial feed (photo features live in the
+  separate seen-around type, which is exactly what Zach didn't want)."""
 import re, os
 
 V1 = "/Users/z.christensen/environment/prototypes/northeastern-homepage-v2.html"
@@ -20,24 +27,35 @@ nav_css     = cut("  /* ---------- NAV ---------- */", "  /* ---------- HERO ---
 hero_css    = cut("  /* ---------- HERO ---------- */", "  /* ---------- GLOBE SCROLLY ---------- */")
 overlay_css = cut("  .srch{", "  /* ---------- SHEET SECTIONS (Adobe pattern) ---------- */")
 sheet_css   = cut("  /* ---------- SHEET SECTIONS (Adobe pattern) ---------- */", "  /* ---------- QUOTES (large-card carousel) ---------- */")
-tailcss     = cut("  /* ---------- QUOTES (large-card carousel) ---------- */", "</style>")  # quotes+imax+admit+footer
+tailcss     = cut("  /* ---------- STUDENT LIFE IMAX ---------- */", "</style>")   # imax+admit+footer
 
-header_mk   = cut("<header", '<section class="hero"')          # header + srch + tkv
+header_mk   = cut("<header", '<section class="hero"')
 hero_mk     = cut('<section class="hero"', '<div class="scrolly"')
-rest_mk     = cut('<section class="quotes"', "<footer>")        # quotes + life sections
+rest_mk     = cut('<section class="lifezoom lifeimax"', "<footer>")                # life + closer
 footer_mk   = cut("<footer>", "</footer>", True)
-assert '<section class="admit"' in rest_mk  # closer rides inside rest_mk
+assert '<section class="admit"' in rest_mk
 
 lenis       = cut("<script>/* Lenis", "</script>", True)
+land        = re.search(r"const LAND=\[.*?\];", src).group(0)
 coops       = re.search(r"const COOPS=\[.*?\];", src).group(0)
 helpers     = cut("/* ============ shared helpers ============ */", "/* ============ globe data ============ */")
+globedata   = cut("/* ============ globe data ============ */", "/* ============ globe engine ============ */")
+engine      = cut("/* ============ globe engine ============ */", "/* ============ scrollytelling ============ */")
 counters_js = cut("/* ============ research counters ============ */", "/* ============ research expanding row ============ */")
-quotes_js   = cut("/* ============ quote carousel (scroll-snap cards) ============ */", "/* ============ subtle scroll movement ============ */")
-tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")  # keep hero drift + imax
+tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
+
+# slow the idle spin for the panel setting
+assert engine.count("tgt.lon += 0.03;") == 1
+engine = engine.replace("tgt.lon += 0.03;", "tgt.lon += 0.02;")
 
 head = head.replace('<meta name="prototype-rev" content="52">',
-                    '<meta name="concept2-rev" content="6">')
+                    '<meta name="concept2-rev" content="7">')
 assert 'concept2-rev' in head
+
+# student life headline: students are sometimes on co-op, not in class
+old_h = "<h2>Class is only half of it.</h2>"
+assert rest_mk.count(old_h) == 1
+rest_mk = rest_mk.replace(old_h, "<h2>Some of this you can’t major in.</h2>")
 
 for name in ("header_mk", "hero_mk", "rest_mk", "footer_mk"):
     v = (globals()[name].replace('src="img/', 'src="../img/')
@@ -45,49 +63,51 @@ for name in ("header_mk", "hero_mk", "rest_mk", "footer_mk"):
     globals()[name] = v
 
 NGN = "https://news.northeastern.edu"
-U = NGN + "/wp-content/uploads"
 
+# baked fallback for the wire: real newsposts harvested 2026-08-31
 TICKER = [
- ("Aug 26","Making it home","/2026/08/26/making-it-home/"),
- ("Aug 25","Silhouetted study","/2026/08/25/silhouetted-study/"),
- ("Aug 24","Just keep walking","/2026/08/24/just-keep-walking/"),
- ("Aug 20","Signed, sealed and pinned","/2026/08/20/signed-sealed-and-pinned/"),
- ("Aug 20","The case for microfilm research","/2026/08/20/microfilm-research-archivist/"),
- ("Aug 19","Pose!","/2026/08/19/pose/"),
- ("Aug 18","Secluded study","/2026/08/18/secluded-study/"),
- ("Aug 17","Robo-test","/2026/08/17/robo-test/"),
- ("Aug 16","Move-in momentum","/2026/08/16/move-in-momentum-2/"),
- ("Aug 13","Close up","/2026/08/13/close-up/"),
- ("Aug 12","Nine months to make their 'EV baby'","/2026/08/12/northeastern-electric-racing-club-2/"),
- ("Aug 12","Eyes to the sky","/2026/08/12/eyes-to-the-sky/"),
+ ("Aug 28","This student toiled in aviaries, barns and pens for his co-op","/2026/08/28/wildlife-sanctuary-co-op-experience/"),
+ ("Aug 28","Samantha Johnson '21, robotics CEO, to speak at Boston Convocation","/2026/08/28/samantha-johnson-convocation-alumni-speaker/"),
+ ("Aug 28","Scientists put algae to work making fuel. AI keeps watch.","/2026/08/28/algae-biofuel-ai-research/"),
+ ("Aug 28","Why Massachusetts banned this addictive Asian plant","/2026/08/28/kratom-ban-massachusetts/"),
+ ("Aug 27","Many causes for floods, many causes for their devastation","/2026/08/27/nepal-tibet-flood/"),
+ ("Aug 27","Boston convocation welcomes new Huskies to Northeastern","/2026/08/27/boston-convocation-guide-2026/"),
+ ("Aug 27","Everything to know about convocation 2026 at Northeastern Oakland","/2026/08/27/oakland-convocation-guide-2026/"),
+ ("Aug 20","Slow down and zoom in: the case for microfilm research","/2026/08/20/microfilm-research-archivist/"),
+ ("Aug 12","These racing club students were given nine months to make their 'EV baby'","/2026/08/12/northeastern-electric-racing-club-2/"),
+ ("Jul 29","This researcher is launching satellites to unlock faster data speeds","/2026/07/29/satellite-internet-6g-speeds-research/"),
+ ("Jul 22","Northeastern graduate finds success and comfort in computer codes","/2026/07/22/ai-career-amazon-graduate/"),
+ ("Jul 16","Can network science predict the World Cup?","/2026/07/16/world-cup-final-prediction/"),
 ]
 
 SHELF = [
- (U+"/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/"),
- (U+"/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/"),
+ (NGN+"/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/"),
+ (NGN+"/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/"),
  ("../img/sccrub-robot.jpg","A robotic arm that cleans like an elephant's trunk","Feb 2026","/2026/02/05/cleaning-robot-arm/"),
  ("../img/mars-etch.jpg","Lighter, faster, more agile: a new Mars rover","May 2026","/2026/05/21/university-rover-challenge-team/"),
  ("../img/lunabotics.jpg","Lunabotics builds a robot for the moon's surface","May 2025","/2025/05/07/moon-robot-lunabotics/"),
  ("../img/aerobat.jpg","Aerobat flies like a bat to navigate tight spaces","Sep 2024","/2024/09/23/flying-bat-robot/"),
  ("../img/colosseum.jpg","Inside Colosseum, the wireless network emulator","Jan 2024","/2024/01/12/tech-savvy/"),
- (U+"/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/"),
+ (NGN+"/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/"),
 ]
 
-# rail panels: (kind, ...) — city stops, stats, constellation, linked photos, outro
+# rail: campus hierarchy, then the globe, then the all-time co-op arc
 RAIL = [
- ("city", "Boston", "United States", "America/New_York"),
- ("stat", "14", "campuses in two countries"),
- ("city", "London", "United Kingdom", "Europe/London"),
+ ("city", "Boston", "The flagship", "America/New_York"),
+ ("city", "Oakland", "Undergraduate campus", "America/Los_Angeles"),
+ ("city", "New York City", "Undergraduate campus", "America/New_York"),
+ ("city", "London", "Undergraduate campus", "Europe/London"),
+ ("stat", "10", "more campuses with graduate programs"),
  ("nuin", None),
- ("cons", None),
+ ("globe", None),
  ("photo", "oyster-dock", "Harvesting oysters on Maine's Nonesuch River", "/2022/11/01/oyster-harvesting-maine/"),
- ("stat", "4,705", "co‑ops this fall"),
+ ("stat", "500K+", "co‑ops placed, all time"),
  ("photo", "apple-coop", "Developing cameras for Apple products", "/2025/01/15/apple-co-op-camera-process-engineer/"),
- ("stat", "519", "cities and towns"),
+ ("stat", "5,000+", "cities and towns"),
  ("photo", "microscopy-coop", "Microscopy, from diabetes research to EV batteries", "/2025/01/24/microscopy-skills-transfer-industries/"),
- ("stat", "3,000+", "employer partners"),
+ ("stat", "10,000+", "employer partners"),
  ("photo", "satellite-testbed", "A student-built satellite testbed", "/2024/10/16/high-speed-satellite-network-research/"),
- ("stat", "151", "countries"),
+ ("stat", "250+", "countries and territories"),
  ("photo", "oyster-coop", None, None),
  ("outro", None),
 ]
@@ -103,8 +123,8 @@ def rail_panels():
     for p in RAIL:
         k = p[0]
         if k == "city":
-            _, name, country, tz = p
-            out += (f'<div class="j-panel j-city"><span class="j-country">{country}</span>'
+            _, name, role, tz = p
+            out += (f'<div class="j-panel j-city"><span class="j-country">{role}</span>'
                     f'<span class="j-name">{name}</span>'
                     f'<span class="j-time" data-tz="{tz}">--:--</span></div>\n')
         elif k == "stat":
@@ -115,9 +135,10 @@ def rail_panels():
             out += ('<div class="j-panel j-nuin"><span class="j-country">N.U.in launch cities</span>'
                     f'<div class="j-cities">{cities}</div>'
                     '<span class="j-sub">First semester, first stamp in the passport.</span></div>\n')
-        elif k == "cons":
-            out += ('<div class="j-panel j-cons"><canvas id="consCanvas" aria-hidden="true"></canvas>'
-                    '<span class="j-caption">Every dot is a city or town with Huskies on co‑op right now.</span></div>\n')
+        elif k == "globe":
+            out += ('<div class="j-panel j-globe"><div class="stage" id="stage">'
+                    '<canvas id="globe" aria-label="Slowly spinning globe: campuses labeled in white, co-op cities as red dots. Drag to spin, hover a dot for details."></canvas>'
+                    '</div><span class="j-caption">Campuses in white. Every red dot: Huskies on co‑op this fall.</span></div>\n')
         elif k == "photo":
             _, img, t, u = p
             if t:
@@ -139,7 +160,7 @@ def shelf_cards():
         f'<span class="b-body"><span class="b-d">{d}</span><span class="b-t">{t}</span></span></a>\n'
         for img, t, d, u in SHELF)
 
-NEW_CSS = """  /* ---------- award layer: loader, cursor, grain, clip reveals ---------- */
+NEW_CSS = """  /* ---------- award layer ---------- */
   ::selection{background:var(--red);color:#fff}
   html.has-cursor, html.has-cursor a, html.has-cursor button{cursor:none}
   html.has-cursor input, html.has-cursor textarea{cursor:text}
@@ -198,11 +219,11 @@ NEW_CSS = """  /* ---------- award layer: loader, cursor, grain, clip reveals --
     .w-label::before{animation:none}
   }
 
-  /* ---------- the network journey (pinned rail) ---------- */
+  /* ---------- the network journey ---------- */
   .journey{position:relative;z-index:5;background:var(--dark);color:#fff}
-  .j-track{height:560svh}
+  .j-track{height:640svh}
   .j-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
-  .j-head{padding-bottom:40px}
+  .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .j-rail{display:flex;gap:clamp(18px,2.4vw,36px);align-items:center;will-change:transform;
     width:max-content;padding-left:100vw}
@@ -210,22 +231,24 @@ NEW_CSS = """  /* ---------- award layer: loader, cursor, grain, clip reveals --
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
   .j-city,.j-nuin{padding:0 clamp(24px,3vw,64px)}
   .j-country{font-size:13.5px;color:#A9A9B2}
-  .j-name{font-size:clamp(64px,9vw,150px);font-weight:200;letter-spacing:-.035em;line-height:1;color:#fff;margin-top:6px}
+  .j-name{font-size:clamp(56px,8vw,132px);font-weight:200;letter-spacing:-.035em;line-height:1;color:#fff;margin-top:6px;white-space:nowrap}
   .j-time{font-size:clamp(20px,2vw,28px);font-weight:200;color:#C9C9CF;margin-top:12px;font-variant-numeric:tabular-nums}
   .j-cities{display:grid;grid-template-columns:repeat(4,auto);gap:8px 28px;margin-top:14px}
   .j-cities span{font-size:clamp(22px,2.6vw,40px);font-weight:250;letter-spacing:-.02em;color:#fff}
   .j-sub{margin-top:18px;font-size:14.5px;color:#A9A9B2}
   .j-stat{padding:0 clamp(20px,3vw,56px);justify-content:center}
-  .g-n{display:block;font-size:clamp(64px,9vw,150px);font-weight:200;letter-spacing:-.035em;line-height:.95;color:#fff}
+  .g-n{display:block;font-size:clamp(56px,8vw,132px);font-weight:200;letter-spacing:-.035em;line-height:.95;color:#fff;white-space:nowrap}
   .g-l{display:block;margin-top:10px;font-size:15px;color:#A9A9B2}
   .j-photo{position:relative;background:#141419}
   .j-photo img{height:100%;width:auto;display:block}
   .j-cap{position:absolute;left:16px;bottom:14px;right:16px;font-size:13.5px;color:#fff;
     text-shadow:0 1px 14px rgba(0,0,0,.7)}
-  .j-cons{position:relative;width:min(88vw,1080px);background:#0E0E13;border:1px solid rgba(255,255,255,.08);
+  .j-globe{position:relative;width:min(88vw,860px);background:transparent;overflow:visible;
     align-items:stretch;justify-content:flex-end}
-  .j-cons canvas{position:absolute;inset:0;width:100%;height:100%}
-  .j-caption{position:relative;padding:0 22px 18px;font-size:13.5px;color:#C9C9CF}
+  .j-globe .stage{position:absolute;inset:0}
+  .j-globe canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+  .j-globe canvas.dragging{cursor:grabbing}
+  .j-caption{position:relative;padding:0 4px;font-size:13.5px;color:#C9C9CF;z-index:2}
   .j-outro{padding:0 clamp(24px,4vw,72px);justify-content:center}
   .j-big{display:block;font-size:clamp(44px,6vw,92px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .j-bar{margin-top:40px;height:1px;background:rgba(255,255,255,.14);position:relative}
@@ -239,15 +262,20 @@ NEW_CSS = """  /* ---------- award layer: loader, cursor, grain, clip reveals --
 
   /* ---------- research platform ---------- */
   .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 110px}
-  .rc-line{margin-top:10px}
-  .rc-grid{margin-top:64px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;
-    border-top:1px solid #E5E5E5;padding-top:44px}
-  .rc .n{font-size:clamp(56px,7.5vw,124px);font-weight:200;letter-spacing:-.035em;line-height:1;color:var(--ink)}
-  .rc .l{margin-top:8px;font-size:14.5px;color:#737373}
-  @media(max-width:760px){.rc-grid{grid-template-columns:1fr}}
-  .shelf-head{margin-top:110px;display:flex;align-items:baseline;justify-content:space-between;gap:20px}
+  .rc-grid{margin-top:70px;display:grid;grid-template-columns:repeat(3,1fr);
+    gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
+  .rc{border-left:1px solid #E5E5E5;padding-left:clamp(18px,2vw,30px)}
+  .rc:first-child{border-left:0;padding-left:0}
+  .rc .n{font-size:clamp(48px,6vw,104px);font-weight:200;letter-spacing:-.03em;line-height:1;
+    color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .rc .l{margin-top:12px;font-size:14.5px;color:#737373;max-width:26ch}
+  @media(max-width:760px){
+    .rc-grid{grid-template-columns:1fr;gap:30px}
+    .rc{border-left:0;padding-left:0;border-top:1px solid #E5E5E5;padding-top:22px}
+    .rc:first-child{border-top:0;padding-top:0}
+  }
+  .shelf-head{margin-top:110px}
   .shelf-head h3{font-size:clamp(24px,2.6vw,36px);font-weight:300;letter-spacing:-.02em;color:var(--ink)}
-  .shelf-head span{font-size:13.5px;color:#737373}
   .shelf{margin-top:28px;display:flex;gap:20px;overflow-x:auto;padding-bottom:16px;
     scroll-snap-type:x proximity;scrollbar-width:none;cursor:grab}
   .shelf::-webkit-scrollbar{display:none}
@@ -260,9 +288,80 @@ NEW_CSS = """  /* ---------- award layer: loader, cursor, grain, clip reveals --
   .b-d{display:block;font-size:12px;color:#737373}
   .b-t{display:block;margin-top:5px;font-size:15.5px;line-height:1.35;color:var(--ink);font-weight:400}
 
-  /* quotes: slow settle on each slide's backdrop */
-  .qslide .bg{transform:scale(1.06);transition:transform 6s var(--ease)}
-  .qslide.active .bg{transform:scale(1)}
+  /* ---------- voices cinema ---------- */
+  .voices{position:relative;z-index:6;height:92svh;min-height:620px;background:var(--dark);
+    color:#fff;overflow:hidden}
+  .v-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s var(--ease);pointer-events:none}
+  .v-slide.is-active{opacity:1;pointer-events:auto}
+  .v-bg{position:absolute;inset:0;background-size:cover;background-position:center;
+    filter:brightness(.52);transform:scale(1.09)}
+  .v-slide.is-active .v-bg{transform:scale(1);transition:transform 8s var(--ease)}
+  .v-slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(to top right,rgba(5,5,8,.82) 0%,rgba(5,5,8,.38) 45%,rgba(5,5,8,0) 75%)}
+  .v-in{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;
+    height:100%;padding-bottom:120px}
+  .v-in blockquote{font-size:clamp(24px,3.3vw,46px);font-weight:300;letter-spacing:-.015em;
+    line-height:1.18;max-width:24ch;text-wrap:balance}
+  .v-who{margin-top:26px;font-size:15px;color:#D4D4D4}
+  .v-who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
+  .v-in .storylink{color:#fff;font-weight:500}
+  .v-ui{position:absolute;left:0;right:0;bottom:0;z-index:3;
+    border-top:1px solid rgba(255,255,255,.16)}
+  .v-ui .wrap{display:flex;align-items:center;gap:22px;padding-top:16px;padding-bottom:18px}
+  .v-ix{font-size:13px;color:#C9C9CF;font-variant-numeric:tabular-nums;flex:0 0 auto}
+  .v-bars{display:flex;gap:8px;flex:1;max-width:300px}
+  .v-bars i{position:relative;height:2px;flex:1;background:rgba(255,255,255,.22);overflow:hidden}
+  .v-bars i::after{content:"";position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+  .v-bars i.done::after{transform:scaleX(1)}
+  .v-bars i.run::after{animation:vfill 8s linear forwards}
+  @keyframes vfill{to{transform:scaleX(1)}}
+  .v-nav{margin-left:auto;display:flex;gap:10px}
+  .v-btn{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+    background:transparent;color:#fff;font-size:16px;cursor:pointer;transition:.2s;
+    display:flex;align-items:center;justify-content:center}
+  .v-btn:hover{background:#fff;color:var(--ink);border-color:#fff}
+  @media (prefers-reduced-motion: reduce){
+    .v-bg{transform:none}
+    .v-bars i.run::after{animation:none;transform:scaleX(1)}
+  }
+"""
+
+VOICES = f"""
+<section class="voices" id="voices" aria-roledescription="carousel" aria-label="Student voices">
+  <div class="v-slide is-active">
+    <div class="v-bg" style="background-image:url('../img/microscopy-coop.jpg');background-position:center 30%"></div>
+    <div class="wrap v-in">
+      <blockquote><span class="line in"><span>&ldquo;I really enjoyed the process of research from my previous co‑op.</span></span><span class="line in"><span>But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</span></span></blockquote>
+      <div class="v-who"><b>Cameron D’Mello</b> Bioengineering &middot; Co‑ops at Beth Israel Medical Center and QuantumScape</div>
+      <a class="storylink" href="{NGN}/2025/01/24/microscopy-skills-transfer-industries/" data-cursor="Read">Read Cameron’s story</a>
+    </div>
+  </div>
+  <div class="v-slide">
+    <div class="v-bg" style="background-image:url('../img/oyster-dock.jpg');background-position:20% 35%"></div>
+    <div class="wrap v-in">
+      <blockquote><span class="line"><span>&ldquo;I wanted to do this job and test myself and see</span></span><span class="line"><span>if I like working outdoors as much as I hoped. So far, so good.&rdquo;</span></span></blockquote>
+      <div class="v-who"><b>Maddy Russell</b> Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine</div>
+      <a class="storylink" href="{NGN}/2022/11/01/oyster-harvesting-maine/" data-cursor="Read">Read Maddy’s story</a>
+    </div>
+  </div>
+  <div class="v-slide">
+    <div class="v-bg" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg')"></div>
+    <div class="wrap v-in">
+      <blockquote><span class="line"><span>&ldquo;I really wanted the chance to go out into the field.</span></span><span class="line"><span>You just have to push past it, and that’s something I’ve gotten pretty good at.&rdquo;</span></span></blockquote>
+      <div class="v-who"><b>Paris Graff</b> International affairs &middot; Co‑op with the Landmine Relief Fund, Cambodia</div>
+      <a class="storylink" href="{NGN}/2023/04/25/landmine-relief-fund-cambodia-co-op/" data-cursor="Read">Read Paris’s story</a>
+    </div>
+  </div>
+  <div class="v-ui"><div class="wrap">
+    <span class="v-ix" id="vIx">01 / 03</span>
+    <div class="v-bars" id="vBars"><i class="run"></i><i></i><i></i></div>
+    <div class="v-nav">
+      <button class="v-btn" id="vPrev" aria-label="Previous quote">&#8592;</button>
+      <button class="v-btn" id="vNext" aria-label="Next quote">&#8594;</button>
+    </div>
+  </div></div>
+</section>
+
 """
 
 NEW_BODY = f"""
@@ -284,7 +383,7 @@ NEW_BODY = f"""
   <div class="j-track" id="jTrack">
     <div class="j-stage">
       <div class="wrap j-head rv">
-        <h2><span class="line"><span>Boston is only</span></span><span class="line"><span>the beginning.</span></span></h2>
+        <h2><span class="line"><span>One university.</span></span><span class="line"><span>Fourteen campuses.</span></span></h2>
       </div>
       <div class="j-rail" id="jRail">
 {rail_panels()}      </div>
@@ -299,14 +398,14 @@ NEW_BODY = f"""
   <div class="wrap">
     <div class="sechead rv">
       <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-      <p class="lede rc-line">Students and professors choose Northeastern because the investment is real. The numbers are one year's worth.</p>
+      <p class="lede">Students and professors choose Northeastern because the investment is real. The numbers are one year's worth.</p>
     </div>
     <div class="rc-grid" id="counters">
       <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
       <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
       <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
     </div>
-    <div class="shelf-head rv"><h3>In progress right now</h3><span>Drag to explore</span></div>
+    <div class="shelf-head rv"><h3>In progress right now</h3></div>
     <div class="shelf" id="shelf">
 {shelf_cards()}    </div>
     <a class="storylink rv" style="margin-top:26px" href="https://news.northeastern.edu/category/research/" data-cursor="Visit">Research coverage on NGN</a>
@@ -370,12 +469,12 @@ if (matchMedia("(pointer: fine)").matches && !reduceMotion) {
   });
 }
 
-/* ============ live NGN wire: real headlines when the API allows it ============ */
+/* ============ live NGN wire: the newspost editorial feed ============ */
 (async () => {
   try {
-    const r = await fetch("https://news.northeastern.edu/wp-json/wp/v2/posts?per_page=14&_fields=title,link,date");
+    const r = await fetch("https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=18&_fields=title,link,date");
     if (!r.ok) return;
-    const posts = await r.json();
+    const posts = (await r.json()).filter(p => !/^Photos:/i.test(p.title.rendered)).slice(0, 14);
     if (!posts.length) return;
     const mo = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     const strip = document.createElement("div");
@@ -388,15 +487,14 @@ if (matchMedia("(pointer: fine)").matches && !reduceMotion) {
   } catch (e) { /* baked headlines remain */ }
 })();
 
-/* ============ the network journey: pinned rail + live city clocks ============ */
+/* ============ the network journey ============ */
 const jTrack = $("#jTrack"), jRail = $("#jRail"), jBar = $("#jBar");
-let jProgress = 0;
 if (jTrack && jRail && !reduceMotion) {
   const jUpd = () => {
     const r = jTrack.getBoundingClientRect();
-    jProgress = clamp01(-r.top / (r.height - innerHeight));
-    jRail.style.transform = `translateX(${(-jProgress * Math.max(0, jRail.scrollWidth - innerWidth)).toFixed(1)}px)`;
-    if (jBar) jBar.style.width = (jProgress * 100).toFixed(2) + "%";
+    const p = clamp01(-r.top / (r.height - innerHeight));
+    jRail.style.transform = `translateX(${(-p * Math.max(0, jRail.scrollWidth - innerWidth)).toFixed(1)}px)`;
+    if (jBar) jBar.style.width = (p * 100).toFixed(2) + "%";
   };
   addEventListener("scroll", () => requestAnimationFrame(jUpd), { passive: true });
   addEventListener("resize", jUpd);
@@ -410,49 +508,36 @@ function tickCityClocks() {
   });
 }
 
-/* ============ constellation: the real co-op dataset, igniting on approach ============ */
-const consC = $("#consCanvas");
-if (consC) {
-  const order = COOPS.map((_, i) => i);
-  for (let i = order.length - 1; i > 0; i--) {          /* deterministic-ish shuffle */
-    const j = (i * 7919 + 31) % (i + 1);
-    [order[i], order[j]] = [order[j], order[i]];
+/* ============ voices cinema ============ */
+const vSlides = $$(".v-slide"), vBarsEl = $("#vBars"), vIx = $("#vIx");
+if (vSlides.length) {
+  let vi = 0, vTimer = null;
+  const bars = [...vBarsEl.children];
+  function vGo(i) {
+    vSlides[vi].classList.remove("is-active");
+    vi = (i + vSlides.length) % vSlides.length;
+    const s = vSlides[vi];
+    s.classList.add("is-active");
+    vIx.textContent = `0${vi + 1} / 0${vSlides.length}`;
+    bars.forEach((b, j) => {
+      b.classList.remove("run", "done");
+      if (j < vi) b.classList.add("done");
+    });
+    void vBarsEl.offsetWidth;
+    bars[vi].classList.add("run");
+    s.querySelectorAll(".line").forEach((ln, k) => {
+      ln.classList.remove("in");
+      void ln.offsetWidth;
+      setTimeout(() => ln.classList.add("in"), 120 + k * 130);
+    });
   }
-  const rank = [];
-  order.forEach((idx, pos) => rank[idx] = pos / order.length);
-  let consIO_visible = false;
-  new IntersectionObserver(es => es.forEach(e => consIO_visible = e.isIntersecting), { threshold: 0 }).observe(consC);
-  let ignite = 0;
-  function drawCons(t) {
-    const dpr = Math.min(devicePixelRatio || 1, 2);
-    const W = consC.clientWidth, H = consC.clientHeight;
-    if (!W) return;
-    if (consC.width !== W * dpr) { consC.width = W * dpr; consC.height = H * dpr; }
-    const x2 = consC.getContext("2d");
-    x2.setTransform(dpr, 0, 0, dpr, 0, 0);
-    x2.clearRect(0, 0, W, H);
-    /* ignite with rail progress: constellation sits ~1/3 into the journey */
-    const target = clamp01((jProgress - 0.18) / 0.3);
-    ignite += (target - ignite) * 0.06;
-    const pad = 26;
-    for (let i = 0; i < COOPS.length; i++) {
-      const [lat, lng, n] = COOPS[i];
-      const x = pad + ((lng + 180) / 360) * (W - pad * 2) + Math.sin(t / 2400 + i) * 1.6;
-      const y = pad + ((78 - lat) / 140) * (H - pad * 2) + Math.cos(t / 2900 + i * 1.7) * 1.4;
-      const lit = rank[i] < ignite;
-      const r = Math.min(3.4, 0.9 + Math.sqrt(n) * 0.28);
-      x2.beginPath(); x2.arc(x, y, lit ? r : 0.8, 0, 7);
-      x2.fillStyle = lit ? "rgba(238,85,102,.85)" : "rgba(255,255,255,.13)";
-      x2.fill();
-    }
-  }
-  (function consLoop(t) {
-    if (consIO_visible && !document.hidden) drawCons(t || 0);
-    requestAnimationFrame(consLoop);
-  })(0);
+  function vRestart() { clearInterval(vTimer); if (!reduceMotion) vTimer = setInterval(() => vGo(vi + 1), 8000); }
+  $("#vPrev").addEventListener("click", () => { vGo(vi - 1); vRestart(); });
+  $("#vNext").addEventListener("click", () => { vGo(vi + 1); vRestart(); });
+  vRestart();
 }
 
-/* ============ shelf: drag to scroll ============ */
+/* ============ shelf drag ============ */
 const shelf = $("#shelf");
 if (shelf) {
   let down = false, sx = 0, sl = 0;
@@ -461,11 +546,11 @@ if (shelf) {
   addEventListener("pointerup", () => { down = false; shelf.classList.remove("dragging"); });
 }
 
-/* ============ clip-reveal lines ============ */
+/* ============ clip-reveal lines (voices slides manage their own) ============ */
 const lineIO = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add("in"); lineIO.unobserve(e.target); }
 }), { threshold: 0.3 });
-$$(".line").forEach(el => lineIO.observe(el));
+$$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 """
 
 NEW_BOOT = """/* ============ boot ============ */
@@ -473,20 +558,27 @@ nav.classList.toggle("solid", scrollY > 60);
 runLoader();
 tickCityClocks();
 setInterval(tickCityClocks, 1000);
+/* globe panel: slow idle spin, campuses labeled, co-op dots on */
+Object.assign(tgt, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
+Object.assign(cur, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
+tgt.k = 1.02; cur.k = 1.02;
+resize();
+requestAnimationFrame(frame);
 """
 
 page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
-        + header_mk + hero_mk + NEW_BODY + rest_mk.replace("<footer>", "") + WIRE_FOOT + footer_mk + "\n"
-        + lenis + "\n<script>\n" + coops + "\n" + helpers + counters_js + quotes_js
-        + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
+        + header_mk + hero_mk + NEW_BODY + VOICES + rest_mk + WIRE_FOOT + footer_mk + "\n"
+        + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine
+        + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
-for tok in ['id="srch"', 'id="tkv"', "j-rail", "consCanvas", "id=\"shelf\"", "wire top", "wire foot",
-            'class="qtrack"', "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="6"',
-            "data-count", "hero"]:
+for tok in ['id="srch"', 'id="tkv"', "j-rail", 'id="globe"', 'id="stage"', "v-slide", 'id="shelf"',
+            "wire top", "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev",
+            'content="7"', "data-count", "newspost", "500K+", "major in"]:
     assert tok in page, tok
-assert "scrolly" not in page.split("<body>")[1][:200000] or True
+assert "Drag to explore" not in page
+assert "qtrack" not in page and "qslide" not in page
 for out in OUT:
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, "w").write(page)

@@ -195,6 +195,17 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   be?"; research rebuilt as a two-beat platform on light background: the approved
   headline + investment line over giant count-up numerals ($296M / 50+ / 510, v1's
   counter JS reused) + a drag shelf of 8 dated, verified research stories.
+- Rev 7 (Zach's second pass): rail reframed to the real campus hierarchy (Boston flagship
+  + Oakland/NYC/London undergraduate, "10 more campuses with graduate programs", N.U.in);
+  the v1 globe engine returned as a rail panel (slow spin, white campus labels, red co-op
+  dots, drag + hover tooltips); co-op stats switched to ALL-TIME figures **that are
+  unverified placeholders by Zach's instruction: 500K+ placed / 5,000+ cities / 10,000+
+  employers / 250+ countries and territories. VERIFY all four before any external eyes;
+  "250+" exceeds the number of countries on Earth unless territories genuinely carry it.**
+  Research counters respaced (rules + tabular numerals), drag hint removed; the quote
+  carousel is now a full-bleed auto-advancing cinema with line reveals and progress bars;
+  student life headline is "Some of this you can't major in."; the wire reads the
+  `newspost` REST type (the editorial feed; `seen-around` is the photo-of-the-day type).
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
