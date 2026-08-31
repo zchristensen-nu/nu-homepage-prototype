@@ -182,10 +182,16 @@ institution-first rather than student-first, global + research + AI/entrepreneur
 - Reuses v2's nav, search/takeover overlays, admissions closer, and footer verbatim; everything
   between is new. Assembled by `tools/build_c2.py`, which extracts those blocks from
   `northeastern-homepage-v2.html` with assert-guarded markers, so v2 edits can be re-pulled.
-- Scenes: live day/night world map hero (canvas equirect, real solar terminator recomputed
-  each minute, campus + N.U.in dots, five live city clocks), an NGN headline ticker with real
-  August 2026 dates, three infinite-scrolling research story belts, an AI + Entrepreneurship
-  band, a co-op stat row with an ambient photo marquee, and a 14-campus live clock grid.
+- Rev 2+ rebuilt the scenes to award-site grammar (references: landonorris.com,
+  schemeengine.com): preloader with count-up that lifts as a curtain (rAF-independent
+  failsafes so a throttled tab never sticks black), custom cursor (dot + lerped ring,
+  labels from data-cursor, pointer-fine only), SVG-turbulence grain overlay, clip-reveal
+  headline lines, a giant solid/outline type marquee, the NGN headline ticker, a
+  hover-reveal research index (image follows the cursor, Scheme Engine style), an AI +
+  Entrepreneurship diptych, a pinned horizontal co-op gallery interleaving photos with
+  giant stat numerals plus a progress bar, and the 14-campus live clock grid. The live
+  day/night map hero stays (canvas equirect fitted to a 336-degree window so Vancouver
+  through Sydney all fit, real solar terminator each minute, five live city clocks).
 - All story/image pairings verified against the articles (each photo's shoot prefix was
   grepped on its story page). Marquee photos are ambient and unlinked, so they carry no
   story claims. The terminator math ignores the equation of time (commented as approximate).
