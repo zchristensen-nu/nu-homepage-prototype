@@ -264,6 +264,17 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   bar, and every dead quote variant (crossfade, word-lit, ledger) were stripped from
   the builder. Motion verbs now: rotate (globe) / accordion (research) / slide (co-op
   rail) / sticky-swap (quotes) / zoom (life).
+- Rev 18: brand-guide copy overhaul across concept-2 (v1 canonical untouched), grounded
+  in brand.northeastern.edu messaging pages for experience and global (fetched 2026-09-01;
+  key rules applied: no location hierarchy or Boston-centric framing, "network across the
+  U.S., U.K., and Canada", use "experience" in headlines, tell the whole experiential
+  story not just co-op, kill the "and counting" trope). Campus step, N.U.in step, co-op
+  step, and globe outro all rewritten; rail heading is "Put experience to work."; life
+  heading is "And then there's everything else." The co-op duplication resolved: the
+  globe's counter now counts to COOP_DISPLAY_TOTAL = 500,000+ all-time placements
+  (**unverified placeholder**) with this-fall's 4,705/519 in the supporting line, the
+  rail dropped its 500K+ stat panel, and the globe outro bridges to research/experience
+  breadth instead of a competing CTA.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
