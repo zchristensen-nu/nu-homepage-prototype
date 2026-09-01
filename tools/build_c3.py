@@ -59,7 +59,7 @@ xrow_js     = cut("/* ============ research expanding row ============ */", "/* 
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="20">')
+                    '<meta name="concept2-rev" content="21">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -249,7 +249,7 @@ NEW_CSS = """  /* ---------- award layer ---------- */
   .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .j-rail{display:flex;gap:clamp(18px,2.4vw,36px);align-items:center;will-change:transform;
-    width:max-content;padding-left:42vw}
+    width:max-content;padding-left:calc(50vw - min(40.5svh, 405px))}
   .j-panel{flex:0 0 auto;height:min(54svh,540px);border-radius:16px;overflow:hidden;
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
   .j-stat{padding:0 clamp(20px,3vw,56px);justify-content:center}
@@ -447,7 +447,7 @@ assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert "{SHEET}" not in page and "{VOICES_SECTION}" not in page
 for tok in ['id="srch"', 'class="scrolly"', 'id="xrow"', "xcard", "rc-grid", "j-rail",
             'id="vcFlow"', "vc-media", "wire foot", "lifeimax", 'class="admit"',
-            "concept2-rev", 'content="20"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
+            "concept2-rev", 'content="21"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
             "Put experience to work", "connected network of campuses"]:
     assert tok in page, tok
 for gone in ["rr-reel", "verbar", 'id="vTrack"', 'id="qTrack"', "voices-b"]:
