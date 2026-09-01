@@ -47,7 +47,7 @@ counters_js = cut("/* ============ research counters ============ */", "/* =====
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="15">')
+                    '<meta name="concept2-rev" content="16">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -139,6 +139,14 @@ QUOTES = [
   "/2023/04/25/landmine-relief-fund-cambodia-co-op/", "Read Paris’s story"),
 ]
 
+HERO_QUOTE = {
+ "img": "../img/oyster-dock.jpg", "pos": "20% 35%",
+ "text": "I wanted to do this job and test myself and see if I like working outdoors as much as I hoped. So far, so good.",
+ "name": "Maddy Russell",
+ "who": "Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine",
+ "url": "/2022/11/01/oyster-harvesting-maine/", "cta": "Read Maddy’s story",
+}
+
 def ticker_items(rows):
     return "".join(f'<a class="w-item" href="{NGN}{u}"><span class="w-d">{d}</span>{t}</a>'
                    for d, t, u in rows)
@@ -191,6 +199,49 @@ def quote_slides():
                 f'<div class="v-who"><b>{name}</b> {who}</div>'
                 f'<a class="storylink" href="{NGN}{u}">{cta}</a></div></div>\n')
     return out
+
+def quote_words():
+    return "".join(f'<span class="qw">{w}</span> ' for w in HERO_QUOTE["text"].split(" "))
+
+def voice_rows():
+    out = ""
+    for img, pos, lines, name, who, u, cta in QUOTES:
+        if name == HERO_QUOTE["name"]: continue
+        q = " ".join(lines)
+        out += (f'<a class="vr" href="{NGN}{u}"><span class="vr-q">{q}</span>'
+                f'<span class="vr-who"><b>{name}</b> {who}</span></a>\n')
+    return out
+
+def ledger_rows():
+    out = ""
+    for img, pos, lines, name, who, u, cta in QUOTES:
+        q = " ".join(lines)
+        out += (f'<article class="led rv"><span class="led-im"><img src="{img}" alt="" loading="lazy" style="object-position:{pos}"></span>'
+                f'<div class="led-b"><blockquote>{q}</blockquote>'
+                f'<div class="v-who"><b>{name}</b> {who}</div>'
+                f'<a class="storylink" href="{NGN}{u}">{cta}</a></div></article>\n')
+    return out
+
+def portrait_stack():
+    imgs = "".join(
+        f'<img class="vc-img{" on" if i == 0 else ""}" data-i="{i}" src="{q[0]}" alt="" style="object-position:{q[1]}">'
+        for i, q in enumerate(QUOTES))
+    blocks = ""
+    for i, (img, pos, lines, name, who, u, cta) in enumerate(QUOTES):
+        q = " ".join(lines)
+        blocks += (f'<div class="vc-q{" on" if i == 0 else ""}" data-i="{i}"><blockquote>{q}</blockquote>'
+                   f'<div class="v-who"><b>{name}</b> {who}</div>'
+                   f'<a class="storylink" href="{NGN}{u}">{cta}</a></div>\n')
+    return imgs, blocks
+
+def verbar(cur):
+    links = [("index.html", "Current", "cur"), ("quotes-a.html", "One voice", "a"),
+             ("quotes-b.html", "Ledger", "b"), ("quotes-c.html", "Portraits", "c")]
+    out = '<div class="verbar"><span class="lbl">Quotes:</span>'
+    for href, label, key in links:
+        cls = ' class="cur"' if key == cur else ''
+        out += f'<a href="{href}"{cls}>{label}</a>'
+    return out + "</div>\n"
 
 NEW_CSS = """  /* ---------- award layer ---------- */
   ::selection{background:var(--red);color:#fff}
@@ -335,6 +386,87 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .v-stage{position:static;height:auto;overflow:visible}
     .v-slide{position:relative;opacity:1 !important;height:80svh;min-height:520px}
   }
+
+  /* ---------- variant A: one voice, lit word by word ---------- */
+  .q-track{height:260svh}
+  .q-stage{position:sticky;top:0;height:100svh;min-height:600px;display:flex;align-items:center;overflow:hidden}
+  .q-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,84px);align-items:center;width:100%}
+  .q-photo{border-radius:16px;overflow:hidden;height:min(66svh,640px)}
+  .q-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .q-quote{font-size:clamp(28px,3.6vw,56px);font-weight:300;letter-spacing:-.018em;line-height:1.22;
+    max-width:22ch;text-wrap:balance}
+  .q-quote .qw{opacity:.16;transition:opacity .35s var(--ease)}
+  .q-quote .qw.on{opacity:1}
+  .q-meta{margin-top:30px;opacity:0;transform:translateY(12px);
+    transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .q-meta.on{opacity:1;transform:none}
+  .q-more{background:var(--dark);padding:10px 0 110px}
+  .q-more .vr{display:grid;grid-template-columns:1fr auto;gap:8px 40px;align-items:end;
+    padding:30px 2px;border-top:1px solid rgba(255,255,255,.14);color:#E5E5E5;transition:color .25s}
+  .q-more .vr:hover{color:#fff}
+  .vr-q{font-size:clamp(16px,1.4vw,19px);font-weight:300;line-height:1.5;max-width:64ch}
+  .vr-who{font-size:13.5px;color:#A9A9B2;white-space:nowrap}
+  .vr-who b{color:#fff;font-weight:600;display:block}
+  @media(max-width:820px){
+    .q-grid{grid-template-columns:1fr;gap:26px}
+    .q-photo{height:38svh}
+    .q-more .vr{grid-template-columns:1fr}
+    .vr-who{white-space:normal}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .q-track{height:auto}
+    .q-stage{position:static;height:auto;padding:90px 0}
+    .q-quote .qw{opacity:1;transition:none}
+    .q-meta{opacity:1;transform:none}
+  }
+
+  /* ---------- variant B: the ledger, all voices in flow ---------- */
+  .voices-b{position:relative;z-index:6;background:var(--dark);color:#fff;padding:120px 0}
+  .led{display:grid;grid-template-columns:4fr 8fr;gap:clamp(24px,4vw,72px);align-items:center;
+    padding:clamp(48px,7vh,84px) 0;border-top:1px solid rgba(255,255,255,.14)}
+  .led:first-of-type{border-top:0;padding-top:0}
+  .led:nth-of-type(even){grid-template-columns:8fr 4fr}
+  .led:nth-of-type(even) .led-im{order:2}
+  .led-im{display:block;border-radius:14px;overflow:hidden}
+  .led-im img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+  .led-b blockquote{font-size:clamp(22px,2.6vw,40px);font-weight:300;letter-spacing:-.015em;
+    line-height:1.25;max-width:26ch;text-wrap:balance}
+  .led-b .v-who{margin-top:20px}
+  .led-b .storylink{color:#fff}
+  @media(max-width:820px){
+    .led,.led:nth-of-type(even){grid-template-columns:1fr}
+    .led:nth-of-type(even) .led-im{order:0}
+  }
+
+  /* ---------- variant C: sticky portrait, flowing quotes ---------- */
+  .voices-c{position:relative;z-index:6;background:var(--dark);color:#fff;padding:100px 0}
+  .vc{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,84px);align-items:start}
+  .vc-media{position:sticky;top:calc(50svh - min(33svh,320px));height:min(66svh,640px);
+    border-radius:16px;overflow:hidden}
+  .vc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+    transition:opacity .6s var(--ease)}
+  .vc-img.on{opacity:1}
+  .vc-flow .vc-q{min-height:72svh;display:flex;flex-direction:column;justify-content:center;
+    opacity:.32;transition:opacity .5s var(--ease)}
+  .vc-flow .vc-q.on{opacity:1}
+  .vc-q blockquote{font-size:clamp(24px,2.8vw,42px);font-weight:300;letter-spacing:-.015em;
+    line-height:1.25;max-width:24ch;text-wrap:balance}
+  .vc-q .v-who{margin-top:20px}
+  .vc-q .storylink{color:#fff}
+  @media(max-width:820px){
+    .vc{grid-template-columns:1fr}
+    .vc-media{display:none}
+    .vc-flow .vc-q{min-height:0;padding:34px 0;opacity:1}
+  }
+
+  /* ---------- variant switcher ---------- */
+  .verbar{position:fixed;left:14px;bottom:14px;z-index:300;display:flex;gap:2px;align-items:center;
+    background:rgba(16,16,20,.88);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);
+    border-radius:999px;padding:5px 8px;font-size:12px}
+  .verbar .lbl{padding:0 6px;color:#8a8a92}
+  .verbar a{padding:5px 11px;border-radius:999px;color:#ddd}
+  .verbar a:hover{background:rgba(255,255,255,.14)}
+  .verbar a.cur{background:#fff;color:#111}
 """
 
 NEW_BODY = f"""
@@ -396,7 +528,9 @@ AFTER_SCROLLY = f"""
   </div>
 </section>
 
-<section class="voices" id="voices" aria-label="Student voices">
+{{VOICES_SECTION}}
+"""
+VOICES_CUR = f"""<section class="voices" id="voices" aria-label="Student voices">
   <div class="v-track" id="vTrack">
     <div class="v-stage">
 {quote_slides()}    </div>
@@ -404,6 +538,43 @@ AFTER_SCROLLY = f"""
 </section>
 
 """
+
+VOICES_A = f"""<section class="voices" id="voices" aria-label="Student voices">
+  <div class="q-track" id="qTrack">
+    <div class="q-stage"><div class="wrap q-grid">
+      <div class="q-photo"><img src="{HERO_QUOTE['img']}" alt="" style="object-position:{HERO_QUOTE['pos']}"></div>
+      <div>
+        <blockquote class="q-quote" id="qQuote">&ldquo;{quote_words()}&rdquo;</blockquote>
+        <div class="q-meta" id="qMeta">
+          <div class="v-who"><b>{HERO_QUOTE['name']}</b> {HERO_QUOTE['who']}</div>
+          <a class="storylink" href="{NGN}{HERO_QUOTE['url']}">{HERO_QUOTE['cta']}</a>
+        </div>
+      </div>
+    </div></div>
+  </div>
+  <div class="q-more"><div class="wrap">
+{voice_rows()}  </div></div>
+</section>
+"""
+
+VOICES_B = f"""<section class="voices-b" id="voices" aria-label="Student voices">
+  <div class="wrap">
+{ledger_rows()}  </div>
+</section>
+"""
+
+_vc_imgs, _vc_blocks = portrait_stack()
+VOICES_C = f"""<section class="voices-c" id="voices" aria-label="Student voices">
+  <div class="wrap vc">
+    <div class="vc-media">{_vc_imgs}</div>
+    <div class="vc-flow" id="vcFlow">
+{_vc_blocks}    </div>
+  </div>
+</section>
+"""
+
+VOICES_MAP = {"cur": VOICES_CUR, "a": VOICES_A, "b": VOICES_B, "c": VOICES_C}
+
 WIRE_FOOT = f"""
 <section class="wire foot" aria-label="Latest from Northeastern Global News">
   <div class="wire-in">
@@ -530,6 +701,48 @@ if (vTrack && vSlides.length && !reduceMotion) {
   vUpd();
 }
 
+/* ============ variant A: words light as you scroll ============ */
+const qTrack = $("#qTrack"), qQuote = $("#qQuote");
+if (qTrack && qQuote && !reduceMotion) {
+  const qws = [...qQuote.querySelectorAll(".qw")];
+  const qMeta = $("#qMeta");
+  const qUpd = () => {
+    const r = qTrack.getBoundingClientRect();
+    const p = clamp01(-r.top / (r.height - innerHeight));
+    const lit = Math.floor(p * 1.18 * qws.length);
+    qws.forEach((w, i) => w.classList.toggle("on", i < lit));
+    if (qMeta) qMeta.classList.toggle("on", p > 0.82);
+  };
+  addEventListener("scroll", () => requestAnimationFrame(qUpd), { passive: true });
+  addEventListener("resize", qUpd);
+  qUpd();
+}
+if (qQuote && reduceMotion) $$("#qQuote .qw").forEach(w => w.classList.add("on"));
+
+/* ============ variant C: flowing quotes drive the sticky portrait ============ */
+const vcFlow = $("#vcFlow");
+if (vcFlow) {
+  const vcQs = $$(".vc-q"), vcImgs = $$(".vc-img");
+  let vcCur = 0;
+  const vcUpd = () => {
+    const mid = innerHeight / 2;
+    let best = 0, bestD = Infinity;
+    vcQs.forEach((q, i) => {
+      const r = q.getBoundingClientRect();
+      const d = Math.abs(r.top + r.height / 2 - mid);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    if (best !== vcCur) {
+      vcCur = best;
+      vcQs.forEach((q, i) => q.classList.toggle("on", i === best));
+      vcImgs.forEach((im, i) => im.classList.toggle("on", i === best));
+    }
+  };
+  addEventListener("scroll", () => requestAnimationFrame(vcUpd), { passive: true });
+  addEventListener("resize", vcUpd);
+  vcUpd();
+}
+
 /* ============ clip-reveal lines (voices manage their own) ============ */
 const lineIO = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add("in"); lineIO.unobserve(e.target); }
@@ -544,22 +757,24 @@ resize();
 requestAnimationFrame(frame);
 """
 
-page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + tailcss
-        + "</style>\n\n<body>\n\n"
-        + header_mk + hero_mk + NEW_BODY + scrolly_mk + AFTER_SCROLLY + rest_mk + WIRE_FOOT + footer_mk + "\n"
-        + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine
-        + scrolly_js + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
-
-assert page.count("<header") == 1 and page.count("<footer>") == 1
-for tok in ['id="srch"', 'id="tkv"', 'class="scrolly"', 'id="globe"', "gt-card", "coopcount",
-            "j-rail", "w-logo", "rr-reel", "ro-stack", 'id="vTrack"', "v-slide",
-            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="15"',
-            "data-count", "newspost", "500K+", "major in"]:
-    assert tok in page, tok
-for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "re-flow", "data-drift",
-             "Where will yours be?</div>", "One university. Fourteen campuses."]:
-    assert gone not in page, gone
-for out in OUT:
-    os.makedirs(os.path.dirname(out), exist_ok=True)
-    open(out, "w").write(page)
-print("built", len(page), "bytes ->", OUT[0])
+VARIANTS = {"cur": "index.html", "a": "quotes-a.html", "b": "quotes-b.html", "c": "quotes-c.html"}
+for vkey, fname in VARIANTS.items():
+    body_mid = AFTER_SCROLLY.replace("{VOICES_SECTION}", VOICES_MAP[vkey])
+    page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + tailcss
+            + "</style>\n\n<body>\n\n"
+            + header_mk + hero_mk + NEW_BODY + scrolly_mk + body_mid + rest_mk + WIRE_FOOT
+            + verbar(vkey) + footer_mk + "\n"
+            + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine
+            + scrolly_js + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
+    assert page.count("<header") == 1 and page.count("<footer>") == 1
+    assert "{VOICES_SECTION}" not in page
+    for tok in ['id="srch"', 'class="scrolly"', "j-rail", "rr-reel", "verbar", "concept2-rev",
+                'content="16"', "data-count", "newspost", "lifeimax", 'class="admit"']:
+        assert tok in page, (vkey, tok)
+    vtok = {"cur": 'id="vTrack"', "a": 'id="qTrack"', "b": 'class="voices-b"', "c": 'id="vcFlow"'}[vkey]
+    assert vtok in page, (vkey, vtok)
+    for out in OUT:
+        d = os.path.dirname(out)
+        os.makedirs(d, exist_ok=True)
+        open(os.path.join(d, fname), "w").write(page)
+    print("built", vkey, "->", fname, len(page))
