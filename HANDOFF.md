@@ -221,6 +221,16 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   340svh track, push-in, per-slide line reveals, zero controls). Rev 53 of v1 removed
   the stale "co-op experience" hero video credit (wrong since the video swap); concept 2
   inherits the fix through the builder.
+- Rev 13: research became "the wall" — 30 REAL research newsposts (harvested from
+  `newspost?categories=21443` with featured images at `?resize=600,400`, all dated
+  Jul/Aug 2026) laid out as a 6x5 grid at 160vw that starts at scale .42 (the
+  overwhelming mass) and dives to 1.55 as you scroll a 380svh pin, headline fogged
+  over the center fading out by 28%; counters land after the dive. The globe/co-op
+  content competition resolved: section order is now places (globe scrolly) >
+  research wall > people (co-op rail); the globe's outro lost its CTA pill and
+  numbers and now reads "And that's just this fall.", handing off so the rail owns
+  the single "Where will yours be?" close. The rev-12 drift collage was replaced
+  wholesale (its feedback-loop fix is in git history if ever needed).
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
