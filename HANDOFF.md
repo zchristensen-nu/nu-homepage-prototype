@@ -255,6 +255,15 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   right, sticky portrait crossfades on the left; the research reel inverted). Builder
   emits all four pages from VOICES_MAP; variant JS is guarded so every page carries all
   behaviors inertly. Zach picks; fold the winner into index and delete the variants.
+- Rev 17: Zach picked Portraits for quotes (folded in as the only treatment; variant
+  pages deleted, quotes-a/b/c URLs now 404). Because Portraits shares the sticky-media
+  pattern with the research reel, research reverted to v1's proven expanding-card row
+  (the Adobe accordion: five cards, field robotics active by default) lifted verbatim
+  from the v1 sheet, with two upgrades: the counters render in the giant rc-grid style
+  and the closing storylink points at NGN research coverage. The reel, the switcher
+  bar, and every dead quote variant (crossfade, word-lit, ledger) were stripped from
+  the builder. Motion verbs now: rotate (globe) / accordion (research) / slide (co-op
+  rail) / sticky-swap (quotes) / zoom (life).
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
