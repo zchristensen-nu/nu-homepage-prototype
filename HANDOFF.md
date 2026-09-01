@@ -239,6 +239,13 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   travels for 62% then dwells: the stop tile lights (scale 1.05, shadow, title plate)
   while the rest dim to .45. No scale on the camera at all; the tunnel verb stays
   unique to student life. Live-verified: pan transform, dwell highlight, dimming.
+- Rev 15: the pan-canvas didn't land either; research is now the globe mirrored — a
+  REEL of the 8 verified stories scrolling on the left (natural page scroll, inactive
+  frames desaturated to .55), with a STICKY right column holding the headline plus a
+  readout (date, title, link, 01/08 index, red progress bar) that crossfades to
+  whichever frame crosses viewport center. No pin, no zoom, no carousel. Mobile
+  collapses to captioned frames. Counters land below unchanged. Live-verified:
+  sticky position, frame 3 -> readout swap + index 03/08 + bar 37.5% + desaturation.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
