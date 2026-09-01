@@ -332,6 +332,24 @@ top boarding-school counselors, media/podcasts).
 - Verified live: three bands, lazy video loading (two playing, third correctly waiting),
   duo cards, facilities, all audiences, counters, portrait quotes, inset globe.
 
+## Concept 4 rev 2: videos speak
+
+Zach stripped his own brief down: heading + stats + video per section, nothing else.
+Live at concept-4/ (meta `concept4-rev` 2, builder `tools/build_c5.py`, page is 92KB;
+globe engine, personas, quotes, and life all removed from this concept).
+
+- Sections: hero > wire > "Experiential Learning" (Co-Op reel + all-time stats) >
+  "Research" (Jamie-Wong video + counters) > "Boston" (hero.mp4, shot in Boston) >
+  "London" (nulondon.ac.uk's own campus film) > "NYC" (nyc.northeastern.edu's own
+  NYC-Home_SLOW.mp4) > "Oakland" (Jamie-Wong, which IS the Oakland page's video) >
+  "N.U.in" (city list + three video tiles, PLACEHOLDER reused footage until real
+  N.U.in film exists) > closer > wire > footer.
+- Ten video elements, five unique files, all preload=none with IntersectionObserver
+  play/pause. London and NYC videos hotlink other NU-property domains; if they ever
+  break, the sections fall back to dark panels (poster frames would be the upgrade).
+- The persona/audience layer from rev 1 was deleted at Zach's direction; if the five-
+  persona requirement returns, rev 1 is in git history.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
