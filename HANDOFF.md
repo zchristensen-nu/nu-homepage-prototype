@@ -285,6 +285,29 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   "lit dots are this fall" sentence removed. Preloader deleted entirely.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
+## Concept 3: research-first, globe in the rail
+
+Live at **https://zchristensen-nu.github.io/nu-homepage-prototype/concept-3/**
+(`concept-3/index.html`, meta `concept3-rev`, built by `tools/build_c4.py`). Zach's ask:
+fold the campuses and globe back into the co-op rail, and give research more breadth.
+
+- Page order: hero > live NGN wire > research platform > journey rail > portrait
+  quotes > life > closer > wire > footer. No standalone globe scrolly on this page.
+- Research breadth: the v1 accordion re-carded across five fields (field robotics,
+  axolotl regeneration biology, algae-AI climate/energy, modular quantum, get-out-the-
+  vote social science; all images are the stories' own featured media via the API),
+  giant counters, then "Also in the lab right now" (six dated editorial rows), then the
+  NGN research link. New-card focal points are set generically (50% 32%) and NOT yet
+  eyeballed image-by-image.
+- Journey rail ("The world is the campus."): spinning globe panel (campuses white,
+  every co-op dot lit) > 14 campuses stat > N.U.in panel > co-op photos with
+  hover-reveal Read-on-NGN captions alternating with 500,000+ / 10,000+ / 250+ stats
+  (totals still UNVERIFIED) > "Where will yours be?" CTA. First panel in frame at pin
+  start (42vw entry).
+- Copy de-duplication across the page: campus counts appear only in the rail stat,
+  N.U.in only in the rail panel, co-op totals only in the rail, research numbers only
+  in the counters. No preloader on this concept.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
