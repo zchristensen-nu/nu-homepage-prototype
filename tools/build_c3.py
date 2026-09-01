@@ -43,13 +43,16 @@ coops       = re.search(r"const COOPS=\[.*?\];", src).group(0)
 helpers     = cut("/* ============ shared helpers ============ */", "/* ============ globe data ============ */")
 globedata   = cut("/* ============ globe data ============ */", "/* ============ globe engine ============ */")
 engine      = cut("/* ============ globe engine ============ */", "/* ============ scrollytelling ============ */")
+globedata  += "\nconst COOP_DISPLAY_TOTAL = 500000;  /* all-time placements, VERIFY before external use */\n"
+assert engine.count("COOP_TOTAL * (reduceMotion") == 1
+engine = engine.replace("COOP_TOTAL * (reduceMotion", "COOP_DISPLAY_TOTAL * (reduceMotion")
 scrolly_js  = cut("/* ============ scrollytelling ============ */", "/* ============ research counters ============ */")
 counters_js = cut("/* ============ research counters ============ */", "/* ============ research expanding row ============ */")
 xrow_js     = cut("/* ============ research expanding row ============ */", "/* ============ quote carousel (scroll-snap cards) ============ */")
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="17">')
+                    '<meta name="concept2-rev" content="18">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -63,9 +66,27 @@ if outro_pill > 0:
     a0 = scrolly_mk.rfind("<a", 0, outro_pill); a1 = scrolly_mk.find("</a>", outro_pill) + 4
     scrolly_mk = scrolly_mk[:a0] + scrolly_mk[a1:]
 
+# --- brand-guide copy overhaul (concept-2 only; v1 canonical untouched) ---
+_swaps = [
+ ("<p>Boston to London, Silicon Valley to Toronto. One university system spanning two countries&hellip; and counting.</p>",
+  "<p>A connected network of campuses across the U.S., U.K., and Canada, where each one opens doors to all the others.</p>"),
+ ("<p>First semester, first stamp in the passport. N.U.in launches new Huskies from eight European cities.</p>",
+  "<p>Through N.U.in, new students begin their Northeastern degree at one of eight partner institutions across Europe.</p>"),
+ ('<div class="big"><b id="coopcount">0</b> co‑ops</div>',
+  '<div class="big"><b><span id="coopcount">0</span>+</b> co‑op placements</div>'),
+ ("<p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>",
+  "<p>Full-time, paid positions in every kind of workplace. The lit dots are this fall alone: 4,705 students at work in 519 cities and towns.</p>"),
+ ('<div class="big">And that&#8217;s just this fall.</div>',
+  '<div class="big">And co‑op is only the start.</div><p>Research, service, global study: experience runs through the whole degree.</p>'),
+]
+for _a, _b in _swaps:
+    assert scrolly_mk.count(_a) == 1, _a[:60]
+    scrolly_mk = scrolly_mk.replace(_a, _b)
+
+
 old_h = "<h2>Class is only half of it.</h2>"
 assert rest_mk.count(old_h) == 1
-rest_mk = rest_mk.replace(old_h, "<h2>Some of this you can’t major in.</h2>")
+rest_mk = rest_mk.replace(old_h, "<h2>And then there’s everything else.</h2>")
 
 for name in ("header_mk", "hero_mk", "scrolly_mk", "sheet_mk", "rest_mk", "footer_mk"):
     v = (globals()[name].replace('src="img/', 'src="../img/')
@@ -115,7 +136,6 @@ TICKER = [
 
 RAIL = [
  ("photo", "oyster-dock", "Harvesting oysters on Maine's Nonesuch River", "/2022/11/01/oyster-harvesting-maine/"),
- ("stat", "500K+", "co‑ops placed, all time"),
  ("photo", "apple-coop", "Developing cameras for Apple products", "/2025/01/15/apple-co-op-camera-process-engineer/"),
  ("stat", "5,000+", "cities and towns"),
  ("photo", "microscopy-coop", "Microscopy, from diabetes research to EV batteries", "/2025/01/24/microscopy-skills-transfer-industries/"),
@@ -315,7 +335,7 @@ AFTER_SCROLLY = f"""
   <div class="j-track" id="jTrack">
     <div class="j-stage">
       <div class="wrap j-head rv">
-        <h2><span class="line"><span>Full-time, paid and real.</span></span></h2>
+        <h2><span class="line"><span>Put experience to work.</span></span></h2>
       </div>
       <div class="j-rail" id="jRail">
 {rail_panels()}      </div>
@@ -456,7 +476,8 @@ assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert "{SHEET}" not in page and "{VOICES_SECTION}" not in page
 for tok in ['id="srch"', 'class="scrolly"', 'id="xrow"', "xcard", "rc-grid", "j-rail",
             'id="vcFlow"', "vc-media", "wire foot", "lifeimax", 'class="admit"',
-            "concept2-rev", 'content="17"', "data-count", "newspost"]:
+            "concept2-rev", 'content="18"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
+            "Put experience to work", "connected network of campuses"]:
     assert tok in page, tok
 for gone in ["rr-reel", "verbar", 'id="vTrack"', 'id="qTrack"', "voices-b"]:
     assert gone not in page, gone

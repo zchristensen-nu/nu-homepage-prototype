@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="17">
+<meta name="concept2-rev" content="18">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -715,27 +715,27 @@
     <div class="step" data-step="campuses">
       <div class="card">
         <div class="big"><b>14</b> campuses</div>
-        <p>Boston to London, Silicon Valley to Toronto. One university system spanning two countries&hellip; and counting.</p>
+        <p>A connected network of campuses across the U.S., U.K., and Canada, where each one opens doors to all the others.</p>
       </div>
     </div>
 
     <div class="step" data-step="nuin">
       <div class="card">
         <div class="big"><b>8</b> ways to start abroad</div>
-        <p>First semester, first stamp in the passport. N.U.in launches new Huskies from eight European cities.</p>
+        <p>Through N.U.in, new students begin their Northeastern degree at one of eight partner institutions across Europe.</p>
       </div>
     </div>
 
     <div class="step" data-step="coops">
       <div class="card">
-        <div class="big"><b id="coopcount">0</b> co‑ops</div>
-        <p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>
+        <div class="big"><b><span id="coopcount">0</span>+</b> co‑op placements</div>
+        <p>Full-time, paid positions in every kind of workplace. The lit dots are this fall alone: 4,705 students at work in 519 cities and towns.</p>
       </div>
     </div>
 
     <div class="step" data-step="outro">
       <div class="card">
-        <div class="big">And that&#8217;s just this fall.</div>
+        <div class="big">And co‑op is only the start.</div><p>Research, service, global study: experience runs through the whole degree.</p>
         
         
       </div>
@@ -819,11 +819,10 @@
   <div class="j-track" id="jTrack">
     <div class="j-stage">
       <div class="wrap j-head rv">
-        <h2><span class="line"><span>Full-time, paid and real.</span></span></h2>
+        <h2><span class="line"><span>Put experience to work.</span></span></h2>
       </div>
       <div class="j-rail" id="jRail">
 <a class="j-panel j-photo" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><span class="j-cap">Harvesting oysters on Maine's Nonesuch River</span></a>
-<div class="j-panel j-stat"><div><span class="g-n">500K+</span><span class="g-l">co‑ops placed, all time</span></div></div>
 <a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><span class="j-cap">Developing cameras for Apple products</span></a>
 <div class="j-panel j-stat"><div><span class="g-n">5,000+</span><span class="g-l">cities and towns</span></div></div>
 <a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/"><img src="../img/microscopy-coop.jpg" alt="" loading="lazy"><span class="j-cap">Microscopy, from diabetes research to EV batteries</span></a>
@@ -862,7 +861,7 @@
       <a class="iframe" data-i="4" href="https://news.northeastern.edu/2026/06/30/rock-paper-paws/" aria-label="Husky 101"><img src="https://news.northeastern.edu/wp-content/uploads/2026/06/063026_AS_Husky101_019.jpg" alt="An incoming student plays rock-paper-scissors against Paws at Husky 101." loading="lazy"></a>
       <a class="iframe" data-i="5" href="https://news.northeastern.edu/2023/09/06/convocation-2023/" aria-label="Day one, from the floor"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="A crowd of students cheer as confetti falls at convocation at MGM Music Hall at Fenway." loading="lazy"></a>
       </div>
-      <div class="lz-text"><h2>Some of this you can’t major in.</h2></div>
+      <div class="lz-text"><h2>And then there’s everything else.</h2></div>
     </div>
   </div>
 </section>
@@ -1014,6 +1013,8 @@ const DOT_ORDER = COOPS.map(d => (((d[1] + 71.09) % 360) + 360) % 360 / 360);
 
 const RAD = Math.PI / 180;
 
+
+const COOP_DISPLAY_TOTAL = 500000;  /* all-time placements, VERIFY before external use */
 /* ============ globe engine ============ */
 const canvas = $("#globe");
 const ctx = canvas.getContext("2d");
@@ -1293,7 +1294,7 @@ function frame(now) {
     if (igniteT0 !== null) {
       const p = clamp01((now - igniteT0) / 1800);
       ignite = reduceMotion ? 1 : easeOut(p);
-      $("#coopcount").textContent = fmt(Math.round(COOP_TOTAL * (reduceMotion ? 1 : easeOut(p))));
+      $("#coopcount").textContent = fmt(Math.round(COOP_DISPLAY_TOTAL * (reduceMotion ? 1 : easeOut(p))));
       if (p >= 1) igniteT0 = null;
     }
     render(now);
