@@ -46,13 +46,20 @@ engine      = cut("/* ============ globe engine ============ */", "/* ==========
 globedata  += "\nconst COOP_DISPLAY_TOTAL = 500000;  /* all-time placements, VERIFY before external use */\n"
 assert engine.count("COOP_TOTAL * (reduceMotion") == 1
 engine = engine.replace("COOP_TOTAL * (reduceMotion", "COOP_DISPLAY_TOTAL * (reduceMotion")
+old_ign = "      ignite = reduceMotion ? 1 : easeOut(p);\n"
+assert engine.count(old_ign) == 1
+engine = engine.replace(old_ign, "")
+
 scrolly_js  = cut("/* ============ scrollytelling ============ */", "/* ============ research counters ============ */")
+scrolly_js  = scrolly_js.replace('img: "img/', 'img: "../img/')
+# scrollytelling resets ignite for the sweep; keep every dot lit instead
+scrolly_js  = scrolly_js.replace("ignite = 0;", "ignite = 1;")
 counters_js = cut("/* ============ research counters ============ */", "/* ============ research expanding row ============ */")
 xrow_js     = cut("/* ============ research expanding row ============ */", "/* ============ quote carousel (scroll-snap cards) ============ */")
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="19">')
+                    '<meta name="concept2-rev" content="20">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -75,7 +82,7 @@ _swaps = [
  ('<div class="big"><b id="coopcount">0</b> co‑ops</div>',
   '<div class="big"><b><span id="coopcount">0</span>+</b> co‑op placements</div>'),
  ("<p>Full-time, paid, and real: 519 cities and towns where Huskies are on the job this fall.</p>",
-  "<p>Full-time, paid positions in every kind of workplace. The lit dots are this fall alone: 4,705 students at work in 519 cities and towns.</p>"),
+  "<p>Full-time, paid positions in every kind of workplace.</p>"),
  ('<div class="big">And that&#8217;s just this fall.</div>',
   '<div class="big">And co‑op is only the start.</div><p>Research, service, global study: experience runs through the whole degree.</p>'),
 ]
@@ -136,12 +143,12 @@ TICKER = [
 
 RAIL = [
  ("photo", "oyster-dock", "Harvesting oysters on Maine's Nonesuch River", "/2022/11/01/oyster-harvesting-maine/"),
- ("photo", "apple-coop", "Developing cameras for Apple products", "/2025/01/15/apple-co-op-camera-process-engineer/"),
  ("stat", "5,000+", "cities and towns"),
- ("photo", "microscopy-coop", "Microscopy, from diabetes research to EV batteries", "/2025/01/24/microscopy-skills-transfer-industries/"),
+ ("photo", "apple-coop", "Developing cameras for Apple products", "/2025/01/15/apple-co-op-camera-process-engineer/"),
  ("stat", "10,000+", "employer partners"),
- ("photo", "satellite-testbed", "A student-built satellite testbed", "/2024/10/16/high-speed-satellite-network-research/"),
+ ("photo", "microscopy-coop", "Microscopy, from diabetes research to EV batteries", "/2025/01/24/microscopy-skills-transfer-industries/"),
  ("stat", "250+", "countries and territories"),
+ ("photo", "satellite-testbed", "A student-built satellite testbed", "/2024/10/16/high-speed-satellite-network-research/"),
  ("outro", None),
 ]
 
@@ -205,22 +212,12 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     animation:grain 900ms steps(3) infinite}
   @keyframes grain{0%{transform:translate(0,0)}34%{transform:translate(-2%,1%)}67%{transform:translate(1%,-2%)}100%{transform:translate(0,0)}}
-  .loader{position:fixed;inset:0;z-index:600;background:#050507;display:flex;
-    align-items:flex-end;justify-content:space-between;padding:26px 32px;color:#fff;
-    transition:transform .9s cubic-bezier(.76,0,.24,1)}
-  .loader.done{transform:translateY(-101%)}
-  .loader .l-n{font-size:clamp(60px,10vw,140px);font-weight:200;letter-spacing:-.03em;
-    line-height:.9;font-variant-numeric:tabular-nums}
-  .loader .l-t{font-size:13px;color:#A9A9B2;max-width:22ch}
-  html.is-loading{overflow:hidden}
-  html.is-loading .hero h1 .w{animation-play-state:paused}
   .line{display:block;overflow:hidden}
   .line > span{display:block;transform:translateY(115%);transition:transform 1s var(--ease)}
   .line.in > span, .in .line > span{transform:none}
   @media (prefers-reduced-motion: reduce){
     .grain{animation:none}
     .line > span{transform:none;transition:none}
-    .loader{display:none}
   }
 
   /* ---------- NGN wire ---------- */
@@ -252,7 +249,7 @@ NEW_CSS = """  /* ---------- award layer ---------- */
   .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .j-rail{display:flex;gap:clamp(18px,2.4vw,36px);align-items:center;will-change:transform;
-    width:max-content;padding-left:100vw}
+    width:max-content;padding-left:42vw}
   .j-panel{flex:0 0 auto;height:min(54svh,540px);border-radius:16px;overflow:hidden;
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
   .j-stat{padding:0 clamp(20px,3vw,56px);justify-content:center}
@@ -317,10 +314,6 @@ NEW_CSS = """  /* ---------- award layer ---------- */
 """
 
 NEW_BODY = f"""
-<div class="loader" id="loader" aria-hidden="true">
-  <span class="l-t">Northeastern University</span>
-  <span class="l-n" id="loadn">0</span>
-</div>
 <div class="grain" aria-hidden="true"></div>
 
 <section class="wire" aria-label="Latest from Northeastern Global News">
@@ -374,30 +367,6 @@ WIRE_FOOT = f"""
 """
 
 NEW_JS = """
-/* ============ preloader ============ */
-const loader = $("#loader"), loadN = $("#loadn");
-document.documentElement.classList.add("is-loading");
-let loaderDone = false;
-function finishLoader() {
-  if (loaderDone) return;
-  loaderDone = true;
-  if (loader) { loadN.textContent = 100; loader.classList.add("done"); }
-  document.documentElement.classList.remove("is-loading");
-}
-function runLoader() {
-  if (reduceMotion || !loader) { finishLoader(); return; }
-  const t0 = performance.now();
-  (function step() {
-    const el = (performance.now() - t0) / 1100;
-    loadN.textContent = Math.min(99, Math.floor(easeOut(Math.min(1, el)) * 99));
-    if ((document.readyState === "complete" || el > 2.6) && el >= 1) { setTimeout(finishLoader, 120); }
-    else requestAnimationFrame(step);
-  })();
-}
-addEventListener("load", () => setTimeout(finishLoader, 700));
-setTimeout(finishLoader, 4200);
-document.addEventListener("visibilitychange", () => { if (!document.hidden) setTimeout(finishLoader, 1200); });
-
 /* ============ live NGN wire: the newspost editorial feed ============ */
 (async () => {
   try {
@@ -463,7 +432,6 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 NEW_BOOT = """/* ============ boot ============ */
 nav.classList.toggle("solid", scrollY > 60);
-runLoader();
 resize();
 requestAnimationFrame(frame);
 """
@@ -479,7 +447,7 @@ assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert "{SHEET}" not in page and "{VOICES_SECTION}" not in page
 for tok in ['id="srch"', 'class="scrolly"', 'id="xrow"', "xcard", "rc-grid", "j-rail",
             'id="vcFlow"', "vc-media", "wire foot", "lifeimax", 'class="admit"',
-            "concept2-rev", 'content="19"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
+            "concept2-rev", 'content="20"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
             "Put experience to work", "connected network of campuses"]:
     assert tok in page, tok
 for gone in ["rr-reel", "verbar", 'id="vTrack"', 'id="qTrack"', "voices-b"]:
