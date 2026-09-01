@@ -47,7 +47,7 @@ counters_js = cut("/* ============ research counters ============ */", "/* =====
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="13">')
+                    '<meta name="concept2-rev" content="14">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -130,6 +130,39 @@ WALL = [
  ("A parasite is running rampant in Michigan. Will it spread elsewhere?", "/2026/07/08/parasite-outbreak-michigan/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Cyclospora-cayetanensis_1400.jpg?resize=600,400"),
 ]
 
+PLACE = [
+ (67.46, 39.19, 8.6, -1),
+ (80.62, 63.41, 11.4, -1),
+ (2.61, 23.57, 11.4, -1),
+ (34.58, 81.29, 11.4, -1),
+ (52.57, 80.69, 8.6, -1),
+ (21.11, 60.25, 11.4, -1),
+ (32.99, 19.62, 11.4, -1),
+ (52.59, 57.74, 12.4, 3),
+ (65.72, 80.96, 10.2, -1),
+ (82.2, 80.54, 12.4, 4),
+ (83.9, 18.66, 8.6, -1),
+ (18.48, -0.02, 12.4, 0),
+ (17.39, 26.4, 8.6, -1),
+ (1.7, 65.66, 8.6, -1),
+ (0.5, 3.52, 11.4, -1),
+ (68.85, 64.37, 8.6, -1),
+ (49.78, 21.15, 10.2, -1),
+ (83.18, 44.67, 10.2, -1),
+ (0.5, 38.34, 12.4, 2),
+ (16.93, 82.77, 8.6, -1),
+ (64.22, 24.58, 12.4, 1),
+ (33.38, 42.7, 11.4, -1),
+ (68.16, 2.51, 8.6, -1),
+ (35.99, 64.98, 11.4, -1),
+ (49.82, 6.97, 10.2, -1),
+ (33.67, 4.0, 11.4, -1),
+ (2.16, 78.46, 11.4, -1),
+ (49.44, 44.15, 8.6, -1),
+ (82.55, 6.75, 8.6, -1),
+ (18.38, 39.0, 11.4, -1),
+]
+
 RAIL = [
  ("photo", "oyster-dock", "Harvesting oysters on Maine's Nonesuch River", "/2022/11/01/oyster-harvesting-maine/"),
  ("stat", "500K+", "co‑ops placed, all time"),
@@ -189,8 +222,11 @@ def rail_panels():
 
 def wall_tiles():
     out = ""
-    for t, u, img in WALL:
-        out += (f'<a class="wt" href="{NGN}{u}" aria-label="{t}">'
+    for i, (t, u, img) in enumerate(WALL):
+        left, top, w, stop = PLACE[i]
+        ds = f' data-stop="{stop}"' if stop >= 0 else ""
+        out += (f'<a class="wt" href="{NGN}{u}" aria-label="{t}" '
+                f'style="left:{left}%;top:{top}%;width:{w}%"{ds}>'
                 f'<img src="{img}" alt="" loading="lazy"><span class="wt-t">{t}</span></a>\n')
     return out
 
@@ -279,21 +315,28 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .j-bar{display:none}
   }
 
-  /* ---------- research: the wall you dive into ---------- */
+  /* ---------- research: a canvas the camera pans around ---------- */
   .research2{position:relative;z-index:6;background:#FAFAFA}
-  .rw-track{height:380svh}
-  .rw-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center}
-  .rw-wall{position:absolute;left:50%;top:50%;width:max(160vw,1900px);
-    transform:translate(-50%,-50%) scale(.42);transform-origin:50% 44%;will-change:transform;
-    display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-  .wt{position:relative;display:block;border-radius:10px;overflow:hidden;background:#E5E5E5}
+  .rw-track{height:520svh}
+  .rw-stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .rw-plane{position:absolute;left:0;top:0;width:240vw;height:220svh;will-change:transform}
+  .wt{position:absolute;display:block;border-radius:12px;overflow:hidden;background:#E5E5E5;
+    box-shadow:0 1px 2px rgba(17,17,17,.06);
+    transition:opacity .5s var(--ease),transform .5s var(--ease),box-shadow .5s var(--ease)}
   .wt img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
-  .wt-t{position:absolute;inset:auto 0 0 0;padding:26px 12px 10px;font-size:13px;line-height:1.3;color:#fff;
-    background:linear-gradient(to top,rgba(5,5,8,.8),rgba(5,5,8,0));opacity:0;transition:opacity .25s}
+  .wt-t{position:absolute;inset:auto 0 0 0;padding:30px 14px 12px;font-size:13.5px;line-height:1.35;color:#fff;
+    background:linear-gradient(to top,rgba(5,5,8,.82),rgba(5,5,8,0));opacity:0;transition:opacity .35s}
   .wt:hover .wt-t{opacity:1}
-  .rw-head{position:relative;z-index:3;text-align:center;padding:0 20px;pointer-events:none;will-change:opacity}
-  .rw-head::before{content:"";position:absolute;inset:-90px -160px;z-index:-1;
-    background:radial-gradient(closest-side,rgba(250,250,250,.94) 30%,rgba(250,250,250,.75) 62%,rgba(250,250,250,0) 100%)}
+  .rw-plane.focused .wt{opacity:.45}
+  .rw-plane.focused .wt.lit{opacity:1;transform:scale(1.05);z-index:3;
+    box-shadow:0 18px 60px rgba(17,17,17,.22)}
+  .wt.lit .wt-t{opacity:1}
+  .rw-head{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:0 20px;
+    pointer-events:none;will-change:opacity}
+  .rw-head::before{content:"";position:absolute;left:50%;top:50%;width:min(120vw,1100px);height:70svh;
+    transform:translate(-50%,-50%);z-index:-1;
+    background:radial-gradient(closest-side,rgba(250,250,250,.95) 34%,rgba(250,250,250,.78) 62%,rgba(250,250,250,0) 100%)}
   .rw-head h2{font-size:clamp(38px,5vw,76px);font-weight:200;letter-spacing:-.03em;line-height:1.04;color:var(--ink)}
   .rw-head .lede{margin:16px auto 0;max-width:44ch;color:#404040;font-size:clamp(15px,1.2vw,17.5px)}
   .rw-land{position:relative;z-index:6;background:#FAFAFA;padding:90px 0 120px}
@@ -311,10 +354,11 @@ NEW_CSS = """  /* ---------- award layer ---------- */
   }
   @media (prefers-reduced-motion: reduce){
     .rw-track{height:auto}
-    .rw-stage{position:static;height:auto;display:block;padding:80px 0 40px}
-    .rw-wall{position:static;width:auto;transform:none;grid-template-columns:repeat(3,1fr)}
-    .rw-wall .wt:nth-child(n+13){display:none}
-    .rw-head{padding:60px 20px}
+    .rw-stage{position:static;height:auto;overflow:visible;padding:80px 0 40px}
+    .rw-plane{position:static;width:auto;height:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;transform:none !important}
+    .rw-plane .wt{position:static;width:auto !important}
+    .rw-plane .wt:nth-child(n+13){display:none}
+    .rw-head{position:static;padding:60px 20px}
   }
 
   /* ---------- voices: scroll-driven cinema ---------- */
@@ -359,11 +403,11 @@ AFTER_SCROLLY = f"""
 <section class="research2" id="research">
   <div class="rw-track" id="rwTrack">
     <div class="rw-stage">
-      <div class="rw-wall" id="rwWall">
+      <div class="rw-plane" id="rwPlane">
 {wall_tiles()}      </div>
       <div class="rw-head" id="rwHead">
         <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-        <p class="lede">Thirty stories from the last sixty days. Scroll in.</p>
+        <p class="lede">Thirty stories from the last sixty days. Keep scrolling; we&#8217;ll take you around.</p>
       </div>
     </div>
   </div>
@@ -469,19 +513,45 @@ if (jTrack && jRail && !reduceMotion) {
   jUpd();
 }
 
-/* ============ research wall: dive into the mass ============ */
-const rwTrack = $("#rwTrack"), rwWall = $("#rwWall"), rwHead = $("#rwHead");
-if (rwTrack && rwWall && !reduceMotion) {
+/* ============ research canvas: the camera pans around, highlighting stops ============ */
+const rwTrack = $("#rwTrack"), rwPlane = $("#rwPlane"), rwHead = $("#rwHead");
+if (rwTrack && rwPlane && !reduceMotion) {
+  const stopEls = [];
+  $$(".wt[data-stop]").forEach(el => stopEls[+el.dataset.stop] = el);
+  let anchors = [];
+  const measure = () => {
+    const pw = rwPlane.offsetWidth, ph = rwPlane.offsetHeight;
+    const center = [pw / 2, ph / 2];
+    anchors = [center, ...stopEls.map(el =>
+      [el.offsetLeft + el.offsetWidth / 2, el.offsetTop + el.offsetHeight / 2])];
+  };
+  let lit = null;
   const rwUpd = () => {
+    if (!anchors.length) measure();
     const r = rwTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
-    const e = easeIO(p);
-    const sc = 0.42 + e * 1.13;
-    rwWall.style.transform = `translate(-50%, ${(-50 - e * 6).toFixed(2)}%) scale(${sc.toFixed(4)})`;
-    if (rwHead) rwHead.style.opacity = clamp01(1 - p / 0.28).toFixed(2);
+    const segs = anchors.length - 1;                 /* 5 journeys between 6 anchors */
+    const sp = Math.min(segs - 1e-6, p * segs);
+    const seg = Math.floor(sp);
+    const t = sp - seg;
+    /* travel for the first 62% of each segment, then dwell on the stop */
+    const m = easeIO(clamp01(t / 0.62));
+    const ax = anchors[seg][0] + (anchors[seg + 1][0] - anchors[seg][0]) * m;
+    const ay = anchors[seg][1] + (anchors[seg + 1][1] - anchors[seg][1]) * m;
+    const tx = Math.min(Math.max(ax - innerWidth / 2, 0), rwPlane.offsetWidth - innerWidth);
+    const ty = Math.min(Math.max(ay - innerHeight / 2, 0), rwPlane.offsetHeight - innerHeight);
+    rwPlane.style.transform = `translate(${(-tx).toFixed(1)}px, ${(-ty).toFixed(1)}px)`;
+    if (rwHead) rwHead.style.opacity = clamp01(1 - p / 0.14).toFixed(2);
+    const want = (t > 0.55 && seg < stopEls.length) ? stopEls[seg] : null;
+    if (want !== lit) {
+      if (lit) lit.classList.remove("lit");
+      lit = want;
+      rwPlane.classList.toggle("focused", !!lit);
+      if (lit) lit.classList.add("lit");
+    }
   };
   addEventListener("scroll", () => requestAnimationFrame(rwUpd), { passive: true });
-  addEventListener("resize", rwUpd);
+  addEventListener("resize", () => { anchors = []; requestAnimationFrame(rwUpd); });
   rwUpd();
 }
 
@@ -539,8 +609,8 @@ page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + t
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 for tok in ['id="srch"', 'id="tkv"', 'class="scrolly"', 'id="globe"', "gt-card", "coopcount",
-            "j-rail", "w-logo", "rw-wall", 'class="wt"', 'id="vTrack"', "v-slide",
-            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="13"',
+            "j-rail", "w-logo", "rw-plane", "data-stop", 'id="vTrack"', "v-slide",
+            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="14"',
             "data-count", "newspost", "500K+", "major in"]:
     assert tok in page, tok
 for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "re-flow", "data-drift",
