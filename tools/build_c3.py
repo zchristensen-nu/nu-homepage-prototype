@@ -223,15 +223,6 @@ def portrait_stack():
                    f'<a class="storylink" href="{NGN}{u}">{cta}</a></div>\n')
     return imgs, blocks
 
-def verbar(cur):
-    links = [("index.html", "Current", "cur"), ("quotes-a.html", "One voice", "a"),
-             ("quotes-b.html", "Ledger", "b"), ("quotes-c.html", "Portraits", "c")]
-    out = '<div class="verbar"><span class="lbl">Quotes:</span>'
-    for href, label, key in links:
-        cls = ' class="cur"' if key == cur else ''
-        out += f'<a href="{href}"{cls}>{label}</a>'
-    return out + "</div>\n"
-
 NEW_CSS = """  /* ---------- award layer ---------- */
   ::selection{background:var(--red);color:#fff}
   .grain{position:fixed;inset:-50%;z-index:400;pointer-events:none;opacity:.045;
@@ -414,14 +405,6 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .vc-flow .vc-q{min-height:0;padding:34px 0;opacity:1}
   }
 
-  /* ---------- variant switcher ---------- */
-  .verbar{position:fixed;left:14px;bottom:14px;z-index:300;display:flex;gap:2px;align-items:center;
-    background:rgba(16,16,20,.88);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);
-    border-radius:999px;padding:5px 8px;font-size:12px}
-  .verbar .lbl{padding:0 6px;color:#8a8a92}
-  .verbar a{padding:5px 11px;border-radius:999px;color:#ddd}
-  .verbar a:hover{background:rgba(255,255,255,.14)}
-  .verbar a.cur{background:#fff;color:#111}
 """
 
 NEW_BODY = f"""
