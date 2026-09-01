@@ -231,6 +231,14 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   numbers and now reads "And that's just this fall.", handing off so the rail owns
   the single "Where will yours be?" close. The rev-12 drift collage was replaced
   wholesale (its feedback-loop fix is in git history if ever needed).
+- Rev 14: the wall-dive clashed with the IMAX tunnel (both zoom motions), so research
+  became a PAN: the 30 tiles scatter across a flat 240vw x 220svh plane (seeded jitter
+  placement, PLACE table in the builder) and over a 520svh pin the camera pans between
+  six anchors (center + five far-apart featured stops: AI scientist, axolotl,
+  firefighting robot, post-quantum cryptography, text-message voting). Each segment
+  travels for 62% then dwells: the stop tile lights (scale 1.05, shadow, title plate)
+  while the rest dim to .45. No scale on the camera at all; the tunnel verb stays
+  unique to student life. Live-verified: pan transform, dwell highlight, dimming.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
