@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="16">
+<meta name="concept2-rev" content="17">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -319,43 +319,9 @@
     .j-bar{display:none}
   }
 
-  /* ---------- research: reel left, sticky text right ---------- */
-  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 40px}
-  .rr{display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,5vw,90px);align-items:start;margin-top:64px}
-  .rr-reel{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px)}
-  .rf{position:relative;display:block;border-radius:14px;overflow:hidden;background:#E5E5E5}
-  .rf img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;
-    filter:saturate(.55) brightness(.96);transition:filter .6s var(--ease),transform .8s var(--ease)}
-  .rf.is-on img{filter:none}
-  .rf:hover img{transform:scale(1.02)}
-  .rf-cap{display:none}
-  .rr-side{position:sticky;top:calc(50svh - 190px)}
-  .rr-side .ro-stack{position:relative;margin-top:34px;min-height:240px}
-  .ro{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(14px);
-    transition:opacity .45s var(--ease),transform .45s var(--ease);pointer-events:none}
-  .ro.is-on{opacity:1;transform:none;pointer-events:auto}
-  .ro-d{font-size:13px;color:#737373}
-  .ro h3{margin-top:10px;font-size:clamp(24px,2.3vw,34px);font-weight:300;letter-spacing:-.02em;
-    line-height:1.18;color:var(--ink);max-width:20ch}
-  .rr-ix{display:flex;align-items:center;gap:14px;font-size:13px;color:#737373;
-    font-variant-numeric:tabular-nums}
-  .rr-ix .bar{flex:0 0 120px;height:1px;background:#E5E5E5;position:relative}
-  .rr-ix .bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
-  .rr-side .sechead h2{font-size:clamp(32px,3.2vw,48px)}
-  .rr-side .lede{margin-top:12px;font-size:15px}
-  @media(max-width:820px){
-    .rr{grid-template-columns:1fr}
-    .rr-side{position:static}
-    .rr-side .ro-stack, .rr-ix{display:none}
-    .rf-cap{display:block;position:absolute;inset:auto 0 0 0;padding:30px 14px 12px;
-      font-size:13.5px;line-height:1.35;color:#fff;
-      background:linear-gradient(to top,rgba(5,5,8,.82),rgba(5,5,8,0))}
-    .rf-cap span{display:block;font-size:11.5px;color:#D4D4D4;margin-bottom:2px}
-    .rf img{filter:none}
-  }
-  .rw-land{position:relative;z-index:6;background:#FAFAFA;padding:90px 0 120px}
+  /* ---------- research counters (giant style, lives inside the v1 sheet) ---------- */
   .rc-grid{display:grid;grid-template-columns:repeat(3,1fr);
-    gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
+    gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px;margin-top:70px}
   .rc{border-left:1px solid #E5E5E5;padding-left:clamp(18px,2vw,30px)}
   .rc:first-child{border-left:0;padding-left:0}
   .rc .n{font-size:clamp(48px,6vw,104px);font-weight:200;letter-spacing:-.03em;line-height:1;
@@ -365,79 +331,6 @@
     .rc-grid{grid-template-columns:1fr;gap:30px}
     .rc{border-left:0;padding-left:0;border-top:1px solid #E5E5E5;padding-top:22px}
     .rc:first-child{border-top:0;padding-top:0}
-  }
-
-  /* ---------- voices: scroll-driven cinema ---------- */
-  .voices{position:relative;z-index:6;background:var(--dark);color:#fff}
-  .v-track{height:340svh}
-  .v-stage{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden}
-  .v-slide{position:absolute;inset:0;opacity:0;pointer-events:none;will-change:opacity}
-  .v-slide.is-active{pointer-events:auto}
-  .v-bg{position:absolute;inset:0;background-size:cover;filter:brightness(.52);will-change:transform}
-  .v-slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(to top right,rgba(5,5,8,.82) 0%,rgba(5,5,8,.38) 45%,rgba(5,5,8,0) 75%)}
-  .v-in{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;
-    height:100%;padding-bottom:96px}
-  .v-in blockquote{font-size:clamp(24px,3.3vw,46px);font-weight:300;letter-spacing:-.015em;
-    line-height:1.18;max-width:24ch;text-wrap:balance}
-  .v-who{margin-top:26px;font-size:15px;color:#D4D4D4}
-  .v-who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
-  .v-in .storylink{color:#fff;font-weight:500}
-  @media (prefers-reduced-motion: reduce){
-    .v-track{height:auto}
-    .v-stage{position:static;height:auto;overflow:visible}
-    .v-slide{position:relative;opacity:1 !important;height:80svh;min-height:520px}
-  }
-
-  /* ---------- variant A: one voice, lit word by word ---------- */
-  .q-track{height:260svh}
-  .q-stage{position:sticky;top:0;height:100svh;min-height:600px;display:flex;align-items:center;overflow:hidden}
-  .q-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,84px);align-items:center;width:100%}
-  .q-photo{border-radius:16px;overflow:hidden;height:min(66svh,640px)}
-  .q-photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .q-quote{font-size:clamp(28px,3.6vw,56px);font-weight:300;letter-spacing:-.018em;line-height:1.22;
-    max-width:22ch;text-wrap:balance}
-  .q-quote .qw{opacity:.16;transition:opacity .35s var(--ease)}
-  .q-quote .qw.on{opacity:1}
-  .q-meta{margin-top:30px;opacity:0;transform:translateY(12px);
-    transition:opacity .6s var(--ease),transform .6s var(--ease)}
-  .q-meta.on{opacity:1;transform:none}
-  .q-more{background:var(--dark);padding:10px 0 110px}
-  .q-more .vr{display:grid;grid-template-columns:1fr auto;gap:8px 40px;align-items:end;
-    padding:30px 2px;border-top:1px solid rgba(255,255,255,.14);color:#E5E5E5;transition:color .25s}
-  .q-more .vr:hover{color:#fff}
-  .vr-q{font-size:clamp(16px,1.4vw,19px);font-weight:300;line-height:1.5;max-width:64ch}
-  .vr-who{font-size:13.5px;color:#A9A9B2;white-space:nowrap}
-  .vr-who b{color:#fff;font-weight:600;display:block}
-  @media(max-width:820px){
-    .q-grid{grid-template-columns:1fr;gap:26px}
-    .q-photo{height:38svh}
-    .q-more .vr{grid-template-columns:1fr}
-    .vr-who{white-space:normal}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .q-track{height:auto}
-    .q-stage{position:static;height:auto;padding:90px 0}
-    .q-quote .qw{opacity:1;transition:none}
-    .q-meta{opacity:1;transform:none}
-  }
-
-  /* ---------- variant B: the ledger, all voices in flow ---------- */
-  .voices-b{position:relative;z-index:6;background:var(--dark);color:#fff;padding:120px 0}
-  .led{display:grid;grid-template-columns:4fr 8fr;gap:clamp(24px,4vw,72px);align-items:center;
-    padding:clamp(48px,7vh,84px) 0;border-top:1px solid rgba(255,255,255,.14)}
-  .led:first-of-type{border-top:0;padding-top:0}
-  .led:nth-of-type(even){grid-template-columns:8fr 4fr}
-  .led:nth-of-type(even) .led-im{order:2}
-  .led-im{display:block;border-radius:14px;overflow:hidden}
-  .led-im img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-  .led-b blockquote{font-size:clamp(22px,2.6vw,40px);font-weight:300;letter-spacing:-.015em;
-    line-height:1.25;max-width:26ch;text-wrap:balance}
-  .led-b .v-who{margin-top:20px}
-  .led-b .storylink{color:#fff}
-  @media(max-width:820px){
-    .led,.led:nth-of-type(even){grid-template-columns:1fr}
-    .led:nth-of-type(even) .led-im{order:0}
   }
 
   /* ---------- variant C: sticky portrait, flowing quotes ---------- */
@@ -461,14 +354,6 @@
     .vc-flow .vc-q{min-height:0;padding:34px 0;opacity:1}
   }
 
-  /* ---------- variant switcher ---------- */
-  .verbar{position:fixed;left:14px;bottom:14px;z-index:300;display:flex;gap:2px;align-items:center;
-    background:rgba(16,16,20,.88);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);
-    border-radius:999px;padding:5px 8px;font-size:12px}
-  .verbar .lbl{padding:0 6px;color:#8a8a92}
-  .verbar a{padding:5px 11px;border-radius:999px;color:#ddd}
-  .verbar a:hover{background:rgba(255,255,255,.14)}
-  .verbar a.cur{background:#fff;color:#111}
 
   /* ---------- STUDENT LIFE IMAX ---------- */
   .lifezoom{position:relative;z-index:6;background:var(--dark);border-radius:28px 28px 0 0;margin-top:-28px}
@@ -860,49 +745,75 @@
 </div>
 
 
-<section class="research2" id="research">
-  <div class="wrap">
-    <div class="rr">
-      <div class="rr-reel" id="rrReel">
-<a class="rf" data-i="0" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" aria-label="Robots walk to class here. Researchers are teaching them how"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><span class="rf-cap"><span>Oct 2025</span>Robots walk to class here. Researchers are teaching them how</span></a>
-<a class="rf" data-i="1" href="https://news.northeastern.edu/2026/05/21/robo-demo/" aria-label="A new initiative where AI meets the physical world"><img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="" loading="lazy"><span class="rf-cap"><span>May 2026</span>A new initiative where AI meets the physical world</span></a>
-<a class="rf" data-i="2" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/" aria-label="A robotic arm that cleans like an elephant’s trunk"><img src="../img/sccrub-robot.jpg" alt="" loading="lazy"><span class="rf-cap"><span>Feb 2026</span>A robotic arm that cleans like an elephant’s trunk</span></a>
-<a class="rf" data-i="3" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/" aria-label="Lighter, faster, more agile: a new Mars rover"><img src="../img/mars-etch.jpg" alt="" loading="lazy"><span class="rf-cap"><span>May 2026</span>Lighter, faster, more agile: a new Mars rover</span></a>
-<a class="rf" data-i="4" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/" aria-label="Lunabotics builds a robot for the moon’s surface"><img src="../img/lunabotics.jpg" alt="" loading="lazy"><span class="rf-cap"><span>May 2025</span>Lunabotics builds a robot for the moon’s surface</span></a>
-<a class="rf" data-i="5" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/" aria-label="Aerobat flies like a bat to navigate tight spaces"><img src="../img/aerobat.jpg" alt="" loading="lazy"><span class="rf-cap"><span>Sep 2024</span>Aerobat flies like a bat to navigate tight spaces</span></a>
-<a class="rf" data-i="6" href="https://news.northeastern.edu/2024/01/12/tech-savvy/" aria-label="Inside Colosseum, the wireless network emulator"><img src="../img/colosseum.jpg" alt="" loading="lazy"><span class="rf-cap"><span>Jan 2024</span>Inside Colosseum, the wireless network emulator</span></a>
-<a class="rf" data-i="7" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/" aria-label="The robotics high-bay open to every major"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg" alt="" loading="lazy"><span class="rf-cap"><span>Nov 2023</span>The robotics high-bay open to every major</span></a>
-      </div>
-      <div class="rr-side">
-        <div class="sechead rv">
-          <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-          <p class="lede">Students and professors choose Northeastern because the investment is real. Eight projects, one scroll.</p>
-        </div>
-        <div class="ro-stack" id="roStack">
-<div class="ro is-on" data-i="0"><span class="ro-d">Oct 2025</span><h3>Robots walk to class here. Researchers are teaching them how</h3><a class="storylink" href="https://news.northeastern.edu/2025/10/01/walking-the-future/">Read the story</a></div>
-<div class="ro" data-i="1"><span class="ro-d">May 2026</span><h3>A new initiative where AI meets the physical world</h3><a class="storylink" href="https://news.northeastern.edu/2026/05/21/robo-demo/">Read the story</a></div>
-<div class="ro" data-i="2"><span class="ro-d">Feb 2026</span><h3>A robotic arm that cleans like an elephant’s trunk</h3><a class="storylink" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/">Read the story</a></div>
-<div class="ro" data-i="3"><span class="ro-d">May 2026</span><h3>Lighter, faster, more agile: a new Mars rover</h3><a class="storylink" href="https://news.northeastern.edu/2026/05/21/university-rover-challenge-team/">Read the story</a></div>
-<div class="ro" data-i="4"><span class="ro-d">May 2025</span><h3>Lunabotics builds a robot for the moon’s surface</h3><a class="storylink" href="https://news.northeastern.edu/2025/05/07/moon-robot-lunabotics/">Read the story</a></div>
-<div class="ro" data-i="5"><span class="ro-d">Sep 2024</span><h3>Aerobat flies like a bat to navigate tight spaces</h3><a class="storylink" href="https://news.northeastern.edu/2024/09/23/flying-bat-robot/">Read the story</a></div>
-<div class="ro" data-i="6"><span class="ro-d">Jan 2024</span><h3>Inside Colosseum, the wireless network emulator</h3><a class="storylink" href="https://news.northeastern.edu/2024/01/12/tech-savvy/">Read the story</a></div>
-<div class="ro" data-i="7"><span class="ro-d">Nov 2023</span><h3>The robotics high-bay open to every major</h3><a class="storylink" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/">Read the story</a></div>
-        </div>
-        <div class="rr-ix"><span id="rrIx">01 / 08</span><span class="bar"><i id="rrBar"></i></span></div>
-      </div>
-    </div>
-  </div>
-  <div class="rw-land">
+<div class="sheet">
+
+  <section class="block" id="research">
     <div class="wrap">
+      <div class="sechead rv">
+        <h2 class="display">Our research story starts in the world.</h2>
+        <p class="lede">While most research institutions study the world, our faculty and students solve problems at the center of it.</p>
+      </div>
+
+      <div class="xrow rv" id="xrow">
+        <article class="xcard active" tabindex="0">
+          <img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="A Boston Dynamics Spot robot, equipped with sensors, walks alongside students near the ISEC and EXP buildings." loading="lazy">
+          <div class="xshade"></div>
+          <div class="xbody">
+            <h3>Robots walk to class here. Student researchers are teaching them how</h3>
+            <a class="storylink" href="https://news.northeastern.edu/2025/10/01/walking-the-future/">Walking the future</a>
+          </div>
+          <span class="xtag">Field robotics</span>
+        </article>
+        <article class="xcard" tabindex="0">
+          <img src="https://news.northeastern.edu/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg" alt="A PhD student works on a snake-like robot in the EXP robotics lab." loading="lazy">
+          <div class="xshade"></div>
+          <div class="xbody">
+            <h3>Inside the robotics high-bay open to every major</h3>
+            <a class="storylink" href="https://news.northeastern.edu/2023/11/27/experiential-robotics-institute-exp/">Experiential robotics at EXP</a>
+          </div>
+          <span class="xtag">EXP</span>
+        </article>
+        <article class="xcard" tabindex="0">
+          <img src="https://news.northeastern.edu/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg" alt="A PhD student interacts with a robot demo at the Physical AI Research Initiative launch at ISEC." loading="lazy">
+          <div class="xshade"></div>
+          <div class="xbody">
+            <h3>A new research initiative where AI meets the physical world</h3>
+            <a class="storylink" href="https://news.northeastern.edu/2026/05/21/robo-demo/">Physical AI at ISEC</a>
+          </div>
+          <span class="xtag">Physical AI</span>
+        </article>
+        <article class="xcard" tabindex="0">
+          <img src="https://news.northeastern.edu/wp-content/uploads/2024/06/062624_MM_Maura_Healey_014.jpg" alt="Massachusetts Gov. Maura Healey takes a selfie with Northeastern's InnovateMA co‑op students at the Statehouse." loading="lazy">
+          <div class="xshade"></div>
+          <div class="xbody">
+            <h3>Co‑op students build AI tools for the Commonwealth</h3>
+            <a class="storylink" href="https://news.northeastern.edu/2024/06/26/ai-for-impact/">AI for Impact</a>
+          </div>
+          <span class="xtag">AI for Impact</span>
+        </article>
+        <article class="xcard" tabindex="0">
+          <img src="../img/sccrub-robot.jpg" alt="A student researcher adjusts SCCRUB, a flexible robotic arm inspired by an elephant's trunk." loading="lazy">
+          <div class="xshade"></div>
+          <div class="xbody">
+            <h3>A robotic arm that cleans like an elephant's trunk</h3>
+            <a class="storylink" href="https://news.northeastern.edu/2026/02/05/cleaning-robot-arm/">Meet SCCRUB</a>
+          </div>
+          <span class="xtag">Soft robotics</span>
+        </article>
+      </div>
+
       <div class="rc-grid" id="counters">
         <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
         <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
         <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
       </div>
-      <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
+      <a class="storylink rv" style="margin-top:34px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
     </div>
-  </div>
-</section>
+  </section>
+
+</div>
+
+
 
 <section class="journey" id="coop">
   <div class="j-track" id="jTrack">
@@ -929,16 +840,16 @@
   </div>
 </section>
 
-<section class="voices" id="voices" aria-label="Student voices">
-  <div class="v-track" id="vTrack">
-    <div class="v-stage">
-<div class="v-slide is-active"><div class="v-bg" style="background-image:url('../img/microscopy-coop.jpg');background-position:center 30%"></div><div class="wrap v-in"><blockquote><span class="line"><span>&ldquo;I really enjoyed the process of research from my previous co‑op.</span></span><span class="line"><span>But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</span></span></blockquote><div class="v-who"><b>Cameron D’Mello</b> Bioengineering &middot; Co‑ops at Beth Israel Medical Center and QuantumScape</div><a class="storylink" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/">Read Cameron’s story</a></div></div>
-<div class="v-slide"><div class="v-bg" style="background-image:url('../img/oyster-dock.jpg');background-position:20% 35%"></div><div class="wrap v-in"><blockquote><span class="line"><span>&ldquo;I wanted to do this job and test myself and see</span></span><span class="line"><span>if I like working outdoors as much as I hoped. So far, so good.&rdquo;</span></span></blockquote><div class="v-who"><b>Maddy Russell</b> Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine</div><a class="storylink" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/">Read Maddy’s story</a></div></div>
-<div class="v-slide"><div class="v-bg" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg');background-position:center"></div><div class="wrap v-in"><blockquote><span class="line"><span>&ldquo;I really wanted the chance to go out into the field.</span></span><span class="line"><span>You just have to push past it, and that’s something I’ve gotten pretty good at.&rdquo;</span></span></blockquote><div class="v-who"><b>Paris Graff</b> International affairs &middot; Co‑op with the Landmine Relief Fund, Cambodia</div><a class="storylink" href="https://news.northeastern.edu/2023/04/25/landmine-relief-fund-cambodia-co-op/">Read Paris’s story</a></div></div>
+<section class="voices-c" id="voices" aria-label="Student voices">
+  <div class="wrap vc">
+    <div class="vc-media"><img class="vc-img on" data-i="0" src="../img/microscopy-coop.jpg" alt="" style="object-position:center 30%"><img class="vc-img" data-i="1" src="../img/oyster-dock.jpg" alt="" style="object-position:20% 35%"><img class="vc-img" data-i="2" src="https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg" alt="" style="object-position:center"></div>
+    <div class="vc-flow" id="vcFlow">
+<div class="vc-q on" data-i="0"><blockquote>&ldquo;I really enjoyed the process of research from my previous co‑op. But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</blockquote><div class="v-who"><b>Cameron D’Mello</b> Bioengineering &middot; Co‑ops at Beth Israel Medical Center and QuantumScape</div><a class="storylink" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/">Read Cameron’s story</a></div>
+<div class="vc-q" data-i="1"><blockquote>&ldquo;I wanted to do this job and test myself and see if I like working outdoors as much as I hoped. So far, so good.&rdquo;</blockquote><div class="v-who"><b>Maddy Russell</b> Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine</div><a class="storylink" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/">Read Maddy’s story</a></div>
+<div class="vc-q" data-i="2"><blockquote>&ldquo;I really wanted the chance to go out into the field. You just have to push past it, and that’s something I’ve gotten pretty good at.&rdquo;</blockquote><div class="v-who"><b>Paris Graff</b> International affairs &middot; Co‑op with the Landmine Relief Fund, Cambodia</div><a class="storylink" href="https://news.northeastern.edu/2023/04/25/landmine-relief-fund-cambodia-co-op/">Read Paris’s story</a></div>
     </div>
   </div>
 </section>
-
 
 <section class="lifezoom lifeimax" id="life">
   <div class="lz-track">
@@ -977,7 +888,6 @@
   </div>
 </section>
 
-<div class="verbar"><span class="lbl">Quotes:</span><a href="index.html" class="cur">Current</a><a href="quotes-a.html">One voice</a><a href="quotes-b.html">Ledger</a><a href="quotes-c.html">Portraits</a></div>
 <footer>
   <div class="wrap">
     <div class="f-head">
@@ -1596,6 +1506,15 @@ new IntersectionObserver(es => es.forEach(e => {
   }
 }), { threshold: 0.4 }).observe($("#counters"));
 
+/* ============ research expanding row ============ */
+$$(".xcard").forEach(c => {
+  const activate = () => $$(".xcard").forEach(o => o.classList.toggle("active", o === c));
+  c.addEventListener("click", activate);
+  c.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); }
+  });
+});
+
 
 /* ============ preloader ============ */
 const loader = $("#loader"), loadN = $("#loadn");
@@ -1652,83 +1571,6 @@ if (jTrack && jRail && !reduceMotion) {
   addEventListener("resize", jUpd);
   jUpd();
 }
-
-/* ============ research reel: frames pass, the sticky readout follows ============ */
-const rrFrames = $$(".rf"), roEls = $$(".ro"), rrIx = $("#rrIx"), rrBar = $("#rrBar");
-if (rrFrames.length) {
-  let rrCur = 0;
-  const rrUpd = () => {
-    const mid = innerHeight / 2;
-    let best = 0, bestD = Infinity;
-    rrFrames.forEach((f, i) => {
-      const r = f.getBoundingClientRect();
-      const d = Math.abs(r.top + r.height / 2 - mid);
-      if (d < bestD) { bestD = d; best = i; }
-    });
-    if (best !== rrCur) {
-      rrCur = best;
-      rrFrames.forEach((f, i) => f.classList.toggle("is-on", i === best));
-      roEls.forEach((el, i) => el.classList.toggle("is-on", i === best));
-      if (rrIx) rrIx.textContent = `0${best + 1} / 0${rrFrames.length}`;
-      if (rrBar) rrBar.style.width = ((best + 1) / rrFrames.length * 100).toFixed(1) + "%";
-    }
-  };
-  addEventListener("scroll", () => requestAnimationFrame(rrUpd), { passive: true });
-  addEventListener("resize", rrUpd);
-  rrFrames[0].classList.add("is-on");
-  if (rrBar) rrBar.style.width = (1 / rrFrames.length * 100).toFixed(1) + "%";
-  rrUpd();
-}
-
-/* ============ voices: scroll-driven crossfade cinema ============ */
-const vTrack = $("#vTrack"), vSlides = $$(".v-slide");
-if (vTrack && vSlides.length && !reduceMotion) {
-  const N = vSlides.length;
-  let vActive = 0;
-  const vUpd = () => {
-    const r = vTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    vSlides.forEach((sl, i) => {
-      const t = clamp01((p - i / N) * N);
-      const fadeIn = clamp01(t / 0.16);
-      const fadeOut = i === N - 1 ? 1 : clamp01((1 - t) / 0.16);
-      sl.style.opacity = (t <= 0 && i !== 0 ? 0 : Math.min(fadeIn, fadeOut)).toFixed(2);
-      sl.querySelector(".v-bg").style.transform = `scale(${(1.05 + t * 0.05).toFixed(3)})`;
-    });
-    const idx = Math.min(N - 1, Math.floor(p * N));
-    if (idx !== vActive) {
-      vActive = idx;
-      vSlides.forEach((sl, i) => sl.classList.toggle("is-active", i === idx));
-      vSlides[idx].querySelectorAll(".line").forEach((ln, k) => {
-        ln.classList.remove("in");
-        void ln.offsetWidth;
-        setTimeout(() => ln.classList.add("in"), 90 + k * 120);
-      });
-    }
-  };
-  addEventListener("scroll", () => requestAnimationFrame(vUpd), { passive: true });
-  addEventListener("resize", vUpd);
-  vSlides[0].querySelectorAll(".line").forEach(ln => ln.classList.add("in"));
-  vUpd();
-}
-
-/* ============ variant A: words light as you scroll ============ */
-const qTrack = $("#qTrack"), qQuote = $("#qQuote");
-if (qTrack && qQuote && !reduceMotion) {
-  const qws = [...qQuote.querySelectorAll(".qw")];
-  const qMeta = $("#qMeta");
-  const qUpd = () => {
-    const r = qTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    const lit = Math.floor(p * 1.18 * qws.length);
-    qws.forEach((w, i) => w.classList.toggle("on", i < lit));
-    if (qMeta) qMeta.classList.toggle("on", p > 0.82);
-  };
-  addEventListener("scroll", () => requestAnimationFrame(qUpd), { passive: true });
-  addEventListener("resize", qUpd);
-  qUpd();
-}
-if (qQuote && reduceMotion) $$("#qQuote .qw").forEach(w => w.classList.add("on"));
 
 /* ============ variant C: flowing quotes drive the sticky portrait ============ */
 const vcFlow = $("#vcFlow");

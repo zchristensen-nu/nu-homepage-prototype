@@ -144,14 +144,6 @@ QUOTES = [
   "/2023/04/25/landmine-relief-fund-cambodia-co-op/", "Read Paris’s story"),
 ]
 
-HERO_QUOTE = {
- "img": "../img/oyster-dock.jpg", "pos": "20% 35%",
- "text": "I wanted to do this job and test myself and see if I like working outdoors as much as I hoped. So far, so good.",
- "name": "Maddy Russell",
- "who": "Environmental &amp; sustainability science &middot; Co‑op at Nonesuch Oyster Farm, Maine",
- "url": "/2022/11/01/oyster-harvesting-maine/", "cta": "Read Maddy’s story",
-}
-
 def ticker_items(rows):
     return "".join(f'<a class="w-item" href="{NGN}{u}"><span class="w-d">{d}</span>{t}</a>'
                    for d, t, u in rows)
@@ -176,39 +168,6 @@ def rail_panels():
                     '<span class="j-big">Where will yours be?</span>'
                     '<a class="pill ghostw" style="margin-top:26px" href="#admit">Start at Northeastern</a>'
                     '</div></div>\n')
-    return out
-
-def quote_slides():
-    out = ""
-    for i, (img, pos, lines, name, who, u, cta) in enumerate(QUOTES):
-        ls = "".join(f'<span class="line"><span>{l}</span></span>' for l in lines)
-        act = " is-active" if i == 0 else ""
-        out += (f'<div class="v-slide{act}"><div class="v-bg" style="background-image:url(\'{img}\');background-position:{pos}"></div>'
-                f'<div class="wrap v-in"><blockquote>{ls}</blockquote>'
-                f'<div class="v-who"><b>{name}</b> {who}</div>'
-                f'<a class="storylink" href="{NGN}{u}">{cta}</a></div></div>\n')
-    return out
-
-def quote_words():
-    return "".join(f'<span class="qw">{w}</span> ' for w in HERO_QUOTE["text"].split(" "))
-
-def voice_rows():
-    out = ""
-    for img, pos, lines, name, who, u, cta in QUOTES:
-        if name == HERO_QUOTE["name"]: continue
-        q = " ".join(lines)
-        out += (f'<a class="vr" href="{NGN}{u}"><span class="vr-q">{q}</span>'
-                f'<span class="vr-who"><b>{name}</b> {who}</span></a>\n')
-    return out
-
-def ledger_rows():
-    out = ""
-    for img, pos, lines, name, who, u, cta in QUOTES:
-        q = " ".join(lines)
-        out += (f'<article class="led rv"><span class="led-im"><img src="{img}" alt="" loading="lazy" style="object-position:{pos}"></span>'
-                f'<div class="led-b"><blockquote>{q}</blockquote>'
-                f'<div class="v-who"><b>{name}</b> {who}</div>'
-                f'<a class="storylink" href="{NGN}{u}">{cta}</a></div></article>\n')
     return out
 
 def portrait_stack():
@@ -311,79 +270,6 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .rc:first-child{border-top:0;padding-top:0}
   }
 
-  /* ---------- voices: scroll-driven cinema ---------- */
-  .voices{position:relative;z-index:6;background:var(--dark);color:#fff}
-  .v-track{height:340svh}
-  .v-stage{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden}
-  .v-slide{position:absolute;inset:0;opacity:0;pointer-events:none;will-change:opacity}
-  .v-slide.is-active{pointer-events:auto}
-  .v-bg{position:absolute;inset:0;background-size:cover;filter:brightness(.52);will-change:transform}
-  .v-slide::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(to top right,rgba(5,5,8,.82) 0%,rgba(5,5,8,.38) 45%,rgba(5,5,8,0) 75%)}
-  .v-in{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;
-    height:100%;padding-bottom:96px}
-  .v-in blockquote{font-size:clamp(24px,3.3vw,46px);font-weight:300;letter-spacing:-.015em;
-    line-height:1.18;max-width:24ch;text-wrap:balance}
-  .v-who{margin-top:26px;font-size:15px;color:#D4D4D4}
-  .v-who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
-  .v-in .storylink{color:#fff;font-weight:500}
-  @media (prefers-reduced-motion: reduce){
-    .v-track{height:auto}
-    .v-stage{position:static;height:auto;overflow:visible}
-    .v-slide{position:relative;opacity:1 !important;height:80svh;min-height:520px}
-  }
-
-  /* ---------- variant A: one voice, lit word by word ---------- */
-  .q-track{height:260svh}
-  .q-stage{position:sticky;top:0;height:100svh;min-height:600px;display:flex;align-items:center;overflow:hidden}
-  .q-grid{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,84px);align-items:center;width:100%}
-  .q-photo{border-radius:16px;overflow:hidden;height:min(66svh,640px)}
-  .q-photo img{width:100%;height:100%;object-fit:cover;display:block}
-  .q-quote{font-size:clamp(28px,3.6vw,56px);font-weight:300;letter-spacing:-.018em;line-height:1.22;
-    max-width:22ch;text-wrap:balance}
-  .q-quote .qw{opacity:.16;transition:opacity .35s var(--ease)}
-  .q-quote .qw.on{opacity:1}
-  .q-meta{margin-top:30px;opacity:0;transform:translateY(12px);
-    transition:opacity .6s var(--ease),transform .6s var(--ease)}
-  .q-meta.on{opacity:1;transform:none}
-  .q-more{background:var(--dark);padding:10px 0 110px}
-  .q-more .vr{display:grid;grid-template-columns:1fr auto;gap:8px 40px;align-items:end;
-    padding:30px 2px;border-top:1px solid rgba(255,255,255,.14);color:#E5E5E5;transition:color .25s}
-  .q-more .vr:hover{color:#fff}
-  .vr-q{font-size:clamp(16px,1.4vw,19px);font-weight:300;line-height:1.5;max-width:64ch}
-  .vr-who{font-size:13.5px;color:#A9A9B2;white-space:nowrap}
-  .vr-who b{color:#fff;font-weight:600;display:block}
-  @media(max-width:820px){
-    .q-grid{grid-template-columns:1fr;gap:26px}
-    .q-photo{height:38svh}
-    .q-more .vr{grid-template-columns:1fr}
-    .vr-who{white-space:normal}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .q-track{height:auto}
-    .q-stage{position:static;height:auto;padding:90px 0}
-    .q-quote .qw{opacity:1;transition:none}
-    .q-meta{opacity:1;transform:none}
-  }
-
-  /* ---------- variant B: the ledger, all voices in flow ---------- */
-  .voices-b{position:relative;z-index:6;background:var(--dark);color:#fff;padding:120px 0}
-  .led{display:grid;grid-template-columns:4fr 8fr;gap:clamp(24px,4vw,72px);align-items:center;
-    padding:clamp(48px,7vh,84px) 0;border-top:1px solid rgba(255,255,255,.14)}
-  .led:first-of-type{border-top:0;padding-top:0}
-  .led:nth-of-type(even){grid-template-columns:8fr 4fr}
-  .led:nth-of-type(even) .led-im{order:2}
-  .led-im{display:block;border-radius:14px;overflow:hidden}
-  .led-im img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-  .led-b blockquote{font-size:clamp(22px,2.6vw,40px);font-weight:300;letter-spacing:-.015em;
-    line-height:1.25;max-width:26ch;text-wrap:balance}
-  .led-b .v-who{margin-top:20px}
-  .led-b .storylink{color:#fff}
-  @media(max-width:820px){
-    .led,.led:nth-of-type(even){grid-template-columns:1fr}
-    .led:nth-of-type(even) .led-im{order:0}
-  }
-
   /* ---------- variant C: sticky portrait, flowing quotes ---------- */
   .voices-c{position:relative;z-index:6;background:var(--dark);color:#fff;padding:100px 0}
   .vc{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,84px);align-items:start}
@@ -442,39 +328,6 @@ AFTER_SCROLLY = f"""
 
 {{VOICES_SECTION}}
 """
-VOICES_CUR = f"""<section class="voices" id="voices" aria-label="Student voices">
-  <div class="v-track" id="vTrack">
-    <div class="v-stage">
-{quote_slides()}    </div>
-  </div>
-</section>
-
-"""
-
-VOICES_A = f"""<section class="voices" id="voices" aria-label="Student voices">
-  <div class="q-track" id="qTrack">
-    <div class="q-stage"><div class="wrap q-grid">
-      <div class="q-photo"><img src="{HERO_QUOTE['img']}" alt="" style="object-position:{HERO_QUOTE['pos']}"></div>
-      <div>
-        <blockquote class="q-quote" id="qQuote">&ldquo;{quote_words()}&rdquo;</blockquote>
-        <div class="q-meta" id="qMeta">
-          <div class="v-who"><b>{HERO_QUOTE['name']}</b> {HERO_QUOTE['who']}</div>
-          <a class="storylink" href="{NGN}{HERO_QUOTE['url']}">{HERO_QUOTE['cta']}</a>
-        </div>
-      </div>
-    </div></div>
-  </div>
-  <div class="q-more"><div class="wrap">
-{voice_rows()}  </div></div>
-</section>
-"""
-
-VOICES_B = f"""<section class="voices-b" id="voices" aria-label="Student voices">
-  <div class="wrap">
-{ledger_rows()}  </div>
-</section>
-"""
-
 _vc_imgs, _vc_blocks = portrait_stack()
 VOICES_C = f"""<section class="voices-c" id="voices" aria-label="Student voices">
   <div class="wrap vc">
@@ -485,7 +338,7 @@ VOICES_C = f"""<section class="voices-c" id="voices" aria-label="Student voices"
 </section>
 """
 
-VOICES_MAP = {"cur": VOICES_CUR, "a": VOICES_A, "b": VOICES_B, "c": VOICES_C}
+
 
 WIRE_FOOT = f"""
 <section class="wire foot" aria-label="Latest from Northeastern Global News">
@@ -554,24 +407,6 @@ if (jTrack && jRail && !reduceMotion) {
   jUpd();
 }
 
-/* ============ variant A: words light as you scroll ============ */
-const qTrack = $("#qTrack"), qQuote = $("#qQuote");
-if (qTrack && qQuote && !reduceMotion) {
-  const qws = [...qQuote.querySelectorAll(".qw")];
-  const qMeta = $("#qMeta");
-  const qUpd = () => {
-    const r = qTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    const lit = Math.floor(p * 1.18 * qws.length);
-    qws.forEach((w, i) => w.classList.toggle("on", i < lit));
-    if (qMeta) qMeta.classList.toggle("on", p > 0.82);
-  };
-  addEventListener("scroll", () => requestAnimationFrame(qUpd), { passive: true });
-  addEventListener("resize", qUpd);
-  qUpd();
-}
-if (qQuote && reduceMotion) $$("#qQuote .qw").forEach(w => w.classList.add("on"));
-
 /* ============ variant C: flowing quotes drive the sticky portrait ============ */
 const vcFlow = $("#vcFlow");
 if (vcFlow) {
@@ -610,7 +445,7 @@ resize();
 requestAnimationFrame(frame);
 """
 
-body_mid = AFTER_SCROLLY.replace("{SHEET}", sheet_mk).replace("{VOICES_SECTION}", VOICES_MAP["c"])
+body_mid = AFTER_SCROLLY.replace("{SHEET}", sheet_mk).replace("{VOICES_SECTION}", VOICES_C)
 page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
         + header_mk + hero_mk + NEW_BODY + scrolly_mk + body_mid + rest_mk + WIRE_FOOT + footer_mk + "\n"
