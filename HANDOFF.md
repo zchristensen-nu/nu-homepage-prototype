@@ -308,6 +308,30 @@ fold the campuses and globe back into the co-op rail, and give research more bre
   N.U.in only in the rail panel, co-op totals only in the rail, research numbers only
   in the counters. No preloader on this concept.
 
+## Concept 4: the video-first pivot
+
+Live at **https://zchristensen-nu.github.io/nu-homepage-prototype/concept-4/**
+(`concept-4/index.html`, meta `concept4-rev`, built by `tools/build_c5.py`). Zach's pivot
+brief: lean extremely hard on video, hit Global Network / Co-op / Research, and make five
+personas feel seen (students+families, faculty recruits, elite-employer talent teams,
+top boarding-school counselors, media/podcasts).
+
+- Three full-bleed pillar video bands after the v1 hero: campus network (hotlinked
+  Jamie-Wong 4K campus video) with the spinning globe as a broadcast-style inset +
+  14/4/8 stats; co-op (hotlinked Co-Op Experience reel) with the all-time stats; research
+  (hero.mp4 deliberately reused — its lab scenes) over the approved headline. Videos are
+  preload=none and play/pause via IntersectionObserver.
+- Personas: co-op band lands on a two-card duo ("For students and families" / "For
+  employers and talent teams" -> careers.northeastern.edu/employers, the JP Morgan ask);
+  research lands on counters + a facilities row (EXP / ISEC / Colosseum) + a faculty-
+  candidate CTA (research.northeastern.edu, provost); then "Come see what we mean." — five
+  audience rows with 13 destination links, every URL curl-verified 200 on 2026-09-01
+  (incl. NGN faculty-experts and media-inquiries for the media persona).
+- Employer copy claims co-op cohorts "arrive twice a year" (the Jan/Jul cycles) — commonly
+  published but VERIFY with co-op office alongside the standing 500K/10K/250+ flags.
+- Verified live: three bands, lazy video loading (two playing, third correctly waiting),
+  duo cards, facilities, all audiences, counters, portrait quotes, inset globe.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
