@@ -32,6 +32,7 @@ tailcss     = cut("  /* ---------- STUDENT LIFE IMAX ---------- */", "</style>")
 header_mk   = cut("<header", '<section class="hero"')
 hero_mk     = cut('<section class="hero"', '<div class="scrolly"')
 scrolly_mk  = cut('<div class="scrolly"', '<div class="sheet">')
+sheet_mk    = cut('<div class="sheet">', '<section class="quotes"')
 rest_mk     = cut('<section class="lifezoom lifeimax"', "<footer>")
 footer_mk   = cut("<footer>", "</footer>", True)
 assert '<section class="admit"' in rest_mk
@@ -44,10 +45,11 @@ globedata   = cut("/* ============ globe data ============ */", "/* ============
 engine      = cut("/* ============ globe engine ============ */", "/* ============ scrollytelling ============ */")
 scrolly_js  = cut("/* ============ scrollytelling ============ */", "/* ============ research counters ============ */")
 counters_js = cut("/* ============ research counters ============ */", "/* ============ research expanding row ============ */")
+xrow_js     = cut("/* ============ research expanding row ============ */", "/* ============ quote carousel (scroll-snap cards) ============ */")
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="16">')
+                    '<meta name="concept2-rev" content="17">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -65,10 +67,25 @@ old_h = "<h2>Class is only half of it.</h2>"
 assert rest_mk.count(old_h) == 1
 rest_mk = rest_mk.replace(old_h, "<h2>Some of this you can’t major in.</h2>")
 
-for name in ("header_mk", "hero_mk", "scrolly_mk", "rest_mk", "footer_mk"):
+for name in ("header_mk", "hero_mk", "scrolly_mk", "sheet_mk", "rest_mk", "footer_mk"):
     v = (globals()[name].replace('src="img/', 'src="../img/')
          .replace("url('img/", "url('../img/").replace('src="hero.mp4"', 'src="../hero.mp4"'))
     globals()[name] = v
+
+
+# v1 sheet: upgrade counters to the c2 giant style, point the storylink at NGN research
+c_i0 = sheet_mk.find('<div class="counters" id="counters">')
+c_i1 = sheet_mk.find('</div>\n      <a class="storylink', c_i0)
+assert 0 < c_i0 < c_i1, "counters block in sheet"
+RC = """<div class="rc-grid" id="counters">
+        <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
+        <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
+        <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
+      """
+sheet_mk = sheet_mk[:c_i0] + RC + sheet_mk[c_i1:]
+cv = 'href="https://news.northeastern.edu/2023/09/06/convocation-2023/">How our president talks about AI and being human</a>'
+assert sheet_mk.count(cv) == 1
+sheet_mk = sheet_mk.replace(cv, 'href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>')
 
 NGN = "https://news.northeastern.edu"
 
@@ -94,18 +111,6 @@ TICKER = [
  ("Jul 29","This researcher is launching satellites to unlock faster data speeds","/2026/07/29/satellite-internet-6g-speeds-research/"),
  ("Jul 22","Northeastern graduate finds success and comfort in computer codes","/2026/07/22/ai-career-amazon-graduate/"),
  ("Jul 16","Can network science predict the World Cup?","/2026/07/16/world-cup-final-prediction/"),
-]
-
-# the research reel: 8 verified story/image pairs
-REEL = [
- (NGN+"/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/"),
- (NGN+"/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/"),
- ("../img/sccrub-robot.jpg","A robotic arm that cleans like an elephant’s trunk","Feb 2026","/2026/02/05/cleaning-robot-arm/"),
- ("../img/mars-etch.jpg","Lighter, faster, more agile: a new Mars rover","May 2026","/2026/05/21/university-rover-challenge-team/"),
- ("../img/lunabotics.jpg","Lunabotics builds a robot for the moon’s surface","May 2025","/2025/05/07/moon-robot-lunabotics/"),
- ("../img/aerobat.jpg","Aerobat flies like a bat to navigate tight spaces","Sep 2024","/2024/09/23/flying-bat-robot/"),
- ("../img/colosseum.jpg","Inside Colosseum, the wireless network emulator","Jan 2024","/2024/01/12/tech-savvy/"),
- (NGN+"/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/"),
 ]
 
 RAIL = [
@@ -171,22 +176,6 @@ def rail_panels():
                     '<span class="j-big">Where will yours be?</span>'
                     '<a class="pill ghostw" style="margin-top:26px" href="#admit">Start at Northeastern</a>'
                     '</div></div>\n')
-    return out
-
-def reel_frames():
-    out = ""
-    for i, (img, t, d, u) in enumerate(REEL):
-        out += (f'<a class="rf" data-i="{i}" href="{NGN}{u}" aria-label="{t}">'
-                f'<img src="{img}" alt="" loading="lazy">'
-                f'<span class="rf-cap"><span>{d}</span>{t}</span></a>\n')
-    return out
-
-def reel_readouts():
-    out = ""
-    for i, (img, t, d, u) in enumerate(REEL):
-        act = " is-on" if i == 0 else ""
-        out += (f'<div class="ro{act}" data-i="{i}"><span class="ro-d">{d}</span>'
-                f'<h3>{t}</h3><a class="storylink" href="{NGN}{u}">Read the story</a></div>\n')
     return out
 
 def quote_slides():
@@ -317,43 +306,9 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .j-bar{display:none}
   }
 
-  /* ---------- research: reel left, sticky text right ---------- */
-  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 40px}
-  .rr{display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,5vw,90px);align-items:start;margin-top:64px}
-  .rr-reel{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px)}
-  .rf{position:relative;display:block;border-radius:14px;overflow:hidden;background:#E5E5E5}
-  .rf img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;
-    filter:saturate(.55) brightness(.96);transition:filter .6s var(--ease),transform .8s var(--ease)}
-  .rf.is-on img{filter:none}
-  .rf:hover img{transform:scale(1.02)}
-  .rf-cap{display:none}
-  .rr-side{position:sticky;top:calc(50svh - 190px)}
-  .rr-side .ro-stack{position:relative;margin-top:34px;min-height:240px}
-  .ro{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(14px);
-    transition:opacity .45s var(--ease),transform .45s var(--ease);pointer-events:none}
-  .ro.is-on{opacity:1;transform:none;pointer-events:auto}
-  .ro-d{font-size:13px;color:#737373}
-  .ro h3{margin-top:10px;font-size:clamp(24px,2.3vw,34px);font-weight:300;letter-spacing:-.02em;
-    line-height:1.18;color:var(--ink);max-width:20ch}
-  .rr-ix{display:flex;align-items:center;gap:14px;font-size:13px;color:#737373;
-    font-variant-numeric:tabular-nums}
-  .rr-ix .bar{flex:0 0 120px;height:1px;background:#E5E5E5;position:relative}
-  .rr-ix .bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
-  .rr-side .sechead h2{font-size:clamp(32px,3.2vw,48px)}
-  .rr-side .lede{margin-top:12px;font-size:15px}
-  @media(max-width:820px){
-    .rr{grid-template-columns:1fr}
-    .rr-side{position:static}
-    .rr-side .ro-stack, .rr-ix{display:none}
-    .rf-cap{display:block;position:absolute;inset:auto 0 0 0;padding:30px 14px 12px;
-      font-size:13.5px;line-height:1.35;color:#fff;
-      background:linear-gradient(to top,rgba(5,5,8,.82),rgba(5,5,8,0))}
-    .rf-cap span{display:block;font-size:11.5px;color:#D4D4D4;margin-bottom:2px}
-    .rf img{filter:none}
-  }
-  .rw-land{position:relative;z-index:6;background:#FAFAFA;padding:90px 0 120px}
+  /* ---------- research counters (giant style, lives inside the v1 sheet) ---------- */
   .rc-grid{display:grid;grid-template-columns:repeat(3,1fr);
-    gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
+    gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px;margin-top:70px}
   .rc{border-left:1px solid #E5E5E5;padding-left:clamp(18px,2vw,30px)}
   .rc:first-child{border-left:0;padding-left:0}
   .rc .n{font-size:clamp(48px,6vw,104px);font-weight:200;letter-spacing:-.03em;line-height:1;
@@ -485,33 +440,7 @@ NEW_BODY = f"""
 """
 
 AFTER_SCROLLY = f"""
-<section class="research2" id="research">
-  <div class="wrap">
-    <div class="rr">
-      <div class="rr-reel" id="rrReel">
-{reel_frames()}      </div>
-      <div class="rr-side">
-        <div class="sechead rv">
-          <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-          <p class="lede">Students and professors choose Northeastern because the investment is real. Eight projects, one scroll.</p>
-        </div>
-        <div class="ro-stack" id="roStack">
-{reel_readouts()}        </div>
-        <div class="rr-ix"><span id="rrIx">01 / 08</span><span class="bar"><i id="rrBar"></i></span></div>
-      </div>
-    </div>
-  </div>
-  <div class="rw-land">
-    <div class="wrap">
-      <div class="rc-grid" id="counters">
-        <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
-        <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
-        <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
-      </div>
-      <a class="storylink rv" style="margin-top:40px" href="https://news.northeastern.edu/category/research/">Research coverage on NGN</a>
-    </div>
-  </div>
-</section>
+{{SHEET}}
 
 <section class="journey" id="coop">
   <div class="j-track" id="jTrack">
@@ -642,65 +571,6 @@ if (jTrack && jRail && !reduceMotion) {
   jUpd();
 }
 
-/* ============ research reel: frames pass, the sticky readout follows ============ */
-const rrFrames = $$(".rf"), roEls = $$(".ro"), rrIx = $("#rrIx"), rrBar = $("#rrBar");
-if (rrFrames.length) {
-  let rrCur = 0;
-  const rrUpd = () => {
-    const mid = innerHeight / 2;
-    let best = 0, bestD = Infinity;
-    rrFrames.forEach((f, i) => {
-      const r = f.getBoundingClientRect();
-      const d = Math.abs(r.top + r.height / 2 - mid);
-      if (d < bestD) { bestD = d; best = i; }
-    });
-    if (best !== rrCur) {
-      rrCur = best;
-      rrFrames.forEach((f, i) => f.classList.toggle("is-on", i === best));
-      roEls.forEach((el, i) => el.classList.toggle("is-on", i === best));
-      if (rrIx) rrIx.textContent = `0${best + 1} / 0${rrFrames.length}`;
-      if (rrBar) rrBar.style.width = ((best + 1) / rrFrames.length * 100).toFixed(1) + "%";
-    }
-  };
-  addEventListener("scroll", () => requestAnimationFrame(rrUpd), { passive: true });
-  addEventListener("resize", rrUpd);
-  rrFrames[0].classList.add("is-on");
-  if (rrBar) rrBar.style.width = (1 / rrFrames.length * 100).toFixed(1) + "%";
-  rrUpd();
-}
-
-/* ============ voices: scroll-driven crossfade cinema ============ */
-const vTrack = $("#vTrack"), vSlides = $$(".v-slide");
-if (vTrack && vSlides.length && !reduceMotion) {
-  const N = vSlides.length;
-  let vActive = 0;
-  const vUpd = () => {
-    const r = vTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    vSlides.forEach((sl, i) => {
-      const t = clamp01((p - i / N) * N);
-      const fadeIn = clamp01(t / 0.16);
-      const fadeOut = i === N - 1 ? 1 : clamp01((1 - t) / 0.16);
-      sl.style.opacity = (t <= 0 && i !== 0 ? 0 : Math.min(fadeIn, fadeOut)).toFixed(2);
-      sl.querySelector(".v-bg").style.transform = `scale(${(1.05 + t * 0.05).toFixed(3)})`;
-    });
-    const idx = Math.min(N - 1, Math.floor(p * N));
-    if (idx !== vActive) {
-      vActive = idx;
-      vSlides.forEach((sl, i) => sl.classList.toggle("is-active", i === idx));
-      vSlides[idx].querySelectorAll(".line").forEach((ln, k) => {
-        ln.classList.remove("in");
-        void ln.offsetWidth;
-        setTimeout(() => ln.classList.add("in"), 90 + k * 120);
-      });
-    }
-  };
-  addEventListener("scroll", () => requestAnimationFrame(vUpd), { passive: true });
-  addEventListener("resize", vUpd);
-  vSlides[0].querySelectorAll(".line").forEach(ln => ln.classList.add("in"));
-  vUpd();
-}
-
 /* ============ variant A: words light as you scroll ============ */
 const qTrack = $("#qTrack"), qQuote = $("#qQuote");
 if (qTrack && qQuote && !reduceMotion) {
@@ -757,24 +627,22 @@ resize();
 requestAnimationFrame(frame);
 """
 
-VARIANTS = {"cur": "index.html", "a": "quotes-a.html", "b": "quotes-b.html", "c": "quotes-c.html"}
-for vkey, fname in VARIANTS.items():
-    body_mid = AFTER_SCROLLY.replace("{VOICES_SECTION}", VOICES_MAP[vkey])
-    page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + tailcss
-            + "</style>\n\n<body>\n\n"
-            + header_mk + hero_mk + NEW_BODY + scrolly_mk + body_mid + rest_mk + WIRE_FOOT
-            + verbar(vkey) + footer_mk + "\n"
-            + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine
-            + scrolly_js + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
-    assert page.count("<header") == 1 and page.count("<footer>") == 1
-    assert "{VOICES_SECTION}" not in page
-    for tok in ['id="srch"', 'class="scrolly"', "j-rail", "rr-reel", "verbar", "concept2-rev",
-                'content="16"', "data-count", "newspost", "lifeimax", 'class="admit"']:
-        assert tok in page, (vkey, tok)
-    vtok = {"cur": 'id="vTrack"', "a": 'id="qTrack"', "b": 'class="voices-b"', "c": 'id="vcFlow"'}[vkey]
-    assert vtok in page, (vkey, vtok)
-    for out in OUT:
-        d = os.path.dirname(out)
-        os.makedirs(d, exist_ok=True)
-        open(os.path.join(d, fname), "w").write(page)
-    print("built", vkey, "->", fname, len(page))
+body_mid = AFTER_SCROLLY.replace("{SHEET}", sheet_mk).replace("{VOICES_SECTION}", VOICES_MAP["c"])
+page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + tailcss
+        + "</style>\n\n<body>\n\n"
+        + header_mk + hero_mk + NEW_BODY + scrolly_mk + body_mid + rest_mk + WIRE_FOOT + footer_mk + "\n"
+        + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine
+        + scrolly_js + counters_js + xrow_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
+
+assert page.count("<header") == 1 and page.count("<footer>") == 1
+assert "{SHEET}" not in page and "{VOICES_SECTION}" not in page
+for tok in ['id="srch"', 'class="scrolly"', 'id="xrow"', "xcard", "rc-grid", "j-rail",
+            'id="vcFlow"', "vc-media", "wire foot", "lifeimax", 'class="admit"',
+            "concept2-rev", 'content="17"', "data-count", "newspost"]:
+    assert tok in page, tok
+for gone in ["rr-reel", "verbar", 'id="vTrack"', 'id="qTrack"', "voices-b"]:
+    assert gone not in page, gone
+for out in OUT:
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    open(out, "w").write(page)
+print("built", len(page), "bytes ->", OUT[0])
