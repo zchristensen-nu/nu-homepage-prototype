@@ -47,7 +47,7 @@ counters_js = cut("/* ============ research counters ============ */", "/* =====
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="14">')
+                    '<meta name="concept2-rev" content="15">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -96,71 +96,16 @@ TICKER = [
  ("Jul 16","Can network science predict the World Cup?","/2026/07/16/world-cup-final-prediction/"),
 ]
 
-# the research wall: 30 real research newsposts, harvested 2026-08-31
-WALL = [
- ("Researcher investigates how people get into the urban mix", "/2026/08/31/income-segregation-cities-diversity-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Mixing1400.jpg?resize=600,400"),
- ("Scientists put algae to work making fuel. AI keeps watch.", "/2026/08/28/algae-biofuel-ai-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg?resize=600,400"),
- ("Graduate student studies oyster genomics to preserve biodiversity", "/2026/08/26/oyster-restoration-genetics-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Oyster-genomics-1400x933-1.jpg?resize=600,400"),
- ("Grandparents, teachers and even bus drivers can build resilient kids", "/2026/08/25/positive-childhood-experiences-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Bus1400.jpg?resize=600,400"),
- ("Time2Learn, time to sleep: Evening practice may help language stick", "/2026/08/24/sleep-and-memory-language-learning/", "https://news.northeastern.edu/wp-content/uploads/2026/08/sleep1400.jpg?resize=600,400"),
- ("This professor moonlights at NASA to bring lessons to class", "/2026/08/21/nasa-engineering-heat-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/Yi-Zheng_1400.jpg?resize=600,400"),
- ("This engineer sees AI and its power constraints in a new light", "/2026/08/19/photonics-ai-energy/", "https://news.northeastern.edu/wp-content/uploads/2026/08/phototics-1400x933-1.jpg?resize=600,400"),
- ("This researcher is helping fend off quantum computing security risks", "/2026/08/18/post-quantum-cryptography-cyberattacks/", "https://news.northeastern.edu/wp-content/uploads/2026/08/081326_MM_Yunsi_Fei_018.jpg?resize=600,400"),
- ("Who gets credit when AI joins the team? Rethinking collaboration", "/2026/08/14/human-ai-collaboration-credit/", "https://news.northeastern.edu/wp-content/uploads/2026/08/AI_stock.jpg?resize=600,400"),
- ("Can a text message sway a voter? New research puts it to the test", "/2026/08/11/text-messages-get-out-the-vote/", "https://news.northeastern.edu/wp-content/uploads/2026/08/TextingVote1400.jpg?resize=600,400"),
- ("These researchers seek to quiet ‘the noise’ in quantum computing", "/2026/08/07/modular-quantum-computing-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg?resize=600,400"),
- ("This AI scientist can run experiments. Self-driving labs coming next", "/2026/08/06/ai-scientist-x-ray-experiment/", "https://news.northeastern.edu/wp-content/uploads/2026/08/AI-X-ray-Scientist-1400x933-1.jpg?resize=600,400"),
- ("AI has been stepping out of bounds. Should you be worried?", "/2026/08/05/autonomous-ai-cybersecurity/", "https://news.northeastern.edu/wp-content/uploads/2026/08/080326_AS_AI_security_009.jpg?resize=600,400"),
- ("Why it matters if a retailer has inaccurate personal data on you", "/2026/08/05/customer-data-collection-research/", "https://news.northeastern.edu/wp-content/uploads/2026/08/HomeDepot1400.jpg?resize=600,400"),
- ("Aerobic fitness may be a teller of some brain health, study suggests", "/2026/08/04/physical-activity-brain-health-impulse-control/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Kids-inhibitory-contron-system-1400x933-1.jpg?resize=600,400"),
- ("This researcher is using AI to help computers catch up with the brain", "/2026/08/03/memristors-supercomputer-research-ai/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072926_MM_Hossein_Mosallaei_012.jpg?resize=600,400"),
- ("Why eGoT gets better answers: Teaching AI to connect the dots", "/2026/07/30/ai-reasoning-algorithm-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/071526_MM_eGoT_018.jpg?resize=600,400"),
- ("This researcher is launching satellites to unlock faster data speeds", "/2026/07/29/satellite-internet-6g-speeds-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Josep-Jornet_1400.jpg?resize=600,400"),
- ("This robot can snuff out wildfires with cryogenic liquid", "/2026/07/29/firefighting-robots-wildfires/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072926_MM_fire_robot_021.jpg?resize=600,400"),
- ("How many children had a relative criminally charged? Study says 1 in 7", "/2026/07/28/children-of-incarcerated-parents/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Family-Criminal-Legal-Contact-1400x933-1.jpg?resize=600,400"),
- ("Cracking the axolotl code: How to regrow limbs and stay young", "/2026/07/27/axolotl-regeneration-anti-aging/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg?resize=600,400"),
- ("Mental health remains a struggle for AI chatbots, researchers find", "/2026/07/27/chatgpt-lawsuit-ai-mental-health/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Aibot1400.jpg?resize=600,400"),
- ("Desktop browsing trends: Gmail first, everything else later", "/2026/07/23/top-websites-in-the-us-american-behavior/", "https://news.northeastern.edu/wp-content/uploads/2026/07/072026_MM_Gmail_1400.jpg?resize=600,400"),
- ("One of the oldest psychedelics meets modern brain imaging", "/2026/07/20/mescaline-drug-psychedelic/", "https://news.northeastern.edu/wp-content/uploads/2026/07/mescaline-updated-1400x933-1.jpg?resize=600,400"),
- ("Northeastern professor pushes computers to solve ‘unsolvable’ problems", "/2026/07/17/optimization-problem-ising-model/", "https://news.northeastern.edu/wp-content/uploads/2026/07/071426_MM_Quantum_Computing_006.jpg?resize=600,400"),
- ("Rideshare companies provide transportation, food, groceries…and sprawl", "/2026/07/15/rideshare-urban-sprawl-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/UBER1400.jpg?resize=600,400"),
- ("Should you join the 5 AM Club? Why hitting snooze might be better", "/2026/07/14/5am-club-sleep-science/", "https://news.northeastern.edu/wp-content/uploads/2026/04/5am-club_1400x933.jpg?resize=600,400"),
- ("Researchers aim to keep New England seafood local from boat to plate", "/2026/07/14/seafood-processing-nsf-research/", "https://news.northeastern.edu/wp-content/uploads/2026/07/MEFishing1400.jpg?resize=600,400"),
- ("These researchers are demystifying oobleck, Dr. Seuss’s ‘green goo’", "/2026/07/10/these-researchers-are-demystifying-oobleck-dr-seusss-green-goo/", "https://news.northeastern.edu/wp-content/uploads/2026/07/droplet-1400x933-1.jpg?resize=600,400"),
- ("A parasite is running rampant in Michigan. Will it spread elsewhere?", "/2026/07/08/parasite-outbreak-michigan/", "https://news.northeastern.edu/wp-content/uploads/2026/07/Cyclospora-cayetanensis_1400.jpg?resize=600,400"),
-]
-
-PLACE = [
- (67.46, 39.19, 8.6, -1),
- (80.62, 63.41, 11.4, -1),
- (2.61, 23.57, 11.4, -1),
- (34.58, 81.29, 11.4, -1),
- (52.57, 80.69, 8.6, -1),
- (21.11, 60.25, 11.4, -1),
- (32.99, 19.62, 11.4, -1),
- (52.59, 57.74, 12.4, 3),
- (65.72, 80.96, 10.2, -1),
- (82.2, 80.54, 12.4, 4),
- (83.9, 18.66, 8.6, -1),
- (18.48, -0.02, 12.4, 0),
- (17.39, 26.4, 8.6, -1),
- (1.7, 65.66, 8.6, -1),
- (0.5, 3.52, 11.4, -1),
- (68.85, 64.37, 8.6, -1),
- (49.78, 21.15, 10.2, -1),
- (83.18, 44.67, 10.2, -1),
- (0.5, 38.34, 12.4, 2),
- (16.93, 82.77, 8.6, -1),
- (64.22, 24.58, 12.4, 1),
- (33.38, 42.7, 11.4, -1),
- (68.16, 2.51, 8.6, -1),
- (35.99, 64.98, 11.4, -1),
- (49.82, 6.97, 10.2, -1),
- (33.67, 4.0, 11.4, -1),
- (2.16, 78.46, 11.4, -1),
- (49.44, 44.15, 8.6, -1),
- (82.55, 6.75, 8.6, -1),
- (18.38, 39.0, 11.4, -1),
+# the research reel: 8 verified story/image pairs
+REEL = [
+ (NGN+"/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg","Robots walk to class here. Researchers are teaching them how","Oct 2025","/2025/10/01/walking-the-future/"),
+ (NGN+"/wp-content/uploads/2026/05/052126_MM_Physical_AI_Research_Initiative_Event_001.jpg","A new initiative where AI meets the physical world","May 2026","/2026/05/21/robo-demo/"),
+ ("../img/sccrub-robot.jpg","A robotic arm that cleans like an elephant’s trunk","Feb 2026","/2026/02/05/cleaning-robot-arm/"),
+ ("../img/mars-etch.jpg","Lighter, faster, more agile: a new Mars rover","May 2026","/2026/05/21/university-rover-challenge-team/"),
+ ("../img/lunabotics.jpg","Lunabotics builds a robot for the moon’s surface","May 2025","/2025/05/07/moon-robot-lunabotics/"),
+ ("../img/aerobat.jpg","Aerobat flies like a bat to navigate tight spaces","Sep 2024","/2024/09/23/flying-bat-robot/"),
+ ("../img/colosseum.jpg","Inside Colosseum, the wireless network emulator","Jan 2024","/2024/01/12/tech-savvy/"),
+ (NGN+"/wp-content/uploads/2023/11/081423_MM_EXP_Robots_048.jpg","The robotics high-bay open to every major","Nov 2023","/2023/11/27/experiential-robotics-institute-exp/"),
 ]
 
 RAIL = [
@@ -220,14 +165,20 @@ def rail_panels():
                     '</div></div>\n')
     return out
 
-def wall_tiles():
+def reel_frames():
     out = ""
-    for i, (t, u, img) in enumerate(WALL):
-        left, top, w, stop = PLACE[i]
-        ds = f' data-stop="{stop}"' if stop >= 0 else ""
-        out += (f'<a class="wt" href="{NGN}{u}" aria-label="{t}" '
-                f'style="left:{left}%;top:{top}%;width:{w}%"{ds}>'
-                f'<img src="{img}" alt="" loading="lazy"><span class="wt-t">{t}</span></a>\n')
+    for i, (img, t, d, u) in enumerate(REEL):
+        out += (f'<a class="rf" data-i="{i}" href="{NGN}{u}" aria-label="{t}">'
+                f'<img src="{img}" alt="" loading="lazy">'
+                f'<span class="rf-cap"><span>{d}</span>{t}</span></a>\n')
+    return out
+
+def reel_readouts():
+    out = ""
+    for i, (img, t, d, u) in enumerate(REEL):
+        act = " is-on" if i == 0 else ""
+        out += (f'<div class="ro{act}" data-i="{i}"><span class="ro-d">{d}</span>'
+                f'<h3>{t}</h3><a class="storylink" href="{NGN}{u}">Read the story</a></div>\n')
     return out
 
 def quote_slides():
@@ -315,30 +266,40 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .j-bar{display:none}
   }
 
-  /* ---------- research: a canvas the camera pans around ---------- */
-  .research2{position:relative;z-index:6;background:#FAFAFA}
-  .rw-track{height:520svh}
-  .rw-stage{position:sticky;top:0;height:100svh;overflow:hidden}
-  .rw-plane{position:absolute;left:0;top:0;width:240vw;height:220svh;will-change:transform}
-  .wt{position:absolute;display:block;border-radius:12px;overflow:hidden;background:#E5E5E5;
-    box-shadow:0 1px 2px rgba(17,17,17,.06);
-    transition:opacity .5s var(--ease),transform .5s var(--ease),box-shadow .5s var(--ease)}
-  .wt img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
-  .wt-t{position:absolute;inset:auto 0 0 0;padding:30px 14px 12px;font-size:13.5px;line-height:1.35;color:#fff;
-    background:linear-gradient(to top,rgba(5,5,8,.82),rgba(5,5,8,0));opacity:0;transition:opacity .35s}
-  .wt:hover .wt-t{opacity:1}
-  .rw-plane.focused .wt{opacity:.45}
-  .rw-plane.focused .wt.lit{opacity:1;transform:scale(1.05);z-index:3;
-    box-shadow:0 18px 60px rgba(17,17,17,.22)}
-  .wt.lit .wt-t{opacity:1}
-  .rw-head{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;padding:0 20px;
-    pointer-events:none;will-change:opacity}
-  .rw-head::before{content:"";position:absolute;left:50%;top:50%;width:min(120vw,1100px);height:70svh;
-    transform:translate(-50%,-50%);z-index:-1;
-    background:radial-gradient(closest-side,rgba(250,250,250,.95) 34%,rgba(250,250,250,.78) 62%,rgba(250,250,250,0) 100%)}
-  .rw-head h2{font-size:clamp(38px,5vw,76px);font-weight:200;letter-spacing:-.03em;line-height:1.04;color:var(--ink)}
-  .rw-head .lede{margin:16px auto 0;max-width:44ch;color:#404040;font-size:clamp(15px,1.2vw,17.5px)}
+  /* ---------- research: reel left, sticky text right ---------- */
+  .research2{position:relative;z-index:6;background:#FAFAFA;padding:120px 0 40px}
+  .rr{display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,5vw,90px);align-items:start;margin-top:64px}
+  .rr-reel{display:flex;flex-direction:column;gap:clamp(26px,4vh,44px)}
+  .rf{position:relative;display:block;border-radius:14px;overflow:hidden;background:#E5E5E5}
+  .rf img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block;
+    filter:saturate(.55) brightness(.96);transition:filter .6s var(--ease),transform .8s var(--ease)}
+  .rf.is-on img{filter:none}
+  .rf:hover img{transform:scale(1.02)}
+  .rf-cap{display:none}
+  .rr-side{position:sticky;top:calc(50svh - 190px)}
+  .rr-side .ro-stack{position:relative;margin-top:34px;min-height:240px}
+  .ro{position:absolute;inset:0 0 auto 0;opacity:0;transform:translateY(14px);
+    transition:opacity .45s var(--ease),transform .45s var(--ease);pointer-events:none}
+  .ro.is-on{opacity:1;transform:none;pointer-events:auto}
+  .ro-d{font-size:13px;color:#737373}
+  .ro h3{margin-top:10px;font-size:clamp(24px,2.3vw,34px);font-weight:300;letter-spacing:-.02em;
+    line-height:1.18;color:var(--ink);max-width:20ch}
+  .rr-ix{display:flex;align-items:center;gap:14px;font-size:13px;color:#737373;
+    font-variant-numeric:tabular-nums}
+  .rr-ix .bar{flex:0 0 120px;height:1px;background:#E5E5E5;position:relative}
+  .rr-ix .bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
+  .rr-side .sechead h2{font-size:clamp(32px,3.2vw,48px)}
+  .rr-side .lede{margin-top:12px;font-size:15px}
+  @media(max-width:820px){
+    .rr{grid-template-columns:1fr}
+    .rr-side{position:static}
+    .rr-side .ro-stack, .rr-ix{display:none}
+    .rf-cap{display:block;position:absolute;inset:auto 0 0 0;padding:30px 14px 12px;
+      font-size:13.5px;line-height:1.35;color:#fff;
+      background:linear-gradient(to top,rgba(5,5,8,.82),rgba(5,5,8,0))}
+    .rf-cap span{display:block;font-size:11.5px;color:#D4D4D4;margin-bottom:2px}
+    .rf img{filter:none}
+  }
   .rw-land{position:relative;z-index:6;background:#FAFAFA;padding:90px 0 120px}
   .rc-grid{display:grid;grid-template-columns:repeat(3,1fr);
     gap:clamp(28px,4vw,64px);border-top:1px solid #E5E5E5;padding-top:48px}
@@ -351,14 +312,6 @@ NEW_CSS = """  /* ---------- award layer ---------- */
     .rc-grid{grid-template-columns:1fr;gap:30px}
     .rc{border-left:0;padding-left:0;border-top:1px solid #E5E5E5;padding-top:22px}
     .rc:first-child{border-top:0;padding-top:0}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .rw-track{height:auto}
-    .rw-stage{position:static;height:auto;overflow:visible;padding:80px 0 40px}
-    .rw-plane{position:static;width:auto;height:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;transform:none !important}
-    .rw-plane .wt{position:static;width:auto !important}
-    .rw-plane .wt:nth-child(n+13){display:none}
-    .rw-head{position:static;padding:60px 20px}
   }
 
   /* ---------- voices: scroll-driven cinema ---------- */
@@ -401,13 +354,18 @@ NEW_BODY = f"""
 
 AFTER_SCROLLY = f"""
 <section class="research2" id="research">
-  <div class="rw-track" id="rwTrack">
-    <div class="rw-stage">
-      <div class="rw-plane" id="rwPlane">
-{wall_tiles()}      </div>
-      <div class="rw-head" id="rwHead">
-        <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
-        <p class="lede">Thirty stories from the last sixty days. Keep scrolling; we&#8217;ll take you around.</p>
+  <div class="wrap">
+    <div class="rr">
+      <div class="rr-reel" id="rrReel">
+{reel_frames()}      </div>
+      <div class="rr-side">
+        <div class="sechead rv">
+          <h2 class="display"><span class="line"><span>Our research story</span></span><span class="line"><span>starts in the world.</span></span></h2>
+          <p class="lede">Students and professors choose Northeastern because the investment is real. Eight projects, one scroll.</p>
+        </div>
+        <div class="ro-stack" id="roStack">
+{reel_readouts()}        </div>
+        <div class="rr-ix"><span id="rrIx">01 / 08</span><span class="bar"><i id="rrBar"></i></span></div>
       </div>
     </div>
   </div>
@@ -513,46 +471,31 @@ if (jTrack && jRail && !reduceMotion) {
   jUpd();
 }
 
-/* ============ research canvas: the camera pans around, highlighting stops ============ */
-const rwTrack = $("#rwTrack"), rwPlane = $("#rwPlane"), rwHead = $("#rwHead");
-if (rwTrack && rwPlane && !reduceMotion) {
-  const stopEls = [];
-  $$(".wt[data-stop]").forEach(el => stopEls[+el.dataset.stop] = el);
-  let anchors = [];
-  const measure = () => {
-    const pw = rwPlane.offsetWidth, ph = rwPlane.offsetHeight;
-    const center = [pw / 2, ph / 2];
-    anchors = [center, ...stopEls.map(el =>
-      [el.offsetLeft + el.offsetWidth / 2, el.offsetTop + el.offsetHeight / 2])];
-  };
-  let lit = null;
-  const rwUpd = () => {
-    if (!anchors.length) measure();
-    const r = rwTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    const segs = anchors.length - 1;                 /* 5 journeys between 6 anchors */
-    const sp = Math.min(segs - 1e-6, p * segs);
-    const seg = Math.floor(sp);
-    const t = sp - seg;
-    /* travel for the first 62% of each segment, then dwell on the stop */
-    const m = easeIO(clamp01(t / 0.62));
-    const ax = anchors[seg][0] + (anchors[seg + 1][0] - anchors[seg][0]) * m;
-    const ay = anchors[seg][1] + (anchors[seg + 1][1] - anchors[seg][1]) * m;
-    const tx = Math.min(Math.max(ax - innerWidth / 2, 0), rwPlane.offsetWidth - innerWidth);
-    const ty = Math.min(Math.max(ay - innerHeight / 2, 0), rwPlane.offsetHeight - innerHeight);
-    rwPlane.style.transform = `translate(${(-tx).toFixed(1)}px, ${(-ty).toFixed(1)}px)`;
-    if (rwHead) rwHead.style.opacity = clamp01(1 - p / 0.14).toFixed(2);
-    const want = (t > 0.55 && seg < stopEls.length) ? stopEls[seg] : null;
-    if (want !== lit) {
-      if (lit) lit.classList.remove("lit");
-      lit = want;
-      rwPlane.classList.toggle("focused", !!lit);
-      if (lit) lit.classList.add("lit");
+/* ============ research reel: frames pass, the sticky readout follows ============ */
+const rrFrames = $$(".rf"), roEls = $$(".ro"), rrIx = $("#rrIx"), rrBar = $("#rrBar");
+if (rrFrames.length) {
+  let rrCur = 0;
+  const rrUpd = () => {
+    const mid = innerHeight / 2;
+    let best = 0, bestD = Infinity;
+    rrFrames.forEach((f, i) => {
+      const r = f.getBoundingClientRect();
+      const d = Math.abs(r.top + r.height / 2 - mid);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    if (best !== rrCur) {
+      rrCur = best;
+      rrFrames.forEach((f, i) => f.classList.toggle("is-on", i === best));
+      roEls.forEach((el, i) => el.classList.toggle("is-on", i === best));
+      if (rrIx) rrIx.textContent = `0${best + 1} / 0${rrFrames.length}`;
+      if (rrBar) rrBar.style.width = ((best + 1) / rrFrames.length * 100).toFixed(1) + "%";
     }
   };
-  addEventListener("scroll", () => requestAnimationFrame(rwUpd), { passive: true });
-  addEventListener("resize", () => { anchors = []; requestAnimationFrame(rwUpd); });
-  rwUpd();
+  addEventListener("scroll", () => requestAnimationFrame(rrUpd), { passive: true });
+  addEventListener("resize", rrUpd);
+  rrFrames[0].classList.add("is-on");
+  if (rrBar) rrBar.style.width = (1 / rrFrames.length * 100).toFixed(1) + "%";
+  rrUpd();
 }
 
 /* ============ voices: scroll-driven crossfade cinema ============ */
@@ -609,8 +552,8 @@ page = (head + nav_css + hero_css + scrolly_css + sheet_css + NEW_CSS + "\n" + t
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 for tok in ['id="srch"', 'id="tkv"', 'class="scrolly"', 'id="globe"', "gt-card", "coopcount",
-            "j-rail", "w-logo", "rw-plane", "data-stop", 'id="vTrack"', "v-slide",
-            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="14"',
+            "j-rail", "w-logo", "rr-reel", "ro-stack", 'id="vTrack"', "v-slide",
+            "wire foot", "lifeimax", 'class="admit"', "loader", "concept2-rev", 'content="15"',
             "data-count", "newspost", "500K+", "major in"]:
     assert tok in page, tok
 for gone in ["Drag to explore", "g-wrap", "g-clock", "rgcard", "re-flow", "data-drift",
