@@ -275,6 +275,14 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   (**unverified placeholder**) with this-fall's 4,705/519 in the supporting line, the
   rail dropped its 500K+ stat panel, and the globe outro bridges to research/experience
   breadth instead of a competing CTA.
+- Rev 20 (fixes from Zach's screenshot review): the rail's alternation was actually
+  broken at the START (rev 19 removed a trailing photo and falsely claimed it fixed) —
+  now verified from served HTML: photo > stat > photo > stat > photo > stat > photo >
+  outro. Rail first panel enters in-frame at pin start (padding-left 42vw, was 100vw).
+  The globe's staple story card had 404 images in the subdirectory (scrolly_js img
+  paths never got the ../img rewrite) — fixed. Globe dots now always lit (ignite
+  decoupled from the counter, which still counts to the 500K placeholder) and the
+  "lit dots are this fall" sentence removed. Preloader deleted entirely.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
