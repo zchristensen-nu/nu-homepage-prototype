@@ -246,6 +246,15 @@ the pinned horizontal photo+giant-stat gallery is the one loved pattern; keep it
   whichever frame crosses viewport center. No pin, no zoom, no carousel. Mobile
   collapses to captioned frames. Counters land below unchanged. Live-verified:
   sticky position, frame 3 -> readout swap + index 03/08 + bar 37.5% + desaturation.
+- Rev 16: quote-treatment bake-off, three variants live beside the current crossfade,
+  all sharing the full page and a fixed switcher bar (bottom-left):
+  `concept-2/` = Current (crossfade cinema) / `concept-2/quotes-a.html` = One voice
+  (Maddy's quote lights word by word through a 260svh pin, photo beside it, the other
+  two voices as quiet rows after) / `quotes-b.html` = Ledger (all three in flow,
+  alternating editorial rows, no pin) / `quotes-c.html` = Portraits (quotes flow on the
+  right, sticky portrait crossfades on the left; the research reel inverted). Builder
+  emits all four pages from VOICES_MAP; variant JS is guarded so every page carries all
+  behaviors inertly. Zach picks; fold the winner into index and delete the variants.
 - Earlier concept-2 builders remain for history (`tools/build_c2.py`, superseded).
 
 ## Provenance
