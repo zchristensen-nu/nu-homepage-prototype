@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept2-rev" content="18">
+<meta name="concept2-rev" content="19">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -293,7 +293,7 @@
 
   /* ---------- co-op rail ---------- */
   .journey{position:relative;z-index:5;background:var(--dark);color:#fff}
-  .j-track{height:420svh}
+  .j-track{height:380svh}
   .j-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
   .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
@@ -306,8 +306,14 @@
   .g-l{display:block;margin-top:10px;font-size:15px;color:#A9A9B2}
   .j-photo{position:relative;background:#141419}
   .j-photo img{height:100%;width:auto;display:block}
-  .j-cap{position:absolute;left:16px;bottom:14px;right:16px;font-size:13.5px;color:#fff;
-    text-shadow:0 1px 14px rgba(0,0,0,.7)}
+  .j-cap{position:absolute;left:0;right:0;bottom:0;padding:44px 16px 14px;font-size:13.5px;color:#fff;
+    background:linear-gradient(to top,rgba(5,5,8,.85),rgba(5,5,8,0));
+    opacity:0;transform:translateY(10px);
+    transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  .j-photo:hover .j-cap{opacity:1;transform:none}
+  .j-cap-t{display:block;line-height:1.35}
+  .j-cap-r{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#fff}
+  @media (hover: none){.j-cap{opacity:1;transform:none}}
   .j-outro{padding:0 clamp(24px,4vw,72px);justify-content:center}
   .j-big{display:block;font-size:clamp(44px,6vw,92px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .j-bar{margin-top:40px;height:1px;background:rgba(255,255,255,.14);position:relative}
@@ -822,14 +828,13 @@
         <h2><span class="line"><span>Put experience to work.</span></span></h2>
       </div>
       <div class="j-rail" id="jRail">
-<a class="j-panel j-photo" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><span class="j-cap">Harvesting oysters on Maine's Nonesuch River</span></a>
-<a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><span class="j-cap">Developing cameras for Apple products</span></a>
+<a class="j-panel j-photo" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Harvesting oysters on Maine's Nonesuch River</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
+<a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Developing cameras for Apple products</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">5,000+</span><span class="g-l">cities and towns</span></div></div>
-<a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/"><img src="../img/microscopy-coop.jpg" alt="" loading="lazy"><span class="j-cap">Microscopy, from diabetes research to EV batteries</span></a>
+<a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/"><img src="../img/microscopy-coop.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Microscopy, from diabetes research to EV batteries</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">10,000+</span><span class="g-l">employer partners</span></div></div>
-<a class="j-panel j-photo" href="https://news.northeastern.edu/2024/10/16/high-speed-satellite-network-research/"><img src="../img/satellite-testbed.jpg" alt="" loading="lazy"><span class="j-cap">A student-built satellite testbed</span></a>
+<a class="j-panel j-photo" href="https://news.northeastern.edu/2024/10/16/high-speed-satellite-network-research/"><img src="../img/satellite-testbed.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">A student-built satellite testbed</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">250+</span><span class="g-l">countries and territories</span></div></div>
-<div class="j-panel j-photo"><img src="../img/oyster-coop.jpg" alt="" loading="lazy"></div>
 <div class="j-panel j-outro"><div><span class="j-big">Where will yours be?</span><a class="pill ghostw" style="margin-top:26px" href="#admit">Start at Northeastern</a></div></div>
       </div>
       <div class="wrap"><div class="j-bar"><i id="jBar"></i></div>

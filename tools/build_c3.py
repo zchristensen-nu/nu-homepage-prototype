@@ -52,7 +52,7 @@ xrow_js     = cut("/* ============ research expanding row ============ */", "/* 
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept2-rev" content="18">')
+                    '<meta name="concept2-rev" content="19">')
 assert 'concept2-rev' in head
 
 outro_old_h = '<div class="big">Where will yours be?</div>'
@@ -142,7 +142,6 @@ RAIL = [
  ("stat", "10,000+", "employer partners"),
  ("photo", "satellite-testbed", "A student-built satellite testbed", "/2024/10/16/high-speed-satellite-network-research/"),
  ("stat", "250+", "countries and territories"),
- ("photo", "oyster-coop", None, None),
  ("outro", None),
 ]
 
@@ -177,12 +176,10 @@ def rail_panels():
                     f'<span class="g-l">{p[2]}</span></div></div>\n')
         elif k == "photo":
             _, img, t, u = p
-            if t:
-                out += (f'<a class="j-panel j-photo" href="{NGN}{u}">'
-                        f'<img src="../img/{img}.jpg" alt="" loading="lazy">'
-                        f'<span class="j-cap">{t}</span></a>\n')
-            else:
-                out += (f'<div class="j-panel j-photo"><img src="../img/{img}.jpg" alt="" loading="lazy"></div>\n')
+            out += (f'<a class="j-panel j-photo" href="{NGN}{u}">'
+                    f'<img src="../img/{img}.jpg" alt="" loading="lazy">'
+                    f'<span class="j-cap"><span class="j-cap-t">{t}</span>'
+                    f'<span class="j-cap-r">Read on NGN &#8594;</span></span></a>\n')
         elif k == "outro":
             out += ('<div class="j-panel j-outro"><div>'
                     '<span class="j-big">Where will yours be?</span>'
@@ -250,7 +247,7 @@ NEW_CSS = """  /* ---------- award layer ---------- */
 
   /* ---------- co-op rail ---------- */
   .journey{position:relative;z-index:5;background:var(--dark);color:#fff}
-  .j-track{height:420svh}
+  .j-track{height:380svh}
   .j-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
   .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
@@ -263,8 +260,14 @@ NEW_CSS = """  /* ---------- award layer ---------- */
   .g-l{display:block;margin-top:10px;font-size:15px;color:#A9A9B2}
   .j-photo{position:relative;background:#141419}
   .j-photo img{height:100%;width:auto;display:block}
-  .j-cap{position:absolute;left:16px;bottom:14px;right:16px;font-size:13.5px;color:#fff;
-    text-shadow:0 1px 14px rgba(0,0,0,.7)}
+  .j-cap{position:absolute;left:0;right:0;bottom:0;padding:44px 16px 14px;font-size:13.5px;color:#fff;
+    background:linear-gradient(to top,rgba(5,5,8,.85),rgba(5,5,8,0));
+    opacity:0;transform:translateY(10px);
+    transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  .j-photo:hover .j-cap{opacity:1;transform:none}
+  .j-cap-t{display:block;line-height:1.35}
+  .j-cap-r{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#fff}
+  @media (hover: none){.j-cap{opacity:1;transform:none}}
   .j-outro{padding:0 clamp(24px,4vw,72px);justify-content:center}
   .j-big{display:block;font-size:clamp(44px,6vw,92px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
   .j-bar{margin-top:40px;height:1px;background:rgba(255,255,255,.14);position:relative}
@@ -476,7 +479,7 @@ assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert "{SHEET}" not in page and "{VOICES_SECTION}" not in page
 for tok in ['id="srch"', 'class="scrolly"', 'id="xrow"', "xcard", "rc-grid", "j-rail",
             'id="vcFlow"', "vc-media", "wire foot", "lifeimax", 'class="admit"',
-            "concept2-rev", 'content="18"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
+            "concept2-rev", 'content="19"', "data-count", "newspost", "COOP_DISPLAY_TOTAL",
             "Put experience to work", "connected network of campuses"]:
     assert tok in page, tok
 for gone in ["rr-reel", "verbar", 'id="vTrack"', 'id="qTrack"', "voices-b"]:
