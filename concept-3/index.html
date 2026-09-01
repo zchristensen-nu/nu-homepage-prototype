@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept3-rev" content="1">
+<meta name="concept3-rev" content="2">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -217,7 +217,7 @@
 
   /* ---------- NGN wire ---------- */
   .wire{background:var(--dark);color:#fff;overflow:hidden;position:relative;z-index:6}
-  .wire.top{border-bottom:1px solid rgba(255,255,255,.1);margin-top:-28px;border-radius:28px 28px 0 0}
+  .wire.top{border-bottom:0;margin-top:-28px;border-radius:28px 28px 0 0;padding-bottom:28px}
   .wire.top .wire-in{margin-top:14px}
   .wire.foot{border-top:1px solid rgba(255,255,255,.1)}
   .wire-in{display:flex;align-items:center;height:56px}
@@ -266,8 +266,9 @@
   .j-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
   .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
+  .j-head .j-lede{margin-top:14px;font-size:14.5px;color:#A9A9B2}
   .j-rail{display:flex;gap:clamp(18px,2.4vw,36px);align-items:center;will-change:transform;
-    width:max-content;padding-left:42vw}
+    width:max-content;padding-left:calc(50vw - min(42vw, 350px))}
   .j-panel{flex:0 0 auto;height:min(54svh,540px);border-radius:16px;overflow:hidden;
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
   .j-stat{padding:0 clamp(20px,3vw,56px);justify-content:center}
@@ -283,12 +284,12 @@
   .j-cap-t{display:block;line-height:1.35}
   .j-cap-r{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#fff}
   @media (hover: none){.j-cap{opacity:1;transform:none}}
-  .j-globe{position:relative;width:min(80vw,620px);background:transparent;overflow:visible;
+  .j-globe{position:relative;width:min(84vw,700px);background:transparent;overflow:visible;
     align-items:stretch;justify-content:flex-end}
   .j-globe .stage{position:absolute;inset:0}
   .j-globe canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
   .j-globe canvas.dragging{cursor:grabbing}
-  .j-caption{position:relative;padding:0 4px;font-size:13.5px;color:#C9C9CF;z-index:2}
+  .j-caption{position:relative;padding:0 4px;font-size:13.5px;color:#C9C9CF;z-index:2;width:100%;text-align:center}
   .j-nuin{padding:0 clamp(24px,3vw,64px)}
   .j-kick{font-size:13.5px;color:#A9A9B2}
   .j-cities{display:grid;grid-template-columns:repeat(4,auto);gap:8px 28px;margin-top:14px}
@@ -744,12 +745,14 @@
   <div class="j-track" id="jTrack">
     <div class="j-stage">
       <div class="wrap j-head rv">
-        <h2><span class="line"><span>The world is the campus.</span></span></h2>
+        <h2><span class="line"><span>The world is our campus.</span></span></h2>
+        <p class="j-lede">Campuses in white. Co‑op cities in red.</p>
       </div>
       <div class="j-rail" id="jRail">
-<div class="j-panel j-globe"><div class="stage" id="stage"><canvas id="globe" aria-label="Slowly spinning globe with campuses labeled in white and co-op cities as red dots. Drag to spin, hover a dot for details."></canvas></div><span class="j-caption">Campuses in white. Co‑op cities in red.</span></div>
-<div class="j-panel j-stat"><div><span class="g-n">14</span><span class="g-l">campuses across the U.S., U.K., and Canada</span></div></div>
-<div class="j-panel j-nuin"><span class="j-kick">N.U.in launch cities</span><div class="j-cities"><span>Prague</span><span>Berlin</span><span>Thessaloniki</span><span>Dublin</span><span>Rome</span><span>Belfast</span><span>Glasgow</span><span>Madrid</span></div><span class="j-sub">Begin the degree at one of eight partner institutions across Europe.</span></div>
+<div class="j-panel j-globe"><div class="stage" data-cfg='{"set":"core","layers":{"campus":1,"labelC":1,"coops":0,"nuin":0,"labelN":0},"lon":-55,"lat":35}'><canvas aria-label="Slowly spinning globe showing the four undergraduate campuses labeled in white. Drag to spin."></canvas></div><span class="j-caption">Four undergraduate campuses</span></div>
+<div class="j-panel j-globe"><div class="stage" data-cfg='{"set":"grad","layers":{"campus":1,"labelC":1,"coops":0,"nuin":0,"labelN":0},"lon":-100,"lat":42}'><canvas aria-label="Slowly spinning globe showing ten graduate-program campuses labeled in white. Drag to spin."></canvas></div><span class="j-caption">Ten campuses with graduate programs</span></div>
+<div class="j-panel j-globe"><div class="stage" data-cfg='{"set":"nuin","layers":{"nuin":1,"labelN":1,"campus":0,"coops":0,"labelC":0},"lon":8,"lat":48}'><canvas aria-label="Slowly spinning globe showing the eight N.U.in launch cities in Europe. Drag to spin."></canvas></div><span class="j-caption">Eight N.U.in launch cities</span></div>
+<div class="j-panel j-globe"><div class="stage" data-cfg='{"layers":{"coops":0.95,"campus":0,"nuin":0,"labelC":0,"labelN":0},"lon":-40,"lat":25}'><canvas aria-label="Slowly spinning globe showing this fall's co-op cities as red dots. Drag to spin, hover a dot for details."></canvas></div><span class="j-caption">Co‑ops this fall</span></div>
 <a class="j-panel j-photo" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Harvesting oysters on Maine's Nonesuch River</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">500,000+</span><span class="g-l">co‑op placements, all time</span></div></div>
 <a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Developing cameras for Apple products</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
@@ -940,8 +943,11 @@ const DOT_ORDER = COOPS.map(d => (((d[1] + 71.09) % 360) + 360) % 360 / 360);
 
 const RAD = Math.PI / 180;
 
+function makeGlobe(stageEl, opts) {
+const CAMPUSES_ = opts.campuses || CAMPUSES;
+const NUIN_ = opts.nuin || NUIN;
 /* ============ globe engine ============ */
-const canvas = $("#globe");
+const canvas = stageEl.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 let W = 0, H = 0, DPR = 1;
 
@@ -1109,7 +1115,7 @@ function render(now) {
 
   /* N.U.in pins (white) */
   if (cur.nuin > .01) {
-    for (const [lat, lng, name] of NUIN) {
+    for (const [lat, lng, name] of NUIN_) {
       const [x, y, v] = project(lat, lng, R, cx, cy);
       if (v <= 0) continue;
       ctx.beginPath(); ctx.arc(x, y, 4.2, 0, 7);
@@ -1122,7 +1128,7 @@ function render(now) {
 
   /* campus pins (red) */
   if (cur.campus > .01) {
-    for (const [lat, lng, name] of CAMPUSES) {
+    for (const [lat, lng, name] of CAMPUSES_) {
       const [x, y, v] = project(lat, lng, R, cx, cy);
       if (v <= 0) continue;
       ctx.beginPath(); ctx.arc(x, y, 8.5, 0, 7);
@@ -1192,7 +1198,7 @@ function startFly(to) {
 
 let stageVisible = false;
 new IntersectionObserver(es => es.forEach(e => stageVisible = e.isIntersecting),
-  { rootMargin: "200px" }).observe($("#stage"));
+  { rootMargin: "200px" }).observe(stageEl);
 
 function frame(now) {
   if (stageVisible) {
@@ -1263,7 +1269,7 @@ const gtip = document.createElement("div");
 gtip.style.cssText = "position:absolute;display:none;z-index:30;pointer-events:none;" +
   "background:rgba(16,16,20,.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);" +
   "border-radius:8px;padding:8px 11px;font-size:12.5px;line-height:1.4;color:#fff;max-width:220px";
-$("#stage").appendChild(gtip);
+stageEl.appendChild(gtip);
 const hideGtip = () => { gtip.style.display = "none"; };
 function pickDot(e) {
   if (cur.coops < .3) { hideGtip(); return; }
@@ -1289,6 +1295,14 @@ function pickDot(e) {
   gtip.style.top = Math.min(my + 14, H - 60) + "px";
 }
 
+
+Object.assign(tgt, opts.layers); Object.assign(cur, opts.layers);
+tgt.k = opts.k || 1.02; cur.k = tgt.k;
+if (opts.lon !== undefined) cur.lon = tgt.lon = opts.lon;
+if (opts.lat !== undefined) cur.lat = tgt.lat = opts.lat;
+resize();
+requestAnimationFrame(frame);
+}
 /* ============ research counters ============ */
 function countUp(el, to, ms) {
   const t0 = performance.now();
@@ -1558,10 +1572,13 @@ addEventListener("keydown", e => { if (e.key === "Escape") { tkvClose(); srchClo
 
 /* ============ boot ============ */
 nav.classList.toggle("solid", scrollY > 60);
-/* rail globe: slow spin, campuses labeled, every co-op dot lit */
-Object.assign(tgt, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
-Object.assign(cur, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
-tgt.k = 1.02; cur.k = 1.02;
-resize();
-requestAnimationFrame(frame);
+/* four themed globes on the rail */
+const CORE4 = CAMPUSES.filter(c => ["Boston","Oakland","New York City","London"].includes(c[2]));
+const GRAD10 = CAMPUSES.filter(c => !["Boston","Oakland","New York City","London"].includes(c[2]));
+$$(".j-globe .stage").forEach(st => {
+  const cfg = JSON.parse(st.dataset.cfg);
+  if (cfg.set === "core") cfg.campuses = CORE4;
+  if (cfg.set === "grad") cfg.campuses = GRAD10;
+  makeGlobe(st, cfg);
+});
 </script>

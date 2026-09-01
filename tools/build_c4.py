@@ -47,8 +47,29 @@ old_ign = "      ignite = reduceMotion ? 1 : easeOut(p);\n"
 assert engine.count(old_ign) == 1
 engine = engine.replace(old_ign, "")
 
+# wrap the singleton engine into a per-canvas factory
+assert engine.count('const canvas = $("#globe");') == 1
+engine = engine.replace('const canvas = $("#globe");', 'const canvas = stageEl.querySelector("canvas");')
+assert engine.count('.observe($("#stage"))') == 1
+engine = engine.replace('.observe($("#stage"))', '.observe(stageEl)')
+assert engine.count('$("#stage").appendChild(gtip)') == 1
+engine = engine.replace('$("#stage").appendChild(gtip)', 'stageEl.appendChild(gtip)')
+assert engine.count("of CAMPUSES)") == 1 and engine.count("of NUIN)") == 1
+engine = engine.replace("of CAMPUSES)", "of CAMPUSES_)").replace("of NUIN)", "of NUIN_)")
+engine = ("function makeGlobe(stageEl, opts) {\n"
+          "const CAMPUSES_ = opts.campuses || CAMPUSES;\n"
+          "const NUIN_ = opts.nuin || NUIN;\n"
+          + engine +
+          "\nObject.assign(tgt, opts.layers); Object.assign(cur, opts.layers);\n"
+          "tgt.k = opts.k || 1.02; cur.k = tgt.k;\n"
+          "if (opts.lon !== undefined) cur.lon = tgt.lon = opts.lon;\n"
+          "if (opts.lat !== undefined) cur.lat = tgt.lat = opts.lat;\n"
+          "resize();\n"
+          "requestAnimationFrame(frame);\n"
+          "}\n")
+
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept3-rev" content="1">')
+                    '<meta name="concept3-rev" content="2">')
 assert 'concept3-rev' in head
 
 old_h = "<h2>Class is only half of it.</h2>"
@@ -97,9 +118,7 @@ ALSO_ROWS = [
 ]
 
 RAIL = [
- ("globe", None),
- ("stat", "14", "campuses across the U.S., U.K., and Canada"),
- ("nuin", None),
+ ("globe", 0), ("globe", 1), ("globe", 2), ("globe", 3),
  ("photo", "oyster-dock", "Harvesting oysters on Maine's Nonesuch River", "/2022/11/01/oyster-harvesting-maine/"),
  ("stat", "500,000+", "co‑op placements, all time"),
  ("photo", "apple-coop", "Developing cameras for Apple products", "/2025/01/15/apple-co-op-camera-process-engineer/"),
@@ -108,6 +127,21 @@ RAIL = [
  ("stat", "250+", "countries and territories"),
  ("photo", "satellite-testbed", "A student-built satellite testbed", "/2024/10/16/high-speed-satellite-network-research/"),
  ("outro", None),
+]
+
+GLOBES = [
+ ('{"set":"core","layers":{"campus":1,"labelC":1,"coops":0,"nuin":0,"labelN":0},"lon":-55,"lat":35}',
+  "Four undergraduate campuses",
+  "Slowly spinning globe showing the four undergraduate campuses labeled in white. Drag to spin."),
+ ('{"set":"grad","layers":{"campus":1,"labelC":1,"coops":0,"nuin":0,"labelN":0},"lon":-100,"lat":42}',
+  "Ten campuses with graduate programs",
+  "Slowly spinning globe showing ten graduate-program campuses labeled in white. Drag to spin."),
+ ('{"set":"nuin","layers":{"nuin":1,"labelN":1,"campus":0,"coops":0,"labelC":0},"lon":8,"lat":48}',
+  "Eight N.U.in launch cities",
+  "Slowly spinning globe showing the eight N.U.in launch cities in Europe. Drag to spin."),
+ ('{"layers":{"coops":0.95,"campus":0,"nuin":0,"labelC":0,"labelN":0},"lon":-40,"lat":25}',
+  "Co‑ops this fall",
+  "Slowly spinning globe showing this fall's co-op cities as red dots. Drag to spin, hover a dot for details."),
 ]
 
 NUIN_CITIES = ["Prague","Berlin","Thessaloniki","Dublin","Rome","Belfast","Glasgow","Madrid"]
@@ -191,9 +225,10 @@ def rail_panels():
     for p in RAIL:
         k = p[0]
         if k == "globe":
-            out += ('<div class="j-panel j-globe"><div class="stage" id="stage">'
-                    '<canvas id="globe" aria-label="Slowly spinning globe with campuses labeled in white and co-op cities as red dots. Drag to spin, hover a dot for details."></canvas>'
-                    '</div><span class="j-caption">Campuses in white. Co‑op cities in red.</span></div>\n')
+            cfg, cap, aria = GLOBES[p[1]]
+            out += (f'<div class="j-panel j-globe"><div class="stage" data-cfg=\'{cfg}\'>'
+                    f'<canvas aria-label="{aria}"></canvas>'
+                    f'</div><span class="j-caption">{cap}</span></div>\n')
         elif k == "nuin":
             cities = "".join(f"<span>{c}</span>" for c in NUIN_CITIES)
             out += ('<div class="j-panel j-nuin"><span class="j-kick">N.U.in launch cities</span>'
@@ -243,7 +278,7 @@ NEW_CSS = """  /* ---------- concept-3 layer ---------- */
 
   /* ---------- NGN wire ---------- */
   .wire{background:var(--dark);color:#fff;overflow:hidden;position:relative;z-index:6}
-  .wire.top{border-bottom:1px solid rgba(255,255,255,.1);margin-top:-28px;border-radius:28px 28px 0 0}
+  .wire.top{border-bottom:0;margin-top:-28px;border-radius:28px 28px 0 0;padding-bottom:28px}
   .wire.top .wire-in{margin-top:14px}
   .wire.foot{border-top:1px solid rgba(255,255,255,.1)}
   .wire-in{display:flex;align-items:center;height:56px}
@@ -292,8 +327,9 @@ NEW_CSS = """  /* ---------- concept-3 layer ---------- */
   .j-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
   .j-head{padding-bottom:40px;text-align:center}
   .j-head h2{font-size:clamp(40px,5.6vw,86px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
+  .j-head .j-lede{margin-top:14px;font-size:14.5px;color:#A9A9B2}
   .j-rail{display:flex;gap:clamp(18px,2.4vw,36px);align-items:center;will-change:transform;
-    width:max-content;padding-left:42vw}
+    width:max-content;padding-left:calc(50vw - min(42vw, 350px))}
   .j-panel{flex:0 0 auto;height:min(54svh,540px);border-radius:16px;overflow:hidden;
     display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
   .j-stat{padding:0 clamp(20px,3vw,56px);justify-content:center}
@@ -309,12 +345,12 @@ NEW_CSS = """  /* ---------- concept-3 layer ---------- */
   .j-cap-t{display:block;line-height:1.35}
   .j-cap-r{display:block;margin-top:6px;font-size:12.5px;font-weight:600;color:#fff}
   @media (hover: none){.j-cap{opacity:1;transform:none}}
-  .j-globe{position:relative;width:min(80vw,620px);background:transparent;overflow:visible;
+  .j-globe{position:relative;width:min(84vw,700px);background:transparent;overflow:visible;
     align-items:stretch;justify-content:flex-end}
   .j-globe .stage{position:absolute;inset:0}
   .j-globe canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
   .j-globe canvas.dragging{cursor:grabbing}
-  .j-caption{position:relative;padding:0 4px;font-size:13.5px;color:#C9C9CF;z-index:2}
+  .j-caption{position:relative;padding:0 4px;font-size:13.5px;color:#C9C9CF;z-index:2;width:100%;text-align:center}
   .j-nuin{padding:0 clamp(24px,3vw,64px)}
   .j-kick{font-size:13.5px;color:#A9A9B2}
   .j-cities{display:grid;grid-template-columns:repeat(4,auto);gap:8px 28px;margin-top:14px}
@@ -381,7 +417,8 @@ NEW_BODY = f"""
   <div class="j-track" id="jTrack">
     <div class="j-stage">
       <div class="wrap j-head rv">
-        <h2><span class="line"><span>The world is the campus.</span></span></h2>
+        <h2><span class="line"><span>The world is our campus.</span></span></h2>
+        <p class="j-lede">Campuses in white. Co‑op cities in red.</p>
       </div>
       <div class="j-rail" id="jRail">
 {rail_panels()}      </div>
@@ -478,12 +515,15 @@ $$(".line").forEach(el => lineIO.observe(el));
 
 NEW_BOOT = """/* ============ boot ============ */
 nav.classList.toggle("solid", scrollY > 60);
-/* rail globe: slow spin, campuses labeled, every co-op dot lit */
-Object.assign(tgt, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
-Object.assign(cur, { coops: .9, campus: 1, nuin: .5, labelC: 1, labelN: 0 });
-tgt.k = 1.02; cur.k = 1.02;
-resize();
-requestAnimationFrame(frame);
+/* four themed globes on the rail */
+const CORE4 = CAMPUSES.filter(c => ["Boston","Oakland","New York City","London"].includes(c[2]));
+const GRAD10 = CAMPUSES.filter(c => !["Boston","Oakland","New York City","London"].includes(c[2]));
+$$(".j-globe .stage").forEach(st => {
+  const cfg = JSON.parse(st.dataset.cfg);
+  if (cfg.set === "core") cfg.campuses = CORE4;
+  if (cfg.set === "grad") cfg.campuses = GRAD10;
+  makeGlobe(st, cfg);
+});
 """
 
 page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + tailcss
@@ -494,14 +534,14 @@ page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + t
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 for tok in ['id="srch"', 'id="tkv"', 'id="xrow"', "Axolotl".lower() and "axolotl", "Modular quantum",
-            "Also in the lab right now", "rc-grid", 'id="globe"', "j-nuin", "j-cap-r",
-            "The world is the campus", 'id="vcFlow"', "wire top", "wire foot", "lifeimax",
-            'class="admit"', "concept3-rev", 'content="1"', "data-count", "newspost"]:
+            "Also in the lab right now", "rc-grid", "makeGlobe", "j-cap-r",
+            "The world is our campus", 'id="vcFlow"', "wire top", "wire foot", "lifeimax",
+            'class="admit"', "concept3-rev", 'content="2"', "data-count", "newspost"]:
     assert tok in page, tok
 for gone in ['class="scrolly"', 'id="coopcount"', "One university. Fourteen campuses."]:
     assert gone not in page, gone
 seq = re.findall(r'class="j-panel (j-\w+)', page)
-assert seq == ["j-globe","j-stat","j-nuin","j-photo","j-stat","j-photo","j-stat","j-photo","j-stat","j-photo","j-outro"], seq
+assert seq == ["j-globe"]*4 + ["j-photo","j-stat","j-photo","j-stat","j-photo","j-stat","j-photo","j-outro"], seq
 for out in OUT:
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, "w").write(page)
