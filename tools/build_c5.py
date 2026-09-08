@@ -39,7 +39,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="6">')
+                    '<meta name="concept4-rev" content="7">')
 assert 'concept4-rev' in head
 
 
@@ -127,25 +127,23 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   body{background:var(--dark)}
   .vidcard{position:relative;border-radius:14px;overflow:hidden;background:#141419}
   .vidcard video{width:100%;height:100%;object-fit:cover;display:block}
-  .gword{position:absolute;z-index:0;font-weight:200;letter-spacing:-.03em;line-height:1;
-    color:rgba(255,255,255,.055);white-space:nowrap;pointer-events:none;user-select:none}
 
   /* streams: text / video / text / video conveyor rows */
-  .streams{position:relative;z-index:2;color:#fff;padding:64px 0 0;overflow:hidden}
+  .streams{position:relative;z-index:2;color:#fff;padding:clamp(72px,9vh,120px) 0;overflow:hidden}
   .tk-row{display:flex;gap:22px;width:max-content;align-items:center;margin-top:26px;
     animation:stripX 46s linear infinite}
   .tk-row.rev{animation-direction:reverse;animation-duration:58s}
   .streams:hover .tk-row{animation-play-state:paused}
   @keyframes stripX{to{transform:translateX(-50%)}}
-  .tk-row .vidcard{flex:0 0 auto;width:clamp(220px,24vw,360px);aspect-ratio:16/10}
+  .tk-cell{flex:0 0 auto}
+  .tk-cell .vidcard{width:clamp(260px,30vw,460px);aspect-ratio:16/10}
   .tk-city{flex:0 0 auto;font-size:clamp(30px,3.6vw,56px);font-weight:250;letter-spacing:-.02em;
     color:#fff;padding:0 10px;white-space:nowrap}
   .tk-city.dim{color:rgba(255,255,255,.38)}
   @media (prefers-reduced-motion: reduce){.tk-row{animation:none;overflow-x:auto;width:auto}}
 
   /* sticky video, stats pass by, ghost word behind */
-  .s-sticky{position:relative;z-index:1;color:#fff;padding:40px 0 0;margin-top:-30px}
-  .s-sticky .gword{font-size:clamp(120px,17vw,270px);left:-2vw;top:8%}
+  .s-sticky{position:relative;z-index:1;color:#fff;padding:clamp(100px,14vh,200px) 0 0}
   .stk{position:relative;z-index:2;display:grid;grid-template-columns:6fr 6fr;gap:clamp(28px,5vw,84px);align-items:start}
   .stk-media{position:sticky;top:18svh}
   .stk-media .vidcard{aspect-ratio:4/5;max-height:62svh}
@@ -174,7 +172,6 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
 
   /* collage: drifting films over the same dark ground, counters between */
   .s-collage{position:relative;z-index:1;color:#fff;padding:10svh 0 8svh;overflow:visible;margin-top:-8svh}
-  .s-collage .gword{font-size:clamp(110px,15vw,240px);right:-4vw;top:0}
   .col-grid{position:relative;z-index:2;display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,5vw,80px);align-items:start}
   .col-a .vidcard{aspect-ratio:16/10}
   .col-b{margin-top:clamp(90px,16vw,260px)}
@@ -233,29 +230,16 @@ NEW_BODY = f"""
 
 <section class="streams" id="stream" aria-label="The university in motion">
   <div class="tk-row">
-    <span class="tk-city">Boston</span>
-    <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Co&#8209;op</span>
-    <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">London</span>
-    <span class="tk-city">NYC</span>
-    <span class="tk-city">Oakland</span>
-    <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city dim">Research</span>
-    <span class="tk-city">Boston</span>
-    <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Co&#8209;op</span>
-    <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">London</span>
-    <span class="tk-city">NYC</span>
-    <span class="tk-city">Oakland</span>
-    <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city dim">Research</span>
+    <div class="tk-cell"><div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div><p class="col-cap">Boston</p></div>
+    <div class="tk-cell"><div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div><p class="col-cap">On co&#8209;op</p></div>
+    <div class="tk-cell"><div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div><p class="col-cap">Oakland</p></div>
+    <div class="tk-cell"><div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div><p class="col-cap">Boston</p></div>
+    <div class="tk-cell"><div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div><p class="col-cap">On co&#8209;op</p></div>
+    <div class="tk-cell"><div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div><p class="col-cap">Oakland</p></div>
   </div>
 </section>
 
 <section class="s-sticky" id="coop">
-  <span class="gword" data-drift="-140">Experiential</span>
   <div class="wrap">
     <div class="stk">
       <div class="stk-media"><div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div></div>
@@ -287,7 +271,6 @@ NEW_BODY = f"""
 </section>
 
 <section class="s-collage" id="research">
-  <span class="gword" data-drift="160">Research</span>
   <div class="wrap">
     <div class="col-grid">
       <div class="col-a" data-drift="-70"><div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
@@ -422,9 +405,9 @@ page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + t
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count("<video") == 17  # hero + stream composition
-for tok in ['id="srch"', 'id="tkv"', "tk-row", "gword", "t-type", "lab-open", "col-cap",
+for tok in ['id="srch"', 'id="tkv"', "tk-row", "t-type", "lab-open", "col-cap",
             "data-drift", "s-bridge", "wire top", "wire foot", 'class="admit"',
-            "concept4-rev", 'content="6"', "data-count", "newspost"]:
+            "concept4-rev", 'content="7"', "data-count", "newspost"]:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "opt\"", "scrubVid"]:
     assert gone not in page, gone
