@@ -398,6 +398,31 @@ tunnel). NOTE: nulondon.ac.uk DNS was flaky the day this shipped; the London pro
 was skipped by design (conveyor uses Boston/Co-op/Oakland proxies instead), not as
 a TODO.
 
+## Concept 4 rev 7-8: legibility pass, then the globe returns
+
+Rev 7 answered a screenshot review ("way too tight", "random buzzwords", stray
+ghost type): the opening conveyor became a captioned filmstrip (small .col-cap
+under each cell - Boston / On co-op / Oakland) instead of giant floating names,
+both .gword ghost words (Experiential, Research) were deleted with their CSS,
+and the negative-margin overlap gave way to real padding (.streams and
+.s-sticky use clamp() air).
+
+Rev 8 replaced the horizontal location tunnel with .s-orbit, "globe + video":
+the v1 globe engine is extracted and factory-wrapped exactly like build_c4
+(land/coops/globedata/engine blocks; idle drift slowed to 0.006 so an aimed
+city holds; ignite line removed) and the factory now RETURNS { fly: startFly }
+- the engine's existing two-phase camera (shortestDelta wrap + zoom dip). A
+440svh pinned stage shows big city name + globe left, a stacked crossfade of
+the four campus films right, red progress bar below; scroll quarters fly the
+globe Boston > London > NYC > Oakland (coords looked up from CAMPUSES at
+runtime, labels off, campus pins + faint co-op dots). Reduced motion: static
+stage, all four films stacked. Also killed the stray serif: .col-side had
+kepler-std/Georgia but concept-4 never loads kepler, so it rendered Georgia -
+now inherits the sans stack at weight 200. Page ~199KB (LAND polygons).
+Verified live: rev meta 8, 17 videos, tunnel gone, no console errors, col-side
+computes FF Real Head. The fly choreography itself needs a real-browser eyeball
+(pane freezes rAF).
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
