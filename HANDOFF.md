@@ -372,6 +372,32 @@ The scrub's live scrubbing and marquee feel are unverified in-pane (rAF throttli
 check in a real browser. Reduced-motion: marquees/tickers static-scrollable, pins
 unpin, scrub falls back to native controls.
 
+## Concept 4 rev 4-6: the continuous stream, then thinned
+
+Zach picked sampler options 1/3/4/5/8, asked for 1+7 merged (text/vid interleaved),
+no pills/chips, and "dynamism as you scroll... almost feel lost & immersed". Rev 4
+rebuilt the page as one continuous dark stream: merged text+video conveyor rows,
+sticky co-op video with stat beats passing, giant-type location tunnel (ghost
+outlined names), parallax collage, edge-labeled video accordion (vertical .lab
+text), ghost pillar gwords behind sections. 26 video elements.
+
+Rev 5-6 answered "this is a bit too much now, and I'm also concerned about page
+load": thinned to ONE opening conveyor (was three rows), N.U.in bridge is text-only
+city names, collage is one video tile + "Work that leaves the building." statement
+(.col-side) + counters. 17 video elements. Payload: small conveyor cells play 12s
+640x360 loop proxies made with `avconvert --preset PresetAppleM4ViPod --start 2
+--duration 12` (outputs .m4v, rename to .mp4) — hero-sm.mp4 (1.75MB), coop-sm.mp4
+(1.38MB), jamie-sm.mp4 (1.52MB), all self-hosted at repo root. Full-res files only
+in big frames: tunnel (hero/London/NYC/Jamie), sticky (co-op), collage (Jamie),
+accordion — and the accordion Research slat deliberately reuses ../hero.mp4 since
+the hero background already fetched it (browser media cache, zero extra transfer).
+Everything but the hero bg is preload=none + IO-gated, so initial load ≈ hero.mp4
+(14.7MB) + HTML; the top-of-page conveyor now costs ~4.7MB instead of the ~38MB
+rev 4 pulled (London film alone is 23MB — it now loads only if you reach the
+tunnel). NOTE: nulondon.ac.uk DNS was flaky the day this shipped; the London proxy
+was skipped by design (conveyor uses Boston/Co-op/Oakland proxies instead), not as
+a TODO.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
