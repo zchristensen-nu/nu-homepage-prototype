@@ -39,7 +39,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="4">')
+                    '<meta name="concept4-rev" content="5">')
 assert 'concept4-rev' in head
 
 
@@ -53,6 +53,7 @@ U = NGN + "/wp-content/uploads"
 V_CAMPUS = "https://www.northeastern.edu/wp-content/uploads/Jamie-Wong-Video-Fade.mp4"
 V_COOP   = "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4"
 V_HERO   = "../hero.mp4"
+V_HEROSM = "../hero-sm.mp4"
 V_LONDON = "https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4"
 V_NYC    = "https://nyc.northeastern.edu/wp-content/uploads/NYC-Home_SLOW.mp4"
 
@@ -177,6 +178,7 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .col-b{margin-top:clamp(90px,16vw,260px)}
   .col-b .vidcard{aspect-ratio:4/5;width:82%}
   .col-cap{margin-top:12px;font-size:13.5px;color:#A9A9B2}
+  .col-side{margin:0;font-family:kepler-std-condensed-display,Georgia,serif;font-weight:300;font-size:clamp(34px,4.6vw,68px);line-height:1.02;letter-spacing:-.01em;color:#EDEDF2;max-width:7em}
   .rc-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,48px);
     border-top:1px solid rgba(255,255,255,.14);padding-top:40px;margin-top:64px}
   .rc{border-left:1px solid rgba(255,255,255,.14);padding-left:clamp(18px,2vw,30px)}
@@ -230,26 +232,20 @@ NEW_BODY = f"""
 <section class="streams" id="stream" aria-label="The university in motion">
   <div class="tk-row">
     <span class="tk-city">Boston</span>
-    <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+    <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">Co&#8209;op</span>
-    <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">London</span>
     <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Boston</span>
-    <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Co&#8209;op</span>
-    <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">London</span>
-    <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
-  </div>
-  <div class="tk-row rev">
     <span class="tk-city">NYC</span>
-    <div class="vidcard"><video src="{V_NYC}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">Oakland</span>
     <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city dim">Research</span>
+    <span class="tk-city">Boston</span>
+    <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+    <span class="tk-city">Co&#8209;op</span>
+    <span class="tk-city">London</span>
+    <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">NYC</span>
-    <div class="vidcard"><video src="{V_NYC}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">Oakland</span>
     <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city dim">Research</span>
@@ -292,10 +288,9 @@ NEW_BODY = f"""
   <span class="gword" data-drift="160">Research</span>
   <div class="wrap">
     <div class="col-grid">
-      <div class="col-a" data-drift="-90"><div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="col-a" data-drift="-70"><div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
         <p class="col-cap">Inside the labs and institutes</p></div>
-      <div class="col-b" data-drift="130"><div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
-        <p class="col-cap">Work that leaves the building</p></div>
+      <div class="col-b" data-drift="110"><p class="col-side">Work that leaves the building.</p></div>
     </div>
     <div class="rc-grid" id="counters">
       <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
@@ -308,21 +303,15 @@ NEW_BODY = f"""
 <section class="s-bridge streams" aria-label="N.U.in cities">
   <div class="tk-row rev">
     <span class="tk-city dim">N.U.in</span>
-    <span class="tk-city">Prague</span>
-    <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Berlin</span>
-    <span class="tk-city">Dublin</span>
-    <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Rome</span>
-    <span class="tk-city">Madrid</span>
+    <span class="tk-city">Prague</span><span class="tk-city">Berlin</span>
+    <span class="tk-city">Thessaloniki</span><span class="tk-city">Dublin</span>
+    <span class="tk-city">Rome</span><span class="tk-city">Belfast</span>
+    <span class="tk-city">Glasgow</span><span class="tk-city">Madrid</span>
     <span class="tk-city dim">N.U.in</span>
-    <span class="tk-city">Prague</span>
-    <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Berlin</span>
-    <span class="tk-city">Dublin</span>
-    <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
-    <span class="tk-city">Rome</span>
-    <span class="tk-city">Madrid</span>
+    <span class="tk-city">Prague</span><span class="tk-city">Berlin</span>
+    <span class="tk-city">Thessaloniki</span><span class="tk-city">Dublin</span>
+    <span class="tk-city">Rome</span><span class="tk-city">Belfast</span>
+    <span class="tk-city">Glasgow</span><span class="tk-city">Madrid</span>
   </div>
 </section>
 
@@ -331,7 +320,7 @@ NEW_BODY = f"""
     <div class="acc">
       <div class="cell"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video>
         <span class="lab">Co&#8209;op</span><span class="lab-open">Co&#8209;op</span></div>
-      <div class="cell"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video>
+      <div class="cell"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video>
         <span class="lab">Research</span><span class="lab-open">Research</span></div>
       <div class="cell"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video>
         <span class="lab">Campuses</span><span class="lab-open">Campuses</span></div>
@@ -430,10 +419,10 @@ page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + t
         + lenis + "\n<script>\n" + helpers + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
-assert page.count("<video") == 26  # hero + stream composition
+assert page.count("<video") == 17  # hero + stream composition
 for tok in ['id="srch"', 'id="tkv"', "tk-row", "gword", "t-type", "lab-open", "col-cap",
             "data-drift", "s-bridge", "wire top", "wire foot", 'class="admit"',
-            "concept4-rev", 'content="4"', "data-count", "newspost"]:
+            "concept4-rev", 'content="5"', "data-count", "newspost"]:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "opt\"", "scrubVid"]:
     assert gone not in page, gone
