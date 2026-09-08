@@ -72,7 +72,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="8">')
+                    '<meta name="concept4-rev" content="9">')
 assert 'concept4-rev' in head
 
 
@@ -188,35 +188,40 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
 
   /* the tunnel: names and films alternate on the rail */
   .s-orbit{position:relative;z-index:2;color:#fff}
-  .o-track{height:440svh}
-  .o-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;
-    grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:center;
-    padding:0 clamp(20px,5vw,72px)}
-  .o-left{display:flex;flex-direction:column;gap:clamp(16px,3svh,30px);min-width:0}
-  .o-name{margin:0;font-size:clamp(54px,7vw,116px);font-weight:200;letter-spacing:-.035em;line-height:1}
-  .o-globe{position:relative;width:min(40vw,64svh);aspect-ratio:1;align-self:center;touch-action:none;cursor:grab}
+  .o-track{height:480svh}
+  .o-stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .o-globe{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(56vw,80svh);aspect-ratio:1;z-index:1;touch-action:none;cursor:grab}
   .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
-  .o-media{position:relative;width:100%;aspect-ratio:16/10;max-height:68svh;min-width:0}
-  .o-media .vidcard{position:absolute;inset:0;opacity:0;transition:opacity .55s ease}
-  .o-media .vidcard.on{opacity:1}
+  .o-name{position:absolute;left:50%;top:clamp(70px,10svh,130px);transform:translateX(-50%);
+    z-index:3;margin:0;font-size:clamp(52px,6.6vw,108px);font-weight:200;
+    letter-spacing:-.035em;line-height:1;white-space:nowrap}
+  .o-col{position:absolute;top:0;width:clamp(190px,23vw,350px);
+    display:flex;flex-direction:column;gap:clamp(56px,11svh,130px);will-change:transform}
+  .o-col.l{left:clamp(14px,5vw,80px);z-index:0}
+  .o-col.r{right:clamp(14px,5vw,80px);z-index:2}
+  .o-col .vidcard{width:100%}
+  .o-col .vidcard:nth-child(even){width:76%;align-self:flex-end}
+  .o-col.l .vidcard:nth-child(even){align-self:flex-start}
+  .a45{aspect-ratio:4/5}.a11{aspect-ratio:1/1}.a1610{aspect-ratio:16/10}.a34{aspect-ratio:3/4}
   .o-bar{position:absolute;left:50%;transform:translateX(-50%);bottom:clamp(20px,4svh,44px);
-    width:min(52vw,560px);height:1px;background:rgba(255,255,255,.14)}
+    z-index:3;width:min(52vw,560px);height:1px;background:rgba(255,255,255,.14)}
   .o-bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
   @media (max-width:820px){
-    .o-stage{grid-template-columns:1fr;align-content:center;gap:18px;padding:0 18px}
-    .o-globe{width:min(64vw,36svh)}
-    .o-name{font-size:clamp(38px,10vw,60px)}
-    .o-media{max-height:34svh}
+    .o-globe{width:min(78vw,46svh)}
+    .o-name{font-size:clamp(40px,10vw,60px)}
+    .o-col{width:32vw}
+    .o-col.l{display:none}
   }
   @media (prefers-reduced-motion: reduce){
-    .o-track{height:auto}.o-stage{position:static;height:auto;padding:60px 18px}
-    .o-media{aspect-ratio:auto;max-height:none;display:grid;gap:14px}
-    .o-media .vidcard{position:static;opacity:1;aspect-ratio:16/10}
+    .o-track{height:auto}.o-stage{position:static;height:auto;padding:40px 18px}
+    .o-globe{position:relative;left:auto;top:auto;transform:none;margin:0 auto}
+    .o-name{position:static;transform:none;text-align:center;margin:20px 0}
+    .o-col{position:static;transform:none !important;width:auto;display:grid;
+      grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+    .o-col .vidcard{width:100% !important}
     .o-bar{display:none}
   }
-    .t-rail{width:auto;overflow-x:auto;padding-left:0;transform:none !important}
-  }
-
   /* collage: drifting films over the same dark ground, counters between */
   .s-collage{position:relative;z-index:1;color:#fff;padding:10svh 0 8svh;overflow:visible;margin-top:-8svh}
   .col-grid{position:relative;z-index:2;display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,5vw,80px);align-items:start}
@@ -301,16 +306,20 @@ NEW_BODY = f"""
 
 <section class="s-orbit" id="campuses">
   <div class="o-track" id="oTrack">
-    <div class="o-stage">
-      <div class="o-left">
-        <h2 class="o-name" id="oName">Boston</h2>
-        <div class="o-globe" id="oGlobe"><canvas></canvas></div>
+    <div class="o-stage" id="oStage">
+      <div class="o-col l" id="oColL">
+        <div class="vidcard a45"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+        <div class="vidcard a1610"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+        <div class="vidcard a11"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+        <div class="vidcard a34"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
       </div>
-      <div class="o-media" id="oMedia">
-        <div class="vidcard on"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
-        <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
-        <div class="vidcard"><video src="{V_NYC}" muted loop playsinline preload="none" data-vio></video></div>
-        <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <h2 class="o-name" id="oName">Boston</h2>
+      <div class="o-globe" id="oGlobe"><canvas></canvas></div>
+      <div class="o-col r" id="oColR">
+        <div class="vidcard a11"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+        <div class="vidcard a34"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+        <div class="vidcard a45"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+        <div class="vidcard a1610"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
       </div>
       <div class="o-bar"><i id="oBar"></i></div>
     </div>
@@ -403,7 +412,7 @@ const vio = new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: "200px" });
 $$("video[data-vio]").forEach(v => vio.observe(v));
 
-/* ============ 04: campuses in orbit — globe + film ============ */
+/* ============ 04: the planet room — centered globe, streams passing ============ */
 const oTrack = $("#oTrack"), oGlobeEl = $("#oGlobe");
 if (oTrack && oGlobeEl) {
   const pick = n => CAMPUSES.find(c => c[2] === n);
@@ -412,20 +421,26 @@ if (oTrack && oGlobeEl) {
     .map(([label, name]) => ({ label, c: pick(name) }));
   const g = makeGlobe(oGlobeEl, {
     layers: { campus: 1, labelC: 0, coops: .35, nuin: 0, labelN: 0 },
-    k: 1.16, lat: CITY[0].c[0], lon: CITY[0].c[1]
+    k: 1.12, lat: CITY[0].c[0], lon: CITY[0].c[1]
   });
-  const oCards = $$("#oMedia .vidcard"), oName = $("#oName"), oBar = $("#oBar");
+  const oStage = $("#oStage"), oName = $("#oName"), oBar = $("#oBar");
+  const colL = $("#oColL"), colR = $("#oColR");
   let oSeg = 0;
   const oUpd = () => {
     const r = oTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
     if (oBar) oBar.style.width = (p * 100).toFixed(2) + "%";
+    const vh = oStage.clientHeight;
+    [[colL, 1], [colR, -1]].forEach(([col, dir]) => {
+      const range = Math.max(0, col.scrollHeight - vh);
+      const y = dir > 0 ? -p * range : -(1 - p) * range;
+      col.style.transform = `translateY(${y.toFixed(1)}px)`;
+    });
     const sN = Math.min(CITY.length - 1, Math.floor(p * CITY.length));
     if (sN !== oSeg) {
       oSeg = sN;
-      oCards.forEach((c, i) => c.classList.toggle("on", i === oSeg));
       oName.textContent = CITY[oSeg].label;
-      g.fly({ lat: CITY[oSeg].c[0], lon: CITY[oSeg].c[1], k: 1.16 });
+      g.fly({ lat: CITY[oSeg].c[0], lon: CITY[oSeg].c[1], k: 1.12 });
     }
   };
   if (!reduceMotion) {
@@ -469,10 +484,10 @@ page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + t
         + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
-assert page.count("<video") == 17  # hero + stream composition
+assert page.count("<video") == 21  # hero + stream composition
 for tok in ['id="srch"', 'id="tkv"', "tk-row", "o-name", "makeGlobe", "lab-open", "col-cap",
             "data-drift", "s-bridge", "wire top", "wire foot", 'class="admit"',
-            "concept4-rev", 'content="8"', "data-count", "newspost"]:
+            "concept4-rev", 'content="9"', "data-count", "newspost"]:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "opt\"", "scrubVid"]:
     assert gone not in page, gone
