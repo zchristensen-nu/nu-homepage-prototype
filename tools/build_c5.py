@@ -31,6 +31,39 @@ assert '<section class="admit"' in rest_mk
 
 lenis       = cut("<script>/* Lenis", "</script>", True)
 helpers     = cut("/* ============ shared helpers ============ */", "/* ============ globe data ============ */")
+land        = re.search(r"const LAND=\[.*?\];", src).group(0)
+coops       = re.search(r"const COOPS=\[.*?\];", src).group(0)
+globedata   = cut("/* ============ globe data ============ */", "/* ============ globe engine ============ */")
+engine      = cut("/* ============ globe engine ============ */", "/* ============ scrollytelling ============ */")
+
+# engine: near-still idle so an aimed city stays centered; dots always lit
+assert engine.count("tgt.lon += 0.03;") == 1
+engine = engine.replace("tgt.lon += 0.03;", "tgt.lon += 0.006;")
+old_ign = "      ignite = reduceMotion ? 1 : easeOut(p);\n"
+assert engine.count(old_ign) == 1
+engine = engine.replace(old_ign, "")
+
+# wrap the singleton engine into a per-canvas factory that exposes startFly
+assert engine.count('const canvas = $("#globe");') == 1
+engine = engine.replace('const canvas = $("#globe");', 'const canvas = stageEl.querySelector("canvas");')
+assert engine.count('.observe($("#stage"))') == 1
+engine = engine.replace('.observe($("#stage"))', '.observe(stageEl)')
+assert engine.count('$("#stage").appendChild(gtip)') == 1
+engine = engine.replace('$("#stage").appendChild(gtip)', 'stageEl.appendChild(gtip)')
+assert engine.count("of CAMPUSES)") == 1 and engine.count("of NUIN)") == 1
+engine = engine.replace("of CAMPUSES)", "of CAMPUSES_)").replace("of NUIN)", "of NUIN_)")
+engine = ("function makeGlobe(stageEl, opts) {\n"
+          "const CAMPUSES_ = opts.campuses || CAMPUSES;\n"
+          "const NUIN_ = opts.nuin || NUIN;\n"
+          + engine +
+          "\nObject.assign(tgt, opts.layers); Object.assign(cur, opts.layers);\n"
+          "tgt.k = opts.k || 1.02; cur.k = tgt.k;\n"
+          "if (opts.lon !== undefined) cur.lon = tgt.lon = opts.lon;\n"
+          "if (opts.lat !== undefined) cur.lat = tgt.lat = opts.lat;\n"
+          "resize();\n"
+          "requestAnimationFrame(frame);\n"
+          "return { fly: startFly };\n"
+          "}\n")
 counters_js = cut("/* ============ research counters ============ */", "/* ============ research expanding row ============ */")
 tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* ============ boot ============ */")
 i0 = tail_js.find("/* student life imax:"); i1 = tail_js.find("/* smooth scrolling via Lenis")
@@ -39,7 +72,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="7">')
+                    '<meta name="concept4-rev" content="8">')
 assert 'concept4-rev' in head
 
 
@@ -154,19 +187,33 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   @media(max-width:820px){.stk{grid-template-columns:1fr}.stk-media{position:static}.stk-flow .beat{min-height:0;padding:30px 0}}
 
   /* the tunnel: names and films alternate on the rail */
-  .s-tunnel{position:relative;z-index:2;color:#fff;margin-top:-16svh}
-  .t-track{height:420svh}
-  .t-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
-  .t-rail{display:flex;gap:clamp(24px,3vw,52px);align-items:center;will-change:transform;
-    width:max-content;padding-left:calc(50vw - min(38vw, 430px))}
-  .t-rail .vidcard{flex:0 0 auto;width:min(76vw,860px);aspect-ratio:16/9}
-  .t-type{flex:0 0 auto;font-size:clamp(70px,11vw,180px);font-weight:200;letter-spacing:-.035em;
-    color:#fff;white-space:nowrap}
-  .t-type.ghost{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.4)}
-  .t-bar{margin:38px auto 0;width:min(76vw,860px);height:1px;background:rgba(255,255,255,.14);position:relative}
-  .t-bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
+  .s-orbit{position:relative;z-index:2;color:#fff}
+  .o-track{height:440svh}
+  .o-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;
+    grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,60px);align-items:center;
+    padding:0 clamp(20px,5vw,72px)}
+  .o-left{display:flex;flex-direction:column;gap:clamp(16px,3svh,30px);min-width:0}
+  .o-name{margin:0;font-size:clamp(54px,7vw,116px);font-weight:200;letter-spacing:-.035em;line-height:1}
+  .o-globe{position:relative;width:min(40vw,64svh);aspect-ratio:1;align-self:center;touch-action:none;cursor:grab}
+  .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
+  .o-media{position:relative;width:100%;aspect-ratio:16/10;max-height:68svh;min-width:0}
+  .o-media .vidcard{position:absolute;inset:0;opacity:0;transition:opacity .55s ease}
+  .o-media .vidcard.on{opacity:1}
+  .o-bar{position:absolute;left:50%;transform:translateX(-50%);bottom:clamp(20px,4svh,44px);
+    width:min(52vw,560px);height:1px;background:rgba(255,255,255,.14)}
+  .o-bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
+  @media (max-width:820px){
+    .o-stage{grid-template-columns:1fr;align-content:center;gap:18px;padding:0 18px}
+    .o-globe{width:min(64vw,36svh)}
+    .o-name{font-size:clamp(38px,10vw,60px)}
+    .o-media{max-height:34svh}
+  }
   @media (prefers-reduced-motion: reduce){
-    .t-track{height:auto}.t-stage{position:static;height:auto;padding:60px 0}
+    .o-track{height:auto}.o-stage{position:static;height:auto;padding:60px 18px}
+    .o-media{aspect-ratio:auto;max-height:none;display:grid;gap:14px}
+    .o-media .vidcard{position:static;opacity:1;aspect-ratio:16/10}
+    .o-bar{display:none}
+  }
     .t-rail{width:auto;overflow-x:auto;padding-left:0;transform:none !important}
   }
 
@@ -177,7 +224,7 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .col-b{margin-top:clamp(90px,16vw,260px)}
   .col-b .vidcard{aspect-ratio:4/5;width:82%}
   .col-cap{margin-top:12px;font-size:13.5px;color:#A9A9B2}
-  .col-side{margin:0;font-family:kepler-std-condensed-display,Georgia,serif;font-weight:300;font-size:clamp(34px,4.6vw,68px);line-height:1.02;letter-spacing:-.01em;color:#EDEDF2;max-width:7em}
+  .col-side{margin:0;font-weight:200;font-size:clamp(34px,4.6vw,68px);line-height:1.02;letter-spacing:-.01em;color:#EDEDF2;max-width:7em}
   .rc-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3vw,48px);
     border-top:1px solid rgba(255,255,255,.14);padding-top:40px;margin-top:64px}
   .rc{border-left:1px solid rgba(255,255,255,.14);padding-left:clamp(18px,2vw,30px)}
@@ -252,20 +299,20 @@ NEW_BODY = f"""
   </div>
 </section>
 
-<section class="s-tunnel" id="campuses">
-  <div class="t-track" id="tTrack">
-    <div class="t-stage">
-      <div class="t-rail" id="tRail">
-        <span class="t-type">Boston</span>
-        <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
-        <span class="t-type ghost">London</span>
+<section class="s-orbit" id="campuses">
+  <div class="o-track" id="oTrack">
+    <div class="o-stage">
+      <div class="o-left">
+        <h2 class="o-name" id="oName">Boston</h2>
+        <div class="o-globe" id="oGlobe"><canvas></canvas></div>
+      </div>
+      <div class="o-media" id="oMedia">
+        <div class="vidcard on"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
         <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
-        <span class="t-type">NYC</span>
         <div class="vidcard"><video src="{V_NYC}" muted loop playsinline preload="none" data-vio></video></div>
-        <span class="t-type ghost">Oakland</span>
         <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
       </div>
-      <div class="t-bar"><i id="tBar"></i></div>
+      <div class="o-bar"><i id="oBar"></i></div>
     </div>
   </div>
 </section>
@@ -356,18 +403,36 @@ const vio = new IntersectionObserver(es => es.forEach(e => {
 }), { rootMargin: "200px" });
 $$("video[data-vio]").forEach(v => vio.observe(v));
 
-/* ============ 04: the location tunnel ============ */
-const tTrack = $("#tTrack"), tRail = $("#tRail"), tBar = $("#tBar");
-if (tTrack && tRail && !reduceMotion) {
-  const tUpd = () => {
-    const r = tTrack.getBoundingClientRect();
+/* ============ 04: campuses in orbit — globe + film ============ */
+const oTrack = $("#oTrack"), oGlobeEl = $("#oGlobe");
+if (oTrack && oGlobeEl) {
+  const pick = n => CAMPUSES.find(c => c[2] === n);
+  const CITY = [["Boston", "Boston"], ["London", "London"],
+                ["NYC", "New York City"], ["Oakland", "Oakland"]]
+    .map(([label, name]) => ({ label, c: pick(name) }));
+  const g = makeGlobe(oGlobeEl, {
+    layers: { campus: 1, labelC: 0, coops: .35, nuin: 0, labelN: 0 },
+    k: 1.16, lat: CITY[0].c[0], lon: CITY[0].c[1]
+  });
+  const oCards = $$("#oMedia .vidcard"), oName = $("#oName"), oBar = $("#oBar");
+  let oSeg = 0;
+  const oUpd = () => {
+    const r = oTrack.getBoundingClientRect();
     const p = clamp01(-r.top / (r.height - innerHeight));
-    tRail.style.transform = `translateX(${(-p * Math.max(0, tRail.scrollWidth - innerWidth)).toFixed(1)}px)`;
-    if (tBar) tBar.style.width = (p * 100).toFixed(2) + "%";
+    if (oBar) oBar.style.width = (p * 100).toFixed(2) + "%";
+    const sN = Math.min(CITY.length - 1, Math.floor(p * CITY.length));
+    if (sN !== oSeg) {
+      oSeg = sN;
+      oCards.forEach((c, i) => c.classList.toggle("on", i === oSeg));
+      oName.textContent = CITY[oSeg].label;
+      g.fly({ lat: CITY[oSeg].c[0], lon: CITY[oSeg].c[1], k: 1.16 });
+    }
   };
-  addEventListener("scroll", () => requestAnimationFrame(tUpd), { passive: true });
-  addEventListener("resize", tUpd);
-  tUpd();
+  if (!reduceMotion) {
+    addEventListener("scroll", () => requestAnimationFrame(oUpd), { passive: true });
+    addEventListener("resize", oUpd);
+    oUpd();
+  }
 }
 
 /* ============ 05: collage drift (feedback-safe) ============ */
@@ -401,13 +466,13 @@ nav.classList.toggle("solid", scrollY > 60);
 page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
         + header_mk + hero_mk + NEW_BODY + rest_mk + WIRE_FOOT + footer_mk + "\n"
-        + lenis + "\n<script>\n" + helpers + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
+        + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count("<video") == 17  # hero + stream composition
-for tok in ['id="srch"', 'id="tkv"', "tk-row", "t-type", "lab-open", "col-cap",
+for tok in ['id="srch"', 'id="tkv"', "tk-row", "o-name", "makeGlobe", "lab-open", "col-cap",
             "data-drift", "s-bridge", "wire top", "wire foot", 'class="admit"',
-            "concept4-rev", 'content="7"', "data-count", "newspost"]:
+            "concept4-rev", 'content="8"', "data-count", "newspost"]:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "opt\"", "scrubVid"]:
     assert gone not in page, gone
