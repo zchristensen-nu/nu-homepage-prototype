@@ -423,6 +423,22 @@ Verified live: rev meta 8, 17 videos, tunnel gone, no console errors, col-side
 computes FF Real Head. The fly choreography itself needs a real-browser eyeball
 (pane freezes rAF).
 
+## Concept 4 rev 9: the planet room
+
+Zach wanted the globe "large in the center with an array of videos that scroll
+by until it clicks to the next location." Rev 9 rebuilds .s-orbit: globe
+centered at min(56vw,80svh), city name top-center over it, and two vertical
+video streams flanking it - the LEFT column passes BEHIND the globe disk
+(z 0 vs globe z 1), the RIGHT in front (z 2), moving in opposite directions
+(left up with progress, right down), each 4 proxy-video cards in varied aspect
+ratios (4/5, 1/1, 16/10, 3/4) with alternating widths. Globe still flies per
+scroll quarter (the "click"). All 8 stream cards use the three self-hosted
+proxies, already cached from the top conveyor, so the section adds ZERO new
+bytes - and the 23MB London + NYC full films now load nowhere before the
+accordion. 21 video elements. Mobile hides the behind-column; reduced motion
+statics the stage into a 2-col card grid. Verified live rev 9, no console
+errors; scroll feel needs a real browser.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
