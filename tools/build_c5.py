@@ -39,7 +39,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="5">')
+                    '<meta name="concept4-rev" content="6">')
 assert 'concept4-rev' in head
 
 
@@ -54,6 +54,8 @@ V_CAMPUS = "https://www.northeastern.edu/wp-content/uploads/Jamie-Wong-Video-Fad
 V_COOP   = "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4"
 V_HERO   = "../hero.mp4"
 V_HEROSM = "../hero-sm.mp4"
+V_JAMIESM = "../jamie-sm.mp4"
+V_COOPSM = "../coop-sm.mp4"
 V_LONDON = "https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4"
 V_NYC    = "https://nyc.northeastern.edu/wp-content/uploads/NYC-Home_SLOW.mp4"
 
@@ -234,20 +236,20 @@ NEW_BODY = f"""
     <span class="tk-city">Boston</span>
     <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">Co&#8209;op</span>
+    <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">London</span>
-    <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">NYC</span>
     <span class="tk-city">Oakland</span>
-    <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+    <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city dim">Research</span>
     <span class="tk-city">Boston</span>
     <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">Co&#8209;op</span>
+    <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">London</span>
-    <div class="vidcard"><video src="{V_LONDON}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city">NYC</span>
     <span class="tk-city">Oakland</span>
-    <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+    <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
     <span class="tk-city dim">Research</span>
   </div>
 </section>
@@ -320,7 +322,7 @@ NEW_BODY = f"""
     <div class="acc">
       <div class="cell"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video>
         <span class="lab">Co&#8209;op</span><span class="lab-open">Co&#8209;op</span></div>
-      <div class="cell"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video>
+      <div class="cell"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video>
         <span class="lab">Research</span><span class="lab-open">Research</span></div>
       <div class="cell"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video>
         <span class="lab">Campuses</span><span class="lab-open">Campuses</span></div>
@@ -422,7 +424,7 @@ assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count("<video") == 17  # hero + stream composition
 for tok in ['id="srch"', 'id="tkv"', "tk-row", "gword", "t-type", "lab-open", "col-cap",
             "data-drift", "s-bridge", "wire top", "wire foot", 'class="admit"',
-            "concept4-rev", 'content="5"', "data-count", "newspost"]:
+            "concept4-rev", 'content="6"', "data-count", "newspost"]:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "opt\"", "scrubVid"]:
     assert gone not in page, gone
