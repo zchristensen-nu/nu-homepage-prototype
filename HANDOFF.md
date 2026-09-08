@@ -350,6 +350,28 @@ globe engine, personas, quotes, and life all removed from this concept).
 - The persona/audience layer from rev 1 was deleted at Zach's direction; if the five-
   persona requirement returns, rev 1 is in git history.
 
+## Concept 4 rev 3: the eight-treatment video sampler
+
+Zach rejected full-bleed-everything; rev 3 turns concept-4 into a SAMPLER of eight
+distinct video+text mechanics, each labeled with a numbered .opt chip for review
+(chips are meta-UI, strip them when winners are chosen). 34 video elements over the
+same 5 files, all preload=none + IO play/pause except the scrub video (preload=auto,
+never autoplays; scroll drives currentTime).
+
+01 Filmstrip marquee (arms of the university, auto-scroll, pause on hover)
+02 Scroll-scrubbed film (hero.mp4 scrubbed 0:00-0:19 through a 320svh pin, timecode + bar)
+03 Sticky video with stat beats scrolling past (co-op numbers)
+04 Location tunnel (Boston/London/NYC/Oakland video panels on the pinned rail engine)
+05 Parallax collage on light ground (two drifting video tiles + research counters)
+06 Video through type (SVG-text mask, the word "Everywhere")
+07 Two-way mixed ticker (N.U.in city names interleaved with video cells, opposing rows)
+08 Video accordion (four flex cells, hover expands)
+
+Verified live: all sections/chips render, mask computes, scrub metadata loads (19.7s).
+The scrub's live scrubbing and marquee feel are unverified in-pane (rAF throttling);
+check in a real browser. Reduced-motion: marquees/tickers static-scrollable, pins
+unpin, scrub falls back to native controls.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
