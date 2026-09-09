@@ -439,6 +439,25 @@ accordion. 21 video elements. Mobile hides the behind-column; reduced motion
 statics the stage into a 2-col card grid. Verified live rev 9, no console
 errors; scroll feel needs a real browser.
 
+## Concept 4 rev 10: planet fronted, N.U.in joins the orbit
+
+Feedback: globe should layer in front of ALL videos; the faint dot field read
+as "random points"; N.U.in should live on the globe instead of the text
+marquee; sections were overlapping. Rev 10: both stream columns are z 0 under
+the globe (z 1) so cards always pass behind the planet; the co-op dots layer
+is off (coops: 0) so only campus pins show during city beats; the orbit gains
+a FIFTH beat - "N.U.in" flies to a pulled-back Europe view (lat 47, lon 8,
+k 1.0) with campus dimmed to .25 and the nuin layer lit (factory now also
+returns layers(o) which assigns onto tgt; the engine eases per LAYER_KEYS).
+Track is 560svh for five beats. The .s-bridge N.U.in marquee section is
+DELETED along with .tk-city/.tk-row.rev CSS. Spacing: .s-collage lost its
+margin-top:-8svh (that was research riding up into the orbit tail) and both
+.s-sticky and .s-collage got real clamp() bottom padding to absorb beat
+scroll-out and the +-110px drift travel. Globe sits at top:56%, min(52vw,72svh)
+so the name clears the rim. Verified live rev 10: z-order, bridge gone,
+paddings computed, no console errors. Fly + layer-morph feel needs a real
+browser.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
