@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept4-rev" content="9">
+<meta name="concept4-rev" content="10">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -248,18 +248,14 @@
   .streams{position:relative;z-index:2;color:#fff;padding:clamp(72px,9vh,120px) 0;overflow:hidden}
   .tk-row{display:flex;gap:22px;width:max-content;align-items:center;margin-top:26px;
     animation:stripX 46s linear infinite}
-  .tk-row.rev{animation-direction:reverse;animation-duration:58s}
   .streams:hover .tk-row{animation-play-state:paused}
   @keyframes stripX{to{transform:translateX(-50%)}}
   .tk-cell{flex:0 0 auto}
   .tk-cell .vidcard{width:clamp(260px,30vw,460px);aspect-ratio:16/10}
-  .tk-city{flex:0 0 auto;font-size:clamp(30px,3.6vw,56px);font-weight:250;letter-spacing:-.02em;
-    color:#fff;padding:0 10px;white-space:nowrap}
-  .tk-city.dim{color:rgba(255,255,255,.38)}
   @media (prefers-reduced-motion: reduce){.tk-row{animation:none;overflow-x:auto;width:auto}}
 
   /* sticky video, stats pass by, ghost word behind */
-  .s-sticky{position:relative;z-index:1;color:#fff;padding:clamp(100px,14vh,200px) 0 0}
+  .s-sticky{position:relative;z-index:1;color:#fff;padding:clamp(100px,14vh,200px) 0 clamp(80px,12vh,160px)}
   .stk{position:relative;z-index:2;display:grid;grid-template-columns:6fr 6fr;gap:clamp(28px,5vw,84px);align-items:start}
   .stk-media{position:sticky;top:18svh}
   .stk-media .vidcard{aspect-ratio:4/5;max-height:62svh}
@@ -271,10 +267,10 @@
 
   /* the tunnel: names and films alternate on the rail */
   .s-orbit{position:relative;z-index:2;color:#fff}
-  .o-track{height:480svh}
+  .o-track{height:560svh}
   .o-stage{position:sticky;top:0;height:100svh;overflow:hidden}
-  .o-globe{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:min(56vw,80svh);aspect-ratio:1;z-index:1;touch-action:none;cursor:grab}
+  .o-globe{position:absolute;left:50%;top:56%;transform:translate(-50%,-50%);
+    width:min(52vw,72svh);aspect-ratio:1;z-index:1;touch-action:none;cursor:grab}
   .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
   .o-name{position:absolute;left:50%;top:clamp(70px,10svh,130px);transform:translateX(-50%);
     z-index:3;margin:0;font-size:clamp(52px,6.6vw,108px);font-weight:200;
@@ -282,7 +278,7 @@
   .o-col{position:absolute;top:0;width:clamp(190px,23vw,350px);
     display:flex;flex-direction:column;gap:clamp(56px,11svh,130px);will-change:transform}
   .o-col.l{left:clamp(14px,5vw,80px);z-index:0}
-  .o-col.r{right:clamp(14px,5vw,80px);z-index:2}
+  .o-col.r{right:clamp(14px,5vw,80px);z-index:0}
   .o-col .vidcard{width:100%}
   .o-col .vidcard:nth-child(even){width:76%;align-self:flex-end}
   .o-col.l .vidcard:nth-child(even){align-self:flex-start}
@@ -291,7 +287,7 @@
     z-index:3;width:min(52vw,560px);height:1px;background:rgba(255,255,255,.14)}
   .o-bar i{position:absolute;left:0;top:-1px;height:3px;width:0;background:var(--red)}
   @media (max-width:820px){
-    .o-globe{width:min(78vw,46svh)}
+    .o-globe{width:min(74vw,42svh)}
     .o-name{font-size:clamp(40px,10vw,60px)}
     .o-col{width:32vw}
     .o-col.l{display:none}
@@ -306,7 +302,7 @@
     .o-bar{display:none}
   }
   /* collage: drifting films over the same dark ground, counters between */
-  .s-collage{position:relative;z-index:1;color:#fff;padding:10svh 0 8svh;overflow:visible;margin-top:-8svh}
+  .s-collage{position:relative;z-index:1;color:#fff;padding:clamp(90px,12svh,180px) 0 clamp(110px,14svh,200px);overflow:visible}
   .col-grid{position:relative;z-index:2;display:grid;grid-template-columns:7fr 5fr;gap:clamp(28px,5vw,80px);align-items:start}
   .col-a .vidcard{aspect-ratio:16/10}
   .col-b{margin-top:clamp(90px,16vw,260px)}
@@ -327,9 +323,6 @@
     .rc:first-child{border-top:0;padding-top:0}
     [data-drift]{transform:none !important}
   }
-
-  /* connective single stream */
-  .s-bridge{position:relative;z-index:2;overflow:hidden;padding:8svh 0 0}
 
   /* accordion: labels run along the slat edge, not on pills */
   .s-accordion{position:relative;z-index:2;color:#fff;padding:12svh 0 16svh}
@@ -724,21 +717,6 @@
       <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
       <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents and counting</div></div>
     </div>
-  </div>
-</section>
-
-<section class="s-bridge streams" aria-label="N.U.in cities">
-  <div class="tk-row rev">
-    <span class="tk-city dim">N.U.in</span>
-    <span class="tk-city">Prague</span><span class="tk-city">Berlin</span>
-    <span class="tk-city">Thessaloniki</span><span class="tk-city">Dublin</span>
-    <span class="tk-city">Rome</span><span class="tk-city">Belfast</span>
-    <span class="tk-city">Glasgow</span><span class="tk-city">Madrid</span>
-    <span class="tk-city dim">N.U.in</span>
-    <span class="tk-city">Prague</span><span class="tk-city">Berlin</span>
-    <span class="tk-city">Thessaloniki</span><span class="tk-city">Dublin</span>
-    <span class="tk-city">Rome</span><span class="tk-city">Belfast</span>
-    <span class="tk-city">Glasgow</span><span class="tk-city">Madrid</span>
   </div>
 </section>
 
@@ -1263,7 +1241,7 @@ if (opts.lon !== undefined) cur.lon = tgt.lon = opts.lon;
 if (opts.lat !== undefined) cur.lat = tgt.lat = opts.lat;
 resize();
 requestAnimationFrame(frame);
-return { fly: startFly };
+return { fly: startFly, layers: function(o){ Object.assign(tgt, o); } };
 }
 /* ============ research counters ============ */
 function countUp(el, to, ms) {
@@ -1319,10 +1297,15 @@ if (oTrack && oGlobeEl) {
   const pick = n => CAMPUSES.find(c => c[2] === n);
   const CITY = [["Boston", "Boston"], ["London", "London"],
                 ["NYC", "New York City"], ["Oakland", "Oakland"]]
-    .map(([label, name]) => ({ label, c: pick(name) }));
+    .map(([label, name]) => {
+      const c = pick(name);
+      return { label, lat: c[0], lon: c[1], layers: { campus: 1, nuin: 0 } };
+    });
+  CITY.push({ label: "N.U.in", lat: 47, lon: 8, k: 1.0,
+              layers: { campus: .25, nuin: 1 } });
   const g = makeGlobe(oGlobeEl, {
-    layers: { campus: 1, labelC: 0, coops: .35, nuin: 0, labelN: 0 },
-    k: 1.12, lat: CITY[0].c[0], lon: CITY[0].c[1]
+    layers: { campus: 1, labelC: 0, coops: 0, nuin: 0, labelN: 0 },
+    k: 1.12, lat: CITY[0].lat, lon: CITY[0].lon
   });
   const oStage = $("#oStage"), oName = $("#oName"), oBar = $("#oBar");
   const colL = $("#oColL"), colR = $("#oColR");
@@ -1340,8 +1323,10 @@ if (oTrack && oGlobeEl) {
     const sN = Math.min(CITY.length - 1, Math.floor(p * CITY.length));
     if (sN !== oSeg) {
       oSeg = sN;
-      oName.textContent = CITY[oSeg].label;
-      g.fly({ lat: CITY[oSeg].c[0], lon: CITY[oSeg].c[1], k: 1.12 });
+      const st = CITY[oSeg];
+      oName.textContent = st.label;
+      g.layers(st.layers);
+      g.fly({ lat: st.lat, lon: st.lon, k: st.k || 1.12 });
     }
   };
   if (!reduceMotion) {
