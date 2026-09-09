@@ -458,6 +458,25 @@ so the name clears the rim. Verified live rev 10: z-order, bridge gone,
 paddings computed, no console errors. Fly + layer-morph feel needs a real
 browser.
 
+## Concept 4 rev 11: the v1 scrolly treatment returns
+
+Zach: "considering the original globe treatment we had with videos overlapped
+on that - the one with the globe on the right and text scrolling on the left."
+Rev 11 rebuilds .s-orbit as v1's layout, natively: a 5fr/7fr grid, left column
+holds five 100svh .o-step blocks (big city name + that campus's full film;
+the N.U.in step is name-only, no fake footage), right column is a sticky
+100svh .o-pin holding the globe (min(46vw,76svh)). The step's film card is
+width:114% so it overhangs into the globe column, and .o-steps z 2 sits OVER
+.o-side z 1 - the "videos overlapped" ask. No pinned track, no progress math:
+native scroll + nearest-viewport-center step detection (same pattern as v1's
+quote rail) triggers g.fly + g.layers per step; fifth step is the pulled-back
+N.U.in Europe view. Payload: back to the 4 full films mid-page (incl. 23MB
+London - the treatment's cost); 17 video elements. Mobile: globe becomes a
+small sticky header above the steps. Verified live rev 11: 5 steps, 4 step
+videos, N.U.in videoless, sticky rule served, planet-room ids gone, no console
+errors. The pane renders zero-width (mobile query active there), so the
+desktop scroll choreography still needs a real-browser eyeball.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
