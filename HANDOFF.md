@@ -477,6 +477,52 @@ videos, N.U.in videoless, sticky rule served, planet-room ids gone, no console
 errors. The pane renders zero-width (mobile query active there), so the
 desktop scroll choreography still needs a real-browser eyeball.
 
+## Concept 4 rev 12: the wireframe recomposition (beast mode)
+
+Zach supplied a Figma wireframe for the whole flow plus a dev note, and rev 12
+rebuilds concept-4 to match it end to end. New order: hero > NGN wire >
+research band > research counters > co-op grow film > "Across our global
+campus network" > category globe > portrait quotes > IMAX student life >
+admit > wire > footer.
+
+- RESEARCH BAND (.s-research): one lead tile + four vertical strips, all real
+  NGN stories with their own featured images. The lead is the story Zach put
+  in the wireframe - "This Northeastern researcher is making 'waves' with
+  magnets" (magnons-quantum-computing-research, published 2026-09-14, image
+  Xufeng-Zhang_1400.jpg via og:image) - strips are the four vetted research
+  stories (robots/axolotl/algae/quantum). All 200-checked.
+- COUNTERS (.s-rstats): $296M / 50+ / 510, label "patents held" (killed the
+  "and counting" trope that had crept back).
+- CO-OP GROW (.s-grow, per the dev note): 340svh pin; the co-op film starts
+  62vw x 60svh rounded and eases to full-bleed by p=.5; past .52 the stage
+  dims the film and the three stats (500,000+/10,000+/250+) blur in at
+  p .56/.70/.84, symmetric on scroll-up. Reduced motion: static full-bleed,
+  stats shown.
+- BLUR-IN (.bl + blIO): statement text arrives with opacity+blur(16px)+rise,
+  .d1-.d4 stagger delays; used on the network headline, research tiles,
+  counters row; g-stats use the same look but are scroll-threshold driven
+  (blIO skips anything inside .g-stats). Reduced motion: instant.
+- CATEGORY GLOBE (.s-orbit): left rail is Undergrad / Graduate / N.U.in /
+  Global Co-op (wireframe), not cities. Factory gained setCampuses (CAMPUSES_
+  is now let) so beats swap point sets: Undergrad=core-4 labeled, Graduate=
+  the other 10 labeled (sub-list auto-filled from CAMPUSES at runtime, so no
+  hardcode drift), N.U.in=nuin layer+labels (sub from NUIN), Global Co-op=
+  the full co-op dot field, camera pulled back. Active step lights up and
+  its .o-sub expands; headline above blurs in.
+- QUOTES: concept-3's portrait rail (vc-media sticky left, quotes right,
+  nearest-center swap) with the three verbatim QUOTES.
+- IMAX: restored from v1 wholesale - rest_mk now cuts from lifezoom, imax_css
+  added, and the tail_js strip removed (the lz engine was inside tail_js all
+  along). Its six images are remote NGN URLs.
+- PAYLOAD: 2 video elements total (hero bg + co-op grow film). London/NYC
+  films and all three proxies are no longer referenced anywhere. Hero CTA
+  now targets #campuses.
+
+Verified live rev 12: section order matches wireframe, 5 research links,
+grad sub=10, nuin sub=8, 3 quotes, 6 IMAX images, 2 videos, no console
+errors, all new image URLs 200. Grow/fly/blur choreography needs a
+real-browser scroll.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
