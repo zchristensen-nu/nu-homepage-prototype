@@ -53,6 +53,19 @@ assert engine.count('$("#stage").appendChild(gtip)') == 1
 engine = engine.replace('$("#stage").appendChild(gtip)', 'stageEl.appendChild(gtip)')
 assert engine.count("of CAMPUSES)") == 1 and engine.count("of NUIN)") == 1
 engine = engine.replace("of CAMPUSES)", "of CAMPUSES_)").replace("of NUIN)", "of NUIN_)")
+assert engine.count('LAYER_KEYS = ["coops", "campus", "nuin", "labelC", "labelN"]') == 1
+engine = engine.replace('LAYER_KEYS = ["coops", "campus", "nuin", "labelC", "labelN"]',
+                        'LAYER_KEYS = ["coops", "campus", "nuin", "labelC", "labelN", "spins"]')
+assert engine.count("labelC: 0, labelN: 0 };") == 1
+engine = engine.replace("labelC: 0, labelN: 0 };", "labelC: 0, labelN: 0, spins: 0 };")
+assert engine.count("const cx = W > 900 ? W * 0.62 : W * 0.5;") == 2
+engine = engine.replace("const cx = W > 900 ? W * 0.62 : W * 0.5;", "const cx = W * 0.5;")
+assert engine.count("const p = ((now + i * 400) % 2400) / 2400;") == 1
+engine = engine.replace("const p = ((now + i * 400) % 2400) / 2400;",
+                        "const p = reduceMotion ? .35 : ((now + i * 400) % 2400) / 2400;")
+assert engine.count("const p = (now % 2200) / 2200;") == 1
+engine = engine.replace("const p = (now % 2200) / 2200;",
+                        "const p = reduceMotion ? .35 : (now % 2200) / 2200;")
 engine = ("function makeGlobe(stageEl, opts) {\n"
           "let CAMPUSES_ = opts.campuses || CAMPUSES;\n"
           "const NUIN_ = opts.nuin || NUIN;\n"
@@ -71,7 +84,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="12">')
+                    '<meta name="concept4-rev" content="13">')
 assert 'concept4-rev' in head
 
 
@@ -169,20 +182,29 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
 
   /* ---------- research band: one lead story, four strips ---------- */
   .s-research{position:relative;z-index:2;color:#fff;padding:clamp(64px,9vh,120px) 0 0}
-  .rb{display:grid;grid-template-columns:minmax(0,7fr) repeat(4,minmax(0,2fr));gap:10px;
-    height:min(72svh,640px)}
-  .rb a{position:relative;display:block;border-radius:14px;overflow:hidden;background:#141419}
+  .rb{display:flex;gap:10px;height:min(72svh,640px)}
+  .rb a{position:relative;flex:1;min-width:0;display:block;border-radius:14px;overflow:hidden;
+    background:#141419;transition:flex .65s var(--ease)}
+  .rb a.on{flex:4.4}
   .rb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-    transition:transform .8s var(--ease),filter .8s var(--ease)}
-  .rb-strip img{filter:brightness(.72) saturate(.9)}
-  .rb a:hover img{transform:scale(1.045);filter:none}
+    transition:filter .6s var(--ease)}
+  .rb a:not(.on) img{filter:brightness(.58) saturate(.85)}
+  .rb a:not(.on):hover img{filter:brightness(.85) saturate(1)}
   .rb-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:26px 24px 20px;
     font-size:clamp(16px,1.5vw,21px);font-weight:500;line-height:1.3;color:#fff;
-    background:linear-gradient(to top,rgba(0,0,0,.72),transparent)}
+    background:linear-gradient(to top,rgba(0,0,0,.72),transparent);
+    opacity:0;transform:translateY(10px);
+    transition:opacity .45s var(--ease) .2s,transform .45s var(--ease) .2s;pointer-events:none}
+  .rb a.on .rb-cap{opacity:1;transform:none}
   @media(max-width:820px){
-    .rb{grid-template-columns:1fr 1fr;height:auto}
-    .rb-main{grid-column:1/-1;aspect-ratio:16/10}
-    .rb-strip{aspect-ratio:3/4}
+    .rb{flex-direction:column;height:auto}
+    .rb a{flex:none !important;aspect-ratio:16/10}
+    .rb a:not(.on) img{filter:none}
+    .rb-cap{opacity:1;transform:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .rb a{transition:none}.rb-cap{transition:none}
+    .o-tab{transition:none}.o-panel{transition:none}
   }
 
   /* ---------- research counters ---------- */
@@ -226,30 +248,48 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .s-nethead h2{margin:0 auto;font-size:clamp(40px,5vw,84px);font-weight:200;
     letter-spacing:-.03em;line-height:1.05;max-width:14ch;text-wrap:balance}
   .s-orbit{position:relative;z-index:2;color:#fff}
-  .o-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
-  .o-steps{position:relative;z-index:2;padding-left:clamp(20px,6vw,90px)}
-  .o-step{min-height:88svh;display:flex;flex-direction:column;justify-content:center;
-    opacity:.32;transition:opacity .5s var(--ease)}
-  .o-step.on{opacity:1}
-  .o-step h3{margin:0;font-size:clamp(38px,4.4vw,80px);font-weight:250;
+  .o-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+    min-height:100svh;align-items:center}
+  .o-tabs{position:relative;z-index:2;padding-left:clamp(20px,6vw,90px);
+    display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,3svh,30px)}
+  .o-tab{all:unset;cursor:pointer;opacity:.32;transition:opacity .45s var(--ease)}
+  .o-tab:hover{opacity:.65}
+  .o-tab:focus-visible{outline:2px solid #fff;outline-offset:6px;border-radius:4px}
+  .o-tab[aria-pressed="true"]{opacity:1;cursor:default}
+  .o-tt{display:block;font-size:clamp(34px,4vw,72px);font-weight:250;
     letter-spacing:-.03em;line-height:1.05}
-  .o-sub{list-style:none;margin:0;padding:0;max-height:0;opacity:0;overflow:hidden;
+  .o-panel{max-height:0;opacity:0;overflow:hidden;
     transition:max-height .7s var(--ease),opacity .7s var(--ease)}
-  .o-step.on .o-sub{max-height:420px;opacity:1}
+  .o-panel.on{max-height:680px;opacity:1}
+  .o-sub{list-style:none;margin:0;padding:0}
   .o-sub li{margin-top:10px;font-size:15px;color:#D4D4D4}
-  .o-sub li:first-child{margin-top:18px}
+  .o-lede{margin:14px 0 0;font-size:15px;line-height:1.55;color:#D4D4D4;max-width:34ch}
   .o-side{position:relative;z-index:1}
-  .o-pin{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center}
-  .o-globe{position:relative;width:min(46vw,76svh);aspect-ratio:1;touch-action:none;cursor:grab}
+  .o-pin{position:relative;height:100svh;display:flex;align-items:center;justify-content:center}
+  .o-globe{position:relative;width:min(46vw,76svh);aspect-ratio:1;touch-action:pan-y;cursor:grab}
   .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
+  .gt-loc{display:flex;align-items:center;gap:8px;font-size:13px;color:#A9A9B2}
+  .gt-card{position:relative;margin-top:18px;width:min(330px,100%);
+    background:rgba(16,16,20,.82);border:1px solid rgba(255,255,255,.14);
+    border-radius:16px;overflow:hidden}
+  .gt-card img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+  .gtc-body{padding:16px 18px 14px}
+  .gtc-body h3{font-size:18.5px;font-weight:400;line-height:1.3;margin-top:8px;color:#fff}
+  .gtc-body .storylink{color:#fff;font-weight:500;margin-top:12px}
+  .gtc-body .storylink:hover{color:#FFB3BE}
+  .gt-step{display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:10px 14px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px;color:#A9A9B2}
+  .gt-arrow{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
+    background:transparent;color:#fff;font-size:15px;cursor:pointer;transition:.2s;
+    display:flex;align-items:center;justify-content:center}
+  .gt-arrow:hover{background:#fff;color:var(--ink);border-color:#fff}
   @media (max-width:820px){
-    .o-grid{display:block}
-    .o-side{position:sticky;top:0;z-index:1}
-    .o-pin{position:static;height:auto;padding:12px 0}
+    .o-grid{display:block;min-height:0}
+    .o-pin{height:auto;padding:12px 0 90px}
     .o-globe{width:min(72vw,38svh);margin:0 auto}
-    .o-steps{padding:0 18px}
-    .o-step{min-height:46svh}
-    .o-step h3{font-size:clamp(32px,9vw,52px)}
+    .o-tabs{padding:40px 18px 6px}
+    .o-tt{font-size:clamp(30px,8.5vw,48px)}
+    .gt-card{width:100%}
   }
 
   /* ---------- portrait quotes ---------- */
@@ -302,11 +342,11 @@ RB_STRIPS = [
 
 def research_band():
     img, alt, cap, u = RB_MAIN
-    out = (f'<a class="rb-main bl" href="{NGN}{u}"><img src="{img}" alt="{alt}">'
+    out = (f'<a class="rb-main on" aria-expanded="true" href="{NGN}{u}"><img src="{img}" alt="{alt}">'
            f'<p class="rb-cap">{cap}</p></a>\n')
     for i, (img, alt, cap, u) in enumerate(RB_STRIPS):
-        out += (f'      <a class="rb-strip bl d{i+1}" href="{NGN}{u}" title="{cap}" '
-                f'aria-label="{cap}"><img src="{img}" alt="{alt}"></a>\n')
+        out += (f'      <a class="rb-strip" aria-expanded="false" href="{NGN}{u}" aria-label="{cap}">'
+                f'<img src="{img}" alt="{alt}"><p class="rb-cap">{cap}</p></a>\n')
     return out
 
 QUOTES = [
@@ -354,7 +394,7 @@ NEW_BODY = f"""
 
 <section class="s-research" id="research" aria-label="Research at Northeastern">
   <div class="wrap">
-    <div class="rb">
+    <div class="rb bl">
       {_rb}
     </div>
   </div>
@@ -389,17 +429,35 @@ NEW_BODY = f"""
 
 <section class="s-orbit" id="campuses">
   <div class="o-grid">
-    <div class="o-steps" id="oSteps">
-      <div class="o-step on"><h3>Undergrad</h3>
-        <ul class="o-sub"><li>Boston</li><li>New York City</li><li>Oakland</li><li>London</li></ul></div>
-      <div class="o-step"><h3>Graduate</h3>
-        <ul class="o-sub" id="gradSub"></ul></div>
-      <div class="o-step"><h3>N.U.in</h3>
-        <ul class="o-sub" id="nuinSub"></ul></div>
-      <div class="o-step"><h3>Global Co&#8209;op</h3></div>
+    <div class="o-tabs" id="oTabs" aria-label="Our campus network">
+      <button class="o-tab" aria-pressed="true"><span class="o-tt">Undergraduate</span></button>
+      <div class="o-panel on"><ul class="o-sub"><li>Boston</li><li>New York City</li><li>Oakland</li><li>London</li></ul></div>
+      <button class="o-tab" aria-pressed="false"><span class="o-tt">Graduate</span></button>
+      <div class="o-panel"><ul class="o-sub" id="gradSub"></ul></div>
+      <button class="o-tab" aria-pressed="false"><span class="o-tt">N.U.in</span></button>
+      <div class="o-panel"><p class="o-lede">Through N.U.in, new students begin their Northeastern degree at one of eight partner institutions across Europe.</p></div>
+      <button class="o-tab" aria-pressed="false"><span class="o-tt">Co&#8209;op</span></button>
+      <div class="o-panel">
+        <p class="o-lede">Students work all over the map. Step through a few of their stories.</p>
+        <aside class="gt-card" id="gt-card" hidden aria-label="Co&#8209;op story">
+          <img id="gtc-img" alt="">
+          <div class="gtc-body" aria-live="polite">
+            <div class="gt-loc" id="gtc-loc"></div>
+            <h3 id="gtc-t"></h3>
+            <a class="storylink" id="gtc-url" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/">Read the story on NGN</a>
+          </div>
+          <div class="gt-step">
+            <button class="gt-arrow" id="gtc-prev" aria-label="Previous story">&#8592;</button>
+            <span id="gtc-n"></span>
+            <button class="gt-arrow" id="gtc-next" aria-label="Next story">&#8594;</button>
+          </div>
+        </aside>
+      </div>
     </div>
     <div class="o-side">
-      <div class="o-pin"><div class="o-globe" id="oGlobe"><canvas></canvas></div></div>
+      <div class="o-pin">
+        <div class="o-globe" id="oGlobe" role="img" aria-label="Interactive globe showing Northeastern campuses, N.U.in cities, and co&#8209;op locations"><canvas></canvas></div>
+      </div>
     </div>
   </div>
 </section>
@@ -448,7 +506,7 @@ const vio = new IntersectionObserver(es => es.forEach(e => {
   const v = e.target;
   if (e.isIntersecting) {
     if (!v.dataset.loaded) { v.dataset.loaded = "1"; v.load(); }
-    v.play().catch(() => {});
+    if (!reduceMotion) v.play().catch(() => {});
   } else v.pause();
 }), { rootMargin: "200px" });
 $$("video[data-vio]").forEach(v => vio.observe(v));
@@ -482,48 +540,105 @@ if (gTrack && !reduceMotion) {
   gStage.classList.add("dim");
 }
 
-/* ============ the network: categories left, globe layers right ============ */
-const oSteps = $("#oSteps"), oGlobeEl = $("#oGlobe");
-if (oSteps && oGlobeEl) {
+/* ============ research rail: one card open, rotating ============ */
+const rbRow = document.querySelector(".rb");
+if (rbRow) {
+  const rbCards = $$(".rb a");
+  let rbCur = 0, rbTimer = null, rbHover = false, rbSeen = false;
+  const openCard = i => { rbCur = i; rbCards.forEach((c, j) => {
+    c.classList.toggle("on", j === i); c.setAttribute("aria-expanded", j === i ? "true" : "false"); }); };
+  const rbArm = () => {
+    if (rbTimer) clearInterval(rbTimer);
+    if (reduceMotion || innerWidth <= 820) return;
+    rbTimer = setInterval(() => { if (!rbHover && rbSeen) openCard((rbCur + 1) % rbCards.length); }, 4000);
+  };
+  rbCards.forEach((c, i) => c.addEventListener("click", e => {
+    if (innerWidth > 820 && !c.classList.contains("on")) { e.preventDefault(); openCard(i); rbArm(); }
+  }));
+  rbRow.addEventListener("mouseenter", () => { rbHover = true; });
+  rbRow.addEventListener("mouseleave", () => { rbHover = false; });
+  rbRow.addEventListener("focusin", () => { rbHover = true; });
+  rbRow.addEventListener("focusout", () => { rbHover = false; });
+  new IntersectionObserver(es => es.forEach(e => { rbSeen = e.isIntersecting; }), { threshold: .25 }).observe(rbRow);
+  rbArm();
+  addEventListener("resize", rbArm);
+}
+
+/* ============ the network: tabs drive the globe; co-op gets the story tour ============ */
+let STORY_PINS, storySel = -1;
+const oTabsEl = $("#oTabs"), oGlobeEl = $("#oGlobe");
+if (oTabsEl && oGlobeEl) {
+  const TOUR = [
+    { loc: "Cupertino, California", view: { lon: -122.03, lat: 37.32, k: 2.4 }, focus: [37.32, -122.03],
+      img: "../img/apple-coop.jpg",
+      t: "Developing cameras for Apple products, on co\u2011op",
+      url: "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/" },
+    { loc: "Phnom Penh, Cambodia", view: { lon: 104.92, lat: 11.56, k: 2.4 }, focus: [11.56, 104.92],
+      img: "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg",
+      t: "Teacher, mentor, big sister: six months in a Cambodian dormitory",
+      url: "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/" },
+    { loc: "Geneva, Switzerland", view: { lon: 6.14, lat: 46.2, k: 2.6 }, focus: [46.2, 6.14],
+      img: "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg",
+      t: "Learning how global negotiation really works",
+      url: "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/" },
+    { loc: "Vienna, Austria", view: { lon: 16.37, lat: 48.21, k: 2.6 }, focus: [48.21, 16.37],
+      img: "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg",
+      t: "Coffeehouses, Mozart and international finance, on co\u2011op",
+      url: "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" },
+    { loc: "Scarborough, Maine", view: { lon: -70.33, lat: 43.58, k: 2.4 }, focus: [43.58, -70.33],
+      img: "../img/oyster-coop.jpg",
+      t: "Harvesting oysters on Maine\u2019s Nonesuch River, on co\u2011op",
+      url: "https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/" },
+  ];
+  STORY_PINS = TOUR.map(st => st.focus);
   const CORE = ["Boston", "New York City", "Oakland", "London"];
   const CORE4 = CAMPUSES.filter(c => CORE.includes(c[2]));
   const GRAD10 = CAMPUSES.filter(c => !CORE.includes(c[2]));
-  const gradSub = $("#gradSub"), nuinSub = $("#nuinSub");
+  const gradSub = $("#gradSub");
   if (gradSub) gradSub.innerHTML = GRAD10.map(c => `<li>${c[2]}</li>`).join("");
-  if (nuinSub) nuinSub.innerHTML = NUIN.map(c => `<li>${c[2]}</li>`).join("");
-  const CATS = [
-    { arr: CORE4,  layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0 }, lat: 45, lon: -45, k: 1.06 },
-    { arr: GRAD10, layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0 }, lat: 40, lon: -95, k: 1.04 },
-    { layers: { campus: 0, labelC: 0, nuin: 1, labelN: 1, coops: 0 }, lat: 47, lon: 10, k: 1.05 },
-    { layers: { campus: 0, labelC: 0, nuin: 0, labelN: 0, coops: 1 }, lat: 25, lon: -30, k: 0.98 },
+  const TABS = [
+    { arr: CORE4,  layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 45, lon: -45, k: 1.06 } },
+    { arr: GRAD10, layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 40, lon: -95, k: 1.04 } },
+    { layers: { campus: 0, labelC: 0, nuin: 1, labelN: 1, coops: 0, spins: 0 }, view: { lat: 47, lon: 10, k: 1.05 } },
+    { coop: true, layers: { campus: 0, labelC: 0, nuin: 0, labelN: 0, coops: 1, spins: 1 } },
   ];
   const g = makeGlobe(oGlobeEl, {
     campuses: CORE4,
-    layers: { campus: 1, labelC: 1, coops: 0, nuin: 0, labelN: 0 },
-    k: CATS[0].k, lat: CATS[0].lat, lon: CATS[0].lon
+    layers: TABS[0].layers,
+    k: TABS[0].view.k, lat: TABS[0].view.lat, lon: TABS[0].view.lon
   });
-  const els = $$("#oSteps .o-step");
-  let oCur = 0;
-  const oUpd = () => {
-    const mid = innerHeight / 2;
-    let best = 0, bestD = Infinity;
-    els.forEach((el, i) => {
-      const r = el.getBoundingClientRect();
-      const d = Math.abs(r.top + r.height / 2 - mid);
-      if (d < bestD) { bestD = d; best = i; }
-    });
-    if (best !== oCur) {
-      oCur = best;
-      els.forEach((el, i) => el.classList.toggle("on", i === best));
-      const ct = CATS[best];
-      if (ct.arr) g.setCampuses(ct.arr);
-      g.layers(ct.layers);
-      g.fly({ lat: ct.lat, lon: ct.lon, k: ct.k });
-    }
+  const oTabs = $$("#oTabs .o-tab"), oPanels = $$("#oTabs .o-panel");
+  oPanels.forEach((p, j) => { p.inert = j !== 0; });
+  const gtCard = $("#gt-card");
+  const fillCard = i => {
+    const st = TOUR[i];
+    $("#gtc-img").src = st.img;
+    $("#gtc-img").alt = st.t;
+    $("#gtc-loc").textContent = st.loc;
+    $("#gtc-t").textContent = st.t;
+    $("#gtc-url").href = st.url;
+    $("#gtc-n").textContent = `${i + 1} of ${TOUR.length}`;
   };
-  addEventListener("scroll", () => requestAnimationFrame(oUpd), { passive: true });
-  addEventListener("resize", oUpd);
-  oUpd();
+  const goStory = i => {
+    storySel = i; fillCard(i);
+    const v = TOUR[i].view;
+    g.fly({ lat: v.lat, lon: v.lon, k: v.k });
+  };
+  let oCur = 0;
+  const activate = i => {
+    if (i === oCur) return;
+    oCur = i;
+    oTabs.forEach((t, j) => t.setAttribute("aria-pressed", j === i ? "true" : "false"));
+    oPanels.forEach((p, j) => { p.classList.toggle("on", j === i); p.inert = j !== i; });
+    const tb = TABS[i];
+    if (tb.arr) g.setCampuses(tb.arr);
+    g.layers(tb.layers);
+    if (tb.coop) { gtCard.hidden = false; goStory(0); }
+    else { gtCard.hidden = true; storySel = -1; g.fly({ lat: tb.view.lat, lon: tb.view.lon, k: tb.view.k }); }
+  };
+  oTabs.forEach((t, i) => t.addEventListener("click", () => activate(i)));
+  $("#gtc-prev").addEventListener("click", () => goStory((storySel + TOUR.length - 1) % TOUR.length));
+  $("#gtc-next").addEventListener("click", () => goStory((storySel + 1) % TOUR.length));
 }
 
 /* ============ portrait quotes follow the reader ============ */
@@ -568,13 +683,14 @@ page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + i
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count("<video") == 2  # hero background + the growing co-op film
-for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "s-grow", "g-stat", "o-step", "o-sub",
+for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
-            "wire top", "wire foot", "concept4-rev", 'content="12"', "data-count", "newspost",
+            "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live",
+            "wire top", "wire foot", "concept4-rev", 'content="13"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
-             "s-collage", "s-accordion", "lab-open", "data-drift", "o-name"]:
+             "s-collage", "s-accordion", "lab-open", "data-drift", "o-name", "o-step", "nuinSub"]:
     assert gone not in page, gone
 for out in OUT:
     os.makedirs(os.path.dirname(out), exist_ok=True)
