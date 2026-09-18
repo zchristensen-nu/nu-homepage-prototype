@@ -523,6 +523,53 @@ grad sub=10, nuin sub=8, 3 quotes, 6 IMAX images, 2 videos, no console
 errors, all new image URLs 200. Grow/fly/blur choreography needs a
 real-browser scroll.
 
+## Concept 4 rev 13: tabbed globe with the story tour; rotating research rail
+
+Two asks: "use the concept 2 execution for this globe block... Undergraduate,
+Graduate etc would be tabs. The Co-op tab should also have the story carousel
+like concept 2", and research strips should expand on click (not navigate)
+and auto-shift every 4s.
+
+- RESEARCH RAIL (.rb): the 5-story grid became a flex expanding rail - one
+  card .on (flex 4.4, caption gradient) at a time, closed strips dimmed.
+  Click a closed card = preventDefault + open (DESKTOP ONLY - on <=820px the
+  intercept is width-guarded and links navigate on first tap, because mobile
+  CSS stacks all cards with captions visible). setInterval 4s advances;
+  paused on hover AND focusin, gated on IntersectionObserver visibility,
+  reduceMotion, and width; manual click restarts the timer. aria-expanded
+  toggled per card.
+- TABBED GLOBE (.s-orbit): scroll steps became four vertical text tabs
+  (buttons, aria-pressed, focus-visible ring over all:unset) - Undergraduate
+  (core-4 list) / Graduate (10 campuses, auto-filled from CAMPUSES) / N.U.in
+  (approved lede; nuin+labelN layers) / Co-op. Panels animate max-height and
+  get inert when collapsed. Activation swaps the campus point set (factory
+  setCampuses), morphs layers, flies the camera.
+- CO-OP STORY TOUR: v1/concept-2's gt-card verbatim (TOUR_STORIES 5 stories,
+  STORY_PINS, storySel) — engine patches add "spins" to LAYER_KEYS and cur so
+  the red story pins fade as a layer; prev/next fly the camera to each story
+  view (k 2.4-2.6). THE CARD LIVES IN THE CO-OP TAB'S PANEL (left rail), not
+  docked over the globe - a 58-agent adversarial review workflow proved the
+  v1 viewport-anchored dock lands the card exactly over the flown-to pin at
+  most viewport widths, and covered the whole globe on mobile. hidden uses
+  plain display:none now (was opacity-only, leaving invisible controls in
+  the tab order). gtc-body is aria-live=polite; CTA href baked to the first
+  story URL so the Lenis anchor router ($$('a[href^="#"]')) never binds it -
+  it used to throw a querySelector SyntaxError on every CTA click.
+- ENGINE CLEANUPS from the review: cx no longer 0.62-offset (v1 full-stage
+  leftover that clipped the sphere on 2560px displays); story-pin pulse and
+  focus ring freeze under reduced motion; vio loads first frames but never
+  plays video under reduced motion; globe touch-action:pan-y so phones can
+  scroll over it; .o-globe has role=img + label.
+- KNOWN INERT LEFTOVERS (deliberately not cleaned): v1 sheet_css dead rules
+  (.xrow/.xcard/.counters/.sheet), the unarmed ignite/#coopcount branch in
+  the engine, empty .rv/.line observers. Zero runtime effect; delete when
+  convenient.
+
+Verified live rev 13 by driving the page: Co-op tab click -> aria-pressed
+flips, card unhides inside its panel, next-step advances Apple->Cambodia
+("2 of 5"), CTA href follows, panels' inert tracks, rail aria-expanded
+correct, no console errors. Real-browser scroll/feel still worth an eyeball.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
