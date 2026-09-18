@@ -570,6 +570,33 @@ flips, card unhides inside its panel, next-step advances Apple->Cambodia
 ("2 of 5"), CTA href follows, panels' inert tracks, rail aria-expanded
 correct, no console errors. Real-browser scroll/feel still worth an eyeball.
 
+## Concept 4 rev 14: the globe gets its concept-2 stage back
+
+Screenshot review of rev 13: "The globe is not looking like concept 2, and on
+the co-op tab it's masked in a square. Spacing on the tabs also needs some
+attention." Root cause of the square mask: rev 13 put the canvas in a SQUARE
+container (min(46vw,76svh)), so zoomed story views (k 2.4) clipped the sphere
+at the canvas box. Concept 2/v1 never had that problem because its stage was
+FULL-BLEED - the canvas spanned the viewport and the sphere sat at cx = 0.62W
+(the very line rev 13's review deleted as a "leftover"; it was load-bearing
+for this layout and is now restored verbatim: `W > 900 ? W*0.62 : W*0.5`).
+
+Rev 14: .s-orbit is a 100svh section with the canvas absolute inset:0 (clips
+at screen edges only) and the tab column overlaid left (.o-overlay
+pointer-events:none so globe drag passes through; .o-tabs auto). Tab rhythm
+fixed by dropping the flex gap (collapsed panels were double-counting it) for
+even per-tab padding. The Co-op tab now activates on a pulled-back dot-field
+overview (lat 28, lon -50, k .95) with story 1 in the card; prev/next fly to
+each story close-up. Tab column scrolls internally on short viewports
+(max-height 100svh-120px, scrollbar hidden). Mobile: globe becomes a 52svh
+band above the tabs. Verified live rev 14: full-bleed rule served, o-grid
+gone, co-op activation fills card at overview, no console errors.
+
+LESSON RECORDED: the cx-0.62 deletion looked correct for a square canvas and
+was confirmed by an adversarial review - but it broke the design intent one
+layout change later. Engine geometry "cleanups" need the target layout named
+in the commit, not just the current one.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
