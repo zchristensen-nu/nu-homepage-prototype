@@ -58,8 +58,6 @@ engine = engine.replace('LAYER_KEYS = ["coops", "campus", "nuin", "labelC", "lab
                         'LAYER_KEYS = ["coops", "campus", "nuin", "labelC", "labelN", "spins"]')
 assert engine.count("labelC: 0, labelN: 0 };") == 1
 engine = engine.replace("labelC: 0, labelN: 0 };", "labelC: 0, labelN: 0, spins: 0 };")
-assert engine.count("const cx = W > 900 ? W * 0.62 : W * 0.5;") == 2
-engine = engine.replace("const cx = W > 900 ? W * 0.62 : W * 0.5;", "const cx = W * 0.5;")
 assert engine.count("const p = ((now + i * 400) % 2400) / 2400;") == 1
 engine = engine.replace("const p = ((now + i * 400) % 2400) / 2400;",
                         "const p = reduceMotion ? .35 : ((now + i * 400) % 2400) / 2400;")
@@ -84,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="13">')
+                    '<meta name="concept4-rev" content="14">')
 assert 'concept4-rev' in head
 
 
@@ -247,12 +245,17 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .s-nethead{position:relative;z-index:2;color:#fff;padding:clamp(110px,16vh,220px) 0 0;text-align:center}
   .s-nethead h2{margin:0 auto;font-size:clamp(40px,5vw,84px);font-weight:200;
     letter-spacing:-.03em;line-height:1.05;max-width:14ch;text-wrap:balance}
-  .s-orbit{position:relative;z-index:2;color:#fff}
-  .o-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
-    min-height:100svh;align-items:center}
-  .o-tabs{position:relative;z-index:2;padding-left:clamp(20px,6vw,90px);
-    display:flex;flex-direction:column;align-items:flex-start;gap:clamp(16px,3svh,30px)}
-  .o-tab{all:unset;cursor:pointer;opacity:.32;transition:opacity .45s var(--ease)}
+  .s-orbit{position:relative;z-index:2;color:#fff;height:100svh;overflow:hidden}
+  .o-globe{position:absolute;inset:0;touch-action:pan-y;cursor:grab}
+  .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
+  .o-overlay{position:relative;z-index:2;height:100%;display:flex;align-items:center;
+    padding-left:clamp(20px,6vw,90px);pointer-events:none}
+  .o-tabs{display:flex;flex-direction:column;align-items:flex-start;
+    max-width:min(420px,40vw);pointer-events:auto;
+    max-height:calc(100svh - 120px);overflow-y:auto;scrollbar-width:none}
+  .o-tabs::-webkit-scrollbar{display:none}
+  .o-tab{all:unset;cursor:pointer;opacity:.32;transition:opacity .45s var(--ease);
+    padding:clamp(10px,2svh,20px) 0}
   .o-tab:hover{opacity:.65}
   .o-tab:focus-visible{outline:2px solid #fff;outline-offset:6px;border-radius:4px}
   .o-tab[aria-pressed="true"]{opacity:1;cursor:default}
@@ -263,11 +266,16 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .o-panel.on{max-height:680px;opacity:1}
   .o-sub{list-style:none;margin:0;padding:0}
   .o-sub li{margin-top:10px;font-size:15px;color:#D4D4D4}
-  .o-lede{margin:14px 0 0;font-size:15px;line-height:1.55;color:#D4D4D4;max-width:34ch}
-  .o-side{position:relative;z-index:1}
-  .o-pin{position:relative;height:100svh;display:flex;align-items:center;justify-content:center}
-  .o-globe{position:relative;width:min(46vw,76svh);aspect-ratio:1;touch-action:pan-y;cursor:grab}
-  .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
+  .o-sub li:first-child{margin-top:6px}
+  .o-lede{margin:6px 0 0;font-size:15px;line-height:1.55;color:#D4D4D4;max-width:34ch}
+  .o-panel > :last-child{margin-bottom:14px}
+  @media (max-width:820px){
+    .s-orbit{height:auto}
+    .o-globe{position:relative;inset:auto;height:52svh}
+    .o-overlay{height:auto;padding:10px 18px 44px;display:block}
+    .o-tabs{max-width:none}
+    .o-tt{font-size:clamp(30px,8.5vw,48px)}
+  }
   .gt-loc{display:flex;align-items:center;gap:8px;font-size:13px;color:#A9A9B2}
   .gt-card{position:relative;margin-top:18px;width:min(330px,100%);
     background:rgba(16,16,20,.82);border:1px solid rgba(255,255,255,.14);
@@ -284,11 +292,6 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
     display:flex;align-items:center;justify-content:center}
   .gt-arrow:hover{background:#fff;color:var(--ink);border-color:#fff}
   @media (max-width:820px){
-    .o-grid{display:block;min-height:0}
-    .o-pin{height:auto;padding:12px 0 90px}
-    .o-globe{width:min(72vw,38svh);margin:0 auto}
-    .o-tabs{padding:40px 18px 6px}
-    .o-tt{font-size:clamp(30px,8.5vw,48px)}
     .gt-card{width:100%}
   }
 
@@ -428,7 +431,8 @@ NEW_BODY = f"""
 </section>
 
 <section class="s-orbit" id="campuses">
-  <div class="o-grid">
+  <div class="o-globe" id="oGlobe" role="img" aria-label="Interactive globe showing Northeastern campuses, N.U.in cities, and co&#8209;op locations"><canvas></canvas></div>
+  <div class="o-overlay">
     <div class="o-tabs" id="oTabs" aria-label="Our campus network">
       <button class="o-tab" aria-pressed="true"><span class="o-tt">Undergraduate</span></button>
       <div class="o-panel on"><ul class="o-sub"><li>Boston</li><li>New York City</li><li>Oakland</li><li>London</li></ul></div>
@@ -452,11 +456,6 @@ NEW_BODY = f"""
             <button class="gt-arrow" id="gtc-next" aria-label="Next story">&#8594;</button>
           </div>
         </aside>
-      </div>
-    </div>
-    <div class="o-side">
-      <div class="o-pin">
-        <div class="o-globe" id="oGlobe" role="img" aria-label="Interactive globe showing Northeastern campuses, N.U.in cities, and co&#8209;op locations"><canvas></canvas></div>
       </div>
     </div>
   </div>
@@ -600,7 +599,7 @@ if (oTabsEl && oGlobeEl) {
     { arr: CORE4,  layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 45, lon: -45, k: 1.06 } },
     { arr: GRAD10, layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 40, lon: -95, k: 1.04 } },
     { layers: { campus: 0, labelC: 0, nuin: 1, labelN: 1, coops: 0, spins: 0 }, view: { lat: 47, lon: 10, k: 1.05 } },
-    { coop: true, layers: { campus: 0, labelC: 0, nuin: 0, labelN: 0, coops: 1, spins: 1 } },
+    { coop: true, layers: { campus: 0, labelC: 0, nuin: 0, labelN: 0, coops: 1, spins: 1 }, view: { lat: 28, lon: -50, k: .95 } },
   ];
   const g = makeGlobe(oGlobeEl, {
     campuses: CORE4,
@@ -633,8 +632,9 @@ if (oTabsEl && oGlobeEl) {
     const tb = TABS[i];
     if (tb.arr) g.setCampuses(tb.arr);
     g.layers(tb.layers);
-    if (tb.coop) { gtCard.hidden = false; goStory(0); }
-    else { gtCard.hidden = true; storySel = -1; g.fly({ lat: tb.view.lat, lon: tb.view.lon, k: tb.view.k }); }
+    if (tb.coop) { gtCard.hidden = false; storySel = 0; fillCard(0); }
+    else { gtCard.hidden = true; storySel = -1; }
+    g.fly({ lat: tb.view.lat, lon: tb.view.lon, k: tb.view.k });
   };
   oTabs.forEach((t, i) => t.addEventListener("click", () => activate(i)));
   $("#gtc-prev").addEventListener("click", () => goStory((storySel + TOUR.length - 1) % TOUR.length));
@@ -686,11 +686,11 @@ assert page.count("<video") == 2  # hero background + the growing co-op film
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live",
-            "wire top", "wire foot", "concept4-rev", 'content="13"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="14"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
-             "s-collage", "s-accordion", "lab-open", "data-drift", "o-name", "o-step", "nuinSub"]:
+             "s-collage", "s-accordion", "lab-open", "data-drift", "o-name", "o-step", "nuinSub", "o-grid", "o-pin"]:
     assert gone not in page, gone
 for out in OUT:
     os.makedirs(os.path.dirname(out), exist_ok=True)
