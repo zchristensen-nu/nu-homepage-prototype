@@ -82,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="22">')
+                    '<meta name="concept4-rev" content="23">')
 assert 'concept4-rev' in head
 
 
@@ -314,8 +314,6 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .s-reel:hover .reel-track{animation-play-state:paused}
   @keyframes reelX{to{transform:translateX(-50%)}}
   .reel-track .vidcard{flex:0 0 auto;height:min(66svh,740px);aspect-ratio:9/16}
-  .reel-track .vidcard:nth-child(3n+2){transform:translateY(28px)}
-  .reel-track .vidcard:nth-child(3n){transform:translateY(-22px)}
   @media (max-width:820px){
     .s-reel{padding:clamp(56px,8svh,90px) 0}
     .reel-track .vidcard{height:82svh}
@@ -744,7 +742,7 @@ assert page.count("<video") == 23  # hero, grow film, 18 reel cells, 3 quote-pan
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live", "s-reel", "vc-vid",
-            "wire top", "wire foot", "concept4-rev", 'content="22"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="23"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
