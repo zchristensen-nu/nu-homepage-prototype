@@ -82,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="18">')
+                    '<meta name="concept4-rev" content="19">')
 assert 'concept4-rev' in head
 
 
@@ -299,13 +299,17 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
 
   /* ---------- decorative film reel ---------- */
   .s-reel{position:relative;z-index:2;padding:clamp(90px,13svh,180px) 0;overflow:hidden}
-  .reel-tilt{transform:rotate(-2deg) scale(1.04)}
-  .reel-track{display:flex;gap:14px;width:max-content;animation:reelX 44s linear infinite}
+  .reel-tilt{transform:rotate(-1.5deg) scale(1.06)}
+  .reel-track{display:flex;gap:16px;width:max-content;animation:reelX 56s linear infinite}
   .s-reel:hover .reel-track{animation-play-state:paused}
   @keyframes reelX{to{transform:translateX(-50%)}}
-  .reel-track .vidcard{flex:0 0 auto;width:clamp(280px,27vw,470px);aspect-ratio:16/10}
-  .reel-track .vidcard:nth-child(3n+2){transform:translateY(22px)}
-  .reel-track .vidcard:nth-child(3n){transform:translateY(-18px)}
+  .reel-track .vidcard{flex:0 0 auto;height:min(74svh,820px);aspect-ratio:9/16}
+  .reel-track .vidcard:nth-child(3n+2){transform:translateY(28px)}
+  .reel-track .vidcard:nth-child(3n){transform:translateY(-22px)}
+  @media (max-width:820px){
+    .s-reel{padding:clamp(56px,8svh,90px) 0}
+    .reel-track .vidcard{height:82svh}
+  }
   @media (prefers-reduced-motion: reduce){
     .reel-track{animation:none;overflow-x:auto;width:auto}
     .reel-tilt{transform:none}
@@ -490,24 +494,24 @@ NEW_BODY = f"""
 <section class="s-reel" aria-hidden="true">
   <div class="reel-tilt">
     <div class="reel-track">
-      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
-      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HERO}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOP}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_CAMPUS}" muted loop playsinline preload="none" data-vio></video></div>
     </div>
   </div>
 </section>
@@ -737,7 +741,7 @@ assert page.count("<video") == 22  # hero, grow film, 18 reel cells (9 per loop 
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live", "s-reel", "vc-clip",
-            "wire top", "wire foot", "concept4-rev", 'content="18"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="19"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
