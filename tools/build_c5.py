@@ -82,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="14">')
+                    '<meta name="concept4-rev" content="15">')
 assert 'concept4-rev' in head
 
 
@@ -249,9 +249,9 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .o-globe{position:absolute;inset:0;touch-action:pan-y;cursor:grab}
   .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
   .o-overlay{position:relative;z-index:2;height:100%;display:flex;align-items:center;
-    padding-left:clamp(20px,6vw,90px);pointer-events:none}
+    padding-left:max(24px, calc((100vw - 1280px) / 2));pointer-events:none}
   .o-tabs{display:flex;flex-direction:column;align-items:flex-start;
-    max-width:min(420px,40vw);pointer-events:auto;
+    max-width:min(560px,44vw);padding-right:8px;pointer-events:auto;
     max-height:calc(100svh - 120px);overflow-y:auto;scrollbar-width:none}
   .o-tabs::-webkit-scrollbar{display:none}
   .o-tab{all:unset;cursor:pointer;opacity:.32;transition:opacity .45s var(--ease);
@@ -259,7 +259,7 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .o-tab:hover{opacity:.65}
   .o-tab:focus-visible{outline:2px solid #fff;outline-offset:6px;border-radius:4px}
   .o-tab[aria-pressed="true"]{opacity:1;cursor:default}
-  .o-tt{display:block;font-size:clamp(34px,4vw,72px);font-weight:250;
+  .o-tt{display:block;font-size:clamp(34px,3.5vw,64px);font-weight:250;
     letter-spacing:-.03em;line-height:1.05}
   .o-panel{max-height:0;opacity:0;overflow:hidden;
     transition:max-height .7s var(--ease),opacity .7s var(--ease)}
@@ -596,10 +596,10 @@ if (oTabsEl && oGlobeEl) {
   const gradSub = $("#gradSub");
   if (gradSub) gradSub.innerHTML = GRAD10.map(c => `<li>${c[2]}</li>`).join("");
   const TABS = [
-    { arr: CORE4,  layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 45, lon: -45, k: 1.06 } },
-    { arr: GRAD10, layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 40, lon: -95, k: 1.04 } },
-    { layers: { campus: 0, labelC: 0, nuin: 1, labelN: 1, coops: 0, spins: 0 }, view: { lat: 47, lon: 10, k: 1.05 } },
-    { coop: true, layers: { campus: 0, labelC: 0, nuin: 0, labelN: 0, coops: 1, spins: 1 }, view: { lat: 28, lon: -50, k: .95 } },
+    { arr: CORE4,  layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 40, lon: -70, k: 1.5 } },
+    { arr: GRAD10, layers: { campus: 1, labelC: 1, nuin: 0, labelN: 0, coops: 0, spins: 0 }, view: { lat: 40, lon: -85, k: 1.5 } },
+    { layers: { campus: 0, labelC: 0, nuin: 1, labelN: 1, coops: 0, spins: 0 }, view: { lat: 46, lon: 5, k: 1.75 } },
+    { coop: true, layers: { campus: 0, labelC: 0, nuin: 0, labelN: 0, coops: 1, spins: 1 }, view: { lat: 28, lon: -45, k: 1.15 } },
   ];
   const g = makeGlobe(oGlobeEl, {
     campuses: CORE4,
@@ -686,7 +686,7 @@ assert page.count("<video") == 2  # hero background + the growing co-op film
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live",
-            "wire top", "wire foot", "concept4-rev", 'content="14"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="15"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
