@@ -653,6 +653,22 @@ padding up. If the fade isn't enough and Zach still dislikes the composition,
 the deeper fix is pinning the orbit section (sticky stage + scroll room) like
 v1 - noted as the fallback, not built.
 
+## Concept 4 rev 19: the reel goes vertical
+
+Zach: "curious if this is a place we can use vertical video that would fill
+more of a desktop viewport & fill almost all of a mobile viewport." Reel
+cells are now 9:16 portrait - height min(74svh,820px) on desktop, 82svh on
+mobile - center-cropped via object-fit:cover from the FULL-RES films (hero,
+The-Co-Op-Experience, Jamie-Wong), not the 640x360 proxies, which would have
+been mush upscaled into a ~500x900 card. No new encodes needed: a 9:16 crop
+of 1080p is 607x1080. avconvert cannot crop (no ffmpeg on this machine), so
+CSS cover-cropping full-res sources is the only sharp path to portrait.
+Payload math: hero and co-op are already cached by the hero background and
+grow section by the time the reel enters; the Oakland film (~9.7MB) is the
+only new lazy fetch. Tilt softened to -1.5deg with scale 1.06 (taller band
+needs more rotation cover), animation slowed to 56s, stagger +-28/-22.
+Element count still 22; 6 unique files. Live rev 19, no console errors.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
