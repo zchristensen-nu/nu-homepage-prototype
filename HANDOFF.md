@@ -597,6 +597,22 @@ was confirmed by an adversarial review - but it broke the design intent one
 layout change later. Engine geometry "cleanups" need the target layout named
 in the commit, not just the current one.
 
+## Concept 4 rev 15: concept-2 framing on wide screens
+
+Ultrawide comparison showed concept 2's globe much larger and better composed
+than rev 14, plus "Undergraduate" clipping at its box edge. Three causes,
+three fixes: (1) rev 14's per-tab views sat at k 1.04-1.06 while concept 2's
+beats frame at k ~1.5 (sphere diameter 1.26x viewport height, limbs clipped
+top and bottom) - views are now Undergrad/Grad k 1.5, N.U.in k 1.75, co-op
+overview k 1.15; (2) the overlay's padding-left was capped at 90px so tabs
+hugged the far-left edge on ultrawide - now max(24px, calc((100vw-1280px)/2))
+so the column rides the site's 1280 wrap like concept 2's step rail;
+(3) .o-tabs overflow-y:auto forces overflow-x to auto, and the 420px
+max-width clipped the 72px "Undergraduate" - box widened to min(560px,44vw)
+with .o-tt capped at 64px (~430px wide, fits). Live rev 15, no console
+errors; framing judged by geometry (R = 0.42 * 100svh * k), Zach eyeballs
+the ultrawide.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
