@@ -82,11 +82,15 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="20">')
+                    '<meta name="concept4-rev" content="21">')
 assert 'concept4-rev' in head
 
 
 hero_mk = hero_mk.replace('href="#experience"', 'href="#campuses"')
+
+old_h = "<h2>Class is only half of it.</h2>"
+assert rest_mk.count(old_h) == 1
+rest_mk = rest_mk.replace(old_h, "<h2>This place doesn\u2019t slow down.</h2>")
 
 for name in ("header_mk", "hero_mk", "rest_mk", "footer_mk"):
     v = (globals()[name].replace('src="img/', 'src="../img/')
@@ -734,7 +738,7 @@ assert page.count("<video") == 23  # hero, grow film, 18 reel cells, 3 quote-pan
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live", "s-reel", "vc-vid",
-            "wire top", "wire foot", "concept4-rev", 'content="20"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="21"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
