@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept4-rev" content="16">
+<meta name="concept4-rev" content="17">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -373,7 +373,7 @@
   .s-reel:hover .reel-track{animation-play-state:paused}
   @keyframes reelX{to{transform:translateX(-50%)}}
   .reel-track .vidcard{flex:0 0 auto;width:clamp(240px,22vw,380px);aspect-ratio:16/10}
-  .reel-track .vidcard:nth-child(even){transform:translateY(14px)}
+  .reel-track .vidcard:nth-child(3n+2){transform:translateY(14px)}
   .reel-track .vidcard:nth-child(3n){transform:translateY(-12px)}
   @media (prefers-reduced-motion: reduce){
     .reel-track{animation:none;overflow-x:auto;width:auto}
