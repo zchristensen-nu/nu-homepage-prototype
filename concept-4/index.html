@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept4-rev" content="19">
+<meta name="concept4-rev" content="20">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -370,11 +370,11 @@
 
   /* ---------- decorative film reel ---------- */
   .s-reel{position:relative;z-index:2;padding:clamp(90px,13svh,180px) 0;overflow:hidden}
-  .reel-tilt{transform:rotate(-1.5deg) scale(1.06)}
+
   .reel-track{display:flex;gap:16px;width:max-content;animation:reelX 56s linear infinite}
   .s-reel:hover .reel-track{animation-play-state:paused}
   @keyframes reelX{to{transform:translateX(-50%)}}
-  .reel-track .vidcard{flex:0 0 auto;height:min(74svh,820px);aspect-ratio:9/16}
+  .reel-track .vidcard{flex:0 0 auto;height:min(66svh,740px);aspect-ratio:9/16}
   .reel-track .vidcard:nth-child(3n+2){transform:translateY(28px)}
   .reel-track .vidcard:nth-child(3n){transform:translateY(-22px)}
   @media (max-width:820px){
@@ -383,7 +383,6 @@
   }
   @media (prefers-reduced-motion: reduce){
     .reel-track{animation:none;overflow-x:auto;width:auto}
-    .reel-tilt{transform:none}
   }
 
   /* ---------- portrait quotes ---------- */
@@ -392,9 +391,9 @@
   .vc{display:grid;grid-template-columns:5fr 7fr;gap:clamp(28px,5vw,84px);align-items:start}
   .vc-media{position:sticky;top:calc(50svh - min(33svh,320px));height:min(66svh,640px);
     border-radius:16px;overflow:hidden}
-  .vc-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
+  .vc-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;
     transition:opacity .6s var(--ease)}
-  .vc-img.on{opacity:1}
+  .vc-vid.on{opacity:1}
   .vc-flow .vc-q{min-height:72svh;display:flex;flex-direction:column;justify-content:center;
     opacity:.32;transition:opacity .5s var(--ease)}
   .vc-flow .vc-q.on{opacity:1}
@@ -403,16 +402,10 @@
   .v-who{margin-top:20px;font-size:15px;color:#D4D4D4}
   .v-who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
   .vc-q .storylink{color:#fff}
-  .vc-clip{width:min(360px,64%);border-radius:14px;overflow:hidden;background:#141419;
-    box-shadow:0 18px 50px rgba(0,0,0,.4)}
-  .vc-clip video{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
-  .vc-clip.c0{transform:rotate(-1.5deg);margin:4svh 0 4svh auto}
-  .vc-clip.c1{transform:rotate(1.5deg);margin:4svh auto 4svh 0}
   @media(max-width:820px){
     .vc{grid-template-columns:1fr}
     .vc-media{display:none}
     .vc-flow .vc-q{min-height:0;padding:34px 0;opacity:1}
-    .vc-clip{width:88%}
   }
 
   /* ---------- STUDENT LIFE IMAX ---------- */
@@ -848,12 +841,10 @@
 
 <section class="voices-c" id="voices" aria-label="Student voices">
   <div class="wrap vc">
-    <div class="vc-media"><img class="vc-img on" data-i="0" src="../img/microscopy-coop.jpg" alt="" style="object-position:center 30%"><img class="vc-img" data-i="1" src="../img/oyster-dock.jpg" alt="" style="object-position:20% 35%"><img class="vc-img" data-i="2" src="https://news.northeastern.edu/wp-content/uploads/2023/04/CAMBODIA_coop1400.jpg" alt="" style="object-position:center"></div>
+    <div class="vc-media"><video class="vc-vid on" data-i="0" src="https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4" muted loop playsinline preload="none" data-vio></video><video class="vc-vid" data-i="1" src="../hero.mp4" muted loop playsinline preload="none" data-vio></video><video class="vc-vid" data-i="2" src="https://www.northeastern.edu/wp-content/uploads/Jamie-Wong-Video-Fade.mp4" muted loop playsinline preload="none" data-vio></video></div>
     <div class="vc-flow" id="vcFlow">
 <div class="vc-q on" data-i="0"><blockquote>&ldquo;I really enjoyed the process of research from my previous co&#8209;op. But taking a step further and working with a physical product was an evolution that I wanted to achieve.&rdquo;</blockquote><div class="v-who"><b>Cameron D&rsquo;Mello</b> Bioengineering &middot; Co&#8209;ops at Beth Israel Medical Center and QuantumScape</div><a class="storylink" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/">Read Cameron&rsquo;s story</a></div>
-<div class="vc-clip c0" aria-hidden="true"><video src="../coop-sm.mp4" muted loop playsinline preload="none" data-vio></video></div>
 <div class="vc-q" data-i="1"><blockquote>&ldquo;I wanted to do this job and test myself and see if I like working outdoors as much as I hoped. So far, so good.&rdquo;</blockquote><div class="v-who"><b>Maddy Russell</b> Environmental &amp; sustainability science &middot; Co&#8209;op at Nonesuch Oyster Farm, Maine</div><a class="storylink" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/">Read Maddy&rsquo;s story</a></div>
-<div class="vc-clip c1" aria-hidden="true"><video src="../jamie-sm.mp4" muted loop playsinline preload="none" data-vio></video></div>
 <div class="vc-q" data-i="2"><blockquote>&ldquo;I really wanted the chance to go out into the field. You just have to push past it, and that&rsquo;s something I&rsquo;ve gotten pretty good at.&rdquo;</blockquote><div class="v-who"><b>Paris Graff</b> International affairs &middot; Co&#8209;op with the Landmine Relief Fund, Cambodia</div><a class="storylink" href="https://news.northeastern.edu/2023/04/25/landmine-relief-fund-cambodia-co-op/">Read Paris&rsquo;s story</a></div>
     </div>
   </div>
@@ -1566,7 +1557,7 @@ if (oTabsEl && oGlobeEl) {
 /* ============ portrait quotes follow the reader ============ */
 const vcFlow = $("#vcFlow");
 if (vcFlow) {
-  const vcQs = $$(".vc-q"), vcImgs = $$(".vc-img");
+  const vcQs = $$(".vc-q"), vcImgs = $$(".vc-vid");
   let vcCur = 0;
   const vcUpd = () => {
     const mid = innerHeight / 2;
