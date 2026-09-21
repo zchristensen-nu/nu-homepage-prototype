@@ -669,6 +669,32 @@ only new lazy fetch. Tilt softened to -1.5deg with scale 1.06 (taller band
 needs more rotation cover), animation slowed to 56s, stagger +-28/-22.
 Element count still 22; 6 unique files. Live rev 19, no console errors.
 
+## Concept 4 rev 20-23: quote video, new life copy, motion polish
+
+- Rev 20: reel untilted (rotate/scale wrapper rules deleted) and desktop
+  height trimmed to min(66svh,740px), stagger kept then REMOVED in rev 23
+  (Zach reversed on the offset - cards now align flush). Quote portrait panel
+  crossfades VIDEO (.vc-vid stack, same .on logic; vcUpd selector updated)
+  instead of stills; the woven .vc-clip cards are deleted. STANDING FLAG:
+  panel footage (coop/hero/jamie films) is PLACEHOLDER pairing - it does not
+  depict Cameron D'Mello, Maddy Russell, or Paris Graff. Real subject footage
+  or an approved treatment needed before external eyes.
+- Rev 21: student life IMAX headline workshopped (two AskUserQuestion
+  rounds); winner "This place doesn't slow down." replacing v1's "Class is
+  only half of it." (concept 2's "And then there's everything else." was
+  explicitly rejected).
+- Rev 22: grow film now grows from its FIRST visible pixel -
+  p = (innerHeight - r.top) / r.height instead of pin-relative, easing full
+  by p .45, stats at .52/.66/.80 - no more static ride-up then lock. Research
+  captions no longer reflow during the flex animation: .rb-cap has a fixed
+  measure (clamp(340px,36vw,560px)) clipped and revealed by the widening
+  card, the gradient moved to .rb a::after (full card width), captions exit
+  fast (.25s no delay) and enter delayed (.5s at .3s) after the box settles.
+- Deploy note: GitHub Pages edge served stale HTML for 5+ minutes twice this
+  session with builds already "built" - poll longer before diagnosing.
+
+23 video elements. All revs verified live, no console errors.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
