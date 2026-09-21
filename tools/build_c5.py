@@ -82,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="21">')
+                    '<meta name="concept4-rev" content="22">')
 assert 'concept4-rev' in head
 
 
@@ -192,17 +192,23 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
     transition:filter .6s var(--ease)}
   .rb a:not(.on) img{filter:brightness(.58) saturate(.85)}
   .rb a:not(.on):hover img{filter:brightness(.85) saturate(1)}
-  .rb-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:26px 24px 20px;
-    font-size:clamp(16px,1.5vw,21px);font-weight:500;line-height:1.3;color:#fff;
+  .rb a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:40%;z-index:1;
     background:linear-gradient(to top,rgba(0,0,0,.72),transparent);
+    opacity:0;transition:opacity .35s var(--ease)}
+  .rb a.on::after{opacity:1}
+  .rb-cap{position:absolute;left:0;bottom:0;z-index:2;margin:0;padding:26px 24px 20px;
+    width:clamp(340px,36vw,560px);box-sizing:border-box;
+    font-size:clamp(16px,1.5vw,21px);font-weight:500;line-height:1.3;color:#fff;
     opacity:0;transform:translateY(10px);
-    transition:opacity .45s var(--ease) .2s,transform .45s var(--ease) .2s;pointer-events:none}
-  .rb a.on .rb-cap{opacity:1;transform:none}
+    transition:opacity .25s var(--ease),transform .25s var(--ease);pointer-events:none}
+  .rb a.on .rb-cap{opacity:1;transform:none;
+    transition:opacity .5s var(--ease) .3s,transform .5s var(--ease) .3s}
   @media(max-width:820px){
     .rb{flex-direction:column;height:auto}
     .rb a{flex:none !important;aspect-ratio:16/10}
     .rb a:not(.on) img{filter:none}
-    .rb-cap{opacity:1;transform:none}
+    .rb a::after{opacity:1}
+    .rb-cap{opacity:1;transform:none;width:100%}
   }
   @media (prefers-reduced-motion: reduce){
     .rb a{transition:none}.rb-cap{transition:none}
@@ -575,13 +581,13 @@ if (gTrack && !reduceMotion) {
   const easeIO2 = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2) / 2;
   const gUpd = () => {
     const r = gTrack.getBoundingClientRect();
-    const p = clamp01(-r.top / (r.height - innerHeight));
-    const e = easeIO2(clamp01(p / .5));
+    const p = clamp01((innerHeight - r.top) / r.height);
+    const e = easeIO2(clamp01(p / .45));
     gMedia.style.width = (62 + 38 * e) + "vw";
     gMedia.style.height = (60 + 40 * e) + "svh";
     gMedia.style.borderRadius = (18 * (1 - e)) + "px";
-    gStage.classList.toggle("dim", p > .52);
-    [.56, .70, .84].forEach((t, i) => gStats[i].classList.toggle("in", p > t));
+    gStage.classList.toggle("dim", p > .47);
+    [.52, .66, .80].forEach((t, i) => gStats[i].classList.toggle("in", p > t));
   };
   addEventListener("scroll", () => requestAnimationFrame(gUpd), { passive: true });
   addEventListener("resize", gUpd);
@@ -738,7 +744,7 @@ assert page.count("<video") == 23  # hero, grow film, 18 reel cells, 3 quote-pan
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live", "s-reel", "vc-vid",
-            "wire top", "wire foot", "concept4-rev", 'content="21"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="22"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
