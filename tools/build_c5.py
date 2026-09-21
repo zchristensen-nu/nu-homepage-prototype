@@ -82,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="15">')
+                    '<meta name="concept4-rev" content="16">')
 assert 'concept4-rev' in head
 
 
@@ -295,6 +295,20 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
     .gt-card{width:100%}
   }
 
+  /* ---------- decorative film reel ---------- */
+  .s-reel{position:relative;z-index:2;padding:clamp(70px,10svh,140px) 0;overflow:hidden}
+  .reel-tilt{transform:rotate(-2deg) scale(1.04)}
+  .reel-track{display:flex;gap:14px;width:max-content;animation:reelX 44s linear infinite}
+  .s-reel:hover .reel-track{animation-play-state:paused}
+  @keyframes reelX{to{transform:translateX(-50%)}}
+  .reel-track .vidcard{flex:0 0 auto;width:clamp(240px,22vw,380px);aspect-ratio:16/10}
+  .reel-track .vidcard:nth-child(even){transform:translateY(14px)}
+  .reel-track .vidcard:nth-child(3n){transform:translateY(-12px)}
+  @media (prefers-reduced-motion: reduce){
+    .reel-track{animation:none;overflow-x:auto;width:auto}
+    .reel-tilt{transform:none}
+  }
+
   /* ---------- portrait quotes ---------- */
   .voices-c{position:relative;z-index:6;background:var(--dark);color:#fff;
     padding:clamp(90px,13vh,190px) 0 100px}
@@ -312,10 +326,16 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .v-who{margin-top:20px;font-size:15px;color:#D4D4D4}
   .v-who b{display:block;font-weight:600;color:#fff;font-size:16.5px}
   .vc-q .storylink{color:#fff}
+  .vc-clip{width:min(360px,64%);border-radius:14px;overflow:hidden;background:#141419;
+    box-shadow:0 18px 50px rgba(0,0,0,.4)}
+  .vc-clip video{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+  .vc-clip.c0{transform:rotate(-1.5deg);margin:4svh 0 4svh auto}
+  .vc-clip.c1{transform:rotate(1.5deg);margin:4svh auto 4svh 0}
   @media(max-width:820px){
     .vc{grid-template-columns:1fr}
     .vc-media{display:none}
     .vc-flow .vc-q{min-height:0;padding:34px 0;opacity:1}
+    .vc-clip{width:88%}
   }
 """
 
@@ -380,6 +400,10 @@ def portrait_stack():
         blocks += (f'<div class="vc-q{" on" if i == 0 else ""}" data-i="{i}"><blockquote>{q}</blockquote>'
                    f'<div class="v-who"><b>{name}</b> {who}</div>'
                    f'<a class="storylink" href="{NGN}{u}">{cta}</a></div>\n')
+        if i < len(QUOTES) - 1:
+            clip = ["../coop-sm.mp4", "../jamie-sm.mp4"][i]
+            blocks += (f'<div class="vc-clip c{i}" aria-hidden="true">'
+                       f'<video src="{clip}" muted loop playsinline preload="none" data-vio></video></div>\n')
     return imgs, blocks
 
 _vc_imgs, _vc_blocks = portrait_stack()
@@ -457,6 +481,31 @@ NEW_BODY = f"""
           </div>
         </aside>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="s-reel" aria-hidden="true">
+  <div class="reel-tilt">
+    <div class="reel-track">
+      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_HEROSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_COOPSM}" muted loop playsinline preload="none" data-vio></video></div>
+      <div class="vidcard"><video src="{V_JAMIESM}" muted loop playsinline preload="none" data-vio></video></div>
     </div>
   </div>
 </section>
@@ -682,11 +731,11 @@ page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + i
         + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
-assert page.count("<video") == 2  # hero background + the growing co-op film
+assert page.count("<video") == 22  # hero, grow film, 18 reel cells (9 per loop half), 2 quote clips
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
-            "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live",
-            "wire top", "wire foot", "concept4-rev", 'content="15"', "data-count", "newspost",
+            "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live", "s-reel", "vc-clip",
+            "wire top", "wire foot", "concept4-rev", 'content="16"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
