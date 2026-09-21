@@ -613,6 +613,33 @@ with .o-tt capped at 64px (~430px wide, fits). Live rev 15, no console
 errors; framing judged by geometry (R = 0.42 * 100svh * k), Zach eyeballs
 the ultrawide.
 
+## Concept 4 rev 16-17: the depth pass
+
+"We need more video content (maybe within the quote sections), or just a
+decorative video marquee... 'unlike any other university'." Two additions,
+both fed entirely by the three cached 12s proxies (hero-sm/coop-sm/jamie-sm,
+~4.7MB total, one fetch each):
+
+- FILM REEL (.s-reel, between the globe tabs and the quotes): full-bleed
+  decorative marquee, tilted -2deg (rotate on .reel-tilt wrapper, translateX
+  animation on .reel-track inside so the transforms don't fight), 18 cells =
+  9 per loop half (trio x3 - sized so the half exceeds ultrawide viewports;
+  3 cells only spanned ~1200px and would have gapped on Zach's monitor).
+  Cells take alternating translateY offsets at period 3 - rev 17 fixed a
+  wrap seam where the original even/3n pattern (period 6) didn't divide the
+  9-cell half, so cells jumped vertically at loop restart. Hover pauses;
+  reduced motion goes static scrollable; aria-hidden.
+- QUOTE CLIPS (.vc-clip): two small tilted video cards woven BETWEEN the
+  portrait quotes in the vc-flow (coop-sm after quote 1, jamie-sm after
+  quote 2), right/left alternating with drop shadows. Deliberately outside
+  the speakers' photo panel - generic co-op footage between quotes is
+  decorative; putting video IN the portrait slot would imply it depicts the
+  named speaker, which we don't have footage for. vcUpd targets .vc-q only,
+  so the nearest-center quote logic ignores the clips.
+
+22 video elements over 5 unique files. Verified live rev 17: reel between
+orbit and voices, 18 cells, clips in place, no console errors.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
