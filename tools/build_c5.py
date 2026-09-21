@@ -82,7 +82,7 @@ tail_js     = cut("/* ============ subtle scroll movement ============ */", "/* 
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept4-rev" content="17">')
+                    '<meta name="concept4-rev" content="18">')
 assert 'concept4-rev' in head
 
 
@@ -246,7 +246,9 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   .s-nethead h2{margin:0 auto;font-size:clamp(40px,5vw,84px);font-weight:200;
     letter-spacing:-.03em;line-height:1.05;max-width:14ch;text-wrap:balance}
   .s-orbit{position:relative;z-index:2;color:#fff;height:100svh;overflow:hidden}
-  .o-globe{position:absolute;inset:0;touch-action:pan-y;cursor:grab}
+  .o-globe{position:absolute;inset:0;touch-action:pan-y;cursor:grab;
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent);
+    mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent)}
   .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
   .o-overlay{position:relative;z-index:2;height:100%;display:flex;align-items:center;
     padding-left:max(24px, calc((100vw - 1280px) / 2));pointer-events:none}
@@ -296,14 +298,14 @@ NEW_CSS = """  /* ---------- concept-4 layer ---------- */
   }
 
   /* ---------- decorative film reel ---------- */
-  .s-reel{position:relative;z-index:2;padding:clamp(70px,10svh,140px) 0;overflow:hidden}
+  .s-reel{position:relative;z-index:2;padding:clamp(90px,13svh,180px) 0;overflow:hidden}
   .reel-tilt{transform:rotate(-2deg) scale(1.04)}
   .reel-track{display:flex;gap:14px;width:max-content;animation:reelX 44s linear infinite}
   .s-reel:hover .reel-track{animation-play-state:paused}
   @keyframes reelX{to{transform:translateX(-50%)}}
-  .reel-track .vidcard{flex:0 0 auto;width:clamp(240px,22vw,380px);aspect-ratio:16/10}
-  .reel-track .vidcard:nth-child(3n+2){transform:translateY(14px)}
-  .reel-track .vidcard:nth-child(3n){transform:translateY(-12px)}
+  .reel-track .vidcard{flex:0 0 auto;width:clamp(280px,27vw,470px);aspect-ratio:16/10}
+  .reel-track .vidcard:nth-child(3n+2){transform:translateY(22px)}
+  .reel-track .vidcard:nth-child(3n){transform:translateY(-18px)}
   @media (prefers-reduced-motion: reduce){
     .reel-track{animation:none;overflow-x:auto;width:auto}
     .reel-tilt{transform:none}
@@ -735,7 +737,7 @@ assert page.count("<video") == 22  # hero, grow film, 18 reel cells (9 per loop 
 for tok in ['id="srch"', 'id="tkv"', "rb-main", "rb-strip", "rb-cap", "s-grow", "g-stat", "o-tab", "gt-card", 'id="gtc-img"',
             "makeGlobe", "setCampuses", 'id="vcFlow"', "lifeimax", "lz-track", 'class="admit"',
             "STORY_PINS", "apple-coop", "oyster-coop", "aria-expanded", "aria-live", "s-reel", "vc-clip",
-            "wire top", "wire foot", "concept4-rev", 'content="17"', "data-count", "newspost",
+            "wire top", "wire foot", "concept4-rev", 'content="18"', "data-count", "newspost",
             "magnons-quantum-computing-research", 'href="#campuses"']:
     assert tok in page, tok
 for gone in ["vtag", "s-scrub", "s-mask", "scrubVid", "s-bridge", "tk-cell", "s-sticky",
