@@ -640,6 +640,19 @@ both fed entirely by the three cached 12s proxies (hero-sm/coop-sm/jamie-sm,
 22 video elements over 5 unique files. Verified live rev 17: reel between
 orbit and voices, 18 cells, clips in place, no console errors.
 
+## Concept 4 rev 18: soft globe edges, louder reel
+
+Screenshots showed the k-1.5 sphere hard-clipping at the orbit section's
+canvas edges as it scrolled by (concept 2 never showed this because its stage
+was PINNED - canvas edges always sat at viewport edges; rev 14's static stage
+parades the sliced sphere mid-viewport). Fix: .o-globe gets a vertical
+mask-image fade (transparent > #000 12% > 88% > transparent) so the sphere
+dissolves at the section edges at any scroll position; also covers the mobile
+band. The reel got presence: cells clamp(280px,27vw,470px), stagger +-22/-18,
+padding up. If the fade isn't enough and Zach still dislikes the composition,
+the deeper fix is pinning the orbit section (sticky stage + scroll room) like
+v1 - noted as the fallback, not built.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
