@@ -695,6 +695,42 @@ Element count still 22; 6 unique files. Live rev 19, no console errors.
 
 23 video elements. All revs verified live, no console errors.
 
+## Concept 5: the maximal build (concept-5/, tools/build_c6.py)
+
+Built 2026-09-28 from Stephanie Sim's Slack feedback: the site skews to
+17/18-year-old applicants (hero should speak to more stakeholders, rotating
+phrases - "an education in the world" was theirs), and the globe should show
+INTERCONNECTEDNESS, not directed tabs/sections. Zach: "make everything just
+overwhelming, even if it's against what we stand for" - i.e. this concept
+deliberately breaks the v1 restraint rules (no arcs, subtle motion) so
+Stephanie can evaluate the maximal version. Zach's on-record objections
+(rotating text + video readability, a11y) stand; the build hedges what it
+can: the rotor h1 keeps a STABLE aria-label ("Experience. Everything.
+Anywhere.") with rotating spans aria-hidden, and rotation disables under
+reduced motion.
+
+Forked from build_c5 (concept-4 rev 23). Deltas:
+- HERO ROTOR: h1 cycles 5 phrases every 3.8s with blur crossfade, one per
+  stakeholder: Experience. Everything. Anywhere. / An education in the world.
+  (Stephanie's) / Put experience to work. (employers) / Work that leaves the
+  building. (faculty/research) / This place doesn't slow down. (students+
+  parents). All previously approved copy except hers. .rotor min-height
+  covers 3-line wraps (4em mobile).
+- NETWORK GLOBE: tabs, panels, and the story card are GONE (asserted gone).
+  One full-bleed globe, all layers lit at once (campus 1 + labels .9, nuin 1,
+  coops .8), idle spin 0.02, k 1.05. New "arcs" layer: engine injection
+  before the story-pins block draws animated dashed great-circle arcs
+  (24-sample slerp, alt lift 0.10, moving lineDashOffset) - all 91 campus
+  pairs at alpha .10 + Boston to each N.U.in city at .22 = 99 arcs. ARCS is
+  exposed as window.ARCS (block-scoped const wouldn't reach the factory
+  closure; the engine's typeof check resolves via globalThis). Overlay copy:
+  "The world is our campus." + the c3 legend + one interconnect lede.
+- Everything else (research rail, grow film, reel, video quotes, IMAX,
+  wires) is concept-4 rev 23 verbatim. 23 videos.
+
+Live at /concept-5/ rev 1, no console errors. Arc density/alpha and rotation
+cadence are the obvious tuning knobs when Stephanie reacts.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
