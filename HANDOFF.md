@@ -769,6 +769,48 @@ Live at /concept-6/ rev 2, verified: 99 arcs, 10 live NGN cards with fresh
 thumbnails, continue-browsing round trip, no console errors from the rev-2
 load. 4 video elements.
 
+## Concept 6 rev 3: Northeastern Originals (tools/build_c8.py)
+
+Zach on rev 2: "not quite... each 'show' is a different pillar. I want the
+hero section to be this. You click through the carousel and like Netflix you
+see a different background video playing. Lean into doing something totally
+different than the other concepts. Just retain the nav/footer and brand."
+(The original brief still applies: NGN row, globe lower, continue browsing.)
+
+- BILLBOARD = HERO (.bb, 100svh). Six pillar "shows": Co-op (co-op film),
+  Research (hero montage), Global network (London film), Student life
+  (Oakland film), Athletics (Ken Burns still, 2026 women's hockey), Your turn.
+  (Ken Burns still, 2026 convocation). Badge = the nav's red N monogram +
+  "Northeastern Original" in sentence case (the Netflix N wink, no eyebrow
+  caps). Title, dot-separated meta, synopsis, then Play / CTA link / More
+  info. Background layers crossfade .9s; videos load on first selection
+  (preload none, poster = show thumb), previous pauses after the fade. Text
+  swaps with a quick blur-out/in; after 7s the synopsis collapses and the
+  title scales to .78 (Netflix "settle"). Mute toggle on video shows.
+- SHOW CAROUSEL along the billboard's bottom edge: six thumbnail buttons
+  (aria-pressed); auto-advance every 14s with a red progress bar on the
+  active thumb (Apple TV style) until the user clicks any show, then it's
+  manual; pauses offscreen; off entirely under reduced motion.
+- PLAY opens a native <dialog> player with the show's film, sound on,
+  controls; MORE INFO opens a <dialog> episode modal (hero image, meta,
+  synopsis, CTA, numbered episode list). Every episode is a real, linked NGN
+  story or a verified destination (story og:images scraped 2026-09-30:
+  London move-in, Oakland student elections, AI Makerspace, convocation
+  photos, baking/mental health, Cam Schlittler, women's Frozen Four, youngest
+  hockey players, Beanpot semis). Global network's CTA "Explore the map"
+  closes the modal and scrolls to the globe. Dialogs carry data-lenis-prevent.
+- SHELVES below: Continue browsing (localStorage "nu-continue", now records
+  any a[data-cimg] incl. modal episodes), New on NGN (live, real
+  thumbnails), Co-op stories, Research, Life at Northeastern, Athletics.
+- GLOBE band (concept-5 arcs) below the shelves, then the footer. No wire,
+  no admit section, no v1 hero. v1 guards: helpers' admitIO now null-safe,
+  tail_js hero-drift block cut (both would throw without their elements).
+
+Verified live rev 3 by driving it: show click swaps title/layer/buttons
+(Athletics hides Play + mute, shows GoNU CTA), More info opens with 4
+episodes, 10 live NGN cards, 99 arcs, no rev-3 console errors. 5 video
+elements (4 billboard films + player).
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
