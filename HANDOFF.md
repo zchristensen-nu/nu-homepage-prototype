@@ -811,6 +811,95 @@ Verified live rev 3 by driving it: show click swaps title/layer/buttons
 episodes, 10 live NGN cards, 99 arcs, no rev-3 console errors. 5 video
 elements (4 billboard films + player).
 
+## Concepts 7, 8, 9: the streaming-service trio (tools/stream/)
+
+Zach, 2026-09-30, on concept 6 rev 3: "still really not where it needs to be...
+these carousels are especially awful... no Play or More Info - a click goes to a
+landing page... stray from the context of this chat... bring me back 3
+different concepts around the streaming service design." Concept 6 is left as
+is; three fresh pages were built on a new shared module.
+
+WHY THE OLD CAROUSELS LOOKED BROKEN: scroll-snap without scroll-padding. The
+strips had padding-inline to align with the 1280 wrap, but snap-align:start
+snapped the first card flush to the viewport edge while row titles sat on the
+grid. Every row looked misaligned. Concepts 7-9 never snap without
+scroll-padding-inline:var(--g), and desktop rows in 7 don't free-scroll at all.
+
+SHARED (tools/stream/stream_common.py): v1 head/nav/overlays/footer/scripts
+with the v1-only blocks guarded (admitIO null-safe) or cut (hero drift, IMAX).
+Shared content registry with every link 200-checked 2026-09-30: 8 pillars
+(landing pages: experiential-learning, research., northeastern.edu/campuses,
+studentlife., gonu.com, admissions., graduate., nuin.), 9 college sites
+(D'Amore-McKim is on the bare damore-mckim. domain, www. fails), campus sites
+(nulondon.ac.uk, nyc., oakland., roux.), NGN category pages
+(/category/<slug>/). NGN is baked at build time (fetch_ngn.py ->
+ngn_snapshot.json, 16 stories x 10 categories) and refreshed live in the
+browser; NGN's CDN varies on Origin and allows the Pages origin, but a cold
+_embed response takes ~3.5s, so live shelves swap in a few seconds after
+load. Continue browsing: localStorage "nu-stream-continue", delegated on
+a[data-cb] (JSON {t,img,u,tag}), shared by all three.
+
+IMAGE AUDIT (looked at every photo before labeling): img/colosseum.jpg is
+NOT Rome - it's a researcher at Colosseum, Northeastern's wireless network
+emulator. JIM28826.jpg is the baseball team with the Beanpot trophy at
+Fenway (concept 6 had wrongly used it as "Visit a campus"); orientation_004
+is Paws greeting new students (Admissions art). N.U.in has no honest photo,
+so it gets a typographic poster listing its eight cities.
+
+7 · NORTHEASTERN (Netflix). Full-bleed co-op film billboard (red N + "Series",
+bold title that settles at 6.5s, one CTA to the landing page, mute toggle,
+"Est. 1898" rating-style tab). Rows overlap the billboard. Desktop rows PAGE
+(transform, per-page count by width, last page aligns flush right, wraps)
+with full-height edge paddles in the gutters and page dashes; prev paddle
+appears after the first move. Hover preview: a single portal panel scales
+out of the card after 480ms (60ms when already open), clamped to the
+viewport and below the nav; shows image or the pillar's proxy film (only
+when it actually matches: Research's montage was dropped because it lands on
+a dancer), tags, synopsis; the whole panel links. Rows: continue browsing,
+"Only at Northeastern" pillar posters, New on NGN (live), "Ten ways into
+Northeastern" (outlined numerals), co-op stories, research, campus life,
+Huskies (baked athletics only: NGN's sports category includes pro-sports
+commentary), then live Science & Tech, Health, Society & Culture, Arts,
+Business. Mobile: native scroll with scroll-padding, no paddles.
+
+8 · NORTHEASTERN+ (Apple TV). Light page, nav forced solid. Center-stage
+hero: 6 pillar slides at min(84vw,1400px) with peeking neighbors, seamless
+loop via clones, pill dots that fill over 7s, pause on hover/focus/offscreen,
+side-slide click moves (no navigation), active-slide click goes to the
+landing page; the pillar's full film fades in only after real frames
+advance (timeupdate > .15s, so a failed/undecodable film never shows black).
+Shelves with captions under art: Up next (continue browsing), Start here
+(pillars), Channels (9 colleges as typographic channel tiles), Films
+(hover-play proxies), Around the network (campus posters, typographic where
+no photo), "Your turn." promo banner, Top stories (live), On the job (co-op
+posters), Research, Huskies, Browse Northeastern grid.
+
+9 · NORTHEASTERN LIVE (program guide). 14 channels: Northeastern Now (latest
+NGN), Co-op, Research, Admissions, Campuses, Student life, Huskies, then NGN
+desks. Each channel LOOPS its real items on a clock-anchored schedule
+(30/60-minute slots on half hours, channels offset by ci*90 min) because
+NGN publishes too sparsely per category for a real publish-time timeline
+(business/arts/law had zero posts in the prior week). Window = half hour
+before now + 5.5h at 6.2px/min; sticky time header and channel column; red
+Now line moves every 15s; the grid re-renders when the half hour turns.
+Preview screen: program image with Ken Burns (or the channel's proxy film
+when the item has no photo), On now/Up later badge, channel number OSD, N
+network bug, static flash on channel change; info shows time + progress,
+excerpt, "Read the story"/"Go there", Up next. Hover/focus previews, click
+navigates, arrow keys surf (up/down keeps the time slot). The guide scroller
+carries data-lenis-prevent. Layout gotcha fixed: the app grid needed
+grid-template-columns:minmax(0,1fr) or the 2,360px guide widened the whole
+top section.
+
+VERIFICATION: real Playwright/Chromium screenshots via tools/stream/shoot.cjs
+(localhost:8765 or live URLs) at 1440x900 and 390x844, zero page errors on
+all three, live NGN refresh confirmed on the deployed pages. Headless
+Chromium can't decode the H.264 films (no proprietary codecs), so mp4
+aborts in the harness are expected, not bugs. A top-level const named N
+collided with the Lenis script (classic scripts share one global lexical
+scope) and was caught by syntax-checking all page scripts concatenated -
+keep doing that.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
