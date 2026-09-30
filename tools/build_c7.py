@@ -124,7 +124,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept6-rev" content="1">')
+                    '<meta name="concept6-rev" content="2">')
 assert 'concept6-rev' in head
 
 

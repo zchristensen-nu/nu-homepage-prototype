@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept6-rev" content="1">
+<meta name="concept6-rev" content="2">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1213,25 +1213,6 @@ requestAnimationFrame(frame);
 return { fly: startFly, layers: function(o){ Object.assign(tgt, o); },
          setCampuses: function(a){ CAMPUSES_ = a; } };
 }
-/* ============ research counters ============ */
-function countUp(el, to, ms) {
-  const t0 = performance.now();
-  const tick = now => {
-    const p = ms ? Math.min(1, (now - t0) / ms) : 1;
-    el.textContent = Math.round(to * easeOut(p)).toLocaleString("en-US");
-    if (p < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-let countersDone = false;
-new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting && !countersDone) {
-    countersDone = true;
-    $$("#counters [data-count]").forEach(el =>
-      countUp(el, +el.dataset.count, reduceMotion ? 0 : 1400));
-  }
-}), { threshold: 0.4 }).observe($("#counters"));
-
 
 /* ============ live NGN wire ============ */
 (async () => {
