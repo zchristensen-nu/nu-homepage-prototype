@@ -731,6 +731,44 @@ Forked from build_c5 (concept-4 rev 23). Deltas:
 Live at /concept-5/ rev 1, no console errors. Arc density/alpha and rotation
 cadence are the obvious tuning knobs when Stephanie reacts.
 
+## Concept 6: the streaming-shelf build (concept-6/, tools/build_c7.py)
+
+Built 2026-09-30 from Zach's Netflix / Apple TV brief: pillar categories as
+"shows", a live NGN row, the globe lower on the page, familiar-not-1:1, and
+a cookies-style Continue browsing row. Keeps v1 nav, hero (as the billboard)
+and footer; wire.top stays, wire.foot dropped (the NGN shelf replaces it).
+
+- SHELVES: six rows (Co-op, Research, New from NGN, Student Life, Athletics,
+  Admissions) of 16:9 cards in scroll-snap strips, wrap-aligned padding-inline
+  so cards align to the 1280 grid but scroll full-bleed; chevron buttons
+  scroll by 85% of a viewport; cards hover-scale with shadow; three
+  hover-play video tiles (proxies, load+play on mouseenter only). All card
+  links/images are the previously vetted set; new external links verified 200
+  on 2026-09-30: admissions.northeastern.edu(/visit/), nuin.northeastern.edu,
+  studentfinance.northeastern.edu, gonu.com, NGN /category/sports/.
+- LIVE NGN SHELF: fetches newspost?_embed=wp:featuredmedia, filters Photos:,
+  builds cards with medium_large thumbnails, replaces the baked fallback
+  (fallback = 4 research cards, dupes the Research row only when offline).
+- CONTINUE BROWSING: localStorage key "nu-continue" (all reads/writes in
+  try/catch); document-level click delegation records any a.card with
+  data-cimg (title/img/href, dedupe by href, cap 12); on load, entries render
+  the hidden first row and unhide it. Verified end to end in the pane:
+  click stored, reload rendered the row.
+- GLOBE: concept-5's interconnected arcs band (99 arcs, all layers lit,
+  masked edges) sits below the shelves, above the admit closer.
+- BUG THAT SHIPPED IN REV 1: v1's counters_js was left in the assembly with
+  no #counters element on the page; its IntersectionObserver.observe(null)
+  threw and killed every later top-level block (no arcs, no live shelf, no
+  continue row). Rev 2 drops counters_js. LESSON: v1 JS blocks assume v1
+  elements; when a concept drops a section, drop its block or it kills the
+  script tail. A rev-2 push also briefly went out with only the builder file
+  because the build assert failed after the commit chain was no longer
+  gated - the && chain discipline exists for exactly this.
+
+Live at /concept-6/ rev 2, verified: 99 arcs, 10 live NGN cards with fresh
+thumbnails, continue-browsing round trip, no console errors from the rev-2
+load. 4 video elements.
+
 ## Provenance
 
 - Built across several Claude Code sessions in `~/environment` (the NGN monorepo), July
