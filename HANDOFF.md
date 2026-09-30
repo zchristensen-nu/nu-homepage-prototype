@@ -908,3 +908,43 @@ keep doing that.
 - All editorial content (headlines aside), imagery, and quotes are from
   news.northeastern.edu; brand rules from brand.northeastern.edu. This is an internal
   design exploration, not a published university property.
+
+## Concept 10: immersive streaming (concept-10/, tools/build_c9.py)
+
+Built 2026-09-30 in a parallel session to concepts 7-9 (it was drafted as
+"concept 7" locally and renamed to 10 at deploy so it wouldn't overwrite the
+committed streaming concepts). Zach's brief: Netflix/Apple TV familiarity,
+not 1:1; pillar "shows" as the hero; live NGN rows; globe lower; keep v1
+nav/footer/brand.
+
+- HERO: full-bleed per-feature film (Co-op, Research, Global network,
+  Admissions [student life film + life/athletics stories], Entrepreneurship
+  [Ken Burns still]); title + synopsis + one CTA each; "More from X" panel of
+  four NGN stories; "Only at Northeastern" row of five equal-width portrait
+  cards spanning the container, 12s auto-advance with a red progress bar.
+  One title size for all features, fitted so "Entrepreneurship" clears the
+  panel.
+- ROWS: live NGN newspost rows (Latest, Entrepreneurship tag 9287, AI tags
+  9865+9843, University news cat 7, Research cat 21443), "Photos:" galleries
+  filtered, no story repeated across rows, NGN portrait crop
+  (newspack-article-block-portrait-medium), Netflix-style edge paddles.
+- Concept 2's globe scroll tour, research sheet (expanding cards + counters)
+  and co-op rail are lifted from the BUILT concept-2/index.html by
+  cut_from(); globe boot (resize + rAF) must be re-added in the tail.
+- REEL: 16 portrait cards, each looping a b-roll segment (data-s/data-e)
+  picked from sampled frames of seven university films (admissions, DMSB,
+  research, London, NYC, Roux, hero; co-op film contributes one clip, Jamie
+  Wong none: both are interviews). JS marquee drifts left-to-right and does
+  not pause on hover.
+- COPY: pass against brand.northeastern.edu (voice/tone, experience, global,
+  research messaging, boilerplate, key terms). No "placement" for co-op
+  (brand rule), no location hierarchy, network numbers from the boilerplate
+  (14 campuses, 3,900+ partners, 350K+ alumni), co-op facts from key terms.
+  Build asserts "placement", "and counting", "opens doors", "one way in" stay
+  gone. UNVERIFIED: the globe's 500,000+ all-time co-ops (Zach asked to keep
+  it) and the research counters ($296M / 50+ / 510).
+- ALIGNMENT: one --edge custom property (the .wrap content edge, using % so
+  it resolves per element) drives every left/right inset.
+- build_c9.py exec()s build_c8.py's prefix for the nav/footer/show data.
+  build_c8.py carries concept-6 rev 4 edits (portrait live topic rows); the
+  rev-4 concept-6/index.html itself was NOT deployed, live concept-6 is rev 3.

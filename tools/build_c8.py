@@ -124,7 +124,7 @@ tail_js = tail_js[:i0] + tail_js[i1:]
 
 
 head = head.replace('<meta name="prototype-rev" content="53">',
-                    '<meta name="concept6-rev" content="3">')
+                    '<meta name="concept6-rev" content="4">')
 assert 'concept6-rev' in head
 
 
@@ -322,9 +322,10 @@ def card(e):
     return (f'<a class="card" href="{e["u"]}" data-ct="{h(e["t"])}" data-cimg="{e["img"]}">'
             f'<img src="{e["img"]}" alt="" loading="lazy"><p class="c-t">{h(e["t"])}</p></a>')
 
-def row(rid, label, eps, hidden=False):
+def row(rid, label, eps, hidden=False, q=None):
     hd = " hidden" if hidden else ""
-    return (f'<section class="trow"{hd} id="{rid}" aria-label="{label}">\n'
+    dq = f' data-q="{q}"' if q is not None else ""
+    return (f'<section class="trow"{hd}{dq} id="{rid}" aria-label="{label}">\n'
             f'  <div class="wrap trow-head"><h2>{label}</h2>'
             f'<div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll {label} back">&#8592;</button>'
             f'<button class="tr-btn" data-dir="1" aria-label="Scroll {label} forward">&#8594;</button></div></div>\n'
@@ -332,11 +333,12 @@ def row(rid, label, eps, hidden=False):
 
 ROWS = ('<div class="shelves">\n'
         + row("continueRow", "Continue browsing", [], hidden=True)
-        + row("ngnRow", "New on Northeastern Global News", EP_RESEARCH[:4])
-        + row("coopRow", "Co&#8209;op stories", EP_COOP)
-        + row("researchRow", "Research", EP_RESEARCH)
-        + row("lifeRow", "Life at Northeastern", EP_LIFE + EP_NETWORK[1:2])
-        + row("athleticsRow", "Athletics", EP_ATHLETICS)
+        # rev 4: every shelf is live NGN, by topic; topic rows stay hidden until their fetch lands
+        + row("ngnRow", "New on Northeastern Global News", EP_RESEARCH[:4], q="")
+        + row("entRow", "Entrepreneurship", [], hidden=True, q="tags=9287")
+        + row("aiRow", "AI", [], hidden=True, q="tags=9865,9843")
+        + row("uniRow", "University news", [], hidden=True, q="categories=7")
+        + row("researchRow", "Research", [], hidden=True, q="categories=21443")
         + '</div>\n')
 
 GLOBE = '''<section class="s-orbit" id="campuses">
@@ -458,7 +460,7 @@ NEW_CSS = """  /* ---------- concept-6: Northeastern Originals ---------- */
 
   /* shelves */
   .shelves{position:relative;z-index:2;color:#fff;padding:clamp(10px,2svh,24px) 0 clamp(70px,10svh,130px)}
-  .trow{margin-top:clamp(30px,4.5svh,54px)}
+  .trow{margin-top:clamp(14px,2.4svh,30px)}
   .trow[hidden]{display:none}
   .trow-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
   .trow-head h2{margin:0;font-size:clamp(19px,1.6vw,24px);font-weight:600;letter-spacing:-.01em}
@@ -469,17 +471,19 @@ NEW_CSS = """  /* ---------- concept-6: Northeastern Originals ---------- */
   .tr-btn:hover{background:#fff;color:var(--ink);border-color:#fff}
   .tr-strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;
     scrollbar-width:none;margin-top:12px;padding:14px 0 18px;
-    padding-inline:max(24px, calc((100vw - 1280px) / 2))}
+    padding-inline:max(24px, calc((100vw - 1280px) / 2));scroll-padding-inline:max(24px, calc((100vw - 1280px) / 2))}
   .tr-strip::-webkit-scrollbar{display:none}
-  .card{position:relative;flex:0 0 auto;width:clamp(230px,22vw,340px);aspect-ratio:16/9;
+  .card{position:relative;flex:0 0 auto;width:clamp(150px,13.5vw,212px);aspect-ratio:2/3;
     border-radius:10px;overflow:hidden;background:#141419;scroll-snap-align:start;
     transition:transform .35s var(--ease),box-shadow .35s var(--ease);display:block}
   .card:hover,.card:focus-visible{transform:scale(1.06);z-index:3;box-shadow:0 18px 44px rgba(0,0,0,.55)}
   .card:focus-visible{outline:2px solid #fff;outline-offset:3px}
   .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .card .c-t{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:34px 14px 12px;
-    font-size:14px;font-weight:500;line-height:1.3;color:#fff;
-    background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
+  .card img{transition:filter .35s var(--ease);filter:brightness(.92)}
+  .card:hover img,.card:focus-visible img{filter:none}
+  .card .c-t{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:70px 14px 16px;
+    font-size:clamp(15px,1.12vw,18px);font-weight:600;line-height:1.16;letter-spacing:-.01em;color:#fff;
+    text-wrap:balance;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.55) 55%,transparent)}
   @media (prefers-reduced-motion: reduce){.card{transition:none}}
 
   /* network globe band */
@@ -644,27 +648,35 @@ if (cbRow) {
   });
 }
 
-/* ============ live NGN shelf with real thumbnails ============ */
+/* ============ live NGN shelves, one per topic, portrait posters ============ */
+/* News posts only: the newspost type, minus "Photos:" galleries. A story already shown
+   in an earlier row is skipped so the shelves never repeat each other. */
 (async () => {
-  try {
-    const r = await fetch("https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=12&_embed=wp:featuredmedia");
-    if (!r.ok) return;
-    const tmp = document.createElement("div");
-    const cards = (await r.json())
-      .filter(p => !/^Photos:/i.test(p.title.rendered))
+  const API = "https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=24&_embed=wp:featuredmedia&_fields=link,title,_links,_embedded&";
+  const rows = $$(".trow[data-q]");
+  const data = await Promise.all(rows.map(sec =>
+    fetch(API + sec.dataset.q).then(r => r.ok ? r.json() : []).catch(() => [])));
+  const shown = new Set(), tmp = document.createElement("div");
+  rows.forEach((sec, k) => {
+    const cards = data[k]
+      .filter(p => !/^Photos:/i.test(p.title.rendered) && !shown.has(p.link))
       .map(p => {
         const m = p._embedded && p._embedded["wp:featuredmedia"] && p._embedded["wp:featuredmedia"][0];
         if (!m) return null;
-        const sz = m.media_details && m.media_details.sizes;
-        const img = (sz && (sz.medium_large || sz.large || sz.medium) || m).source_url || m.source_url;
+        const sz = (m.media_details && m.media_details.sizes) || {};
+        const img = (sz["newspack-article-block-portrait-medium"] || sz.large || sz.medium_large || m).source_url;
+        if (!img) return null;
         tmp.innerHTML = p.title.rendered;
-        const t = tmp.textContent;
-        return `<a class="card" href="${esc(p.link)}" data-ct="${esc(t)}" data-cimg="${esc(img)}">` +
-               `<img src="${esc(img)}" alt="" loading="lazy"><p class="c-t">${esc(t)}</p></a>`;
+        return { t: tmp.textContent, u: p.link, img };
       })
-      .filter(Boolean).slice(0, 10);
-    if (cards.length >= 4) $("#ngnRow .tr-strip").innerHTML = cards.join("");
-  } catch (e) { /* baked cards remain */ }
+      .filter(Boolean).slice(0, 12);
+    if (cards.length < 4) return; /* keep the baked fallback (or the row hidden) */
+    cards.forEach(c => shown.add(c.u));
+    sec.querySelector(".tr-strip").innerHTML = cards.map(c =>
+      `<a class="card" href="${esc(c.u)}" data-ct="${esc(c.t)}" data-cimg="${esc(c.img)}">` +
+      `<img src="${esc(c.img)}" alt="" loading="lazy"><p class="c-t">${esc(c.t)}</p></a>`).join("");
+    sec.hidden = false;
+  });
 })();
 
 /* ============ the network globe ============ */
@@ -698,7 +710,7 @@ assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count('class="bb-layer') == 6 and page.count('class="show"') == 6
 assert page.count("<video") == 5  # 4 billboard films + player
 for tok in ['id="srch"', 'id="tkv"', "bbSelect", "showModal", "nu-continue", "ngnRow", "ARCS",
-            "Northeastern Original", "concept6-rev", 'content="3"', "newspost", "data-lenis-prevent"]:
+            "Northeastern Original", "concept6-rev", 'content="4"', "newspost", "data-lenis-prevent"]:
     assert tok in page, tok
 for gone in ['class="hero"', "lifeimax", "rphrase", "s-grow", "wire top", 'class="admit"', "research counters"]:
     assert gone not in page, gone
