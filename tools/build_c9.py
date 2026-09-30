@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="1">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="2">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -252,7 +252,10 @@ NEW_CSS = r'''
   .ln:hover img{filter:brightness(.9)}
   .ln[aria-pressed="true"]{transform:translateY(-8px);box-shadow:0 0 0 2px #fff,0 18px 40px rgba(0,0,0,.6)}
   .ln[aria-pressed="true"] img{filter:none}
-  .ln-pb{position:absolute;z-index:3;left:0;bottom:0;height:3px;width:calc(var(--pb,0) * 100%);background:var(--red)}
+  .ln-pb{position:absolute;z-index:3;left:10px;right:10px;top:10px;height:3px;border-radius:3px;overflow:hidden;
+    background:rgba(255,255,255,.28);opacity:0;transition:opacity .3s}
+  .ln[aria-pressed="true"] .ln-pb{opacity:1}
+  .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:#fff;border-radius:inherit}
   @media (max-width:899px){.hx-eps{display:none}}
   @media (max-width:640px){.hx{min-height:700px}.hx-btn{height:44px;padding:0 18px;font-size:15px}.ln{flex:0 0 118px;height:177px}}
   @media (prefers-reduced-motion: reduce){.hl,.hx-copy,.hx-eps,.ln{transition:none}.hl.kb.on img{animation:none}}
@@ -310,7 +313,7 @@ const FEATS = __FEATS__;
 
 /* ============ billboard ============ */
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");
-let cur = 0, auto = !reduceMotion, elapsed = 0, hxVisible = true;
+let cur = 0, elapsed = 0, hxVisible = true, hoverShows = false;
 const vidOf = i => layers[i].querySelector("video");
 const playI = i => { const v = vidOf(i); if (v && !reduceMotion) v.play().catch(() => {}); };
 function fillHero(f) {
@@ -334,8 +337,7 @@ function fitHeroTitle() {
   }
   t.textContent = keep;
 }
-function selectF(i, byUser) {
-  if (byUser) auto = false;
+function selectF(i) {
   elapsed = 0;
   lnBtns.forEach((b, k) => { b.setAttribute("aria-pressed", k === i ? "true" : "false"); b.style.setProperty("--pb", 0); });
   if (i === cur) return;
@@ -346,13 +348,24 @@ function selectF(i, byUser) {
   hxIn.classList.add("swap");
   setTimeout(() => { fillHero(FEATS[i]); hxIn.classList.remove("swap"); }, reduceMotion ? 0 : 350);
 }
-lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i, true)));
-setInterval(() => {
-  if (!auto || !hxVisible || document.hidden || scrollY > innerHeight * .3) return;
-  elapsed += .1;
-  lnBtns[cur].style.setProperty("--pb", (elapsed / 12).toFixed(3));
-  if (elapsed >= 12) selectF((cur + 1) % FEATS.length, false);
-}, 100);
+lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i)));
+/* auto-rotate every 12s; the loader fills per frame on the active card */
+const ROTATE_MS = 12000;
+$(".hx-lineup").addEventListener("pointerenter", () => hoverShows = true);
+$(".hx-lineup").addEventListener("pointerleave", () => hoverShows = false);
+if (!reduceMotion) {
+  let lastT = 0;
+  const tick = now => {
+    const dt = lastT ? Math.min(100, now - lastT) : 0; lastT = now;
+    if (hxVisible && !hoverShows && !document.hidden && scrollY < innerHeight * .3) {
+      elapsed += dt;
+      lnBtns[cur].style.setProperty("--pb", Math.min(1, elapsed / ROTATE_MS).toFixed(4));
+      if (elapsed >= ROTATE_MS) selectF((cur + 1) % FEATS.length);
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
 new IntersectionObserver(es => es.forEach(e => {
   hxVisible = e.isIntersecting;
   const v = vidOf(cur);
@@ -475,7 +488,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="1"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="2"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["placement", "one way in", "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
