@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept6-rev" content="2">
+<meta name="concept6-rev" content="3">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -70,24 +70,6 @@
   .nav .apply .pill:hover{background:var(--red);border-color:var(--red)}
   .nav.solid{background:rgba(11,11,14,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
   @media(max-width:960px){.nav nav{display:none}}
-
-  /* ---------- HERO ---------- */
-  .hero{position:relative;height:100svh;min-height:600px;overflow:hidden;background:var(--dark)}
-  .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .hero .scrim{position:absolute;inset:0;background:
-    linear-gradient(180deg,rgba(5,5,8,.45) 0%,rgba(5,5,8,.05) 35%,rgba(5,5,8,.62) 82%)}
-  .hero .content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
-    padding-bottom:clamp(40px,7vh,84px)}
-  .hero h1{font-size:clamp(52px,9.5vw,132px);font-weight:200;letter-spacing:-.03em;line-height:.98;color:#fff}
-  .hero h1 .w{display:inline-block;opacity:0;transform:translateY(.35em);
-    animation:heroword 1s var(--ease) forwards}
-  .hero h1 .w:nth-child(2){animation-delay:.18s}
-  .hero h1 .w:nth-child(3){animation-delay:.36s}
-  @keyframes heroword{to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion: reduce){.hero h1 .w{animation:none;opacity:1;transform:none}}
-  .hero .sub{margin-top:22px;max-width:52ch;font-size:clamp(15px,1.6vw,19px);font-weight:300;color:#E5E5E5}
-  .hero .ctas{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-  .hero .cap{position:absolute;right:clamp(20px,4vw,48px);bottom:14px;font-size:11px;color:rgba(255,255,255,.55)}
 
   .srch{position:fixed;top:0;left:0;right:0;z-index:220;background:rgba(11,11,14,.96);
     backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 24px 48px rgba(0,0,0,.4)}
@@ -201,41 +183,114 @@
   .counter .n{font-size:clamp(44px,5.5vw,72px);font-weight:200;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
   .counter .l{font-size:14.5px;color:var(--n5);margin-top:4px;max-width:26ch}
 
-  /* ---------- concept-6 layer ---------- */
+  /* ---------- concept-6: Northeastern Originals ---------- */
   ::selection{background:var(--red);color:#fff}
   body{background:var(--dark)}
-  .vidcard{position:relative;border-radius:14px;overflow:hidden;background:#141419}
-  .vidcard video{width:100%;height:100%;object-fit:cover;display:block}
-  .line{display:block;overflow:hidden}
-  .line > span{display:block;transform:translateY(115%);transition:transform 1s var(--ease)}
-  .line.in > span, .in .line > span{transform:none}
 
-  /* ---------- NGN wire ---------- */
-  .wire{background:var(--dark);color:#fff;overflow:hidden;position:relative;z-index:6}
-  .wire.top{margin-top:-28px;border-radius:28px 28px 0 0;padding-bottom:28px}
-  .wire.top .wire-in{margin-top:14px}
-  .wire-in{display:flex;align-items:center;height:56px}
-  .w-label{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:0 22px;height:100%}
-  .w-label::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);
-    animation:wpulse 2.2s ease infinite;flex-shrink:0}
-  @keyframes wpulse{0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,.5)}50%{box-shadow:0 0 0 7px rgba(200,16,46,0)}}
-  .w-logo{height:15px;width:auto;display:block}
-  .w-belt{overflow:hidden;flex:1;display:flex;align-items:center;height:100%;
-    mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
-  .w-track{display:flex;align-items:baseline;gap:44px;padding-left:44px;width:max-content;animation:wireX 80s linear infinite}
-  .wire:hover .w-track{animation-play-state:paused}
-  @keyframes wireX{to{transform:translateX(-50%)}}
-  .w-item{display:inline-flex;align-items:baseline;gap:10px;font-size:14px;color:#E5E5E5;white-space:nowrap}
-  .w-item:hover{color:#fff}
-  .w-d{font-size:11.5px;color:#A9A9B2}
+  /* billboard */
+  .bb{position:relative;height:100svh;min-height:640px;overflow:hidden;color:#fff;background:#000}
+  .bb-media{position:absolute;inset:0}
+  .bb-layer{position:absolute;inset:0;opacity:0;transition:opacity .9s var(--ease)}
+  .bb-layer.on{opacity:1}
+  .bb-layer video,.bb-layer img{width:100%;height:100%;object-fit:cover;display:block}
+  .bb-layer.kb.on img{animation:kb 24s ease-in-out infinite alternate}
+  @keyframes kb{from{transform:scale(1)}to{transform:scale(1.12) translate(-1.5%,-1%)}}
+  .bb-shade{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to right,rgba(11,11,14,.82) 0%,rgba(11,11,14,.38) 36%,transparent 62%),
+               linear-gradient(to top,var(--dark) 0%,rgba(11,11,14,.6) 24%,transparent 52%)}
+  .bb-in{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;
+    padding-bottom:clamp(18px,3svh,34px)}
+  .bb-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+    margin-bottom:clamp(20px,3.5svh,40px)}
+  .bb-content{max-width:min(640px,100%);transition:opacity .28s var(--ease),filter .28s var(--ease)}
+  .bb-content.swap{opacity:0;filter:blur(10px)}
+  .bb-badge{display:flex;align-items:center;gap:10px;font-size:15px;color:#E5E5E5}
+  .bb-badge img{height:22px;width:auto}
+  .bb-title{margin:12px 0 0;font-size:clamp(56px,8vw,128px);font-weight:200;letter-spacing:-.035em;
+    line-height:.95;transform-origin:left bottom;transition:transform .9s var(--ease)}
+  .bb-meta{margin:16px 0 0;display:flex;flex-wrap:wrap;gap:6px 0;font-size:15px;color:#E5E5E5}
+  .bb-meta span+span::before{content:"\00b7";margin:0 12px;color:#A9A9B2}
+  .bb-syn{margin:14px 0 0;font-size:clamp(16px,1.3vw,19px);line-height:1.5;color:#E5E5E5;max-width:46ch;
+    max-height:9em;overflow:hidden;
+    transition:opacity .7s var(--ease),max-height .9s var(--ease),margin .9s var(--ease)}
+  .bb-content.settled .bb-title{transform:scale(.78)}
+  .bb-content.settled .bb-syn{opacity:0;max-height:0;margin-top:0}
+  .bb-btns{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .bb-btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:10px;height:48px;
+    padding:0 24px;border-radius:999px;font-size:16px;font-weight:600;cursor:pointer;
+    background:#fff;color:#0B0B0E;transition:background .2s}
+  .bb-btn:hover{background:rgba(255,255,255,.82)}
+  .bb-btn.ghost{background:rgba(255,255,255,.18);color:#fff;backdrop-filter:blur(10px)}
+  .bb-btn.ghost:hover{background:rgba(255,255,255,.28)}
+  .bb-btn:focus-visible,.bb-mute:focus-visible,.show:focus-visible .th{outline:2px solid #fff;outline-offset:3px}
+  .bb-btn[hidden],.bb-mute[hidden]{display:none}
+  .bb-mute{all:unset;box-sizing:border-box;flex:0 0 auto;width:44px;height:44px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;
+    color:#fff;cursor:pointer;transition:background .2s}
+  .bb-mute:hover{background:rgba(255,255,255,.14)}
+  .bb-mute .i-sound{display:none}
+  .bb-mute[aria-pressed="true"] .i-sound{display:block}
+  .bb-mute[aria-pressed="true"] .i-muted{display:none}
+  .bb-shows{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:6px 3px 4px}
+  .bb-shows::-webkit-scrollbar{display:none}
+  .show{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 auto;width:clamp(160px,14.5vw,224px)}
+  .show .th{position:relative;display:block;aspect-ratio:16/9;border-radius:10px;overflow:hidden;
+    background:#141419;box-shadow:0 0 0 2px transparent;transition:box-shadow .3s var(--ease),transform .3s var(--ease)}
+  .show img{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(.62);transition:filter .3s}
+  .show:hover .th{transform:translateY(-3px)}
+  .show:hover img{filter:brightness(.85)}
+  .show[aria-pressed="true"] .th{box-shadow:0 0 0 2px #fff}
+  .show[aria-pressed="true"] img{filter:none}
+  .show .st{display:block;margin-top:8px;font-size:14px;font-weight:500;color:#A9A9B2;transition:color .3s}
+  .show[aria-pressed="true"] .st{color:#fff}
+  .show .pb{position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--red)}
+  .show.timing .pb{animation:pbar var(--dur,14s) linear forwards}
+  @keyframes pbar{to{width:100%}}
+  @media (max-width:820px){
+    .bb{min-height:560px}
+    .bb-title{font-size:clamp(46px,13vw,72px)}
+    .bb-syn{font-size:15.5px}
+    .bb-btn{height:44px;padding:0 18px;font-size:15px}
+    .show{width:150px}
+  }
   @media (prefers-reduced-motion: reduce){
-    .w-track{animation:none}.w-belt{overflow-x:auto}
-    .w-label::before{animation:none}
+    .bb-layer,.bb-content,.bb-title,.bb-syn{transition:none}
+    .bb-layer.kb.on img{animation:none}
   }
 
-  /* ---------- the shelves ---------- */
-  .shelves{position:relative;z-index:2;color:#fff;padding:clamp(28px,4svh,56px) 0 clamp(70px,10svh,130px)}
-  .trow{margin-top:clamp(34px,5svh,60px)}
+  /* dialogs */
+  .dlg{border:0;padding:0;background:#141419;color:#fff;border-radius:16px;width:min(880px,94vw);
+    max-height:90svh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .dlg::backdrop{background:rgba(0,0,0,.74);backdrop-filter:blur(4px)}
+  .dlg.player{width:min(1200px,96vw);background:#000;overflow:hidden}
+  .dlg.player video{display:block;width:100%;max-height:86svh;background:#000}
+  .dlg-x{all:unset;position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;border-radius:50%;
+    background:rgba(20,20,25,.8);color:#fff;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-size:15px}
+  .dlg-x:hover{background:#fff;color:#0B0B0E}
+  .dlg-x:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .dlg-hero{position:relative;aspect-ratio:16/7;background:#000}
+  .dlg-hero img{width:100%;height:100%;object-fit:cover;display:block}
+  .dlg-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#141419 0%,transparent 60%)}
+  .dlg-hero h2{position:absolute;left:28px;bottom:10px;z-index:2;margin:0;font-size:clamp(38px,5vw,64px);
+    font-weight:200;letter-spacing:-.03em;line-height:1}
+  .dlg-body{padding:6px 28px 30px}
+  .dlg-syn{margin:14px 0 18px;font-size:16px;line-height:1.55;color:#D4D4D4;max-width:60ch}
+  .dlg-eps{margin:26px 0 6px;font-size:20px;font-weight:600}
+  .ep{display:grid;grid-template-columns:34px 170px 1fr;gap:18px;align-items:center;padding:14px 10px;
+    border-top:1px solid rgba(255,255,255,.1);color:#fff;border-radius:8px;transition:background .2s}
+  .ep:hover{background:rgba(255,255,255,.06)}
+  .ep-n{font-size:24px;font-weight:300;color:#A9A9B2;text-align:center}
+  .ep img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;display:block}
+  .ep-t{font-size:15.5px;line-height:1.4}
+  @media (max-width:640px){
+    .ep{grid-template-columns:24px 110px 1fr;gap:12px}
+    .dlg-body{padding:6px 18px 24px}
+  }
+
+  /* shelves */
+  .shelves{position:relative;z-index:2;color:#fff;padding:clamp(10px,2svh,24px) 0 clamp(70px,10svh,130px)}
+  .trow{margin-top:clamp(30px,4.5svh,54px)}
   .trow[hidden]{display:none}
   .trow-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
   .trow-head h2{margin:0;font-size:clamp(19px,1.6vw,24px);font-weight:600;letter-spacing:-.01em}
@@ -245,23 +300,21 @@
     display:flex;align-items:center;justify-content:center}
   .tr-btn:hover{background:#fff;color:var(--ink);border-color:#fff}
   .tr-strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;
-    scrollbar-width:none;margin-top:14px;padding:14px 0 18px;
+    scrollbar-width:none;margin-top:12px;padding:14px 0 18px;
     padding-inline:max(24px, calc((100vw - 1280px) / 2))}
   .tr-strip::-webkit-scrollbar{display:none}
-  .card{position:relative;flex:0 0 auto;width:clamp(230px,22vw,350px);aspect-ratio:16/9;
+  .card{position:relative;flex:0 0 auto;width:clamp(230px,22vw,340px);aspect-ratio:16/9;
     border-radius:10px;overflow:hidden;background:#141419;scroll-snap-align:start;
     transition:transform .35s var(--ease),box-shadow .35s var(--ease);display:block}
-  .card:hover,.card:focus-visible{transform:scale(1.06);z-index:3;
-    box-shadow:0 18px 44px rgba(0,0,0,.55)}
+  .card:hover,.card:focus-visible{transform:scale(1.06);z-index:3;box-shadow:0 18px 44px rgba(0,0,0,.55)}
   .card:focus-visible{outline:2px solid #fff;outline-offset:3px}
-  .card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .card .c-t{position:absolute;left:0;right:0;bottom:0;z-index:2;margin:0;padding:34px 14px 12px;
     font-size:14px;font-weight:500;line-height:1.3;color:#fff;
-    background:linear-gradient(to top,rgba(0,0,0,.78),transparent)}
-  .card.wide{width:clamp(300px,30vw,470px)}
+    background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
   @media (prefers-reduced-motion: reduce){.card{transition:none}}
 
-  /* ---------- the network globe band ---------- */
+  /* network globe band */
   .s-orbit{position:relative;z-index:2;color:#fff;height:100svh;overflow:hidden}
   .o-globe{position:absolute;inset:0;touch-action:pan-y;cursor:grab;
     -webkit-mask-image:linear-gradient(to bottom,transparent,#000 12%,#000 88%,transparent);
@@ -269,8 +322,7 @@
   .o-globe canvas{position:absolute;inset:0;width:100%;height:100%}
   .o-overlay{position:relative;z-index:2;height:100%;display:flex;align-items:center;pointer-events:none}
   .n-copy{max-width:min(520px,44vw);padding-left:max(24px, calc((100vw - 1280px) / 2))}
-  .n-copy h2{margin:0;font-size:clamp(40px,4.6vw,84px);font-weight:200;
-    letter-spacing:-.03em;line-height:1.05}
+  .n-copy h2{margin:0;font-size:clamp(40px,4.6vw,84px);font-weight:200;letter-spacing:-.03em;line-height:1.05}
   .n-copy .n-legend{margin:18px 0 0;font-size:15px;color:#D4D4D4}
   .n-copy .n-lede{margin:14px 0 0;font-size:15px;line-height:1.55;color:#A9A9B2;max-width:36ch}
   @media (max-width:820px){
@@ -570,104 +622,70 @@
   </div>
 </div>
 
-<section class="hero" id="top">
-  <video autoplay muted loop playsinline
-         src="../hero.mp4"></video>
-  <div class="scrim"></div>
-  <div class="content">
-    <div class="wrap">
-      <h1><span class="w">Experience.</span> <span class="w">Everything.</span> <span class="w">Anywhere.</span></h1>
-      <p class="sub">Huskies don't wait until graduation to do work that matters. They're doing it right now, on all seven continents.</p>
-      <div class="ctas">
-        <a class="pill red" href="#campuses">See where they are</a>
+<section class="bb" id="top" aria-label="Northeastern Originals">
+  <div class="bb-media"><div class="bb-layer on"><video muted loop playsinline preload="none" poster="../img/apple-coop.jpg" src="https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4"></video></div><div class="bb-layer"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" src="../hero.mp4"></video></div><div class="bb-layer"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" src="https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4"></video></div><div class="bb-layer"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg" src="https://www.northeastern.edu/wp-content/uploads/Jamie-Wong-Video-Fade.mp4"></video></div><div class="bb-layer kb"><img src="https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg" alt="" loading="lazy"></div><div class="bb-layer kb"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg" alt="" loading="lazy"></div></div>
+  <div class="bb-shade"></div>
+  <div class="bb-in">
+    <div class="wrap bb-row">
+      <div class="bb-content" id="bbContent" aria-live="polite">
+        <div class="bb-badge"><img src="data:image/png;base64,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" alt=""><span>Northeastern Original</span></div>
+        <h1 class="bb-title" id="bbTitle">Co‑op</h1>
+        <p class="bb-meta" id="bbMeta"><span>Experiential learning</span><span>500,000+ placements</span><span>10,000+ employers</span></p>
+        <p class="bb-syn" id="bbSyn">Students alternate semesters in class with full‑time work at organizations around the world, then bring what they learned back to campus.</p>
+        <div class="bb-btns">
+          <button class="bb-btn" id="bbPlay"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1.5v13l11-6.5z" fill="currentColor"/></svg><span>Play</span></button>
+          <a class="bb-btn" id="bbCta" href="#" hidden><span id="bbCtaL"></span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <button class="bb-btn ghost" id="bbInfo"><svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 9v5M10 6.2v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>More info</span></button>
+        </div>
       </div>
+      <button class="bb-mute" id="bbMute" aria-label="Unmute" aria-pressed="false"><svg class="i-muted" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor"/><path d="M13 7.5l4 5M17 7.5l-4 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><svg class="i-sound" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor"/><path d="M13 7a4 4 0 010 6M15.2 5a7 7 0 010 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
     </div>
+    <div class="wrap"><div class="bb-shows" role="group" aria-label="Choose a show"><button class="show" aria-pressed="true" data-i="0"><span class="th"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><i class="pb"></i></span><span class="st">Co‑op</span></button><button class="show" aria-pressed="false" data-i="1"><span class="th"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><i class="pb"></i></span><span class="st">Research</span></button><button class="show" aria-pressed="false" data-i="2"><span class="th"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" alt="" loading="lazy"><i class="pb"></i></span><span class="st">Global network</span></button><button class="show" aria-pressed="false" data-i="3"><span class="th"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg" alt="" loading="lazy"><i class="pb"></i></span><span class="st">Student life</span></button><button class="show" aria-pressed="false" data-i="4"><span class="th"><img src="https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg" alt="" loading="lazy"><i class="pb"></i></span><span class="st">Athletics</span></button><button class="show" aria-pressed="false" data-i="5"><span class="th"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="" loading="lazy"><i class="pb"></i></span><span class="st">Your turn.</span></button></div></div>
   </div>
 </section>
 
+<dialog class="dlg player" id="player" aria-label="Video player" data-lenis-prevent>
+  <button class="dlg-x" data-close aria-label="Close">&#10005;</button>
+  <video id="playerV" controls playsinline></video>
+</dialog>
 
-<section class="wire top" aria-label="Latest from Northeastern Global News">
-  <div class="wire-in">
-    <span class="w-label"><svg class="w-logo" viewBox="0 0 380 102" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Northeastern Global News"><path d="M330.519 1.38965V11.2966H362.874L334.034 40.1918L341.025 47.2092L370.112 18.0525V50.9655H380V1.38965H330.519Z" fill="#C8102E"></path><path d="M0 100.541V1.4585H17.8395L72.5255 69.4585V1.4585H92.1915V100.541H74.0636L19.6661 33.2707V100.541H0Z" fill="white"></path><path d="M107.751 50.9931C107.751 22.0291 129.587 0 158.496 0C175.607 0 191.414 8.17321 201.824 23.2675L186.319 34.3577C178.601 22.6896 168.548 18.2315 158.496 18.2315C140.505 18.2315 127.912 31.7985 127.912 50.9931C127.912 70.1878 141.013 83.7548 159.004 83.7548C175.456 83.7548 184.712 74.0542 186.965 63.5419H157.04V46.5488H206.85C207.139 49.1081 207.207 52.0251 207.207 54.5018C207.207 79.9709 189.299 102 159.004 102C128.708 102 107.737 79.9709 107.737 51.0069L107.751 50.9931Z" fill="white"></path><path d="M222.781 100.541V1.4585H240.621L295.307 69.4585V1.4585H314.973V100.541H296.845L242.447 33.2707V100.541H222.781V100.541Z" fill="white"></path></svg></span>
-    <div class="w-belt"><div class="w-track"><a class="w-item" href="https://news.northeastern.edu/2026/08/28/wildlife-sanctuary-co-op-experience/"><span class="w-d">Aug 28</span>This student toiled in aviaries, barns and pens for his co-op</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/samantha-johnson-convocation-alumni-speaker/"><span class="w-d">Aug 28</span>Samantha Johnson '21, robotics CEO, to speak at Boston Convocation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"><span class="w-d">Aug 28</span>Scientists put algae to work making fuel. AI keeps watch.</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/nepal-tibet-flood/"><span class="w-d">Aug 27</span>Many causes for floods, many causes for their devastation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/boston-convocation-guide-2026/"><span class="w-d">Aug 27</span>Boston convocation welcomes new Huskies to Northeastern</a><a class="w-item" href="https://news.northeastern.edu/2026/08/20/microfilm-research-archivist/"><span class="w-d">Aug 20</span>Slow down and zoom in: the case for microfilm research</a><a class="w-item" href="https://news.northeastern.edu/2026/08/12/northeastern-electric-racing-club-2/"><span class="w-d">Aug 12</span>These racing club students were given nine months to make their 'EV baby'</a><a class="w-item" href="https://news.northeastern.edu/2026/07/29/satellite-internet-6g-speeds-research/"><span class="w-d">Jul 29</span>This researcher is launching satellites to unlock faster data speeds</a><a class="w-item" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"><span class="w-d">Jul 27</span>Cracking the axolotl code: how to regrow limbs and stay young</a><a class="w-item" href="https://news.northeastern.edu/2026/07/22/ai-career-amazon-graduate/"><span class="w-d">Jul 22</span>Northeastern graduate finds success and comfort in computer codes</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/wildlife-sanctuary-co-op-experience/"><span class="w-d">Aug 28</span>This student toiled in aviaries, barns and pens for his co-op</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/samantha-johnson-convocation-alumni-speaker/"><span class="w-d">Aug 28</span>Samantha Johnson '21, robotics CEO, to speak at Boston Convocation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"><span class="w-d">Aug 28</span>Scientists put algae to work making fuel. AI keeps watch.</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/nepal-tibet-flood/"><span class="w-d">Aug 27</span>Many causes for floods, many causes for their devastation</a><a class="w-item" href="https://news.northeastern.edu/2026/08/27/boston-convocation-guide-2026/"><span class="w-d">Aug 27</span>Boston convocation welcomes new Huskies to Northeastern</a><a class="w-item" href="https://news.northeastern.edu/2026/08/20/microfilm-research-archivist/"><span class="w-d">Aug 20</span>Slow down and zoom in: the case for microfilm research</a><a class="w-item" href="https://news.northeastern.edu/2026/08/12/northeastern-electric-racing-club-2/"><span class="w-d">Aug 12</span>These racing club students were given nine months to make their 'EV baby'</a><a class="w-item" href="https://news.northeastern.edu/2026/07/29/satellite-internet-6g-speeds-research/"><span class="w-d">Jul 29</span>This researcher is launching satellites to unlock faster data speeds</a><a class="w-item" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"><span class="w-d">Jul 27</span>Cracking the axolotl code: how to regrow limbs and stay young</a><a class="w-item" href="https://news.northeastern.edu/2026/07/22/ai-career-amazon-graduate/"><span class="w-d">Jul 22</span>Northeastern graduate finds success and comfort in computer codes</a></div></div>
+<dialog class="dlg info" id="info" aria-labelledby="infoT" data-lenis-prevent>
+  <button class="dlg-x" data-close aria-label="Close">&#10005;</button>
+  <div class="dlg-hero"><img id="infoImg" alt=""><h2 id="infoT"></h2></div>
+  <div class="dlg-body">
+    <p class="bb-meta" id="infoMeta"></p>
+    <p class="dlg-syn" id="infoSyn"></p>
+    <a class="bb-btn" id="infoCta" href="#" hidden><span id="infoCtaL"></span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <h3 class="dlg-eps">Episodes</h3>
+    <div id="infoEps"></div>
   </div>
-</section>
-
+</dialog>
 <div class="shelves">
 <section class="trow" hidden id="continueRow" aria-label="Continue browsing">
   <div class="wrap trow-head"><h2>Continue browsing</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Continue browsing back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Continue browsing forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    
-  </div>
+  <div class="tr-strip"></div>
 </section>
-
-<section class="trow" id="coopRow" aria-label="Co&#8209;op">
-  <div class="wrap trow-head"><h2>Co&#8209;op</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Co&#8209;op back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Co&#8209;op forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    <div class="card wide"><video src="../coop-sm.mp4" muted loop playsinline preload="none" data-hovplay></video><p class="c-t">The co&#8209;op experience</p></div>
-    <a class="card" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/" data-ct="Developing cameras for Apple products, on co&#8209;op" data-cimg="../img/apple-coop.jpg"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><p class="c-t">Developing cameras for Apple products, on co&#8209;op</p></a>
-    <a class="card" href="https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/" data-ct="Teacher, mentor, big sister: six months in a Cambodian dormitory" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg" alt="" loading="lazy"><p class="c-t">Teacher, mentor, big sister: six months in a Cambodian dormitory</p></a>
-    <a class="card" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/" data-ct="Learning how global negotiation really works" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><p class="c-t">Learning how global negotiation really works</p></a>
-    <a class="card" href="https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" data-ct="Coffeehouses, Mozart and international finance, on co&#8209;op" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg" alt="" loading="lazy"><p class="c-t">Coffeehouses, Mozart and international finance, on co&#8209;op</p></a>
-    <a class="card" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/" data-ct="Harvesting oysters on Maine&rsquo;s Nonesuch River, on co&#8209;op" data-cimg="../img/oyster-dock.jpg"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><p class="c-t">Harvesting oysters on Maine&rsquo;s Nonesuch River, on co&#8209;op</p></a>
-  </div>
+<section class="trow" id="ngnRow" aria-label="New on Northeastern Global News">
+  <div class="wrap trow-head"><h2>New on Northeastern Global News</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll New on Northeastern Global News back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll New on Northeastern Global News forward">&#8594;</button></div></div>
+  <div class="tr-strip"><a class="card" href="https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/" data-ct="This Northeastern researcher is making ‘waves’ with magnets" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><p class="c-t">This Northeastern researcher is making ‘waves’ with magnets</p></a><a class="card" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" data-ct="Robots walk to class here. Researchers are teaching them how" data-cimg="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><p class="c-t">Robots walk to class here. Researchers are teaching them how</p></a><a class="card" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/" data-ct="Cracking the axolotl code: how to regrow limbs and stay young" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg" alt="" loading="lazy"><p class="c-t">Cracking the axolotl code: how to regrow limbs and stay young</p></a><a class="card" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/" data-ct="Scientists put algae to work making fuel. AI keeps watch" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg" alt="" loading="lazy"><p class="c-t">Scientists put algae to work making fuel. AI keeps watch</p></a></div>
 </section>
-
+<section class="trow" id="coopRow" aria-label="Co&#8209;op stories">
+  <div class="wrap trow-head"><h2>Co&#8209;op stories</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Co&#8209;op stories back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Co&#8209;op stories forward">&#8594;</button></div></div>
+  <div class="tr-strip"><a class="card" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/" data-ct="Developing cameras for Apple products, on co‑op" data-cimg="../img/apple-coop.jpg"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><p class="c-t">Developing cameras for Apple products, on co‑op</p></a><a class="card" href="https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/" data-ct="Teacher, mentor, big sister: six months in a Cambodian dormitory" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg" alt="" loading="lazy"><p class="c-t">Teacher, mentor, big sister: six months in a Cambodian dormitory</p></a><a class="card" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/" data-ct="Learning how global negotiation really works" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><p class="c-t">Learning how global negotiation really works</p></a><a class="card" href="https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" data-ct="Coffeehouses, Mozart and international finance, on co‑op" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg" alt="" loading="lazy"><p class="c-t">Coffeehouses, Mozart and international finance, on co‑op</p></a><a class="card" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/" data-ct="Harvesting oysters on Maine’s Nonesuch River, on co‑op" data-cimg="../img/oyster-dock.jpg"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><p class="c-t">Harvesting oysters on Maine’s Nonesuch River, on co‑op</p></a></div>
+</section>
 <section class="trow" id="researchRow" aria-label="Research">
   <div class="wrap trow-head"><h2>Research</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Research back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Research forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    <div class="card wide"><video src="../jamie-sm.mp4" muted loop playsinline preload="none" data-hovplay></video><p class="c-t">Inside the labs</p></div>
-    <a class="card" href="https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/" data-ct="This Northeastern researcher is making &lsquo;waves&rsquo; with magnets" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><p class="c-t">This Northeastern researcher is making &lsquo;waves&rsquo; with magnets</p></a>
-    <a class="card" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" data-ct="Robots walk to class here. Researchers are teaching them how" data-cimg="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><p class="c-t">Robots walk to class here. Researchers are teaching them how</p></a>
-    <a class="card" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/" data-ct="Cracking the axolotl code: how to regrow limbs and stay young" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg" alt="" loading="lazy"><p class="c-t">Cracking the axolotl code: how to regrow limbs and stay young</p></a>
-    <a class="card" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/" data-ct="Scientists put algae to work making fuel. AI keeps watch" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg" alt="" loading="lazy"><p class="c-t">Scientists put algae to work making fuel. AI keeps watch</p></a>
-    <a class="card" href="https://news.northeastern.edu/2026/08/07/modular-quantum-computing-research/" data-ct="Quieting &lsquo;the noise&rsquo; in quantum computing" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg" alt="" loading="lazy"><p class="c-t">Quieting &lsquo;the noise&rsquo; in quantum computing</p></a>
-  </div>
+  <div class="tr-strip"><a class="card" href="https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/" data-ct="This Northeastern researcher is making ‘waves’ with magnets" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><p class="c-t">This Northeastern researcher is making ‘waves’ with magnets</p></a><a class="card" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" data-ct="Robots walk to class here. Researchers are teaching them how" data-cimg="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><p class="c-t">Robots walk to class here. Researchers are teaching them how</p></a><a class="card" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/" data-ct="Cracking the axolotl code: how to regrow limbs and stay young" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg" alt="" loading="lazy"><p class="c-t">Cracking the axolotl code: how to regrow limbs and stay young</p></a><a class="card" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/" data-ct="Scientists put algae to work making fuel. AI keeps watch" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg" alt="" loading="lazy"><p class="c-t">Scientists put algae to work making fuel. AI keeps watch</p></a><a class="card" href="https://news.northeastern.edu/2026/08/07/modular-quantum-computing-research/" data-ct="Quieting ‘the noise’ in quantum computing" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg" alt="" loading="lazy"><p class="c-t">Quieting ‘the noise’ in quantum computing</p></a></div>
 </section>
-
-<section class="trow" id="ngnRow" aria-label="New from Northeastern Global News">
-  <div class="wrap trow-head"><h2>New from Northeastern Global News</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll New from Northeastern Global News back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll New from Northeastern Global News forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    <a class="card" href="https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/" data-ct="This Northeastern researcher is making &lsquo;waves&rsquo; with magnets" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><p class="c-t">This Northeastern researcher is making &lsquo;waves&rsquo; with magnets</p></a>
-    <a class="card" href="https://news.northeastern.edu/2025/10/01/walking-the-future/" data-ct="Robots walk to class here. Researchers are teaching them how" data-cimg="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><p class="c-t">Robots walk to class here. Researchers are teaching them how</p></a>
-    <a class="card" href="https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/" data-ct="Cracking the axolotl code: how to regrow limbs and stay young" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg" alt="" loading="lazy"><p class="c-t">Cracking the axolotl code: how to regrow limbs and stay young</p></a>
-    <a class="card" href="https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/" data-ct="Scientists put algae to work making fuel. AI keeps watch" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg" alt="" loading="lazy"><p class="c-t">Scientists put algae to work making fuel. AI keeps watch</p></a>
-  </div>
+<section class="trow" id="lifeRow" aria-label="Life at Northeastern">
+  <div class="wrap trow-head"><h2>Life at Northeastern</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Life at Northeastern back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Life at Northeastern forward">&#8594;</button></div></div>
+  <div class="tr-strip"><a class="card" href="https://news.northeastern.edu/2026/09/11/photos-convocation-ceremonies-fall-fest-and-the-first-day-of-fall-semester/" data-ct="Photos: Convocation ceremonies, Fall Fest and the first day of fall semester" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg" alt="" loading="lazy"><p class="c-t">Photos: Convocation ceremonies, Fall Fest and the first day of fall semester</p></a><a class="card" href="https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/" data-ct="All-analog Oakland student government race brings record voter turnout" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg" alt="" loading="lazy"><p class="c-t">All-analog Oakland student government race brings record voter turnout</p></a><a class="card" href="https://news.northeastern.edu/2026/09/15/bake-it-till-you-make-it-mental-health/" data-ct="This graduate uses baking to cook up conversation about mental health" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/08/Dayna-Altman1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/Dayna-Altman1400.jpg" alt="" loading="lazy"><p class="c-t">This graduate uses baking to cook up conversation about mental health</p></a><a class="card" href="https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/" data-ct="Northeastern students make a fast start to London life" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" alt="" loading="lazy"><p class="c-t">Northeastern students make a fast start to London life</p></a><a class="card" href="https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/" data-ct="Query, create or be curious at the new AI Makerspace in Boston" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg" alt="" loading="lazy"><p class="c-t">Query, create or be curious at the new AI Makerspace in Boston</p></a></div>
 </section>
-
-<section class="trow" id="lifeRow" aria-label="Student life">
-  <div class="wrap trow-head"><h2>Student life</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Student life back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Student life forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    <div class="card wide"><video src="../hero-sm.mp4" muted loop playsinline preload="none" data-hovplay></video><p class="c-t">Boston campus</p></div>
-    <div class="card"><img src="https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg" alt="" loading="lazy"><p class="c-t">Orientation</p></div>
-    <div class="card"><img src="https://news.northeastern.edu/wp-content/uploads/2026/06/063026_AS_Husky101_019.jpg" alt="" loading="lazy"><p class="c-t">Husky 101</p></div>
-    <div class="card"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg" alt="" loading="lazy"><p class="c-t">Beanpot night</p></div>
-    <div class="card"><img src="https://news.northeastern.edu/wp-content/uploads/2025/04/JIM28826.jpg" alt="" loading="lazy"><p class="c-t">On campus</p></div>
-    <div class="card"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="" loading="lazy"><p class="c-t">Convocation</p></div>
-  </div>
-</section>
-
 <section class="trow" id="athleticsRow" aria-label="Athletics">
   <div class="wrap trow-head"><h2>Athletics</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Athletics back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Athletics forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    <a class="card" href="https://gonu.com/" data-ct="Beanpot champions" data-cimg="https://news.northeastern.edu/wp-content/uploads/2024/02/021224_MM_M_beanpot_083.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021224_MM_M_beanpot_083.jpg" alt="" loading="lazy"><p class="c-t">Beanpot champions</p></a>
-    <a class="card" href="https://gonu.com/" data-ct="Northeastern Athletics" data-cimg="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2024/02/021324_MM_beanpot_cele_015.jpg" alt="" loading="lazy"><p class="c-t">Northeastern Athletics</p></a>
-    <a class="card" href="https://news.northeastern.edu/category/sports/" data-ct="Sports at NGN" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="" loading="lazy"><p class="c-t">Sports at NGN</p></a>
-  </div>
+  <div class="tr-strip"><a class="card" href="https://news.northeastern.edu/2026/09/30/husky-cam-schlittler-yankees-red-sox-playoffs/" data-ct="Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg" alt="" loading="lazy"><p class="c-t">Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox</p></a><a class="card" href="https://news.northeastern.edu/2026/03/20/huskies-buckeyes-womens-hockey-frozen-four/" data-ct="Northeastern women’s hockey team’s title run ends in semifinals" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg" alt="" loading="lazy"><p class="c-t">Northeastern women’s hockey team’s title run ends in semifinals</p></a><a class="card" href="https://news.northeastern.edu/2026/03/04/northeastern-hockey-team-impact/" data-ct="Meet the youngest members of Northeastern’s hockey teams" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/02/021026_AS_Ella_Tapp_029.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/02/021026_AS_Ella_Tapp_029.jpg" alt="" loading="lazy"><p class="c-t">Meet the youngest members of Northeastern’s hockey teams</p></a><a class="card" href="https://news.northeastern.edu/2026/02/03/beanpot-semis-huskies-terriers-td-garden/" data-ct="Huskies fall to BU in overtime Beanpot shootout" data-cimg="https://news.northeastern.edu/wp-content/uploads/2026/02/020226_AS_M_Beapot_030.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2026/02/020226_AS_M_Beapot_030.jpg" alt="" loading="lazy"><p class="c-t">Huskies fall to BU in overtime Beanpot shootout</p></a></div>
 </section>
-
-<section class="trow" id="admitRow" aria-label="Admissions">
-  <div class="wrap trow-head"><h2>Admissions</h2><div class="tr-btns"><button class="tr-btn" data-dir="-1" aria-label="Scroll Admissions back">&#8592;</button><button class="tr-btn" data-dir="1" aria-label="Scroll Admissions forward">&#8594;</button></div></div>
-  <div class="tr-strip">
-    <a class="card" href="https://admissions.northeastern.edu/" data-ct="Apply to Northeastern" data-cimg="../img/oyster-coop.jpg"><img src="../img/oyster-coop.jpg" alt="" loading="lazy"><p class="c-t">Apply to Northeastern</p></a>
-    <a class="card" href="https://admissions.northeastern.edu/visit/" data-ct="Visit a campus" data-cimg="../img/microscopy-coop.jpg"><img src="../img/microscopy-coop.jpg" alt="" loading="lazy"><p class="c-t">Visit a campus</p></a>
-    <a class="card" href="https://nuin.northeastern.edu/" data-ct="Start abroad with N.U.in" data-cimg="../img/apple-coop.jpg"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><p class="c-t">Start abroad with N.U.in</p></a>
-    <a class="card" href="https://studentfinance.northeastern.edu/" data-ct="Financial aid" data-cimg="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg"><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="" loading="lazy"><p class="c-t">Financial aid</p></a>
-  </div>
-</section>
-
 </div>
-
 <section class="s-orbit" id="campuses">
   <div class="o-globe" id="oGlobe" role="img" aria-label="Interactive globe showing the connected Northeastern network: campuses, N.U.in cities, and co&#8209;op locations"><canvas></canvas></div>
   <div class="o-overlay">
@@ -678,20 +696,6 @@
     </div>
   </div>
 </section>
-
-<section class="admit" id="admit">
-  <div class="bg" data-plx="34" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2025/05/1400-thumbnail-v2.png')"></div>
-  <div class="inner">
-    <h2>Your turn.</h2>
-    <p>First-year, transfer, graduate, online, or start abroad with N.U.in. However you get here, experience starts on day one.</p>
-    <div class="ctas">
-      <a class="pill red" href="#">Apply</a>
-      <a class="pill ghostw" href="#">Visit</a>
-      <a class="pill ghostw" href="#">Request info</a>
-    </div>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
     <div class="f-head">
@@ -794,7 +798,7 @@ const admitEl = $(".admit");
 const admitIO = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { admitEl.classList.add("in"); admitIO.disconnect(); }
 }), { threshold: 0.35 });
-admitIO.observe(admitEl);
+if (admitEl) admitIO.observe(admitEl);
 
 /* ============ globe data ============ */
 const CAMPUSES = [
@@ -1214,40 +1218,122 @@ return { fly: startFly, layers: function(o){ Object.assign(tgt, o); },
          setCampuses: function(a){ CAMPUSES_ = a; } };
 }
 
-/* ============ live NGN wire ============ */
-(async () => {
-  try {
-    const r = await fetch("https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=18&_fields=title,link,date");
-    if (!r.ok) return;
-    const posts = (await r.json()).filter(p => !/^Photos:/i.test(p.title.rendered)).slice(0, 14);
-    if (!posts.length) return;
-    const mo = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-    const strip = document.createElement("div");
-    const html = posts.map(p => {
-      strip.innerHTML = p.title.rendered;
-      const d = new Date(p.date);
-      return `<a class="w-item" href="${p.link}"><span class="w-d">${mo[d.getMonth()]} ${d.getDate()}</span>${strip.textContent}</a>`;
-    }).join("");
-    $$(".w-track").forEach(tr => { tr.innerHTML = html + html; });
-  } catch (e) { /* baked headlines remain */ }
-})();
+/* ============ Northeastern Originals: the billboard ============ */
+const SHOWS = [{"title": "Co‑op", "video": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4", "thumb": "../img/apple-coop.jpg", "play": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4", "meta": ["Experiential learning", "500,000+ placements", "10,000+ employers"], "syn": "Students alternate semesters in class with full‑time work at organizations around the world, then bring what they learned back to campus.", "eps": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}, {"t": "Harvesting oysters on Maine’s Nonesuch River, on co‑op", "img": "../img/oyster-dock.jpg", "u": "https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"}]}, {"title": "Research", "video": "../hero.mp4", "thumb": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "play": "../hero.mp4", "meta": ["$296M in external awards last year", "50+ federally funded centers"], "syn": "Our research story starts in the world. Faculty and students work on quantum systems, regenerative biology, robotics, and climate, and the work doesn’t stay in the lab.", "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}, {"t": "Quieting ‘the noise’ in quantum computing", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg", "u": "https://news.northeastern.edu/2026/08/07/modular-quantum-computing-research/"}]}, {"title": "Global network", "video": "https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4", "thumb": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "play": "https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4", "meta": ["14 campuses", "U.S., U.K., and Canada", "N.U.in across Europe"], "syn": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "cta": {"label": "Explore the map", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}]}, {"title": "Student life", "video": "https://www.northeastern.edu/wp-content/uploads/Jamie-Wong-Video-Fade.mp4", "thumb": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "play": "https://www.northeastern.edu/wp-content/uploads/Jamie-Wong-Video-Fade.mp4", "meta": ["Four undergraduate campuses", "Clubs, arts, and athletics"], "syn": "This place doesn’t slow down. Convocation, Fall Fest, student elections, and everything in between.", "eps": [{"t": "Photos: Convocation ceremonies, Fall Fest and the first day of fall semester", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "u": "https://news.northeastern.edu/2026/09/11/photos-convocation-ceremonies-fall-fest-and-the-first-day-of-fall-semester/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}, {"t": "This graduate uses baking to cook up conversation about mental health", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Dayna-Altman1400.jpg", "u": "https://news.northeastern.edu/2026/09/15/bake-it-till-you-make-it-mental-health/"}, {"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}]}, {"title": "Athletics", "still": "https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg", "thumb": "https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg", "meta": ["NCAA Division I", "Go Huskies"], "syn": "Division I Huskies, from Matthews Arena to the Charles River.", "cta": {"label": "Go to GoNU.com", "href": "https://gonu.com/"}, "eps": [{"t": "Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg", "u": "https://news.northeastern.edu/2026/09/30/husky-cam-schlittler-yankees-red-sox-playoffs/"}, {"t": "Northeastern women’s hockey team’s title run ends in semifinals", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg", "u": "https://news.northeastern.edu/2026/03/20/huskies-buckeyes-womens-hockey-frozen-four/"}, {"t": "Meet the youngest members of Northeastern’s hockey teams", "img": "https://news.northeastern.edu/wp-content/uploads/2026/02/021026_AS_Ella_Tapp_029.jpg", "u": "https://news.northeastern.edu/2026/03/04/northeastern-hockey-team-impact/"}, {"t": "Huskies fall to BU in overtime Beanpot shootout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/02/020226_AS_M_Beapot_030.jpg", "u": "https://news.northeastern.edu/2026/02/03/beanpot-semis-huskies-terriers-td-garden/"}]}, {"title": "Your turn.", "still": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "thumb": "https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg", "meta": ["Apply", "Visit", "Financial aid"], "syn": "Four campuses to start from, and a world to work in after that. Here’s how to begin.", "cta": {"label": "Apply", "href": "https://admissions.northeastern.edu/"}, "eps": [{"t": "Apply to Northeastern", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg", "u": "https://admissions.northeastern.edu/"}, {"t": "Visit a campus", "img": "https://news.northeastern.edu/wp-content/uploads/2025/04/JIM28826.jpg", "u": "https://admissions.northeastern.edu/visit/"}, {"t": "Financial aid and scholarships", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "u": "https://studentfinance.northeastern.edu/"}, {"t": "Start your degree abroad with N.U.in", "img": "https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg", "u": "https://nuin.northeastern.edu/"}]}];
+const bbEl = $("#top"), bbContent = $("#bbContent");
+const bbLayers = $$(".bb-layer"), showBtns = $$(".show");
+const bbTitle = $("#bbTitle"), bbMeta = $("#bbMeta"), bbSyn = $("#bbSyn");
+const bbPlay = $("#bbPlay"), bbCta = $("#bbCta"), bbCtaL = $("#bbCtaL"), bbMute = $("#bbMute");
+const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const SHOW_MS = 14000;
+let bbCur = -1, bbMuted = true, bbAuto = !reduceMotion, bbAutoT = null, bbSettleT = null, bbVisible = true;
+const layerVid = i => bbLayers[i].querySelector("video");
+function bbText(s) {
+  bbTitle.textContent = s.title;
+  bbMeta.innerHTML = s.meta.map(m => `<span>${esc(m)}</span>`).join("");
+  bbSyn.textContent = s.syn;
+  bbPlay.hidden = !s.play;
+  if (s.cta) { bbCta.hidden = false; bbCta.href = s.cta.href; bbCtaL.textContent = s.cta.label; }
+  else bbCta.hidden = true;
+  bbMute.hidden = !s.video;
+}
+function bbTimer() {
+  showBtns.forEach(b => b.classList.remove("timing"));
+  clearTimeout(bbAutoT);
+  if (!bbAuto || !bbVisible) return;
+  const b = showBtns[bbCur];
+  b.style.setProperty("--dur", SHOW_MS + "ms");
+  void b.offsetWidth;
+  b.classList.add("timing");
+  bbAutoT = setTimeout(() => bbSelect((bbCur + 1) % SHOWS.length), SHOW_MS);
+}
+function bbSelect(i) {
+  if (i === bbCur) return;
+  const prev = bbCur; bbCur = i;
+  bbLayers.forEach((l, j) => l.classList.toggle("on", j === i));
+  showBtns.forEach((b, j) => b.setAttribute("aria-pressed", j === i ? "true" : "false"));
+  const v = layerVid(i);
+  if (v) {
+    if (!v.dataset.loaded) { v.dataset.loaded = "1"; v.load(); }
+    v.muted = bbMuted;
+    if (!reduceMotion && bbVisible) v.play().catch(() => {});
+  }
+  if (prev >= 0) {
+    const pv = layerVid(prev);
+    if (pv) setTimeout(() => { if (bbCur !== prev) pv.pause(); }, 950);
+    bbContent.classList.add("swap");
+    setTimeout(() => { bbText(SHOWS[i]); bbContent.classList.remove("swap", "settled"); }, 280);
+  } else bbText(SHOWS[i]);
+  clearTimeout(bbSettleT);
+  if (!reduceMotion) bbSettleT = setTimeout(() => bbContent.classList.add("settled"), 7000);
+  bbTimer();
+}
+showBtns.forEach((b, i) => b.addEventListener("click", () => {
+  bbAuto = false;
+  bbContent.classList.remove("settled");
+  bbSelect(i);
+  bbTimer();
+}));
+bbMute.addEventListener("click", () => {
+  bbMuted = !bbMuted;
+  bbMute.setAttribute("aria-pressed", bbMuted ? "false" : "true");
+  bbMute.setAttribute("aria-label", bbMuted ? "Unmute" : "Mute");
+  const v = layerVid(bbCur);
+  if (v) v.muted = bbMuted;
+});
+new IntersectionObserver(es => es.forEach(e => {
+  bbVisible = e.isIntersecting;
+  const v = bbCur >= 0 ? layerVid(bbCur) : null;
+  if (v) { if (bbVisible && !reduceMotion) v.play().catch(() => {}); else v.pause(); }
+  bbTimer();
+}), { threshold: 0.25 }).observe(bbEl);
+bbSelect(0);
 
-/* ============ shelf controls: arrows, hover-play tiles ============ */
+/* ============ player + more-info dialogs ============ */
+const player = $("#player"), playerV = $("#playerV"), info = $("#info");
+$$(".dlg").forEach(d => {
+  d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-close]")) d.close(); });
+});
+bbPlay.addEventListener("click", () => {
+  const s = SHOWS[bbCur];
+  if (!s.play) return;
+  const v = layerVid(bbCur); if (v) v.pause();
+  clearTimeout(bbAutoT); bbAuto = false; bbTimer();
+  playerV.src = s.play; playerV.muted = false;
+  player.showModal();
+  playerV.play().catch(() => {});
+});
+player.addEventListener("close", () => {
+  playerV.pause(); playerV.removeAttribute("src"); playerV.load();
+  const v = layerVid(bbCur); if (v && !reduceMotion) v.play().catch(() => {});
+});
+$("#bbInfo").addEventListener("click", () => {
+  const s = SHOWS[bbCur];
+  bbAuto = false; bbTimer();
+  $("#infoImg").src = s.thumb;
+  $("#infoT").textContent = s.title;
+  $("#infoMeta").innerHTML = s.meta.map(m => `<span>${esc(m)}</span>`).join("");
+  $("#infoSyn").textContent = s.syn;
+  const ic = $("#infoCta");
+  if (s.cta) { ic.hidden = false; ic.href = s.cta.href; $("#infoCtaL").textContent = s.cta.label; }
+  else ic.hidden = true;
+  $("#infoEps").innerHTML = s.eps.map((e, n) =>
+    `<a class="ep" href="${esc(e.u)}" data-ct="${esc(e.t)}" data-cimg="${esc(e.img)}">` +
+    `<span class="ep-n">${n + 1}</span><img src="${esc(e.img)}" alt="" loading="lazy">` +
+    `<span class="ep-t">${esc(e.t)}</span></a>`).join("");
+  info.showModal();
+});
+$("#infoCta").addEventListener("click", e => {
+  const href = e.currentTarget.getAttribute("href");
+  if (href && href.startsWith("#")) { e.preventDefault(); info.close(); document.querySelector(href).scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth" }); }
+});
+
+/* ============ shelves: arrows ============ */
 $$(".trow").forEach(sec => {
   const strip = sec.querySelector(".tr-strip");
   sec.querySelectorAll(".tr-btn").forEach(b => b.addEventListener("click", () => {
-    strip.scrollBy({ left: +b.dataset.dir * strip.clientWidth * 0.85,
-                     behavior: reduceMotion ? "auto" : "smooth" });
+    strip.scrollBy({ left: +b.dataset.dir * strip.clientWidth * 0.85, behavior: reduceMotion ? "auto" : "smooth" });
   }));
-});
-$$("video[data-hovplay]").forEach(v => {
-  const cardEl = v.closest(".card");
-  cardEl.addEventListener("mouseenter", () => {
-    if (reduceMotion) return;
-    if (!v.dataset.loaded) { v.dataset.loaded = "1"; v.load(); }
-    v.play().catch(() => {});
-  });
-  cardEl.addEventListener("mouseleave", () => v.pause());
 });
 
 /* ============ continue browsing (this browser only) ============ */
@@ -1258,18 +1344,18 @@ if (cbRow) {
   const seen = cbRead().slice(0, 8);
   if (seen.length) {
     cbRow.querySelector(".tr-strip").innerHTML = seen.map(c =>
-      `<a class="card" href="${c.u}" data-ct="${c.t}" data-cimg="${c.img}">` +
-      `<img src="${c.img}" alt="" loading="lazy"><p class="c-t">${c.t}</p></a>`).join("");
+      `<a class="card" href="${esc(c.u)}" data-ct="${esc(c.t)}" data-cimg="${esc(c.img)}">` +
+      `<img src="${esc(c.img)}" alt="" loading="lazy"><p class="c-t">${esc(c.t)}</p></a>`).join("");
     cbRow.hidden = false;
   }
-  addEventListener("click", e => {
-    const a = e.target.closest("a.card");
-    if (!a || !a.dataset.cimg) return;
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[data-cimg]");
+    if (!a) return;
     try {
       const list = cbRead().filter(c => c.u !== a.href);
       list.unshift({ t: a.dataset.ct, img: a.dataset.cimg, u: a.href });
       localStorage.setItem(CB_KEY, JSON.stringify(list.slice(0, 12)));
-    } catch (e2) { /* private mode etc */ }
+    } catch (e2) { /* storage unavailable */ }
   });
 }
 
@@ -1278,7 +1364,7 @@ if (cbRow) {
   try {
     const r = await fetch("https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=12&_embed=wp:featuredmedia");
     if (!r.ok) return;
-    const strip = document.createElement("div");
+    const tmp = document.createElement("div");
     const cards = (await r.json())
       .filter(p => !/^Photos:/i.test(p.title.rendered))
       .map(p => {
@@ -1286,17 +1372,17 @@ if (cbRow) {
         if (!m) return null;
         const sz = m.media_details && m.media_details.sizes;
         const img = (sz && (sz.medium_large || sz.large || sz.medium) || m).source_url || m.source_url;
-        strip.innerHTML = p.title.rendered;
-        const t = strip.textContent;
-        return `<a class="card" href="${p.link}" data-ct="${t.replace(/"/g, "&quot;")}" data-cimg="${img}">` +
-               `<img src="${img}" alt="" loading="lazy"><p class="c-t">${t}</p></a>`;
+        tmp.innerHTML = p.title.rendered;
+        const t = tmp.textContent;
+        return `<a class="card" href="${esc(p.link)}" data-ct="${esc(t)}" data-cimg="${esc(img)}">` +
+               `<img src="${esc(img)}" alt="" loading="lazy"><p class="c-t">${esc(t)}</p></a>`;
       })
       .filter(Boolean).slice(0, 10);
     if (cards.length >= 4) $("#ngnRow .tr-strip").innerHTML = cards.join("");
   } catch (e) { /* baked cards remain */ }
 })();
 
-/* ============ the network: everything lit, everything connected ============ */
+/* ============ the network globe ============ */
 let STORY_PINS, storySel = -1;
 const oGlobeEl = $("#oGlobe");
 if (oGlobeEl) {
@@ -1313,24 +1399,7 @@ if (oGlobeEl) {
   });
 }
 
-/* ============ clip-reveal lines ============ */
-const lineIO = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) { e.target.classList.add("in"); lineIO.unobserve(e.target); }
-}), { threshold: 0.3 });
-$$(".line").forEach(el => lineIO.observe(el));
-
 /* ============ subtle scroll movement ============ */
-/* hero: content drifts and fades as it scrolls away */
-const heroContent = $(".hero .content"), heroVideo = $(".hero video");
-if (!reduceMotion) addEventListener("scroll", () => {
-  const y = scrollY;
-  if (y < innerHeight * 1.2) {
-    heroContent.style.transform = `translateY(${(y * .16).toFixed(1)}px)`;
-    heroContent.style.opacity = Math.max(0, 1 - y / innerHeight * .9);
-    heroVideo.style.transform = `translateY(${(y * .1).toFixed(1)}px)`;
-  }
-}, { passive: true });
-
 /* parallax on select backdrops (elements sized with negative inset headroom) */
 const plx = $$("[data-plx]").map(el => ({ el, s: +el.dataset.plx }));
 if (plx.length && !reduceMotion) {
