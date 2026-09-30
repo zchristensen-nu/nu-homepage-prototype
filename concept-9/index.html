@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northeastern University</title>
+<meta name="concept9-rev" content="1">
+<style>
+  /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
+  @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
+    src:url("https://www.northeastern.edu/wp-content/themes/nu-start-child/fonts/FFRealHeadLight_normal_normal.woff2") format("woff2")}
+  @font-face{font-family:"FF Real Head";font-weight:300;font-style:normal;font-display:swap;
+    src:url("https://www.northeastern.edu/wp-content/themes/nu-start-child/fonts/FFRealHeadSemilight_normal_normal.woff2") format("woff2")}
+  @font-face{font-family:"FF Real Head";font-weight:400;font-style:normal;font-display:swap;
+    src:url("https://www.northeastern.edu/wp-content/themes/nu-start-child/fonts/FFRealHeadRegular_normal_normal.woff2") format("woff2")}
+  @font-face{font-family:"FF Real Head";font-weight:600;font-style:normal;font-display:swap;
+    src:url("https://www.northeastern.edu/wp-content/themes/nu-start-child/fonts/FFRealHeadMedium_normal_normal.woff2") format("woff2")}
+  @font-face{font-family:"FF Real Head";font-weight:700;font-style:normal;font-display:swap;
+    src:url("https://www.northeastern.edu/wp-content/themes/nu-start-child/fonts/FFRealHeadBold_normal_normal.woff2") format("woff2")}
+
+  :root{
+    --red:#C8102E; --ink:#111111; --paper:#FAFAFA; --white:#fff;
+    --n1:#F5F5F5; --n2:#E5E5E5; --n3:#D4D4D4; --n4:#A3A3A3; --n5:#737373; --n6:#404040;
+    --dark:#0B0B0E; --sans:"FF Real Head","Lato","Helvetica Neue",Arial,sans-serif;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html.lenis, html.lenis body{height:auto}
+  .lenis.lenis-smooth{scroll-behavior:auto !important}
+  .lenis.lenis-stopped{overflow:hidden}
+  body{font-family:var(--sans);font-weight:300;color:var(--ink);background:var(--paper);line-height:1.5;
+    -webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+  img{max-width:100%;display:block}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+  .display{font-weight:200;letter-spacing:-.025em;line-height:1.02;color:var(--ink)}
+  .storylink{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-top:18px;
+    border-bottom:1px solid transparent;transition:.2s}
+  .storylink::after{content:"\2192";transition:transform .25s var(--ease)}
+  .storylink:hover::after{transform:translateX(5px)}
+  .storylink:hover{color:var(--red)}
+  .pill{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;
+    padding:14px 32px;border-radius:999px;border:1.5px solid currentColor;transition:.22s var(--ease);cursor:pointer}
+  .pill.solid{background:var(--ink);border-color:var(--ink);color:#fff}
+  .pill.solid:hover{background:var(--red);border-color:var(--red)}
+  .pill.red{background:var(--red);border-color:var(--red);color:#fff}
+  .pill.red:hover{background:#a30d25;border-color:#a30d25}
+  .pill.ghostw{color:#fff;border-color:rgba(255,255,255,.7)}
+  .pill.ghostw:hover{background:#fff;color:var(--ink);border-color:#fff}
+
+  /* reveal-on-scroll */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .rv{opacity:1;transform:none;transition:none}
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .35s,box-shadow .35s;padding:0}
+  .nav .row{display:flex;align-items:center;gap:34px;height:72px}
+  .nav .wordmark{display:flex;align-items:center}
+  .nav .wordmark img{height:26px;width:auto;display:block}
+  .nav nav{display:flex;gap:26px;font-size:14px;font-weight:400;color:#fff;transition:color .35s}
+  .nav nav a{opacity:.85}
+  .nav nav a:hover{opacity:1}
+  .nav .apply{margin-left:auto}
+  .nav .apply .pill{padding:9px 24px;font-size:13.5px;color:#fff;border-color:rgba(255,255,255,.75)}
+  .nav .apply .pill:hover{background:var(--red);border-color:var(--red)}
+  .nav.solid{background:rgba(11,11,14,.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
+  @media(max-width:960px){.nav nav{display:none}}
+
+  .srch{position:fixed;top:0;left:0;right:0;z-index:220;background:rgba(11,11,14,.96);
+    backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 24px 48px rgba(0,0,0,.4)}
+  .srch form{display:flex;align-items:center;gap:14px;padding-top:26px;padding-bottom:26px}
+  .srch input{flex:1;font:inherit;font-size:clamp(18px,2vw,26px);font-weight:300;color:#fff;
+    background:none;border:0;border-bottom:1.5px solid rgba(255,255,255,.3);padding:10px 2px;outline:none}
+  .srch input:focus{border-color:#fff}
+  .srch .pill{font-size:13.5px;padding:10px 24px}
+  .srch-x{border:0;background:none;font-size:26px;color:#8a8a92;cursor:pointer;padding:4px 8px}
+  .srch-x:hover{color:#fff}
+  .nvicon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
+    border:0;background:none;color:#fff;cursor:pointer;border-radius:50%;transition:.2s}
+  .nvicon:hover{background:rgba(128,128,136,.18)}
+  .nvright{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .tkv-open{font:inherit;font-size:14px;font-weight:500;color:#fff;background:none;
+    border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 20px;cursor:pointer;transition:.2s}
+  .tkv-open:hover{background:rgba(128,128,136,.18)}
+  .tkv{position:fixed;inset:0;z-index:240;background:var(--dark);color:#fff;overflow-y:auto;padding-bottom:70px}
+  .tkv-head{display:flex;justify-content:space-between;align-items:center;height:72px}
+  .tkv-title{font-size:14px;color:#8a8a92}
+  .tkv-x{border:0;background:none;color:#fff;font-size:30px;cursor:pointer;padding:2px 8px}
+  .tkv-x:hover{color:#FFB3BE}
+  .tkv-search{margin:14px 0 26px}
+  .tkv-search input{width:100%;font:inherit;font-size:clamp(18px,2vw,24px);font-weight:300;color:#fff;
+    background:none;border:0;border-bottom:1.5px solid rgba(255,255,255,.3);padding:12px 2px;outline:none}
+  .tkv-search input:focus{border-color:#fff}
+  .tkv-g{width:100%;display:flex;justify-content:space-between;align-items:center;
+    font:inherit;font-size:clamp(21px,2.4vw,28px);font-weight:300;color:#fff;background:none;
+    border:0;border-bottom:1px solid rgba(255,255,255,.14);padding:18px 0;cursor:pointer;text-align:left}
+  .tkv-g:hover{color:#FFB3BE}
+  .tkv-c{font-size:20px;font-weight:300;color:#8a8a92;transition:transform .3s var(--ease)}
+  .tkv-g[aria-expanded="true"] .tkv-c{transform:rotate(45deg)}
+  .tkv-sub{display:none;padding:8px 0 22px;border-bottom:1px solid rgba(255,255,255,.14)}
+  .tkv-sub.open{display:block;columns:2;column-gap:clamp(28px,5vw,72px)}
+  @media(max-width:720px){.tkv-sub.open{columns:1}}
+  .tkv-sub a{display:block;padding:7px 0;font-size:15px;color:#C9C9CF}
+  .tkv-sub a:hover{color:#fff}
+  .tkv-more{margin-top:34px;display:flex;flex-wrap:wrap;gap:4px 26px}
+  .tkv-more a{font-size:14.5px;color:#8a8a92;padding:5px 0}
+  .tkv-more a:hover{color:#fff}
+  /* mega-dropdown bar */
+  .mnav{display:flex;gap:22px;align-items:center}
+  .mnav-btn{font:inherit;font-size:14px;font-weight:400;color:#fff;opacity:.85;background:none;border:0;
+    cursor:pointer;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s}
+  .mnav-btn:hover{opacity:1}
+  .mnav-btn[aria-expanded="true"]{opacity:1;border-bottom-color:currentColor}
+  .morebtn{opacity:.7;font-size:13.5px}
+  .mpanel{position:absolute;left:0;right:0;top:100%;background:rgba(11,11,14,.96);
+    backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 30px 60px rgba(0,0,0,.45)}
+  .mpanel[hidden]{display:none}
+  .mp-in{display:flex;gap:clamp(26px,4vw,64px);padding-top:34px;padding-bottom:42px;
+    max-height:76vh;overflow-y:auto}
+  .mp-lead{max-width:230px}
+  .mp-title{font-size:22px;font-weight:300;letter-spacing:-.01em;color:#fff}
+  .mp-lead p{margin-top:8px;font-size:13.5px;color:#A9A9B2;line-height:1.5}
+  .mp-lead .storylink{font-size:13.5px;margin-top:14px;color:#fff}
+  .mp-lead .storylink:hover{color:#FFB3BE}
+  .mp-h{font-size:13px;font-weight:600;color:#8a8a92;margin-bottom:10px}
+  .mp-links a{display:block;padding:7px 0;font-size:14.5px;color:#D4D4D4;white-space:nowrap}
+  .mp-links a:hover{color:#FFB3BE}
+  .mp-col.cols2 .mp-links{columns:2;column-gap:clamp(24px,3vw,48px)}
+  .mp-feat{display:block;margin-left:auto;width:min(300px,24vw);flex-shrink:0}
+  .mp-feat img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;
+    transition:transform .5s var(--ease)}
+  .mp-feat:hover img{transform:scale(1.02)}
+  .mp-feat .ft{display:block;margin-top:12px;font-size:14.5px;font-weight:500;line-height:1.35;color:#fff}
+  .mp-feat .fl{display:block;margin-top:8px;font-size:13px;color:#8a8a92;transition:.2s}
+  .mp-feat:hover .fl{color:#FFB3BE}
+  .navx .tkv-open{display:none}
+  @media(max-width:960px){
+    .mnav{display:none}
+    .navx .morebtn{display:none}
+    .navx .tkv-open{display:inline-flex}
+  }
+
+
+  /* ================= concept 9: Northeastern Live ================= */
+  body{background:#08080B;color:#fff}
+  :root{--g:calc(max(0px, (100vw - 1280px) / 2) + clamp(20px, 4vw, 48px));--chw:190px;--rowh:84px;--timesh:44px}
+  .nav.solid{background:rgba(8,8,11,.94)}
+  .lv-app{height:100svh;min-height:760px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);padding-top:72px}
+  .lv-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,3vw,44px);align-items:stretch;
+    padding:18px var(--g) 18px;height:clamp(300px,43svh,470px)}
+  .lv-screen{position:relative;height:100%;aspect-ratio:16/9;max-width:56vw;border-radius:10px;overflow:hidden;background:#000;
+    box-shadow:0 0 0 1px rgba(255,255,255,.08),0 24px 60px rgba(0,0,0,.6)}
+  .lv-screen > img:not(.lv-bug),.lv-screen > video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .lv-screen > img:not(.lv-bug){animation:lvkb 18s ease-in-out infinite alternate}
+  @keyframes lvkb{from{transform:scale(1)}to{transform:scale(1.09) translate(-1.2%,-1%)}}
+  .lv-screen video{opacity:0;transition:opacity .5s}
+  .lv-screen video.live{opacity:1}
+  .lv-screen::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.55),transparent 35%),linear-gradient(to bottom,rgba(0,0,0,.45),transparent 30%)}
+  .lv-screen::after{content:"";position:absolute;inset:-50%;z-index:4;pointer-events:none;opacity:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .lv-screen.flip::after{animation:lvstatic .32s steps(4)}
+  @keyframes lvstatic{0%{opacity:.75;transform:translate(0,0)}33%{opacity:.6;transform:translate(-3%,2%)}66%{opacity:.35;transform:translate(2%,-3%)}100%{opacity:0}}
+  .lv-osd{position:absolute;z-index:3;left:16px;top:14px;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+  .lv-badge{display:inline-flex;align-items:center;gap:7px;padding:4px 10px;border-radius:4px;background:rgba(0,0,0,.55)}
+  .lv-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:#8E8E96}
+  .lv-badge.on::before{background:var(--red);animation:lvpulse 1.8s ease infinite}
+  @keyframes lvpulse{0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,.6)}50%{box-shadow:0 0 0 6px rgba(200,16,46,0)}}
+  .lv-chnum{position:absolute;z-index:3;right:16px;top:10px;font-size:30px;font-weight:700;letter-spacing:-.02em;
+    color:rgba(255,255,255,.92);text-shadow:0 2px 10px rgba(0,0,0,.6);font-variant-numeric:tabular-nums}
+  .lv-bug{position:absolute;z-index:3;right:16px;bottom:14px;height:22px;width:auto;opacity:.75}
+  .lv-info{display:flex;flex-direction:column;justify-content:flex-end;min-width:0;padding-bottom:4px}
+  .lv-kick{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;color:#A9A9B2}
+  .lv-kick b{color:#fff}
+  .lv-title{margin-top:12px;font-size:clamp(24px,2.6vw,42px);font-weight:600;letter-spacing:-.025em;line-height:1.1;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .lv-when{margin-top:14px;display:flex;align-items:center;gap:12px;font-size:14px;color:#D4D4D9;font-variant-numeric:tabular-nums}
+  .lv-prog{position:relative;width:120px;height:3px;border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden}
+  .lv-prog i{position:absolute;left:0;top:0;bottom:0;background:var(--red)}
+  .lv-ex{margin-top:12px;font-size:15px;line-height:1.5;color:#C9C9D0;max-width:56ch;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .lv-acts{margin-top:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .lv-go{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 22px;border-radius:6px;background:#fff;color:#0B0B0E;
+    font-size:15.5px;font-weight:600}
+  .lv-go:hover{background:rgba(255,255,255,.8)}
+  .lv-next{font-size:13.5px;color:#A9A9B2;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46ch}
+  .lv-next b{color:#E5E5EA;font-weight:600}
+
+  /* guide */
+  .lv-guide{min-height:0;min-width:0;margin-left:var(--g);border-top:1px solid rgba(255,255,255,.08);position:relative}
+  .lv-scroll{height:100%;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#2a2a31 transparent}
+  .lv-grid{position:relative}
+  .lv-times{position:sticky;top:0;z-index:5;height:var(--timesh);background:#08080B;border-bottom:1px solid rgba(255,255,255,.08)}
+  .lv-corner{position:sticky;left:0;z-index:6;width:var(--chw);height:100%;background:#08080B;display:flex;align-items:center;
+    gap:8px;font-size:13px;font-weight:600;color:#fff;font-variant-numeric:tabular-nums}
+  .lv-corner span{color:#A9A9B2;font-weight:500}
+  .lv-tl{position:absolute;top:0;height:100%;display:flex;align-items:flex-start;padding:7px 0 0 10px;font-size:12.5px;font-weight:500;
+    color:#A9A9B2;border-left:1px solid rgba(255,255,255,.08);font-variant-numeric:tabular-nums}
+  .lv-row{position:relative;display:flex;height:var(--rowh);border-bottom:1px solid rgba(255,255,255,.05)}
+  .lv-ch{position:sticky;left:0;z-index:4;flex:0 0 var(--chw);display:flex;align-items:center;gap:12px;padding:0 14px 0 0;
+    background:#08080B;color:#fff;border-right:1px solid rgba(255,255,255,.08)}
+  .lv-ch:hover .lv-chn{color:#fff}
+  .lv-ch .num{font-size:13px;font-weight:600;color:#6E6E78;font-variant-numeric:tabular-nums;width:30px}
+  .lv-chn{font-size:14.5px;font-weight:600;color:#E5E5EA;line-height:1.2}
+  .lv-ch:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+  .lv-progs{position:relative;flex:1}
+  .pg{position:absolute;top:5px;bottom:5px;border-radius:7px;background:#15151A;color:#fff;padding:9px 12px;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:space-between;transition:background .15s,box-shadow .15s}
+  .pg.live{background:#1D1D24;box-shadow:inset 3px 0 0 var(--red)}
+  .pg.past{opacity:.42}
+  .pg:hover,.pg:focus-visible,.pg.sel{background:#2A2A33}
+  .pg.sel{box-shadow:inset 0 0 0 2px #fff}
+  .pg.live.sel{box-shadow:inset 3px 0 0 var(--red),inset 0 0 0 2px #fff}
+  .pg:focus-visible{outline:none}
+  .pg-t{font-size:13.5px;font-weight:600;line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pg-m{font-size:11.5px;color:#9A9AA3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+  .lv-nowline{position:absolute;top:0;bottom:0;z-index:3;width:2px;margin-left:-1px;background:var(--red);pointer-events:none}
+  .lv-nowtag{position:absolute;z-index:7;bottom:4px;transform:translateX(-50%);padding:1px 7px;border-radius:4px;background:var(--red);
+    font-size:11.5px;font-weight:700;color:#fff;pointer-events:none}
+  .lv-hint{margin-left:auto;font-size:12px;font-weight:500;color:#6E6E78;white-space:nowrap}
+  .lv-hint kbd{font-family:inherit;border:1px solid #33333b;border-radius:4px;padding:0 5px;color:#A9A9B2}
+
+  @media (max-width:820px){
+    :root{--chw:118px;--rowh:80px}
+    .lv-app{height:auto;min-height:0;grid-template-rows:auto auto}
+    .lv-top{grid-template-columns:1fr;height:auto;padding-top:14px}
+    .lv-screen{width:100%;height:auto;max-width:none}
+    .lv-app{grid-template-rows:auto auto}
+    .lv-guide{margin-left:0;height:72svh}
+    .lv-chn{font-size:13px}.lv-ch .num{display:none}.lv-ch{padding-left:12px}
+    .lv-hint{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .lv-screen img{animation:none}
+      .lv-screen.flip::after,.lv-badge.on::before{animation:none}
+  }
+
+  /* ---------- ADMISSIONS CTA ---------- */
+  .admit{position:relative;z-index:6;min-height:92svh;display:flex;align-items:center;overflow:hidden;color:#fff}
+  .admit .bg{position:absolute;inset:-8% 0;background-size:cover;background-position:center 30%;
+    filter:brightness(.5);opacity:0;transition:opacity 1.4s var(--ease)}
+  .admit.in .bg{opacity:1}
+  .admit .inner > *{opacity:0;transform:translateY(26px);
+    transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .admit .inner > :nth-child(2){transition-delay:.18s}
+  .admit .inner > :nth-child(3){transition-delay:.36s}
+  .admit.in .inner > *{opacity:1;transform:none}
+  @media (prefers-reduced-motion: reduce){
+    .admit .bg,.admit .inner > *{opacity:1;transform:none;transition:none}
+  }
+  .admit .inner{position:relative;z-index:2;text-align:center;width:100%;padding:100px 20px}
+  .admit h2{font-size:clamp(56px,10vw,140px);font-weight:200;letter-spacing:-.03em;line-height:1;color:#fff}
+  .admit p{margin:18px auto 0;font-size:17px;color:#E5E5E5;max-width:44ch}
+  .admit .ctas{margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- FOOTER ---------- */
+  footer{position:relative;z-index:6;background:#000;color:var(--n4);padding:76px 0 0;font-size:13.5px;overflow:hidden}
+  .f-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;
+    padding-bottom:40px;border-bottom:1px solid #1e1e22;margin-bottom:44px}
+  .f-n{height:36px;width:auto;display:block}
+  .f-brand p{margin-top:16px}
+  .f-soc{display:flex;gap:22px;flex-wrap:wrap}
+  .f-soc a{color:var(--n5)}
+  .f-soc a:hover{color:#fff}
+  .f-cols{display:grid;grid-template-columns:repeat(7,1fr);gap:30px 22px}
+  @media(max-width:1100px){.f-cols{grid-template-columns:repeat(4,1fr)}}
+  @media(max-width:700px){.f-cols{grid-template-columns:repeat(2,1fr)}}
+  .f-col a{display:block;padding:5px 0;color:var(--n4)}
+  .f-col a:hover{color:#fff}
+  footer .base{border-top:1px solid #1e1e22;margin-top:52px;padding:22px 0;display:flex;
+    justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--n5)}
+  .f-legal{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+  .f-legal a:hover{color:#fff}
+  .f-cookie{font:inherit;color:var(--n5);background:none;border:0;padding:0;cursor:pointer}
+  .f-cookie:hover{color:#fff}
+  .f-giant{line-height:0;margin-top:34px}
+  .f-giant svg{display:block;width:100%;height:auto;transform:translateY(22%)}
+  .f-giant svg path,.f-giant svg polygon{fill:#fff}
+</style>
+
+<body>
+
+<header class="nav navx" id="nav">
+  <div class="wrap row">
+    <a class="wordmark" href="#" aria-label="Northeastern University home"><img src="data:image/png;base64,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" alt=""></a>
+    <nav class="mnav" aria-label="Primary">
+      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>
+      <button class="mnav-btn" data-panel="mp-academics" aria-expanded="false">Academics</button>
+      <button class="mnav-btn" data-panel="mp-experiential" aria-expanded="false">Experiential Learning</button>
+      <button class="mnav-btn" data-panel="mp-research" aria-expanded="false">Research</button>
+      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global &amp; Campuses</button>
+    </nav>
+    <div class="nvright">
+      <button class="nvicon" id="srch-open" aria-label="Search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="mnav-btn morebtn" data-panel="mp-more" aria-expanded="false">More</button>
+      <button class="tkv-open mobilemenu" id="tkv-open" aria-expanded="false">Menu</button>
+      <span class="apply"><a class="pill" href="#admit">Apply</a></span>
+    </div>
+  </div>
+  <div class="mpanel" id="mp-admissions" hidden><div class="wrap mp-in">
+      <div class="mp-lead"><div class="mp-title">Admissions</div><p>However you learn best, there is a path here.</p><a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions overview</a></div>
+      <div class="mp-col"><div class="mp-h">Apply</div><div class="mp-links">
+        <a href="https://admissions.northeastern.edu/">Undergraduate Admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate Admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law School Admissions</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Get started</div><div class="mp-links">
+        <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
+        <a href="https://www.northeastern.edu/orientation/">Student Orientation and Family Programs</a>
+        <a href="https://admissions.northeastern.edu/visit/">Visit</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/05/08/childhood-friends-india-america/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/05/050523_AS_best_friends_-1400.jpg" alt="" loading="lazy"><span class="ft">A life-changing year at Northeastern, as experienced by best friends from India</span><span class="fl">Read on NGN &#8594;</span></a>
+  </div></div>
+  <div class="mpanel" id="mp-academics" hidden><div class="wrap mp-in">
+      <div class="mp-lead"><div class="mp-title">Academics</div><p>150+ majors across nine colleges and schools.</p><a class="storylink" href="https://www.northeastern.edu/academics/">Academics overview</a></div>
+      <div class="mp-col"><div class="mp-h">Degrees</div><div class="mp-links">
+        <a href="https://admissions.northeastern.edu/">Undergraduate</a>
+        <a href="https://graduate.northeastern.edu/">Graduate</a>
+        <a href="https://phd.northeastern.edu/">Doctoral</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+        <a href="https://online.northeastern.edu/">Online Education</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2024/04/10/clara-wu-high-school-letter/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2024/04/Clara-Wu_1400.jpg" alt="" loading="lazy"><span class="ft">A 2023 graduate reflects on her Northeastern experience</span><span class="fl">Read on NGN &#8594;</span></a>
+  </div></div>
+  <div class="mpanel" id="mp-experiential" hidden><div class="wrap mp-in">
+      <div class="mp-lead"><div class="mp-title">Experiential Learning</div><p>Learning that happens on the job, in the field, everywhere.</p><a class="storylink" href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a></div>
+      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
+        <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
+        <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
+        <a href="#">Entrepreneurship</a>
+        <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2024/10/16/high-speed-satellite-network-research/"><div class="mp-h">From the newsroom</div><img src="../img/satellite-testbed.jpg" alt="" loading="lazy"><span class="ft">Students and faculty build a satellite testbed for ultra-fast internet from space</span><span class="fl">Read on NGN &#8594;</span></a>
+  </div></div>
+  <div class="mpanel" id="mp-research" hidden><div class="wrap mp-in">
+      <div class="mp-lead"><div class="mp-title">Research</div><p>Discovery that solves real problems, with students in the work.</p><a class="storylink" href="https://research.northeastern.edu/">Research overview</a></div>
+      <div class="mp-col"><div class="mp-h">For researchers</div><div class="mp-links">
+        <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
+        <a href="https://research.northeastern.edu/phd-research/">PhD Research</a>
+        <a href="https://research.northeastern.edu/ug-research/">Undergraduate Research</a>
+        <a href="https://research.northeastern.edu/partnerships/">Research Partnerships</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Focus areas</div><div class="mp-links">
+        <a href="https://research.northeastern.edu/health/">Health</a>
+        <a href="https://research.northeastern.edu/security/">Security</a>
+        <a href="https://research.northeastern.edu/sustainability/">Sustainability</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2025/10/01/walking-the-future/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg" alt="" loading="lazy"><span class="ft">Robots walk to class here. Student researchers are teaching them how</span><span class="fl">Read on NGN &#8594;</span></a>
+  </div></div>
+  <div class="mpanel" id="mp-global" hidden><div class="wrap mp-in">
+      <div class="mp-col"><div class="mp-h">Global</div><div class="mp-links">
+        <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
+        <a href="https://www.northeastern.edu/our-global-campuses/">Our Global Campuses</a>
+        <a href="https://geo.northeastern.edu/">Global Learning Experiences</a>
+        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Student support</div><div class="mp-links">
+        <a href="https://international.northeastern.edu/ogs/">Office of Global Services</a>
+        <a href="https://international.northeastern.edu/">International Student Hub</a>
+        <a href="https://globalsafety.northeastern.edu/">Global Safety and Support</a>
+      </div></div>
+      <div class="mp-col cols2"><div class="mp-h">Campuses</div><div class="mp-links">
+        <a href="https://arlington.northeastern.edu/">Arlington, VA</a>
+        <a href="https://www.northeastern.edu/campuses/boston/">Boston, MA</a>
+        <a href="https://www.burlington.northeastern.edu/">Burlington, MA</a>
+        <a href="https://charlotte.northeastern.edu/">Charlotte, NC</a>
+        <a href="https://www.nulondon.ac.uk/">London, UK</a>
+        <a href="https://miami.northeastern.edu/">Miami, FL</a>
+        <a href="https://csi.northeastern.edu/">Nahant, MA</a>
+        <a href="https://nyc.northeastern.edu/">New York City, NY</a>
+        <a href="https://oakland.northeastern.edu/">Oakland, CA</a>
+        <a href="https://roux.northeastern.edu/">Portland, ME</a>
+        <a href="https://seattle.northeastern.edu/">Seattle, WA</a>
+        <a href="https://siliconvalley.northeastern.edu/">Silicon Valley, CA</a>
+        <a href="https://toronto.northeastern.edu/">Toronto, ON</a>
+        <a href="https://vancouver.northeastern.edu/">Vancouver, BC</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><span class="ft">Learning how global negotiation really works</span><span class="fl">Read on NGN &#8594;</span></a>
+  </div></div>
+  <div class="mpanel" id="mp-more" hidden><div class="wrap mp-in">
+      <div class="mp-col"><div class="mp-h">About</div><div class="mp-links">
+        <a href="https://www.northeastern.edu/about/about-northeastern/">About Northeastern</a>
+        <a href="https://president.northeastern.edu/">President Aoun</a>
+        <a href="https://www.northeastern.edu/about/senior-leadership/">Senior Leadership</a>
+        <a href="https://partnerships.northeastern.edu/">Partnerships</a>
+        <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
+        <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
+        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
+        <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">More from Northeastern</div><div class="mp-links">
+        <a href="https://calendar.northeastern.edu/">Events</a>
+        <a href="https://nuhuskies.com/">Athletics</a>
+        <a href="https://studentlife.northeastern.edu/">Student Life</a>
+        <a href="https://alumni.northeastern.edu/">Alumni</a>
+        <a href="https://facts.northeastern.edu/">Facts and Figures</a>
+        <a href="https://giving.northeastern.edu/">Make a Gift</a>
+        <a href="https://about.me.northeastern.edu/select-your-destination/">The Hubs</a>
+      </div></div>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/09/06/convocation-2023/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/09/Convocation1400.jpg" alt="" loading="lazy"><span class="ft">President Aoun tells incoming students to embark on a ‘journey of reinvention’</span><span class="fl">Read on NGN &#8594;</span></a>
+  </div></div>
+</header>
+<div class="srch" id="srch" hidden>
+  <form action="https://search.northeastern.edu" method="get" role="search" class="wrap">
+    <input type="search" name="query" id="srch-in" placeholder="Search Northeastern" autocomplete="off">
+    <button type="submit" class="pill ghostw">Search</button>
+    <button type="button" class="srch-x" id="srch-x" aria-label="Close search">&times;</button>
+  </form>
+</div>
+<div class="tkv" id="tkv" hidden data-lenis-prevent>
+  <div class="wrap">
+    <div class="tkv-head">
+      <span class="tkv-title">Menu</span>
+      <button class="tkv-x" id="tkv-x" aria-label="Close menu">&times;</button>
+    </div>
+    <form action="https://search.northeastern.edu" method="get" role="search" class="tkv-search">
+      <input type="search" name="query" placeholder="Search Northeastern" autocomplete="off">
+    </form>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-0">
+        <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate Admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate Admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law School Admissions</a>
+        <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
+        <a href="https://www.northeastern.edu/orientation/">Student Orientation and Family Programs</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-1" aria-expanded="false">Academics<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-1">
+        <a href="https://www.northeastern.edu/academics/">Academics overview</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate</a>
+        <a href="https://graduate.northeastern.edu/">Graduate</a>
+        <a href="https://phd.northeastern.edu/">Doctoral</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+        <a href="https://online.northeastern.edu/">Online Education</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-2" aria-expanded="false">Experiential Learning<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-2">
+        <a href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a>
+        <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
+        <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
+        <a href="#">Entrepreneurship</a>
+        <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-3" aria-expanded="false">Research<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-3">
+        <a href="https://research.northeastern.edu/">Research overview</a>
+        <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
+        <a href="https://research.northeastern.edu/phd-research/">PhD Research</a>
+        <a href="https://research.northeastern.edu/ug-research/">Undergraduate Research</a>
+        <a href="https://research.northeastern.edu/partnerships/">Research Partnerships</a>
+        <a href="https://research.northeastern.edu/health/">Health</a>
+        <a href="https://research.northeastern.edu/security/">Security</a>
+        <a href="https://research.northeastern.edu/sustainability/">Sustainability</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-4">
+        <a href="https://www.northeastern.edu/our-global-university-system/">Global overview</a>
+        <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
+        <a href="https://www.northeastern.edu/our-global-campuses/">Our Global Campuses</a>
+        <a href="https://geo.northeastern.edu/">Global Learning Experiences</a>
+        <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
+        <a href="https://international.northeastern.edu/ogs/">Office of Global Services</a>
+        <a href="https://international.northeastern.edu/">International Student Hub</a>
+        <a href="https://globalsafety.northeastern.edu/">Global Safety and Support</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-5" aria-expanded="false">Campuses<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-5">
+        <a href="https://arlington.northeastern.edu/">Arlington, VA</a>
+        <a href="https://www.northeastern.edu/campuses/boston/">Boston, MA</a>
+        <a href="https://www.burlington.northeastern.edu/">Burlington, MA</a>
+        <a href="https://charlotte.northeastern.edu/">Charlotte, NC</a>
+        <a href="https://www.nulondon.ac.uk/">London, UK</a>
+        <a href="https://miami.northeastern.edu/">Miami, FL</a>
+        <a href="https://csi.northeastern.edu/">Nahant, MA</a>
+        <a href="https://nyc.northeastern.edu/">New York City, NY</a>
+        <a href="https://oakland.northeastern.edu/">Oakland, CA</a>
+        <a href="https://roux.northeastern.edu/">Portland, ME</a>
+        <a href="https://seattle.northeastern.edu/">Seattle, WA</a>
+        <a href="https://siliconvalley.northeastern.edu/">Silicon Valley, CA</a>
+        <a href="https://toronto.northeastern.edu/">Toronto, ON</a>
+        <a href="https://vancouver.northeastern.edu/">Vancouver, BC</a>
+      </div>
+    </div>
+    <div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-6" aria-expanded="false">About<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-6">
+        <a href="https://www.northeastern.edu/about/about-northeastern/">About Northeastern</a>
+        <a href="https://president.northeastern.edu/">President Aoun</a>
+        <a href="https://www.northeastern.edu/about/senior-leadership/">Senior Leadership</a>
+        <a href="https://partnerships.northeastern.edu/">Partnerships</a>
+        <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
+        <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
+        <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
+        <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
+      </div>
+    </div>
+    <div class="tkv-more">
+      <a href="https://calendar.northeastern.edu/">Events</a>
+      <a href="https://nuhuskies.com/">Athletics</a>
+      <a href="https://studentlife.northeastern.edu/">Student Life</a>
+      <a href="https://alumni.northeastern.edu/">Alumni</a>
+      <a href="https://facts.northeastern.edu/">Facts and Figures</a>
+      <a href="https://giving.northeastern.edu/">Make a Gift</a>
+      <a href="https://about.me.northeastern.edu/select-your-destination/">The Hubs</a>
+    </div>
+  </div>
+</div>
+
+
+<main class="lv-app" id="top">
+  <section class="lv-top" aria-label="Now showing">
+    <a class="lv-screen" id="lvScreen" href="#"><span class="lv-osd"><span class="lv-badge on" id="lvBadge">On now</span></span>
+      <span class="lv-chnum" id="lvNum"></span><img class="lv-bug" src="data:image/png;base64,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" alt=""></a>
+    <div class="lv-info" aria-live="polite">
+      <div class="lv-kick"><span id="lvCh"></span><span class="lv-hint" aria-hidden="true">Surf with <kbd>&larr;</kbd><kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd></span></div>
+      <h1 class="lv-title" id="lvTitle"></h1>
+      <div class="lv-when"><span id="lvWhen"></span><span class="lv-prog" id="lvProgWrap"><i id="lvProg"></i></span></div>
+      <p class="lv-ex" id="lvEx"></p>
+      <div class="lv-acts"><a class="lv-go" id="lvGo" href="#"><span id="lvGoL">Read the story</span>
+        <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <span class="lv-next" id="lvNext"></span></div>
+    </div>
+  </section>
+  <section class="lv-guide" aria-label="Program guide">
+    <div class="lv-scroll" id="lvScroll" data-lenis-prevent><div class="lv-grid" id="lvGrid"></div></div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="f-head">
+      <div class="f-brand">
+        <img class="f-n" src="data:image/png;base64,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" alt="Northeastern University">
+        <p>360 Huntington Ave, Boston, MA 02115 &middot; 617.373.2000</p>
+      </div>
+      <div class="f-soc"><a href="https://www.facebook.com/northeastern">Facebook</a> <a href="https://x.com/northeastern">X</a> <a href="https://www.youtube.com/user/Northeastern">YouTube</a> <a href="https://www.linkedin.com/school/northeastern-university/">LinkedIn</a> <a href="https://www.instagram.com/northeastern">Instagram</a> <a href="https://www.tiktok.com/@northeastern">TikTok</a></div>
+    </div>
+    <div class="f-cols">
+        <div class="f-col"><div class="mp-h">Admissions</div>
+          <a href="https://admissions.northeastern.edu/">Undergraduate</a>
+          <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate</a>
+          <a href="https://law.northeastern.edu/admissions/">Law School</a>
+          <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
+          <a href="https://admissions.northeastern.edu/visit/">Visit</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Academics</div>
+          <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
+          <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
+          <a href="https://online.northeastern.edu/">Online Education</a>
+          <a href="https://phd.northeastern.edu/">Doctoral</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Experiential Learning</div>
+          <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
+          <a href="https://www.northeastern.edu/co-op">Co‑op</a>
+          <a href="#">Entrepreneurship</a>
+          <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Research</div>
+          <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
+          <a href="https://research.northeastern.edu/ug-research/">Undergraduate Research</a>
+          <a href="https://research.northeastern.edu/phd-research/">PhD Research</a>
+          <a href="https://research.northeastern.edu/partnerships/">Partnerships</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Global</div>
+          <a href="https://www.northeastern.edu/our-global-university-system/">Global University System</a>
+          <a href="https://www.northeastern.edu/our-global-campuses/">Global Campuses</a>
+          <a href="https://geo.northeastern.edu/programs/study-abroad/">Study Abroad</a>
+          <a href="https://international.northeastern.edu/">International Student Hub</a>
+        </div>
+        <div class="f-col"><div class="mp-h">University</div>
+          <a href="https://www.northeastern.edu/about/about-northeastern/">About</a>
+          <a href="https://president.northeastern.edu/">President Aoun</a>
+          <a href="https://hr.northeastern.edu/">Careers</a>
+          <a href="https://nuhuskies.com/">Athletics</a>
+          <a href="https://studentlife.northeastern.edu/">Student Life</a>
+          <a href="https://alumni.northeastern.edu/">Alumni</a>
+          <a href="https://calendar.northeastern.edu/">Events</a>
+          <a href="https://giving.northeastern.edu/">Make a Gift</a>
+        </div>
+        <div class="f-col"><div class="mp-h">Quick Links</div>
+          <a href="https://registrar.northeastern.edu/">Registrar</a>
+          <a href="https://nu.outsystemsenterprise.com/FSD/">Directory</a>
+          <a href="https://library.northeastern.edu/">Libraries</a>
+          <a href="https://facts.northeastern.edu/">Facts and Figures</a>
+          <a href="https://about.me.northeastern.edu/select-your-destination/">The Hubs</a>
+        </div>
+    </div>
+    <div class="base">
+      <span>&copy; 2026 Northeastern University</span>
+      <span class="f-legal">
+        <a href="https://www.northeastern.edu/emergency-information/">Emergency Information</a>
+        <a href="https://www.northeastern.edu/privacy-information">Privacy Policy</a>
+        <a href="https://digital-accessibility.northeastern.edu/">Accessibility</a>
+        <button type="button" class="f-cookie">Cookie Preferences</button>
+      </span>
+    </div>
+    <div class="f-giant" aria-hidden="true"><svg width="248" height="22" viewBox="0 0 248 22" aria-label="Northeastern University">                        <g clip-path="url(#clip0)">                            <path d="M242.06 18.59l4.05-9.02c.8-1.79 1.08-2.17 1.89-2.38v-.6h-4.27v.6c1.4.32 1.57 1.02.92 2.54l-1.62 3.89-2.06-4.6c-.43-1.02-.37-1.62 1.14-1.78V6.6h-5.68v.65c.65.16.92.43 1.52 1.68l3.62 7.78-.6 1.3c-.32.75-.64 1.3-1.02 1.62-.27-.87-.76-1.35-1.51-1.35-.76 0-1.47.54-1.47 1.5 0 .98.82 1.8 1.79 1.8 1.4.05 2.27-.66 3.3-2.98zm-5.73-2.7l-.33-.7c-.6.27-1.08.37-1.56.37-1.03 0-1.3-.54-1.3-1.24V7.84h2.76V6.59h-2.76v-2h-.38l-3.9 2.54v.7h1.58v7.09c0 1.4.8 2.16 2.37 2.16a6.1 6.1 0 003.52-1.2zm-8.22.32c-1.35-.21-1.51-.48-1.51-1.67V6.27h-1.08l-3.19 2.1v.5h1.51v5.72c0 1.19-.21 1.46-1.51 1.68v.64h5.78v-.7zm-3.13-11.56c.92 0 1.62-.76 1.62-1.68a1.5 1.5 0 00-1.46-1.51c-.97 0-1.67.76-1.67 1.62.05.87.64 1.57 1.5 1.57zm-3.73 9.08c0-2-1.68-2.65-3.24-3.14-1.52-.48-2.6-.8-2.6-1.94 0-.6.44-1.2 1.35-1.2 1.09 0 2.06.66 3.25 2l.54-.26-.81-2.7h-.33l-.38.32a4.97 4.97 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.59 3.24 3.07 1.51.54 2.6.81 2.6 1.95 0 .7-.55 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.37l.65-.43a5.7 5.7 0 002.38.54c2.16.1 4-1.19 4-3.24zm-11.3 2.48c-1.4-.21-1.62-.54-1.62-1.84V9.94c.44-.75.87-1.35 1.3-1.73 0 .87.6 1.4 1.3 1.4.75 0 1.46-.58 1.46-1.72 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.38h-.97l-3.13 2.05v.49h1.51v5.72c0 1.2-.22 1.52-1.4 1.68v.65h5.72v-.76zm-13.5-5.83c0-1.73.75-2.81 2.16-2.81.97 0 1.62.7 1.89 2.1l-4 1.4c-.06-.2-.06-.48-.06-.7zm6.75 4.59l-.6-.43a3.38 3.38 0 01-2.48 1.13c-2 0-3.14-1.51-3.52-3.46l6.49-2.16c-.1-2.27-1.84-3.56-3.94-3.51-3.03 0-5.2 2.43-5.2 5.46 0 2.97 1.9 5.24 5.25 5.24 2.05-.1 3.3-1.03 4-2.27zm-11.35-5.3c.81-1.78 1.08-2.16 1.9-2.37v-.6h-4.28v.6c1.4.32 1.57 1.02.92 2.53l-1.62 3.9-2.05-4.6c-.44-1.02-.38-1.62 1.13-1.78V6.7h-5.67v.65c.64.16.97.43 1.51 1.68l3.73 8h1.13l3.3-7.36zm-9.84 6.6c-1.35-.22-1.5-.49-1.5-1.68V6.32h-1.09l-3.19 2.11v.49h1.52v5.72c0 1.2-.22 1.46-1.52 1.68v.65h5.78v-.7zM178.93 4.7c.92 0 1.63-.75 1.63-1.67a1.5 1.5 0 00-1.46-1.52c-.98 0-1.68.76-1.68 1.62 0 .92.65 1.57 1.51 1.57zm-10.91 11.62c-1.25-.16-1.4-.49-1.4-1.67V9.67c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.52v4.92c0 1.18-.22 1.5-1.4 1.67v.65h5.56v-.65c-1.24-.16-1.4-.49-1.4-1.67v-5.2c0-1.72-.76-2.96-2.92-2.96-1.35 0-2.65.8-3.95 1.94V6.38h-.97l-3.13 2.05v.49h1.5v5.72c0 1.2-.2 1.52-1.4 1.68v.65h5.57l-.16-.65zm-23.56-12.7v6.49c0 4.21 2.21 7.13 7.72 7.08 5.52 0 7.68-2.92 7.68-7.03V4.97c0-2.54.7-3.19 1.94-3.51V.8h-5.24v.65c1.24.32 1.95.97 1.95 3.51v5.19c0 3.67-1.9 5.35-5.57 5.35-3.62 0-5.57-1.68-5.57-5.35v-6.6c0-1.61.49-1.94 1.84-2.1v-.7h-6.6v.7c1.41.27 1.84.54 1.84 2.16zM127.1 16.37c-1.25-.16-1.4-.48-1.4-1.67V9.73c1.07-.97 1.94-1.46 2.75-1.46 1.08 0 1.35.54 1.35 1.51v4.92c0 1.19-.22 1.51-1.4 1.68v.64h5.56v-.64c-1.24-.17-1.4-.5-1.4-1.68V9.51c0-1.73-.76-2.97-2.92-2.97-1.35 0-2.65.81-3.95 1.95V6.43h-.97l-3.14 2.05v.5h1.52v5.72c0 1.19-.22 1.51-1.4 1.67v.65h5.56l-.16-.65zm-8.6 0c-1.4-.21-1.62-.54-1.62-1.83V10.1a6.8 6.8 0 011.3-1.73c0 .86.6 1.4 1.3 1.4.7 0 1.46-.6 1.46-1.73 0-.97-.54-1.51-1.52-1.51-1.08 0-1.89.86-2.65 2.16V6.54h-.97l-3.13 2.05v.49h1.51v5.73c0 1.19-.21 1.51-1.4 1.67v.65h5.72v-.75zm-13.56-5.83c0-1.73.76-2.81 2.16-2.81.97 0 1.62.7 1.9 2.1l-4 1.41c-.06-.22-.06-.49-.06-.7zm6.8 4.6l-.58-.44a3.38 3.38 0 01-2.5 1.13c-2 0-3.13-1.51-3.5-3.45l6.48-2.17c-.1-2.27-1.84-3.56-3.94-3.5-3.03 0-5.2 2.42-5.2 5.45 0 2.97 1.9 5.24 5.25 5.24 2-.1 3.24-1.03 4-2.27zm-9.99.96l-.32-.7c-.6.27-1.08.38-1.57.38-1.03 0-1.3-.54-1.3-1.24V8.05h2.76V6.81h-2.76v-2h-.38L94.3 7.35v.7h1.57v7.08c0 1.4.81 2.16 2.38 2.16 1.24 0 2.48-.38 3.51-1.19zm-8.16-2.16c0-2-1.67-2.64-3.24-3.13-1.51-.49-2.6-.81-2.6-1.95 0-.6.44-1.19 1.36-1.19 1.08 0 2.05.65 3.24 2l.54-.27-.81-2.7h-.33l-.38.32a4.98 4.98 0 00-2.05-.43c-2.27 0-3.78 1.35-3.78 3.3 0 2 1.67 2.6 3.24 3.08 1.51.54 2.6.81 2.6 1.95 0 .7-.54 1.24-1.57 1.24-1.46 0-2.54-.97-3.9-2.65l-.59.22.87 3.35h.38l.64-.44a5.7 5.7 0 002.38.55c2.16.16 4-1.14 4-3.25zm-16.64.43c0-1.08.48-1.62 3.02-2.32v3.14c-.6.48-1.13.7-1.67.7-.87 0-1.35-.43-1.35-1.52zm4.75 2.87a5.1 5.1 0 002.6-.87l-.22-.59c-1.08.22-1.46.05-1.46-.65V9.35c0-1.73-.76-2.65-3.19-2.65-2.75 0-4.75 1.46-4.75 2.86 0 .65.43 1.25 1.24 1.25.86 0 1.3-.6 1.46-1.2.1-.64-.11-1.18-.43-1.45.5-.25 1.06-.38 1.62-.38.92 0 1.4.33 1.4 1.2v2.15c-3.89.98-5.62 1.79-5.62 3.84 0 1.57 1.03 2.43 2.6 2.43 1.02 0 2.16-.43 3.18-1.24.11.7.65 1.08 1.57 1.08zm-15.35-6.65c0-1.73.76-2.8 2.16-2.8.98 0 1.63.7 1.9 2.1l-4 1.4c-.06-.21-.06-.43-.06-.7zm6.76 4.6l-.6-.44a3.38 3.38 0 01-2.48 1.14c-2 0-3.14-1.52-3.51-3.46L73 10.27c-.1-2.27-1.84-3.57-3.95-3.52-3.02 0-5.18 2.44-5.18 5.46 0 2.98 1.89 5.24 5.24 5.24 2.05-.1 3.3-1.02 4-2.26zm-17.19 1.3c-1.24-.17-1.4-.5-1.4-1.68V9.78c1.02-.97 1.83-1.4 2.75-1.4 1.09 0 1.35.54 1.35 1.51v4.92c0 1.19-.21 1.51-1.4 1.67v.65h5.57v-.65c-1.25-.16-1.4-.48-1.4-1.67V9.62c0-1.73-.77-2.97-2.93-2.97-1.3 0-2.6.75-3.89 1.89V0h-.8L50.3 2.27v.49h1.57v12.1c0 1.2-.22 1.51-1.4 1.68v.65h5.56l-.1-.7zm-6.21-.28l-.33-.7c-.6.27-1.08.38-1.56.38-1.03 0-1.3-.54-1.3-1.24V8.16h2.75V6.92h-2.75v-2h-.38l-3.9 2.54v.7h1.58v7.08c0 1.4.8 2.16 2.37 2.16 1.3 0 2.5-.43 3.52-1.19zm-10.6.33c-1.4-.22-1.62-.54-1.62-1.84v-4.43c.44-.76.87-1.35 1.3-1.73 0 .86.6 1.4 1.3 1.4.76 0 1.46-.6 1.46-1.73 0-.97-.54-1.5-1.52-1.5-1.08 0-1.89.86-2.64 2.15V6.7h-.98l-3.08 1.95v.48h1.52v5.73c0 1.2-.22 1.51-1.4 1.68v.65h5.72l-.05-.65zm-15.61-5.52c0-1.94.8-3.18 2.6-3.18 2.26 0 2.96 2.8 2.96 5.4 0 1.95-.8 3.19-2.59 3.19-2.27-.06-2.97-2.87-2.97-5.4zm8.27.92c0-2.8-1.9-5.18-5.4-5.18-3.52 0-5.63 2.54-5.58 5.45 0 2.81 1.9 5.2 5.4 5.2a5.22 5.22 0 005.58-5.47zm-14.1-6.7c0-2.54.7-3.19 1.94-3.51v-.65h-5.24v.65c1.24.32 1.94.97 1.94 3.51v7.62L5.35 1.73c-.65-.6-.86-.65-1.24-.65H0v.65c.92.1 1.4.43 2.43 1.4.33.33.65.65.65 1.3v8.65c0 2.54-.7 3.19-1.95 3.51v.65h5.25v-.65c-1.25-.32-1.95-.97-1.95-3.51V4.92l12.43 12.43h.87l-.06-12.1z" fill="currentColor" />                        </g>                    </svg></div>
+  </div>
+</footer>
+<script>/* Lenis v1.1.14 (studio-freight), vendored */
+var k="1.1.14";function w(r,t,e){return Math.max(r,Math.min(t,e))}function _(r,t,e){return(1-e)*r+e*t}function z(r,t,e,i){return _(r,t,1-Math.exp(-e*i))}function x(r,t){return(r%t+t)%t}var y=class{isRunning=!1;value=0;from=0;to=0;currentTime=0;lerp;duration;easing;onUpdate;advance(t){if(!this.isRunning)return;let e=!1;if(this.duration&&this.easing){this.currentTime+=t;let i=w(0,this.currentTime/this.duration,1);e=i>=1;let s=e?1:this.easing(i);this.value=this.from+(this.to-this.from)*s}else this.lerp?(this.value=z(this.value,this.to,this.lerp*60,t),Math.round(this.value)===this.to&&(this.value=this.to,e=!0)):(this.value=this.to,e=!0);e&&this.stop(),this.onUpdate?.(this.value,e)}stop(){this.isRunning=!1}fromTo(t,e,{lerp:i,duration:s,easing:o,onStart:l,onUpdate:m}){this.from=this.value=t,this.to=e,this.lerp=i,this.duration=s,this.easing=o,this.currentTime=0,this.isRunning=!0,l?.(),this.onUpdate=m}};function N(r,t){let e;return function(...i){let s=this;clearTimeout(e),e=setTimeout(()=>{e=void 0,r.apply(s,i)},t)}}var E=class{constructor(t,e,{autoResize:i=!0,debounce:s=250}={}){this.wrapper=t;this.content=e;i&&(this.debouncedResize=N(this.resize,s),this.wrapper instanceof Window?window.addEventListener("resize",this.debouncedResize,!1):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}width=0;height=0;scrollHeight=0;scrollWidth=0;debouncedResize;wrapperResizeObserver;contentResizeObserver;destroy(){this.wrapperResizeObserver?.disconnect(),this.contentResizeObserver?.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener("resize",this.debouncedResize,!1)}resize=()=>{this.onWrapperResize(),this.onContentResize()};onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)};onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)};get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}};var g=class{events={};emit(t,...e){let i=this.events[t]||[];for(let s=0,o=i.length;s<o;s++)i[s]?.(...e)}on(t,e){return this.events[t]?.push(e)||(this.events[t]=[e]),()=>{this.events[t]=this.events[t]?.filter(i=>e!==i)}}off(t,e){this.events[t]=this.events[t]?.filter(i=>e!==i)}destroy(){this.events={}}};var R=100/6,p={passive:!1},T=class{constructor(t,e={wheelMultiplier:1,touchMultiplier:1}){this.element=t;this.options=e;window.addEventListener("resize",this.onWindowResize,!1),this.onWindowResize(),this.element.addEventListener("wheel",this.onWheel,p),this.element.addEventListener("touchstart",this.onTouchStart,p),this.element.addEventListener("touchmove",this.onTouchMove,p),this.element.addEventListener("touchend",this.onTouchEnd,p)}touchStart={x:0,y:0};lastDelta={x:0,y:0};window={width:0,height:0};emitter=new g;on(t,e){return this.emitter.on(t,e)}destroy(){this.emitter.destroy(),window.removeEventListener("resize",this.onWindowResize,!1),this.element.removeEventListener("wheel",this.onWheel,p),this.element.removeEventListener("touchstart",this.onTouchStart,p),this.element.removeEventListener("touchmove",this.onTouchMove,p),this.element.removeEventListener("touchend",this.onTouchEnd,p)}onTouchStart=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:0,y:0},this.emitter.emit("scroll",{deltaX:0,deltaY:0,event:t})};onTouchMove=t=>{let{clientX:e,clientY:i}=t.targetTouches?t.targetTouches[0]:t,s=-(e-this.touchStart.x)*this.options.touchMultiplier,o=-(i-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=e,this.touchStart.y=i,this.lastDelta={x:s,y:o},this.emitter.emit("scroll",{deltaX:s,deltaY:o,event:t})};onTouchEnd=t=>{this.emitter.emit("scroll",{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:t})};onWheel=t=>{let{deltaX:e,deltaY:i,deltaMode:s}=t,o=s===1?R:s===2?this.window.width:1,l=s===1?R:s===2?this.window.height:1;e*=o,i*=l,e*=this.options.wheelMultiplier,i*=this.options.wheelMultiplier,this.emitter.emit("scroll",{deltaX:e,deltaY:i,event:t})};onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}}};var L=class{_isScrolling=!1;_isStopped=!1;_isLocked=!1;_preventNextNativeScrollEvent=!1;_resetVelocityTimeout=null;isTouching;time=0;userData={};lastVelocity=0;velocity=0;direction=0;options;targetScroll;animatedScroll;animate=new y;emitter=new g;dimensions;virtualScroll;constructor({wrapper:t=window,content:e=document.documentElement,eventsTarget:i=t,smoothWheel:s=!0,syncTouch:o=!1,syncTouchLerp:l=.075,touchInertiaMultiplier:m=35,duration:v,easing:u=C=>Math.min(1,1.001-Math.pow(2,-10*C)),lerp:h=.1,infinite:c=!1,orientation:b="vertical",gestureOrientation:n="vertical",touchMultiplier:a=1,wheelMultiplier:f=1,autoResize:S=!0,prevent:d,virtualScroll:M,overscroll:O=!0,__experimental__naiveDimensions:H=!1}={}){window.lenisVersion=k,(!t||t===document.documentElement||t===document.body)&&(t=window),this.options={wrapper:t,content:e,eventsTarget:i,smoothWheel:s,syncTouch:o,syncTouchLerp:l,touchInertiaMultiplier:m,duration:v,easing:u,lerp:h,infinite:c,gestureOrientation:n,orientation:b,touchMultiplier:a,wheelMultiplier:f,autoResize:S,prevent:d,virtualScroll:M,overscroll:O,__experimental__naiveDimensions:H},this.dimensions=new E(t,e,{autoResize:S}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.addEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll=new T(i,{touchMultiplier:a,wheelMultiplier:f}),this.virtualScroll.on("scroll",this.onVirtualScroll)}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.removeEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName()}on(t,e){return this.emitter.on(t,e)}off(t,e){return this.emitter.off(t,e)}setScroll(t){this.isHorizontal?this.rootElement.scrollLeft=t:this.rootElement.scrollTop=t}onPointerDown=t=>{t.button===1&&this.reset()};onVirtualScroll=t=>{if(typeof this.options.virtualScroll=="function"&&this.options.virtualScroll(t)===!1)return;let{deltaX:e,deltaY:i,event:s}=t;if(this.emitter.emit("virtual-scroll",{deltaX:e,deltaY:i,event:s}),s.ctrlKey||s.lenisStopPropagation)return;let o=s.type.includes("touch"),l=s.type.includes("wheel");if(this.isTouching=s.type==="touchstart"||s.type==="touchmove",this.options.syncTouch&&o&&s.type==="touchstart"&&!this.isStopped&&!this.isLocked){this.reset();return}let v=e===0&&i===0,u=this.options.gestureOrientation==="vertical"&&i===0||this.options.gestureOrientation==="horizontal"&&e===0;if(v||u)return;let h=s.composedPath();h=h.slice(0,h.indexOf(this.rootElement));let c=this.options.prevent;if(h.find(d=>d instanceof HTMLElement&&(typeof c=="function"&&c?.(d)||d.hasAttribute?.("data-lenis-prevent")||o&&d.hasAttribute?.("data-lenis-prevent-touch")||l&&d.hasAttribute?.("data-lenis-prevent-wheel"))))return;if(this.isStopped||this.isLocked){s.preventDefault();return}if(!(this.options.syncTouch&&o||this.options.smoothWheel&&l)){this.isScrolling="native",this.animate.stop(),s.lenisStopPropagation=!0;return}let n=i;this.options.gestureOrientation==="both"?n=Math.abs(i)>Math.abs(e)?i:e:this.options.gestureOrientation==="horizontal"&&(n=e),(!this.options.overscroll||this.options.infinite||this.options.wrapper!==window&&(this.animatedScroll>0&&this.animatedScroll<this.limit||this.animatedScroll===0&&i>0||this.animatedScroll===this.limit&&i<0))&&(s.lenisStopPropagation=!0),s.preventDefault();let a=o&&this.options.syncTouch,S=o&&s.type==="touchend"&&Math.abs(n)>5;S&&(n=this.velocity*this.options.touchInertiaMultiplier),this.scrollTo(this.targetScroll+n,{programmatic:!1,...a?{lerp:S?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}})};resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit("scroll",this)}onNativeScroll=()=>{if(this._resetVelocityTimeout!==null&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent){this._preventNextNativeScrollEvent=!1;return}if(this.isScrolling===!1||this.isScrolling==="native"){let t=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-t,this.direction=Math.sign(this.animatedScroll-t),this.isScrolling="native",this.emit(),this.velocity!==0&&(this._resetVelocityTimeout=setTimeout(()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()},400))}};reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){this.isStopped&&(this.isStopped=!1,this.reset())}stop(){this.isStopped||(this.isStopped=!0,this.animate.stop(),this.reset())}raf(t){let e=t-(this.time||t);this.time=t,this.animate.advance(e*.001)}scrollTo(t,{offset:e=0,immediate:i=!1,lock:s=!1,duration:o=this.options.duration,easing:l=this.options.easing,lerp:m=this.options.lerp,onStart:v,onComplete:u,force:h=!1,programmatic:c=!0,userData:b}={}){if(!((this.isStopped||this.isLocked)&&!h)){if(typeof t=="string"&&["top","left","start"].includes(t))t=0;else if(typeof t=="string"&&["bottom","right","end"].includes(t))t=this.limit;else{let n;if(typeof t=="string"?n=document.querySelector(t):t instanceof HTMLElement&&t?.nodeType&&(n=t),n){if(this.options.wrapper!==window){let f=this.rootElement.getBoundingClientRect();e-=this.isHorizontal?f.left:f.top}let a=n.getBoundingClientRect();t=(this.isHorizontal?a.left:a.top)+this.animatedScroll}}if(typeof t=="number"){if(t+=e,t=Math.round(t),this.options.infinite?c&&(this.targetScroll=this.animatedScroll=this.scroll):t=w(0,t,this.limit),t===this.targetScroll){v?.(this),u?.(this);return}if(this.userData=b??{},i){this.animatedScroll=this.targetScroll=t,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),u?.(this),this.userData={};return}c||(this.targetScroll=t),this.animate.fromTo(this.animatedScroll,t,{duration:o,easing:l,lerp:m,onStart:()=>{s&&(this.isLocked=!0),this.isScrolling="smooth",v?.(this)},onUpdate:(n,a)=>{this.isScrolling="smooth",this.lastVelocity=this.velocity,this.velocity=n-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=n,this.setScroll(this.scroll),c&&(this.targetScroll=n),a||this.emit(),a&&(this.reset(),this.emit(),u?.(this),this.userData={},this.preventNextNativeScrollEvent())}})}}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame(()=>{this._preventNextNativeScrollEvent=!1})}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.__experimental__naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?"x":"y"]}get isHorizontal(){return this.options.orientation==="horizontal"}get actualScroll(){return this.isHorizontal?this.rootElement.scrollLeft:this.rootElement.scrollTop}get scroll(){return this.options.infinite?x(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return this.limit===0?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(t){this._isScrolling!==t&&(this._isScrolling=t,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(t){this._isStopped!==t&&(this._isStopped=t,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(t){this._isLocked!==t&&(this._isLocked=t,this.updateClassName())}get isSmooth(){return this.isScrolling==="smooth"}get className(){let t="lenis";return this.isStopped&&(t+=" lenis-stopped"),this.isLocked&&(t+=" lenis-locked"),this.isScrolling&&(t+=" lenis-scrolling"),this.isScrolling==="smooth"&&(t+=" lenis-smooth"),t}updateClassName(){this.cleanUpClassName(),this.rootElement.className=`${this.rootElement.className} ${this.className}`.trim()}cleanUpClassName(){this.rootElement.className=this.rootElement.className.replace(/lenis(-\w+)?/g,"").trim()}};globalThis.Lenis=L;
+//# sourceMappingURL=lenis.min.js.map
+</script>
+<script>
+/* ============ shared helpers ============ */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const clamp01 = v => Math.max(0, Math.min(1, v));
+const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+const fmt = n => n.toLocaleString("en-US");
+
+/* ============ nav ============ */
+const nav = $("#nav");
+addEventListener("scroll", () => nav.classList.toggle("solid", scrollY > 60), { passive: true });
+
+/* ============ reveal on scroll ============ */
+const rvIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add("in"); rvIO.unobserve(e.target); }
+}), { threshold: 0.18 });
+$$(".rv").forEach(el => rvIO.observe(el));
+
+/* the closing section arrives as a moment: image fades up, content rises staggered */
+const admitEl = $(".admit");
+const admitIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { admitEl.classList.add("in"); admitIO.disconnect(); }
+}), { threshold: 0.35 });
+if (admitEl) admitIO.observe(admitEl);
+
+
+/* ============ streaming concepts: shared ============ */
+const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const NGN_API = "https://news.northeastern.edu/wp-json/wp/v2/newspost";
+async function ngnFetch(catId, n) {
+  const q = `per_page=${n || 16}&_embed=wp:featuredmedia` + (catId ? `&categories=${catId}` : "");
+  const r = await fetch(`${NGN_API}?${q}`);
+  if (!r.ok) throw new Error(r.status);
+  const tmp = document.createElement("div");
+  const txt = h => { tmp.innerHTML = h || ""; return tmp.textContent.trim(); };
+  return (await r.json()).map(p => {
+    const m = p._embedded && p._embedded["wp:featuredmedia"] && p._embedded["wp:featuredmedia"][0];
+    if (!m) return null;
+    const sz = m.media_details && m.media_details.sizes;
+    const img = ((sz && (sz.medium_large || sz.large || sz.medium)) || m).source_url || m.source_url;
+    let ex = txt(p.excerpt && p.excerpt.rendered).replace(/\s+/g, " ");
+    if (ex.length > 180) ex = ex.slice(0, 177).replace(/\s+\S*$/, "") + "…";
+    return { t: txt(p.title.rendered), u: p.link, img, d: p.date, ex };
+  }).filter(Boolean);
+}
+const fmtDate = iso => { try { return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" }); } catch (e) { return ""; } };
+
+/* continue browsing: this browser only */
+const CB_KEY = "nu-stream-continue";
+const cbRead = () => { try { return JSON.parse(localStorage.getItem(CB_KEY)) || []; } catch (e) { return []; } };
+document.addEventListener("click", e => {
+  const a = e.target.closest("a[data-cb]");
+  if (!a) return;
+  try {
+    const rec = JSON.parse(a.dataset.cb);
+    const list = cbRead().filter(c => c.u !== rec.u);
+    list.unshift(rec);
+    localStorage.setItem(CB_KEY, JSON.stringify(list.slice(0, 14)));
+  } catch (err) { /* storage unavailable */ }
+});
+const cbAttr = it => esc(JSON.stringify({ t: it.t, img: it.img || "", u: it.u, tag: it.tag || "" }));
+
+/* ============ concept 9: Northeastern Live ============ */
+const CHANNELS = [{"n": 100, "name": "Northeastern Now", "u": "https://news.northeastern.edu/", "live": "latest", "film": "../hero-sm.mp4", "items": [{"t": "Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox", "u": "https://news.northeastern.edu/2026/09/30/husky-cam-schlittler-yankees-red-sox-playoffs/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg?w=700", "d": "2026-09-30T08:29:01", "ex": "New York Yankees pitcher Cam Schlittler, a former Husky, delivered a dominant postseason debut against his hometown Boston Red Sox.", "tag": ""}, {"t": "Coming to America – pandas and international politics at a zoo", "u": "https://news.northeastern.edu/2026/09/29/atlanta-zoo-pandas-diplomacy/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Pandas_1400.jpg?w=700", "d": "2026-09-29T15:58:07", "ex": "The Chinese government wants to see friendly headlines about pandas and not human rights abuses, Northeastern experts say.", "tag": ""}, {"t": "What can an ancient Hawaiian canoe teach us about diplomacy?", "u": "https://news.northeastern.edu/2026/09/29/hokulea-polynesian-voyaging-society/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Hokulea_1400.jpg?w=700", "d": "2026-09-29T15:54:01", "ex": "That vessel is Hōkūleʻa, a traditional Hawaiian voyaging canoe that is helping to spark a revival of Polynesian navigation.", "tag": ""}, {"t": "Your car is collecting more data about you than you think", "u": "https://news.northeastern.edu/2026/09/29/connected-car-privacy-violation-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/04/Privacy-in-connected-cars-1400x933-1.jpg?w=700", "d": "2026-09-29T15:46:54", "ex": "Northeastern professors tested 21 vehicles and their accompanying mobile apps to investigate what data manufacturers collect and share.", "tag": ""}, {"t": "This cat is new to science. What does it take to identify a species?", "u": "https://news.northeastern.edu/2026/09/28/new-cat-species-leopardus-tilcayo/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Bolivia_Cat_1400.jpg?w=700", "d": "2026-09-28T16:11:46", "ex": "A miniature leopard look-alike with no interest in domestic life helped put a new wild cat species on the scientific map.", "tag": ""}, {"t": "Meet the professor who thinks generic AI models should become obsolete", "u": "https://news.northeastern.edu/2026/09/28/on-device-ai-cloud-models/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/David-Ayman-Shamma.jpg?w=700", "d": "2026-09-28T15:36:55", "ex": "David Ayman Shamma, who has researched AI for more than two decades, said all-purpose AI models may soon outgrow their usefulness.", "tag": ""}, {"t": "AI chatbots linked to psychological harm, Northeastern study finds", "u": "https://news.northeastern.edu/2026/09/28/ai-chatbots-psychological-harm-mental-health/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AIrelationships1400.jpg?w=700", "d": "2026-09-28T13:52:31", "ex": "New research outlines how the use of AI chatbots for companionship and support is linked with “severe negative outcomes.”", "tag": ""}, {"t": "Grandfather’s struggle leads student to a co-op studying prion disease", "u": "https://news.northeastern.edu/2026/09/28/prion-disease-research-co-op/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/091126_MM_Sophie_Gandsas_016.jpg?w=700", "d": "2026-09-28T11:00:00", "ex": "Sophie “Sofi” Gandsas helped coordinate three studies of neurodegenerative prion disease at Massachusetts General Hospital during her co-op.", "tag": ""}, {"t": "Dengue fever researcher talks Florida outbreak — and transmission risk", "u": "https://news.northeastern.edu/2026/09/25/dengue-fever-florida-outbreak/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/DENGUEflorida1400.jpg?w=700", "d": "2026-09-25T15:46:43", "ex": "Authorities in Florida have declared local states of emergency following an outbreak of dengue fever that has so far resulted in one death.", "tag": ""}, {"t": "Aoun says university is ‘well positioned’ amid challenges facing higher education, but must continue to innovate", "u": "https://news.northeastern.edu/2026/09/25/president-aoun-faculty-senate-2026/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092326_MM_JEA_Faculty_Senate_022.jpg?w=700", "d": "2026-09-25T15:11:04", "ex": "“We cannot take anything for granted,” President Joseph E. Aoun told the Faculty Senate on Wednesday in a speech.", "tag": ""}, {"t": "Photos: Fall semester, soap carving and business built by grads", "u": "https://news.northeastern.edu/2026/09/25/photos-fall-semester-soap-carving-and-business-built-by-grads/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/091826_MM_Campus_Feature_011.jpg?w=700", "d": "2026-09-25T14:58:47", "ex": "This week, students in Oakland held a new kind of student government election. In Boston, the Soap Carving Club’s got even more popular.", "tag": ""}, {"t": "Different paths, but the same Husky entrepreneurial pride", "u": "https://news.northeastern.edu/2026/09/25/alumni-entrepreneurs-startup-advice/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/1400.jpg?w=700", "d": "2026-09-25T14:04:27", "ex": "Northeastern Global News recently caught up with several alumni entrepreneurs to learn about their career journeys and to hear advice.", "tag": ""}, {"t": "All-analog Oakland student government race brings record voter turnout", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg?w=700", "d": "2026-09-25T13:12:33", "ex": "A novel ban on social media campaigning forced candidates to use old-school, analog methods to reach their fellow classmates.", "tag": ""}, {"t": "What regular music practice means for a developing brain", "u": "https://news.northeastern.edu/2026/09/25/music-cognitive-benefits-kids-brain-study/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Music-training-1400x933-1.jpg?w=700", "d": "2026-09-25T13:03:00", "ex": "Young instrumentalists scored higher on cognitive and academic tests than their peers. Brain scans pointed to a difference in neural wiring.", "tag": ""}, {"t": "From lab to startup: This professor wins prestigious engineering award", "u": "https://news.northeastern.edu/2026/09/24/ieee-kiyo-tomiyasu-award-2027/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Raymond-Fu_1400.jpg?w=700", "d": "2026-09-24T16:08:19", "ex": "Raymond Fu has been awarded the IEEE Kiyo Tomiyasu Award for his research on “computer vision and augmented human-machine interaction.”", "tag": ""}, {"t": "The monarch butterfly’s ‘great procession’ is happening overhead", "u": "https://news.northeastern.edu/2026/09/24/monarch-butterfly-migration-population-decline/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AS_butterfly1400.jpg?w=700", "d": "2026-09-24T14:13:34", "ex": "Scientists say the monarch butterfly needs federal protections to survive as its numbers have fallen for the beloved bug", "tag": ""}]}, {"n": 101, "name": "Co‑op", "u": "https://www.northeastern.edu/experiential-learning/", "film": "../coop-sm.mp4", "items": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/", "ex": "", "tag": "Cupertino, California"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/", "ex": "", "tag": "Phnom Penh, Cambodia"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/", "ex": "", "tag": "Geneva, Switzerland"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/", "ex": "", "tag": "Vienna, Austria"}, {"t": "Harvesting oysters on Maine’s Nonesuch River, on co‑op", "img": "../img/oyster-dock.jpg", "u": "https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/", "ex": "", "tag": "Scarborough, Maine"}, {"t": "What co‑op is", "img": "../img/aquarium-dive.jpg", "u": "https://www.northeastern.edu/experiential-learning/", "ex": "Students alternate semesters in class with full‑time work at organizations around the world, then bring what they learned back to campus.", "tag": "Experiential learning"}]}, {"n": 102, "name": "Research", "u": "https://research.northeastern.edu/", "live": "research", "items": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/", "ex": "", "tag": "Quantum"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/", "ex": "", "tag": "Robotics"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/", "ex": "", "tag": "Biology"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/", "ex": "", "tag": "Climate and energy"}, {"t": "Quieting ‘the noise’ in quantum computing", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/quantumsystem1400.jpg", "u": "https://news.northeastern.edu/2026/08/07/modular-quantum-computing-research/", "ex": "", "tag": "Quantum"}, {"t": "Your car is collecting more data about you than you think", "u": "https://news.northeastern.edu/2026/09/29/connected-car-privacy-violation-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/04/Privacy-in-connected-cars-1400x933-1.jpg?w=700", "d": "2026-09-29T15:46:54", "ex": "Northeastern professors tested 21 vehicles and their accompanying mobile apps to investigate what data manufacturers collect and share.", "tag": ""}, {"t": "What regular music practice means for a developing brain", "u": "https://news.northeastern.edu/2026/09/25/music-cognitive-benefits-kids-brain-study/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Music-training-1400x933-1.jpg?w=700", "d": "2026-09-25T13:03:00", "ex": "Young instrumentalists scored higher on cognitive and academic tests than their peers. Brain scans pointed to a difference in neural wiring.", "tag": ""}, {"t": "Trusted supplements in the hot seat: could they harm the aging brain?", "u": "https://news.northeastern.edu/2026/09/22/vitamin-d-and-brain-health/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/091726_AS_VitaminD_002.jpg?w=700", "d": "2026-09-22T17:04:13", "ex": "The recent headlines sound alarming, but the case is far from closed, according to Northeastern professors and other experts.", "tag": ""}, {"t": "Scientists dig into the potato’s potential to fight gut inflammation", "u": "https://news.northeastern.edu/2026/09/22/ibd-treatment-potato-peptide/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/potatoes1400.jpg?w=700", "d": "2026-09-22T16:22:49", "ex": "A Northeastern research team is studying whether a tiny potato-derived peptide can treat Crohn’s disease and ulcerative colitis.", "tag": ""}, {"t": "Some rats freeze when anticipating danger. Others make a run for it", "u": "https://news.northeastern.edu/2026/09/18/conditioned-fear-rat-response-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Rebecca-Shansky1400.jpg?w=700", "d": "2026-09-18T15:25:11", "ex": "Fear has more than one gear. Why do some rats freeze while others spring into action when they anticipate danger?", "tag": ""}, {"t": "Are bots changing how people talk? Language in the age of AI", "u": "https://news.northeastern.edu/2026/09/17/signs-of-ai-writing/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/LLM_1400.jpg?w=700", "d": "2026-09-17T16:39:28", "ex": "Chatbots are leaving fingerprints on human language, from word choice and sentence structure to the way people navigate conversations.", "tag": ""}, {"t": "Can’t quiet your mind? Watching your brain might help you meditate.", "u": "https://news.northeastern.edu/2026/09/15/neurofeedback-mental-health-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/meditation-neurofeedback-1400x933-1.jpg?w=700", "d": "2026-09-15T14:48:45", "ex": "A Northeastern researcher is using neurofeedback as a “mental mirror” to help people with mental health conditions manage their symptoms.", "tag": ""}]}, {"n": 103, "name": "Admissions", "u": "https://admissions.northeastern.edu/", "film": "../hero-sm.mp4", "items": [{"t": "Apply to Northeastern", "img": "https://news.northeastern.edu/wp-content/uploads/2025/07/070125_AS_RPS_orientation_004.jpg", "u": "https://admissions.northeastern.edu/", "ex": "Start an application for any of our four undergraduate campuses.", "tag": "Admissions"}, {"t": "Visit a campus", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://admissions.northeastern.edu/visit/", "ex": "Tours, information sessions, and virtual visits.", "tag": "Admissions"}, {"t": "Financial aid and scholarships", "img": "../img/convocation.jpg", "u": "https://studentfinance.northeastern.edu/", "ex": "Grants, scholarships, and aid for undergraduate and graduate students.", "tag": "Student finance"}, {"t": "Start abroad with N.U.in", "img": null, "u": "https://nuin.northeastern.edu/", "ex": "Begin your degree at a partner institution in Europe.", "tag": "N.U.in"}, {"t": "Explore academics", "img": "../img/lunabotics.jpg", "u": "https://www.northeastern.edu/academics/", "ex": "Majors, minors, and combined majors across nine colleges.", "tag": "Academics"}, {"t": "Graduate programs", "img": "../img/aerobat.jpg", "u": "https://graduate.northeastern.edu/", "ex": "Master’s, doctoral, and certificate programs.", "tag": "Graduate"}]}, {"n": 104, "name": "Campuses", "u": "https://www.northeastern.edu/campuses/", "film": "../jamie-sm.mp4", "items": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/", "ex": "", "tag": "London"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/", "ex": "", "tag": "Boston"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/", "ex": "", "tag": "Oakland"}, {"t": "Northeastern in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://www.northeastern.edu/campuses/", "ex": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "tag": "Campus"}, {"t": "Northeastern in London", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://www.nulondon.ac.uk/", "ex": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "tag": "Campus"}, {"t": "Northeastern in Oakland", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://oakland.northeastern.edu/", "ex": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "tag": "Campus"}, {"t": "Northeastern in New York City", "img": null, "u": "https://nyc.northeastern.edu/", "ex": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "tag": "Campus"}, {"t": "Northeastern in Portland, Maine", "img": null, "u": "https://roux.northeastern.edu/", "ex": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "tag": "Campus"}, {"t": "Fourteen campuses, one university", "img": null, "u": "https://www.northeastern.edu/campuses/", "ex": "Boston, London, New York City, Oakland, and ten more campuses across the U.S., U.K., and Canada. Every one opens doors to all the others.", "tag": "Campus"}]}, {"n": 105, "name": "Student life", "u": "https://studentlife.northeastern.edu/", "film": "../jamie-sm.mp4", "items": [{"t": "Photos: Convocation ceremonies, Fall Fest and the first day of fall semester", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "u": "https://news.northeastern.edu/2026/09/11/photos-convocation-ceremonies-fall-fest-and-the-first-day-of-fall-semester/", "ex": "", "tag": "Boston"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/", "ex": "", "tag": "Oakland"}, {"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/", "ex": "", "tag": "London"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/", "ex": "", "tag": "Boston"}, {"t": "This graduate uses baking to cook up conversation about mental health", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Dayna-Altman1400.jpg", "u": "https://news.northeastern.edu/2026/09/15/bake-it-till-you-make-it-mental-health/", "ex": "", "tag": "Alumni"}]}, {"n": 106, "name": "Huskies", "u": "https://gonu.com/", "items": [{"t": "Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg", "u": "https://news.northeastern.edu/2026/09/30/husky-cam-schlittler-yankees-red-sox-playoffs/", "ex": "", "tag": "Baseball"}, {"t": "Northeastern women’s hockey team’s title run ends in semifinals", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg", "u": "https://news.northeastern.edu/2026/03/20/huskies-buckeyes-womens-hockey-frozen-four/", "ex": "", "tag": "Women’s hockey"}, {"t": "Meet the youngest members of Northeastern’s hockey teams", "img": "https://news.northeastern.edu/wp-content/uploads/2026/02/021026_AS_Ella_Tapp_029.jpg", "u": "https://news.northeastern.edu/2026/03/04/northeastern-hockey-team-impact/", "ex": "", "tag": "Hockey"}, {"t": "Huskies fall to BU in overtime Beanpot shootout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/02/020226_AS_M_Beapot_030.jpg", "u": "https://news.northeastern.edu/2026/02/03/beanpot-semis-huskies-terriers-td-garden/", "ex": "", "tag": "Beanpot"}]}, {"n": 107, "name": "Science & Tech", "u": "https://news.northeastern.edu/category/science-technology/", "live": "science-technology", "items": [{"t": "Your car is collecting more data about you than you think", "u": "https://news.northeastern.edu/2026/09/29/connected-car-privacy-violation-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/04/Privacy-in-connected-cars-1400x933-1.jpg?w=700", "d": "2026-09-29T15:46:54", "ex": "Northeastern professors tested 21 vehicles and their accompanying mobile apps to investigate what data manufacturers collect and share.", "tag": ""}, {"t": "This cat is new to science. What does it take to identify a species?", "u": "https://news.northeastern.edu/2026/09/28/new-cat-species-leopardus-tilcayo/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Bolivia_Cat_1400.jpg?w=700", "d": "2026-09-28T16:11:46", "ex": "A miniature leopard look-alike with no interest in domestic life helped put a new wild cat species on the scientific map.", "tag": ""}, {"t": "Meet the professor who thinks generic AI models should become obsolete", "u": "https://news.northeastern.edu/2026/09/28/on-device-ai-cloud-models/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/David-Ayman-Shamma.jpg?w=700", "d": "2026-09-28T15:36:55", "ex": "David Ayman Shamma, who has researched AI for more than two decades, said all-purpose AI models may soon outgrow their usefulness.", "tag": ""}, {"t": "AI chatbots linked to psychological harm, Northeastern study finds", "u": "https://news.northeastern.edu/2026/09/28/ai-chatbots-psychological-harm-mental-health/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AIrelationships1400.jpg?w=700", "d": "2026-09-28T13:52:31", "ex": "New research outlines how the use of AI chatbots for companionship and support is linked with “severe negative outcomes.”", "tag": ""}, {"t": "The monarch butterfly’s ‘great procession’ is happening overhead", "u": "https://news.northeastern.edu/2026/09/24/monarch-butterfly-migration-population-decline/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AS_butterfly1400.jpg?w=700", "d": "2026-09-24T14:13:34", "ex": "Scientists say the monarch butterfly needs federal protections to survive as its numbers have fallen for the beloved bug", "tag": ""}, {"t": "Some rats freeze when anticipating danger. Others make a run for it", "u": "https://news.northeastern.edu/2026/09/18/conditioned-fear-rat-response-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Rebecca-Shansky1400.jpg?w=700", "d": "2026-09-18T15:25:11", "ex": "Fear has more than one gear. Why do some rats freeze while others spring into action when they anticipate danger?", "tag": ""}, {"t": "Are bots changing how people talk? Language in the age of AI", "u": "https://news.northeastern.edu/2026/09/17/signs-of-ai-writing/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/LLM_1400.jpg?w=700", "d": "2026-09-17T16:39:28", "ex": "Chatbots are leaving fingerprints on human language, from word choice and sentence structure to the way people navigate conversations.", "tag": ""}, {"t": "Can you really turn off an AI? The debate over “kill switches”", "u": "https://news.northeastern.edu/2026/09/16/ai-kill-switch-debate/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MM_AI_Killswitch_024.jpg?w=700", "d": "2026-09-16T16:56:11", "ex": "The industry is grappling with a deceptively simple question: Can we actually turn these systems off when things go sideways?", "tag": ""}, {"t": "This Northeastern researcher is making ‘waves’ with magnets", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg?w=700", "d": "2026-09-14T16:52:11", "ex": "Northeastern professor Xufeng Zhang’s work in quantum mechanics and magnets could help improve quantum computers in the future.", "tag": ""}, {"t": "The secret knitting society designing blankets and clothing with data", "u": "https://news.northeastern.edu/2026/09/10/data-visualizations-textiles/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/HowtoStitchTogether_Artists.jpg?w=700", "d": "2026-09-10T14:28:10", "ex": "Data textiles have the potential to unlock entirely new ideas about how to represent data in a way that taps into people’s emotions.", "tag": ""}, {"t": "What to know about Apple’s first folding phone, the iPhone Duo", "u": "https://news.northeastern.edu/2026/09/09/iphone-duo-folding-phone/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Apple-iPhone-Duo-1400.jpg?w=700", "d": "2026-09-09T16:35:13", "ex": "Apple has announced its first foldable phone, the iPhone Duo. With a starting price tag of $1,999, will it be a big hit?", "tag": ""}, {"t": "Scientists create a recyclable hydrogel that heals itself", "u": "https://news.northeastern.edu/2026/09/09/self-healing-material-hydrogel-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090926_MM_hydrogel_016.jpg?w=700", "d": "2026-09-09T13:50:52", "ex": "A self-healing, fully recyclable hydrogel developed by Northeastern researchers repairs itself in minutes. It can help reduce waste.", "tag": ""}, {"t": "This robotics professor has a new strategy for AI era homework", "u": "https://news.northeastern.edu/2026/09/08/ai-homework-approach/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090126_MM_Raj_Harshit_Srirangam_025.jpg?w=700", "d": "2026-09-08T05:00:00", "ex": "This Northeastern professor combines homework with in-person quizzes, counting the lower score of the two as the final grade.", "tag": ""}, {"t": "The bioinformatics escape room where guests become genetic detectives", "u": "https://news.northeastern.edu/2026/09/07/what-is-bioinformatics/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/DNA_1400.jpg?w=700", "d": "2026-09-07T09:00:00", "ex": "The escape room experience introduced a new generation of scientists to the field of bioinformatics ripe with professional opportunities.", "tag": ""}, {"t": "Every technological revolution has its Luddites. AI is no different", "u": "https://news.northeastern.edu/2026/09/02/luddites-ai-protests-politics/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/data_center_1400.jpg?w=700", "d": "2026-09-02T16:39:46", "ex": "Debate is intensifying over the impacts of AI products and the data centers powering them — and new technologies, such as flock cameras.", "tag": ""}, {"t": "What’s behind the Flock camera controversy?", "u": "https://news.northeastern.edu/2026/08/31/flock-camera-controversy/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Flock_Camera_1400.jpg?w=700", "d": "2026-08-31T14:10:30", "ex": "Amid a backlash to Flock’s cameras, Northeastern experts say communities should place stricter guardrails on the policing technology.", "tag": ""}]}, {"n": 108, "name": "Health", "u": "https://news.northeastern.edu/category/health/", "live": "health", "items": [{"t": "Dengue fever researcher talks Florida outbreak — and transmission risk", "u": "https://news.northeastern.edu/2026/09/25/dengue-fever-florida-outbreak/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/DENGUEflorida1400.jpg?w=700", "d": "2026-09-25T15:46:43", "ex": "Authorities in Florida have declared local states of emergency following an outbreak of dengue fever that has so far resulted in one death.", "tag": ""}, {"t": "What regular music practice means for a developing brain", "u": "https://news.northeastern.edu/2026/09/25/music-cognitive-benefits-kids-brain-study/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Music-training-1400x933-1.jpg?w=700", "d": "2026-09-25T13:03:00", "ex": "Young instrumentalists scored higher on cognitive and academic tests than their peers. Brain scans pointed to a difference in neural wiring.", "tag": ""}, {"t": "Trusted supplements in the hot seat: could they harm the aging brain?", "u": "https://news.northeastern.edu/2026/09/22/vitamin-d-and-brain-health/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/091726_AS_VitaminD_002.jpg?w=700", "d": "2026-09-22T17:04:13", "ex": "The recent headlines sound alarming, but the case is far from closed, according to Northeastern professors and other experts.", "tag": ""}, {"t": "Scientists dig into the potato’s potential to fight gut inflammation", "u": "https://news.northeastern.edu/2026/09/22/ibd-treatment-potato-peptide/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/potatoes1400.jpg?w=700", "d": "2026-09-22T16:22:49", "ex": "A Northeastern research team is studying whether a tiny potato-derived peptide can treat Crohn’s disease and ulcerative colitis.", "tag": ""}, {"t": "Can’t quiet your mind? Watching your brain might help you meditate.", "u": "https://news.northeastern.edu/2026/09/15/neurofeedback-mental-health-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/meditation-neurofeedback-1400x933-1.jpg?w=700", "d": "2026-09-15T14:48:45", "ex": "A Northeastern researcher is using neurofeedback as a “mental mirror” to help people with mental health conditions manage their symptoms.", "tag": ""}, {"t": "This cancer vaccine makes its own oxygen and gives T-cells a boost", "u": "https://news.northeastern.edu/2026/09/14/new-cancer-vaccine-oxygen-t-cells/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090926_MM_Stephen_Hatfield_060.jpg?w=700", "d": "2026-09-14T14:53:43", "ex": "A new vaccine developed by Northeastern researchers creates a home base to strengthen immune cells and educate them about the enemy.", "tag": ""}, {"t": "This professor is studying how brainwaves can cut crippling joint pain", "u": "https://news.northeastern.edu/2026/09/11/neurofeedback-knee-osteoarthritis-pain/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090326_MM_David_Sherman_026.jpg?w=700", "d": "2026-09-11T13:55:11", "ex": "Professor opens a new Northeastern lab to study how brain waves can help manage pain from a crippling joint disease", "tag": ""}, {"t": "Could exercise help you hear in a noisy room? Early results say yes", "u": "https://news.northeastern.edu/2026/09/03/exercise-and-brain-health-speech-perception/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Exercise-help-hearing-1400x933-1.jpg?w=700", "d": "2026-09-03T14:03:09", "ex": "Going for a run could be good for your hearing. Northeastern researchers found that fitness boosts speech perception in a noisy environment.", "tag": ""}, {"t": "Where did your attention go? Five insights about changing your mind", "u": "https://news.northeastern.edu/2026/09/01/meditation-benefits-mindfulness/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/meditation1400.jpg?w=700", "d": "2026-09-01T12:21:13", "ex": "What happens when you slow down? Northeastern experts reveal how meditation can change the way you experience everyday life.", "tag": ""}, {"t": "Why Massachusetts banned this  addictive Asian plant", "u": "https://news.northeastern.edu/2026/08/28/kratom-ban-massachusetts/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/kratom1400.jpg?w=700", "d": "2026-08-28T10:52:52", "ex": "Massachusetts retailers are suing to block a new kratom ban. A Northeastern public health expert explains why the state issued the ban.", "tag": ""}, {"t": "Grandparents, teachers and even bus drivers can build resilient kids", "u": "https://news.northeastern.edu/2026/08/25/positive-childhood-experiences-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Bus1400.jpg?w=700", "d": "2026-08-25T14:20:17", "ex": "Instead of focusing on adversity, Northeastern researchers are measuring how positive experiences can shape mental health years later.", "tag": ""}, {"t": "Moderna and Merck show personalized cancer vaccines can work.", "u": "https://news.northeastern.edu/2026/08/20/cancer-vaccine-moderna-merck/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/lab_stock.jpg?w=700", "d": "2026-08-20T19:51:44", "ex": "There’s a new weapon to fight cancer. Northeastern experts explain how it works — and what it could mean for cancer treatment.", "tag": ""}, {"t": "Diet culture is back. Are GLP-1s fueling eating disorders?", "u": "https://news.northeastern.edu/2026/08/19/ozempic-eating-disorder-diet-culture/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/EatingDisorder1400.jpg?w=700", "d": "2026-08-19T15:23:07", "ex": "Ozempic has transformed weight loss. Experts explain what the shifting landscape around body could mean for eating disorders.", "tag": ""}, {"t": "More measles outbreaks feared as children head back to school", "u": "https://news.northeastern.edu/2026/08/18/measles-vaccine-exemptions-cases/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/measles_vaccine_1400.jpg?w=700", "d": "2026-08-18T17:51:14", "ex": "The CDC reports that more school children are getting exemptions from vaccines, that could lead to more measles outbreaks", "tag": ""}, {"t": "Hayden Panettiere’s death and the dangerous duo of addiction and PPD", "u": "https://news.northeastern.edu/2026/08/17/hayden-panettiere-addiction-depression/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Hayden_Panettiere_1400.jpg?w=700", "d": "2026-08-17T16:48:27", "ex": "Hayden Panettiere has died at 36, following years of public struggles with postpartum depression and addiction. Experts weigh in.", "tag": ""}, {"t": "Is age more than just a number when it comes to health screenings?", "u": "https://news.northeastern.edu/2026/08/14/colonoscopy-age-45/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/colonoscopy1400.jpg?w=700", "d": "2026-08-14T15:37:25", "ex": "“The best way to look at it is like a balance and the idea of a tipping point,” said professor Ram Hariharan, who studies aging.", "tag": ""}]}, {"n": 109, "name": "Society & Culture", "u": "https://news.northeastern.edu/category/society-culture/", "live": "society-culture", "items": [{"t": "AI and digital culture make their way into Merriam-Webster", "u": "https://news.northeastern.edu/2026/09/24/merriam-webster-new-words-2026/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092326_MM_Dictionary_Additions_003.jpg?w=700", "d": "2026-09-24T12:57:20", "ex": "A Northeastern linguist explains what the latest additions to the dictionary mean about language change in the age of AI.", "tag": ""}, {"t": "Fat Bear Week features rotund Alaskan ursinae for conservation", "u": "https://news.northeastern.edu/2026/09/22/fat-bear-week/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Fat-Bear-Week1400.jpg?w=700", "d": "2026-09-22T17:13:44", "ex": "Fat Bear Week is an annual, eight-day sports bracket-like elimination contest where people vote for girthy bears at an Alaskan preserve", "tag": ""}, {"t": "How sports betting app Novig trolls us with its Sydney Sweeney ads", "u": "https://news.northeastern.edu/2026/09/14/sydney-sweeney-ad-novig/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Sydney-Sweeney_1400.jpg?w=700", "d": "2026-09-14T16:51:43", "ex": "Novig’s national ad campaign featuring actress Sydney Sweeney nude and holding strategically placed sporting equipment, launched Sept. 9.", "tag": ""}, {"t": "Who hears you say “thank you”? It matters more than you might think", "u": "https://news.northeastern.edu/2026/09/02/gratitude-expression-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/gratitude1400.jpg?w=700", "d": "2026-09-02T14:02:23", "ex": "There’s more to a simple “thank you” than meets the ear. Witnessing someone express gratitude makes observers want to collaborate with them.", "tag": ""}, {"t": "Researcher investigates how people get into the urban mix", "u": "https://news.northeastern.edu/2026/08/31/income-segregation-cities-diversity-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Mixing1400.jpg?w=700", "d": "2026-08-31T16:05:54", "ex": "Do modern cities still offer the opportunity to meet people from different income levels, social and ethnic groups and backgrounds?", "tag": ""}, {"t": "OpenAI introduces ChatGPT for Teens. What do teachers think?", "u": "https://news.northeastern.edu/2026/08/21/chatgpt-for-teens-ai-classroom/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/082026_MM_ChatGPT_Teens_001.jpg?w=700", "d": "2026-08-21T13:20:19", "ex": "OpenAI’s new ChatGPT for Teens is designed to help students learn and study. What do educators have to say about it?", "tag": ""}, {"t": "The 70-meter Medieval tapestry that is captivating London", "u": "https://news.northeastern.edu/2026/08/11/bayeux-tapestry-london-exhibit/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Bayeux-Tapestry1400.jpg?w=700", "d": "2026-08-11T13:23:59", "ex": "Nearly 1,000 years after it was stitched, the Bayeux Tapestry is drawing new audiences. Northeastern scholars explain why", "tag": ""}, {"t": "Rideshare companies provide transportation, food, groceries…and sprawl", "u": "https://news.northeastern.edu/2026/07/15/rideshare-urban-sprawl-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/UBER1400.jpg?w=700", "d": "2026-07-15T14:36:47", "ex": "Researchers compared development in 167 U.S. communities between 2010 and 2015: before, during and after rideshares were introduced.", "tag": ""}, {"t": "Most social media child safety features fail, research finds", "u": "https://news.northeastern.edu/2026/06/29/social-media-safety-child-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/062426_MM_YouTube_Kids_1400.jpg?w=700", "d": "2026-06-29T15:43:40", "ex": "Researchers tested 86 social media safety features for minors that were promoted by Instagram, TikTok, Snapchat and YouTube.", "tag": ""}, {"t": "Why ‘high-emotional’ videos of World Cup tourists are going viral", "u": "https://news.northeastern.edu/2026/06/24/world-cup-tourists-usa-2026/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/Fans1400.jpg?w=700", "d": "2026-06-24T16:54:41", "ex": "World Cup social media is abuzz with positivity as videos show newfound fellowships between international fans worth celebrating.", "tag": ""}, {"t": "Fashion beauty standards have changed little in 25 years, study finds", "u": "https://news.northeastern.edu/2026/06/23/fashion-beauty-standards-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/beauty-standard-in-Fashion-industry-updated-1400x933-1.jpg?w=700", "d": "2026-06-23T14:38:18", "ex": "Despite some progress on who is hitting the runway, the body standards in the fashion industry have stayed much the same.", "tag": ""}, {"t": "Can the UK social media ban work? Northeastern experts weigh in", "u": "https://news.northeastern.edu/2026/06/16/uk-social-media-ban/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/Ukban1400.jpg?w=700", "d": "2026-06-16T16:55:57", "ex": "“One of the difficulties is that legislation is always reactive to technology,” said Northeastern psychologist Rachel Rodgers", "tag": ""}, {"t": "Obama Center, Trump library reflect new era for presidential libraries", "u": "https://news.northeastern.edu/2026/06/15/obama-center-trump-library/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/ObamaLibrary.jpg?w=700", "d": "2026-06-15T16:27:47", "ex": "The Obama and Trump libraries are going digital. Historians aren’t sure that’s a good idea.", "tag": ""}, {"t": "Is TikTok listening to your ‘Not Interested’ requests?", "u": "https://news.northeastern.edu/2026/06/09/tiktok-not-interested-algorithm-control/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/tiktok-.jpg?w=700", "d": "2026-06-09T14:15:37", "ex": "TikTok’s “Not interested” button effectiveness can be short-lived, Northeastern researchers have uncovered.", "tag": ""}, {"t": "Nearly 7 million kids live in a home where guns aren’t securely stored", "u": "https://news.northeastern.edu/2026/06/02/guns-at-home-children-study/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/gun_safe_1400.jpg?w=700", "d": "2026-06-02T16:41:12", "ex": "The survey included nearly 900 Americans who own guns and have kids under age 18.", "tag": ""}, {"t": "To combat gender bias in the police, they made cops into actors", "u": "https://news.northeastern.edu/2026/05/29/police-bias-training-india/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/05/Buharpolice1400.jpg?w=700", "d": "2026-05-29T17:09:12", "ex": "Researchers found that their new training program had wide-ranging impacts on how police treated female victims of violence.", "tag": ""}]}, {"n": 110, "name": "Business", "u": "https://news.northeastern.edu/category/business/", "live": "business", "items": [{"t": "Economists think a rate hike is coming. Here’s what that could mean", "u": "https://news.northeastern.edu/2026/09/11/fomc-september-interest-rates/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Kevin-Warsh_1400.jpg?w=700", "d": "2026-09-11T15:36:23", "ex": "Stubborn inflation, rising Treasury yields and signals from other central banks have all raised the prospect of a rate hike.", "tag": ""}, {"t": "Why it matters if a retailer has inaccurate personal data on you", "u": "https://news.northeastern.edu/2026/08/05/customer-data-collection-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/HomeDepot1400.jpg?w=700", "d": "2026-08-05T14:32:47", "ex": "Home Depot has “a lot of information you don’t expect your hardware store to have about you,” a Northeastern professor said.", "tag": ""}, {"t": "Why is the US buying Japanese yen? Experts explain the rare move", "u": "https://news.northeastern.edu/2026/08/03/us-japan-buy-yen/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Yen1400.jpg?w=700", "d": "2026-08-03T16:54:36", "ex": "A rare coordinated intervention by the United States and Japan to buy the struggling yen may have stabilized the currency in the short run.", "tag": ""}, {"t": "For hiring, remote work means more expertise, research finds", "u": "https://news.northeastern.edu/2026/06/26/remote-work-expectations/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/062326_AS_Remote_Work_005.jpg?w=700", "d": "2026-06-26T15:30:57", "ex": "Zhenyu Liao said researchers found three important reasons why hiring managers have higher expectations for remote workers.", "tag": ""}, {"t": "Kevin Warsh faces first major test as Federal Reserve chair", "u": "https://news.northeastern.edu/2026/06/16/federal-reserve-meeting-kevin-warsh/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/Warsh1400.jpg?w=700", "d": "2026-06-16T14:28:26", "ex": "Rising inflation, the Iran war and other central banks moving to increase interest rates may complicate the path forward.", "tag": ""}, {"t": "The LIV Golf tour was a flub. Experts weigh in on why", "u": "https://news.northeastern.edu/2026/06/09/liv-golf-funding-investors/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/Younghan_Song_LIV_Golf_1400.jpg?w=700", "d": "2026-06-09T15:39:48", "ex": "After the Saudis pulled their funding, LIV Golf is looking for investors", "tag": ""}, {"t": "Why Anthropic, OpenAI and SpaceX are all racing to go public now", "u": "https://news.northeastern.edu/2026/06/08/anthropic-openai-spacex-ipo-race/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060326_MM_SpaceX_Logo_1400.jpg?w=700", "d": "2026-06-08T13:06:45", "ex": "Together, the three companies, all seeking IPOs, are expected to command valuations rarely seen in public markets.", "tag": ""}, {"t": "Global Leadership Summit offers leadership lessons in the age of AI", "u": "https://news.northeastern.edu/2026/06/05/northeastern-global-leadership-summit-roundup/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_069.jpg?w=700", "d": "2026-06-05T16:02:55", "ex": "Amid polarizing debates on AI, humanity has a critical role in guiding societies with human values, attendees hear.", "tag": ""}, {"t": "AI compels us to nurture our uniquely human qualities, says President Aoun", "u": "https://news.northeastern.edu/2026/06/04/joseph-aoun-human-leadership/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_070.jpg?w=700", "d": "2026-06-04T16:36:15", "ex": "Universities can lead the way in reaffirming “human centrality,” said President Joseph E. Aoun at the Global Leadership Summit in London.", "tag": ""}, {"t": "Trusted brands make a deal with customers and don’t break it", "u": "https://news.northeastern.edu/2026/06/04/ai-brand-strategy-trust/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_054.jpg?w=700", "d": "2026-06-04T15:53:37", "ex": "The governor of Northeastern University London said that brands need to think carefully about how they use AI to avoid losing customers.", "tag": ""}, {"t": "Northeastern grad architected career to become marketing VP at Oura", "u": "https://news.northeastern.edu/2026/06/01/marketing-career-path-oura-vp/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/05/Lindsey-Belknap_1400a.jpg?w=700", "d": "2026-06-01T22:26:12", "ex": "Lindsey Belknap took lessons from architecture school to design a successful career in marketing, now as VP at Oura.", "tag": ""}, {"t": "Spirit gone, airfares high. Is now a good time to fly?", "u": "https://news.northeastern.edu/2026/05/20/summer-flights-expensive/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/05/Spirit1400.jpg?w=700", "d": "2026-05-20T14:51:29", "ex": "Some experts say this summer travel season will be costly and uncertain.", "tag": ""}, {"t": "The U.S. debt has overtaken the economy. Should we be concerned?", "u": "https://news.northeastern.edu/2026/05/15/us-debt-to-gdp-ratio/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/05/treasury1400.jpg?w=700", "d": "2026-05-15T15:46:56", "ex": "Gross Domestic Product totaled $31.22 trillion between April 2025 and March 2026 and public debt totaled $31.27 trillion.", "tag": ""}, {"t": "What happened after the fast-food pay raise in California? Data explains", "u": "https://news.northeastern.edu/2026/04/24/california-fast-food-pay-raise/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/04/fastfood1400.jpg?w=700", "d": "2026-04-24T16:14:15", "ex": "Northeastern University research finds higher pay reshaped staffing, highlighting the ongoing debate over minimum wage impacts on jobs and the economy.", "tag": ""}, {"t": "Is this healthy energy drink coming to a store near you?", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg?w=700", "d": "2026-04-10T16:12:14", "ex": "Nicole Khoury’s own health journey inspired her to create Journée, a healthier alternative to traditional energy drinks.", "tag": ""}, {"t": "Researchers challenge fossil fuel companies’ communications strategy", "u": "https://news.northeastern.edu/2026/04/03/greenwashing-fossil-fuel-communications-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/04/Greenwashing1400.jpg?w=700", "d": "2026-04-03T15:30:58", "ex": "Fossil fuel companies say they’re leaders in renewable energy — researchers say there is a communication strategy suggesting otherwise.", "tag": ""}]}, {"n": 111, "name": "Arts", "u": "https://news.northeastern.edu/category/arts-entertainment/", "live": "arts-entertainment", "items": [{"t": "Award-winning Northeastern professor will publish ‘non-linear’ memoir", "u": "https://news.northeastern.edu/2026/09/04/truong-tran-poet-memoir/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/082526_MM_Book_1400.jpg?w=700", "d": "2026-09-04T12:30:00", "ex": "An American Book Award-winning poet with severe dyslexia, Truong Tran will release a non-linear memoir titled “How to Exi(s)T.”", "tag": ""}, {"t": "Why is it so difficult to sing the US national anthem?", "u": "https://news.northeastern.edu/2026/08/06/national-anthem-hard-to-sing/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/MarthaReeves1400.jpg?w=700", "d": "2026-08-06T12:16:56", "ex": "Music experts talk about singer Martha Reeves’ national anthem performance and the difficulty of singing “The Star-Spangled Banner.”", "tag": ""}, {"t": "The art of the hot take: Unpacking the virality behind SubwayTakes", "u": "https://news.northeastern.edu/2026/08/05/subwaytakes-art-of-the-hot-take/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Subwaytakes1400.jpg?w=700", "d": "2026-08-05T15:56:40", "ex": "The hit show “SubwayTakes” offers viewers a playfully Socratic dive into the shallow end of the day’s controversies.", "tag": ""}, {"t": "‘Franchise fatigue’ can’t seem to stick to Spider-Man. Why?", "u": "https://news.northeastern.edu/2026/07/31/tom-holland-spider-man-2026/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/spider_man_1400.jpg?w=700", "d": "2026-07-31T16:22:45", "ex": "Tom Holland’s fourth standalone superhero movie, Spider-Man: Brand New Day, generated tons of interest and sales before it was released.", "tag": ""}, {"t": "Loop groups, Hollywood’s invisible heroes, could be under threat by AI", "u": "https://news.northeastern.edu/2026/07/23/loop-groups-hollywood-heroes/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/01/011426_MM_Dennis_Staroselsky_400.jpg?w=700", "d": "2026-07-23T16:27:35", "ex": "As AI voice technology improves, the actors who record background noise for film and TV face a potentially existential threat.", "tag": ""}, {"t": "Love it or loathe it, the movie ‘Misaligned’ is provoking debate on AI", "u": "https://news.northeastern.edu/2026/07/22/who-is-tilly-norwood/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Tilly1400.jpg?w=700", "d": "2026-07-22T09:00:00", "ex": "Featuring synthetic actress Tilly Norwood, the comedy has sparked discussion over whether AI is another art form, or has it gone too far?", "tag": ""}, {"t": "Does IMAX make an ancient epic the future of Hollywood?", "u": "https://news.northeastern.edu/2026/07/17/the-odyssey-imax/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Odyssey1400.jpg?w=700", "d": "2026-07-17T13:33:51", "ex": "“There probably isn’t a better movie that would be suited to IMAX screenings,” Northeastern’s Steve Granelli said of ‘The Odyssey.’", "tag": ""}, {"t": "‘Widow’s Bay’ shows why New England is the ‘creepy attic of America’", "u": "https://news.northeastern.edu/2026/07/07/widows-bay-new-england-horror-history/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/WidowsBay1400.jpg?w=700", "d": "2026-07-07T12:18:58", "ex": "New England’s allure as a destination for all things creepy goes well beyond witch trials, historians and folklorists say.", "tag": ""}, {"t": "A piano that makes music with cats? Book explores imagined devices", "u": "https://news.northeastern.edu/2026/07/06/imaginary-musical-instruments-book/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/070226_AS_Loughridge_book_1400.jpg?w=700", "d": "2026-07-06T16:16:47", "ex": "Northeastern music history professor Deirdre Loughridge’s new book, “The Museum of Imaginary Musical Instruments” shows fantastical music devices.", "tag": ""}, {"t": "Is Christopher Nolan’s ‘The Odyssey’ too modern? Experts weigh in", "u": "https://news.northeastern.edu/2026/06/18/the-odyssey-christopher-nolan-tom-holland-dad/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/Odyssey1400.jpg?w=700", "d": "2026-06-18T13:34:14", "ex": "“Dad” might sound out of place in ancient Greece, but it’s more accurate than you think, experts say.", "tag": ""}, {"t": "Is Xbox broken? Studio closures show a games industry in crisis", "u": "https://news.northeastern.edu/2026/06/17/xbox-closing-game-studios/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/Xbox_1400.jpg?w=700", "d": "2026-06-17T12:21:04", "ex": "As studios negotiate with Xbox to go independent, a gaming expert said it’s the next logical step in an industry that’s gotten too big.", "tag": ""}, {"t": "Are rising video game hardware prices making gaming a luxury hobby?", "u": "https://news.northeastern.edu/2026/06/12/video-games-2026/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/gameing_controller_1400.jpg?w=700", "d": "2026-06-12T16:44:27", "ex": "Component shortages driven by AI demands, global tariffs and disruptions at the Strait of Hormuz are key drivers of the price increases.", "tag": ""}, {"t": "With ‘Obsession’ and ‘Backrooms,’ are YouTubers taking over Hollywood?", "u": "https://news.northeastern.edu/2026/06/11/youtubers-making-movies-backrooms/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/backroom1400.jpg?w=700", "d": "2026-06-11T13:39:58", "ex": "An influx of 20-something-year-old YouTubers are making waves in Hollywood with horror movies that are outperforming even Star Wars.", "tag": ""}, {"t": "Why older gamers could be the key to saving the games industry", "u": "https://news.northeastern.edu/2026/06/02/old-gamers-video-game-industry/", "img": "https://news.northeastern.edu/wp-content/uploads/2025/12/121725_MM_gaming_stock_1400.jpg?w=700", "d": "2026-06-02T22:03:46", "ex": "The games industry has long ignored older gamers. Embracing them could be a chance for the industry to grow when it most needs to.", "tag": ""}, {"t": "Book publishing’s AI reckoning in full force. Few know what to do.", "u": "https://news.northeastern.edu/2026/05/28/book-publishing-ai-reckoning/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/05/052826_AS_CHATgpt_001.jpg?w=700", "d": "2026-05-28T16:37:49", "ex": "Generative AI is now forcing book publishing into a long overdue reckoning over what counts as original human work.", "tag": ""}, {"t": "How the brain reacts to live music", "u": "https://news.northeastern.edu/2026/05/27/music-effect-brain-research/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/05/live-music-1400x933-1.jpg?w=700", "d": "2026-05-27T18:35:01", "ex": "The study is an inaugural research collaboration between Northeastern and its Boston neighbor, New England Conservatory.", "tag": ""}]}, {"n": 112, "name": "Law", "u": "https://news.northeastern.edu/category/law/", "live": "law", "items": [{"t": "Here are some of the biggest Supreme Court cases expected next term", "u": "https://news.northeastern.edu/2026/09/21/preview-of-supreme-court-2027-term/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/SupremeCourt1400.jpg?w=700", "d": "2026-09-21T17:02:24", "ex": "The court has agreed to hear at least 25 cases that cut across some of the most consequential issues in U.S. law.", "tag": ""}, {"t": "Does size matter – when it comes to the U.S. Supreme Court?", "u": "https://news.northeastern.edu/2026/09/09/supreme-court-pack-the-court-explainer/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/SupremeCourtexpand1400.jpg?w=700", "d": "2026-09-09T16:37:52", "ex": "Every so often, debate about the size of the U.S. Supreme Court bench reaches beyond mere chatter and faces a reality check.", "tag": ""}, {"t": "Death Penalty laws put the US in a small club of nations who execute", "u": "https://news.northeastern.edu/2026/09/07/us-death-penalty-law/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/DeathPenalty1400.jpg?w=700", "d": "2026-09-07T14:00:00", "ex": "The U.S. has the death penalty on the law books, but the practice, while in overall decline, draws criticism from Northeastern expert.", "tag": ""}, {"t": "Mistrial not necessarily the end of Clancy case, expert says.", "u": "https://news.northeastern.edu/2026/09/04/lindsay-clancy-mistrial-next-steps/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Clancy1400.jpg?w=700", "d": "2026-09-04T18:22:32", "ex": "“There are two different things to watch going forward,” said Rose Zoltek-Jick, associate teaching professor at Northeastern’s School of Law", "tag": ""}, {"t": "Why the Lindsay Clancy mistrial stay bid is a long shot", "u": "https://news.northeastern.edu/2026/09/04/lindsay-clancy-mistrial-stay-bid/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/ClancyMistrail1400.jpg?w=700", "d": "2026-09-04T13:05:29", "ex": "“Deciding whether to grant a mistrial is more art than science,” said Daniel Medwed, law professor at Northeastern.", "tag": ""}, {"t": "Verdict in rap star’s killing decided on book confession", "u": "https://news.northeastern.edu/2026/09/01/tupac-verdict-trial/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Tupac-verdict_1400.jpg?w=700", "d": "2026-09-01T17:57:44", "ex": "Former gang leader was convicted, in part, from his memoir. Other convicted and alleged killers sought the limelight in books and film.", "tag": ""}, {"t": "Is the Lindsay Clancy case headed for a mistrial? What to know", "u": "https://news.northeastern.edu/2026/09/01/lindsay-clancy-case-mistrial/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Lindsay_Clancy_1400.jpg?w=700", "d": "2026-09-01T15:34:36", "ex": "After four days of deliberation, the case involving 36-year-old Lindsay Clancy, of Duxbury, Massachusetts, is at an apparent standstill.", "tag": ""}, {"t": "The fight over mail-in ballots. This law professor explains", "u": "https://news.northeastern.edu/2026/08/25/mail-in-ballot-supreme-court-ruling/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Mailballots1400.jpg?w=700", "d": "2026-08-25T16:25:17", "ex": "Northeastern professor Jeremy Paul weighs in on the recent U.S. Supreme Court decision on Trump’s plans to restrict mail-in ballots", "tag": ""}, {"t": "What’s ailing Sen. Mitch McConnell? Why it’s hard to know.", "u": "https://news.northeastern.edu/2026/08/19/sen-mitch-mcconnell-health-update/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/U.S.-Sen.-Mitch-McConnell_1400.jpg?w=700", "d": "2026-08-19T16:31:31", "ex": "The McConnell episode illustrates a growing debate about the secrecy surrounding the health of the nation’s top leaders.", "tag": ""}, {"t": "What is Section 230?  Northeastern expert explains how the law has shaped the web", "u": "https://news.northeastern.edu/2026/08/14/social-media-lawsuits-section-230/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/meta_1400.jpg?w=700", "d": "2026-08-14T14:59:49", "ex": "What to know about the internet law that has shaped the web since 1996 at the center of thousands of social media lawsuits.", "tag": ""}, {"t": "30-year-old Tupac Shakur murder case could give prosecutors a challenge", "u": "https://news.northeastern.edu/2026/08/12/tupac-shakur-trial/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Duane-Davis_1400.jpg?w=700", "d": "2026-08-12T14:16:13", "ex": "In a memoir, the defendant says he was the mastermind in Tupac Shakur’s killing. He now says the book was exaggerated with fiction.", "tag": ""}, {"t": "Fauci contempt action: His pending legal predicament, explained", "u": "https://news.northeastern.edu/2026/08/06/fauci-contempt-action-explained/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Anthony-Fauci1400.jpg?w=700", "d": "2026-08-06T16:06:35", "ex": "The contempt action raises thorny constitutional questions: chiefly, whether Fauci can invoke the Fifth Amendment after receiving a pardon.", "tag": ""}, {"t": "Lindsay Clancy trial: How the insanity defense differs in Mass.", "u": "https://news.northeastern.edu/2026/07/31/daniel-medwed-lindsay-clancy-trial/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Lindsay-Clancy_1400.jpg?w=700", "d": "2026-07-31T16:52:51", "ex": "There is also often a “disconnect between the popular perception and the reality” of the insanity defense, said one legal expert.", "tag": ""}, {"t": "Will the Supreme Court wade into the fight against mail voting?", "u": "https://news.northeastern.edu/2026/07/28/supreme-court-mail-in-voting/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Ballots1400.jpg?w=700", "d": "2026-07-28T16:33:57", "ex": "Legal experts question whether the court has the appetite to wade into election issues so close to the midterms.", "tag": ""}, {"t": "How many children had a relative criminally charged? Study says 1 in 7", "u": "https://news.northeastern.edu/2026/07/28/children-of-incarcerated-parents/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Family-Criminal-Legal-Contact-1400x933-1.jpg?w=700", "d": "2026-07-28T12:22:13", "ex": "Research led by a Northeastern law professor quantifies just how many children are impacted by the criminal justice system.", "tag": ""}, {"t": "Are public officials facing greater danger today than before?", "u": "https://news.northeastern.edu/2026/07/24/political-violence-2026-stats/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/1400_048c66.jpg?w=700", "d": "2026-07-24T15:22:15", "ex": "Getting a handle on whether the latest wave of threats against public officials is historically anomalous is challenging, experts say.", "tag": ""}]}, {"n": 113, "name": "World & Nation", "u": "https://news.northeastern.edu/category/world-news/", "live": "world-news", "items": [{"t": "Coming to America – pandas and international politics at a zoo", "u": "https://news.northeastern.edu/2026/09/29/atlanta-zoo-pandas-diplomacy/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Pandas_1400.jpg?w=700", "d": "2026-09-29T15:58:07", "ex": "The Chinese government wants to see friendly headlines about pandas and not human rights abuses, Northeastern experts say.", "tag": ""}, {"t": "In 2026, is the United Nations a power broker or a ‘toothless tiger’?", "u": "https://news.northeastern.edu/2026/09/23/unga-2026-toothless-tiger/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/UNGA-81_1400.jpg?w=700", "d": "2026-09-23T15:59:19", "ex": "Is the United Nations the “toothless tiger” that some politicians and observers claim it is? Experts discuss as world leaders meet.", "tag": ""}, {"t": "“Super” El Niño is expected to be the strongest on record", "u": "https://news.northeastern.edu/2026/09/21/super-el-nino-forecast/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/rain.jpg?w=700", "d": "2026-09-21T16:31:39", "ex": "A weather phenomenon called “Super” El Niño is expected to wallop the globe with weather extremes, from a mild winter to droughts and floods", "tag": ""}, {"t": "Many causes for floods, many causes for their devastation", "u": "https://news.northeastern.edu/2026/08/27/nepal-tibet-flood/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/NepalFloods1400.jpg?w=700", "d": "2026-08-27T17:49:14", "ex": "Hydrologist Auroop Ganguly traced Wednesday’s devastating flood in Nepal and Tibet to a “combination of factors” both natural and man-made.", "tag": ""}, {"t": "Why hostage-taking thrives in an era of great power competition", "u": "https://news.northeastern.edu/2026/08/18/hostage-taking-2026-analysis/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/robert_gilman_1400.jpg?w=700", "d": "2026-08-18T15:31:27", "ex": "Even as the number of documented cases appears to be slowing as deals are struck, hostage-taking remains a viable tool for statecraft.", "tag": ""}, {"t": "Is there a ‘birth tourism’ boom? Experts weigh in on the issue", "u": "https://news.northeastern.edu/2026/08/17/birth-tourism-boom/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Trump_1400_2a2dbc.jpg?w=700", "d": "2026-08-17T16:15:38", "ex": "Earlier this month, Trump railed against birth tourism as a long standing issue. But experts find the problem small in the US.", "tag": ""}, {"t": "Ukraine is taking the war deep into Russia. Is it working?", "u": "https://news.northeastern.edu/2026/08/13/russia-ukraine-drone-strikes/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/RussiaWar1400.jpg?w=700", "d": "2026-08-13T13:37:34", "ex": "Ukraine’s strategic shift toward direct attacks on Russia’s beleaguered energy sector may be tipping the scales in the four-year-old war.", "tag": ""}, {"t": "Is India shifting from a secular state to a Hindu homeland?", "u": "https://news.northeastern.edu/2026/08/13/fascism-in-india-book/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Narendra-Modi_1400.jpg?w=700", "d": "2026-08-13T10:00:26", "ex": "As India marks independence, Northeastern expert Luna Sabastian explains how Hindu nationalist ideas changed the world’s largest democracy.", "tag": ""}, {"t": "Can a text message sway a voter? New research puts it to the test", "u": "https://news.northeastern.edu/2026/08/11/text-messages-get-out-the-vote/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/TextingVote1400.jpg?w=700", "d": "2026-08-11T15:42:43", "ex": "With fewer than 100 days until the midterms, there’s a lot of buzz about election season — including the literal buzzing of cellphones.", "tag": ""}, {"t": "A deal may resolve the Strait of Hormuz, but not the war", "u": "https://news.northeastern.edu/2026/08/07/strait-of-hormuz-deal/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Strait1400.jpg?w=700", "d": "2026-08-07T14:46:39", "ex": "An anticipated deal between Iran and Oman would manage shipping in the strait, but has not yet been finalized.", "tag": ""}, {"t": "Assessing restrictive immigration policy as migrants surge into Ceuta", "u": "https://news.northeastern.edu/2026/07/31/spanish-territory-immigration-restrictions/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/border_1400.jpg?w=700", "d": "2026-07-31T13:08:24", "ex": "“In some sense, it was easier for [anti-immigration laws] to be effective prior to the modern era,” said Mindy Marks of Northeastern.", "tag": ""}, {"t": "What is ‘smoke taint’? How wildfires may affect your favorite wine", "u": "https://news.northeastern.edu/2026/07/30/smoke-taint-wine-wildfires/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Spain_Wildfire_1400.jpg?w=700", "d": "2026-07-30T12:18:34", "ex": "Wine grapes can be particularly susceptible to the effects of smoke from wildfires at a certain stage of their development.", "tag": ""}, {"t": "Explosion of data centers is fueling a political backlash", "u": "https://news.northeastern.edu/2026/07/24/data-center-construction-ai/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/DataCenter1400.jpg?w=700", "d": "2026-07-24T15:58:36", "ex": "Communities don’t want AI data centers built near them. That’s unlikely to change, experts say, with 7-in-10 opposing them.", "tag": ""}, {"t": "‘Strongwomen’ lead Europe’s far right. A political scientist explores", "u": "https://news.northeastern.edu/2026/07/24/far-right-women-leaders-europe/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Marine_Le_Pen_1400.jpg?w=700", "d": "2026-07-24T12:53:07", "ex": "Macho men usually lead far-right parties. So why is Europe’s radical right turning to ‘feminine, nurturing’ leaders?", "tag": ""}, {"t": "Is a blockade of Bab el-Mandeb a Strait of Hormuz redux?", "u": "https://news.northeastern.edu/2026/07/21/houthi-blockade-bab-el-mandeb-strait/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Bab-el-Mandeb-Strait1400.jpg?w=700", "d": "2026-07-21T16:35:47", "ex": "Iranian-backed Houthi rebels in Yemen announced a blockade of the Bab el-Mandeb strait connecting the Red Sea and Arabian Sea.", "tag": ""}, {"t": "What does the new British Prime Minister mean for Trump, Ukraine, EU?", "u": "https://news.northeastern.edu/2026/07/20/andy-burnham-prime-minister/", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/Andy_Burnham_1400.jpg?w=700", "d": "2026-07-20T16:39:51", "ex": "Burnham promised to do things “differently.” Political scientists at Northeastern University London have clues about what this might mean.", "tag": ""}]}];
+const LV_CAT_IDS = {"latest": null, "research": 21443, "science-technology": 3, "health": 612, "society-culture": 6, "business": 4, "arts-entertainment": 5, "sports": 8, "law": 19491, "world-news": 14565};
+const lvGrid = $("#lvGrid"), lvScroll = $("#lvScroll"), lvScreen = $("#lvScreen");
+const narrow = () => document.documentElement.clientWidth <= 820;
+const PXM = () => narrow() ? 4.4 : 6.2;                 /* px per minute */
+const CHW = () => narrow() ? 118 : 190;
+const localMin = () => { const d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 60000); };
+const fmtT = m => { const h = Math.floor(((m % 1440) + 1440) % 1440 / 60), mm = ((m % 60) + 60) % 60;
+  return `${(h % 12) || 12}:${String(mm).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`; };
+const fmtS = m => { const h = Math.floor(((m % 1440) + 1440) % 1440 / 60), mm = ((m % 60) + 60) % 60;
+  return `${(h % 12) || 12}:${String(mm).padStart(2, "0")}`; };
+let lvWin = null, lvRows = [], lvSel = null, lvSlot = -1;
+
+function schedule(ch, ci, w0, w1) {
+  const L = ch.items, n = L.length;
+  if (!n) return [];
+  const dur = i => (i % 3 === 1 ? 60 : 30);
+  let C = 0; for (let i = 0; i < n; i++) C += dur(i);
+  const shift = ((ci * 90) % C);
+  let t = w0 - ((((w0 - shift) % C) + C) % C), i = 0;
+  const out = [];
+  while (t < w1) {
+    const d = dur(i % n);
+    if (t + d > w0) out.push({ s: t, e: t + d, it: L[i % n] });
+    t += d; i++;
+  }
+  return out;
+}
+function progHTML(p, r, k, now) {
+  const px = PXM(), w0 = lvWin[0];
+  const L = Math.max(p.s, w0), left = (L - w0) * px + 2, width = (p.e - L) * px - 4;
+  const live = p.s <= now && now < p.e, past = p.e <= now;
+  const label = `${p.it.t}. ${live ? "On now" : fmtT(p.s)}, until ${fmtT(p.e)}, on ${CHANNELS[r].name}`;
+  return `<a class="pg${live ? " live" : ""}${past ? " past" : ""}" href="${esc(p.it.u)}" data-r="${r}" data-k="${k}" ` +
+    `data-cb="${cbAttr(p.it)}" style="left:${left}px;width:${width}px" aria-label="${esc(label)}">` +
+    `<span class="pg-t">${esc(p.it.t)}</span><span class="pg-m">${fmtS(p.s)} – ${fmtT(p.e)}</span></a>`;
+}
+function renderGuide(keepScroll) {
+  const now = localMin(), px = PXM(), chw = CHW();
+  const w0 = Math.floor(now / 30) * 30 - 30, w1 = w0 + 6 * 60;
+  lvWin = [w0, w1]; lvSlot = Math.floor(now / 30);
+  lvRows = CHANNELS.map((ch, ci) => schedule(ch, ci, w0, w1));
+  const width = chw + (w1 - w0) * px;
+  let times = "";
+  for (let t = w0; t < w1; t += 30) times += `<span class="lv-tl" style="left:${chw + (t - w0) * px}px;width:${30 * px}px">${fmtT(t)}</span>`;
+  const d = new Date();
+  const rows = CHANNELS.map((ch, r) =>
+    `<div class="lv-row" role="group" aria-label="Channel ${ch.n}, ${esc(ch.name)}">` +
+    `<a class="lv-ch" href="${esc(ch.u)}"><span class="num">${ch.n}</span><span class="lv-chn">${esc(ch.name)}</span></a>` +
+    `<div class="lv-progs">${lvRows[r].map((p, k) => progHTML(p, r, k, now)).join("")}</div></div>`).join("");
+  const sl = keepScroll ? lvScroll.scrollLeft : null, st = keepScroll ? lvScroll.scrollTop : 0;
+  lvGrid.style.width = width + "px";
+  lvGrid.innerHTML = `<div class="lv-times"><div class="lv-corner">${d.toLocaleDateString("en-US", { weekday: "short" })} <span id="lvClock"></span></div>${times}` +
+    `<span class="lv-nowtag" id="lvNowTag">Now</span></div>${rows}<span class="lv-nowline" id="lvNowLine"></span>`;
+  placeNow();
+  if (keepScroll) { lvScroll.scrollLeft = sl; lvScroll.scrollTop = st; }
+  else lvScroll.scrollLeft = 30 * px;
+  const keep = lvSel && lvGrid.querySelector(`.pg[data-r="${lvSel.r}"].live`);
+  select(keep || lvGrid.querySelector('.pg[data-r="0"].live') || lvGrid.querySelector(".pg"), false);
+}
+function placeNow() {
+  const d = new Date(), now = localMin() + d.getSeconds() / 60, x = CHW() + (now - lvWin[0]) * PXM();
+  const ln = $("#lvNowLine"), tg = $("#lvNowTag"), ck = $("#lvClock");
+  if (ln) ln.style.left = x + "px";
+  if (tg) tg.style.left = x + "px";
+  if (ck) ck.textContent = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  if (lvSel) updateWhen();
+}
+function updateWhen() {
+  const p = lvRows[lvSel.r][lvSel.k], now = localMin() + new Date().getSeconds() / 60;
+  const live = p.s <= now && now < p.e, past = p.e <= now;
+  $("#lvWhen").textContent = live ? `On now · ${fmtS(p.s)} – ${fmtT(p.e)}` :
+    past ? `Earlier · ${fmtS(p.s)} – ${fmtT(p.e)}` : `Up later · ${fmtS(p.s)} – ${fmtT(p.e)}`;
+  $("#lvProgWrap").hidden = !live;
+  $("#lvProg").style.width = live ? ((now - p.s) / (p.e - p.s) * 100).toFixed(1) + "%" : "0";
+  const b = $("#lvBadge");
+  b.classList.toggle("on", live);
+  b.textContent = live ? "On now" : past ? "Earlier" : "Coming up";
+}
+function select(el, flash) {
+  if (!el) return;
+  const r = +el.dataset.r, k = +el.dataset.k, p = lvRows[r][k], ch = CHANNELS[r];
+  const changed = !lvSel || lvSel.r !== r || lvSel.k !== k;
+  if (lvSel && lvSel.el) lvSel.el.classList.remove("sel");
+  lvSel = { r, k, el }; el.classList.add("sel");
+  if (!changed && flash !== false) return;
+  const it = p.it;
+  if (flash !== false && !reduceMotion) { lvScreen.classList.remove("flip"); void lvScreen.offsetWidth; lvScreen.classList.add("flip"); }
+  lvScreen.href = it.u;
+  lvScreen.querySelectorAll("img:not(.lv-bug),video").forEach(n => n.remove());
+  const bug = lvScreen.querySelector(".lv-bug");
+  if (it.img) bug.insertAdjacentHTML("beforebegin", `<img src="${esc(it.img)}" alt="">`);
+  else if (ch.film) {
+    bug.insertAdjacentHTML("beforebegin", `<video muted loop playsinline src="${esc(ch.film)}"></video>`);
+    const v = lvScreen.querySelector("video");
+    v.addEventListener("timeupdate", () => { if (v.currentTime > .15) v.classList.add("live"); });
+    if (!reduceMotion) v.play().catch(() => {});
+  }
+  $("#lvNum").textContent = ch.n;
+  $("#lvCh").innerHTML = `<b>${ch.n}</b> ${esc(ch.name)}`;
+  $("#lvTitle").textContent = it.t;
+  $("#lvEx").textContent = it.ex || it.tag || "";
+  const go = $("#lvGo");
+  go.href = it.u;
+  go.dataset.cb = JSON.stringify({ t: it.t, img: it.img || "", u: it.u, tag: it.tag || "" });
+  $("#lvGoL").textContent = /news\.northeastern\.edu\/\d{4}\//.test(it.u) ? "Read the story" : "Go there";
+  const nx = lvRows[r].find(q => q.s >= p.e);
+  $("#lvNext").innerHTML = nx ? `Up next <b>${esc(nx.it.t)}</b>` : "";
+  updateWhen();
+}
+/* hover and focus preview; click follows the link */
+let lvHoverT;
+lvGrid.addEventListener("mouseover", e => {
+  const el = e.target.closest(".pg"); if (!el) return;
+  clearTimeout(lvHoverT); lvHoverT = setTimeout(() => select(el), 70);
+});
+lvGrid.addEventListener("focusin", e => { const el = e.target.closest(".pg"); if (el) select(el); });
+/* surf with the arrow keys */
+lvGrid.addEventListener("keydown", e => {
+  const el = e.target.closest(".pg");
+  if (!el || !["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) return;
+  e.preventDefault();
+  let r = +el.dataset.r, k = +el.dataset.k;
+  const p = lvRows[r][k], mid = Math.max(p.s, lvWin[0]) + 1;
+  if (e.key === "ArrowRight") k = Math.min(k + 1, lvRows[r].length - 1);
+  if (e.key === "ArrowLeft") k = Math.max(k - 1, 0);
+  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+    r = Math.min(Math.max(r + (e.key === "ArrowDown" ? 1 : -1), 0), lvRows.length - 1);
+    k = Math.max(0, lvRows[r].findIndex(q => q.s <= mid && mid < q.e));
+  }
+  const t = lvGrid.querySelector(`.pg[data-r="${r}"][data-k="${k}"]`);
+  if (t) { t.focus({ preventScroll: true }); t.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduceMotion ? "auto" : "smooth" }); }
+});
+/* the clock drives the guide */
+setInterval(() => {
+  if (Math.floor(localMin() / 30) !== lvSlot) renderGuide(true); else placeNow();
+}, 15000);
+let lvRz; addEventListener("resize", () => { clearTimeout(lvRz); lvRz = setTimeout(() => renderGuide(true), 150); });
+renderGuide(false);
+
+/* live NGN: refresh the news channels */
+CHANNELS.forEach(async (ch, i) => {
+  if (!ch.live) return;
+  try {
+    const items = await ngnFetch(LV_CAT_IDS[ch.live], 16);
+    if (items.length < 4) return;
+    if (ch.n === 102) { const keep = ch.items.slice(0, 5); ch.items = keep.concat(items.filter(x => !keep.some(k => k.u === x.u))).slice(0, 12); }
+    else ch.items = items.map(x => Object.assign(x, { tag: "" }));
+    renderGuide(true);
+  } catch (err) { /* snapshot remains */ }
+});
+
+/* ============ subtle scroll movement ============ */
+/* parallax on select backdrops (elements sized with negative inset headroom) */
+const plx = $$("[data-plx]").map(el => ({ el, s: +el.dataset.plx }));
+if (plx.length && !reduceMotion) {
+  const plxUpd = () => {
+    for (const { el, s: str } of plx) {
+      const r = el.parentElement.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > innerHeight) continue;
+      const prog = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+      el.style.transform = `translateY(${(-prog * str).toFixed(1)}px)${el.dataset.plxs ? ` scale(${el.dataset.plxs})` : ""}`;
+    }
+  };
+  addEventListener("scroll", () => requestAnimationFrame(plxUpd), { passive: true });
+  plxUpd();
+}
+
+/* smooth scrolling via Lenis; anchors route through it so they glide too */
+if (!reduceMotion && typeof Lenis !== "undefined") {
+  const lenis = new Lenis({ lerp: 0.12 });
+  const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+  $$('a[href^="#"]').forEach(a => a.addEventListener("click", e => {
+    const id = a.getAttribute("href");
+    if (id.length < 2) return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    lenis.scrollTo(el);
+  }));
+}
+
+/* search overlay */
+const srch = $("#srch");
+function srchOpen() { srch.hidden = false; nav.classList.add("solid"); setTimeout(() => $("#srch-in").focus(), 50); }
+function srchClose() { srch.hidden = true; nav.classList.toggle("solid", scrollY > 60); }
+$("#srch-open").addEventListener("click", e => { e.stopPropagation(); srchOpen(); });
+$("#srch-x").addEventListener("click", srchClose);
+/* mega panels: hover-open with intent delays; click still works for touch */
+const mBtns = $$(".mnav-btn");
+let mHoverT = null;
+function mCloseAll() {
+  $$(".mpanel").forEach(pn => pn.hidden = true);
+  mBtns.forEach(b => b.setAttribute("aria-expanded", "false"));
+  nav.classList.toggle("solid", scrollY > 60);
+}
+function mOpen(b) {
+  const pn = $("#" + b.dataset.panel);
+  if (!pn || !pn.hidden) return;
+  mCloseAll();
+  pn.hidden = false;
+  b.setAttribute("aria-expanded", "true");
+  nav.classList.add("solid");
+}
+mBtns.forEach(b => {
+  b.addEventListener("click", e => {
+    e.stopPropagation();
+    const pn = $("#" + b.dataset.panel);
+    const wasOpen = pn && !pn.hidden;
+    mCloseAll();
+    if (!wasOpen) mOpen(b);
+  });
+  b.addEventListener("mouseenter", () => {
+    clearTimeout(mHoverT);
+    mHoverT = setTimeout(() => mOpen(b), 90);
+  });
+});
+nav.addEventListener("mouseleave", () => {
+  clearTimeout(mHoverT);
+  mHoverT = setTimeout(mCloseAll, 280);
+});
+nav.addEventListener("mouseenter", () => clearTimeout(mHoverT));
+document.addEventListener("click", e => { if (!nav.contains(e.target)) mCloseAll(); });
+addEventListener("scroll", () => { if ($$(".mpanel").some(pn => !pn.hidden)) mCloseAll(); }, { passive: true });
+addEventListener("keydown", e => { if (e.key === "Escape") mCloseAll(); });
+/* takeover menu */
+const tkv = $("#tkv");
+const tkvOpenBtn = $("#tkv-open");
+function tkvOpen() { tkv.hidden = false; document.documentElement.style.overflow = "hidden"; tkvOpenBtn.setAttribute("aria-expanded", "true"); }
+function tkvClose() { tkv.hidden = true; document.documentElement.style.overflow = ""; tkvOpenBtn.setAttribute("aria-expanded", "false"); }
+tkvOpenBtn.addEventListener("click", tkvOpen);
+$("#tkv-x").addEventListener("click", tkvClose);
+$$(".tkv-g").forEach(b => b.addEventListener("click", () => {
+  const s = $("#" + b.dataset.sub);
+  const open = !s.classList.contains("open");
+  $$(".tkv-sub").forEach(x => x.classList.remove("open"));
+  $$(".tkv-g").forEach(x => x.setAttribute("aria-expanded", "false"));
+  if (open) { s.classList.add("open"); b.setAttribute("aria-expanded", "true"); }
+}));
+addEventListener("keydown", e => { if (e.key === "Escape") { tkvClose(); srchClose(); } });
+
+/* ============ boot ============ */
+nav.classList.toggle("solid", scrollY > 60);
+</script>
