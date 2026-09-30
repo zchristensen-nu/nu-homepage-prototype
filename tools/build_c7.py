@@ -462,14 +462,14 @@ nav.classList.toggle("solid", scrollY > 60);
 page = (head + nav_css + hero_css + overlay_css + sheet_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
         + header_mk + hero_mk + NEW_BODY + rest_mk + footer_mk + "\n"
-        + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine + counters_js + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
+        + lenis + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + globedata + engine + NEW_JS + "\n" + tail_js + NEW_BOOT + "</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count("<video") == 4  # hero + three hover-play shelf tiles
 assert page.count('class="trow"') == 7
 for tok in ['id="srch"', 'id="tkv"', "tr-strip", "tr-btn", "continueRow", "ngnRow", "athleticsRow",
             "data-hovplay", "nu-continue", "ARCS", "n-copy", 'class="admit"',
-            "concept6-rev", 'content="1"', "newspost", "gonu.com", "admissions.northeastern.edu"]:
+            "concept6-rev", 'content="2"', "newspost", "gonu.com", "admissions.northeastern.edu"]:
     assert tok in page, tok
 for gone in ["s-grow", "rb-main", "s-reel", "vc-vid", "o-tab", "gt-card", "lifeimax", "rphrase", "wire foot"]:
     assert gone not in page, gone
