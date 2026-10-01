@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="9">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="10">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -151,19 +151,25 @@ def feat(t, src, v=None, still=None, card=None, **kw):
     return {"t": t, "v": v, "img": still or s.get("still") or s.get("thumb"), "card": card or s.get("thumb"),
             "syn": kw["syn"],
             "cta": kw.get("cta", s.get("cta")), "eps": kw.get("eps", s.get("eps", []))[:4]}
+# every feature plays a full 1920x1080 film (the 640x360 proxies looked blown up full-bleed)
+HD = {"coop": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4",
+      "research": "https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4",
+      "global": "https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4",
+      "ai": "https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4",
+      "ent": "https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm"}
 # copy: brand voice (trusted, empowering, confident), brand facts only. Co-op numbers from the
 # key-terms entry; network numbers from the boilerplate; research line from the research messaging page.
 FEATS = [
- feat("Co‑op", "Co‑op", v="../coop-sm.mp4", card="../img/aquarium-dive.jpg",
+ feat("Co‑op", "Co‑op", v=HD["coop"], card="../img/aquarium-dive.jpg",
       syn="Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.",
       cta={"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}),
- feat("Research", "Research", v="../hero-sm.mp4",
+ feat("Research", "Research", v=HD["research"],
       syn="Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.",
       cta={"label": "Explore research", "href": "https://research.northeastern.edu/"}),
- feat("Global network", "Global network", v=S["Global network"]["video"], card="../img/global-london.jpg",
+ feat("Global network", "Global network", v=HD["global"], card="../img/global-london.jpg",
       syn="Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.",
       cta={"label": "See the network", "href": "#campuses"}),
- feat("AI", None, still=U+"/2026/09/AImakerspace1400.jpg",
+ feat("AI", None, v=HD["ai"], still=U+"/2026/09/AImakerspace1400.jpg",
       card=U+"/2026/09/Francesco_Restuccia_1400.jpg",
       syn="AI is reshaping every field. Students build it on co‑op, faculty advance it in the lab, and both bring the human judgment it needs.",
       cta={"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"},
@@ -171,11 +177,11 @@ FEATS = [
            ep("The student refining AI at one of the largest real estate firms", U+"/2026/08/Co-op_AI_1400.jpg", NGN+"/2026/09/09/real-estate-ai-co-op/"),
            ep("In Serbia, she helped build an AI to give activists worldwide a leg up", U+"/2026/08/081426_MM_Ayla_DiBattista_006.jpg", NGN+"/2026/09/03/ayla-dibattista-co-op-northeastern/"),
            ep("This professor is making AI systems more aware of their ignorance", U+"/2026/09/Francesco_Restuccia_1400.jpg", NGN+"/2026/09/21/northeastern-pecase-award-2026/")]),
- feat("Entrepreneurship", None, still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
+ feat("Entrepreneurship", None, v=HD["ent"], still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
       syn="Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.",
       cta={"label": "Read founder stories", "href": NGN + "/tag/entrepreneurship/"}, eps=EP_ENT),
 ]
-assert len(FEATS) == 5 and all(f["eps"] and f["img"] and f["card"] and f["cta"] for f in FEATS)
+assert len(FEATS) == 5 and all(f["eps"] and f["img"] and f["card"] and f["cta"] and f["v"] in HD.values() for f in FEATS)
 
 def layer(i, f):
     on = " on" if i == 0 else ""
@@ -277,7 +283,8 @@ NEW_CSS = r'''
 
   /* closer slideshow */
   .admit .bg i{position:absolute;inset:0;background-size:cover;background-position:center 45%;opacity:0;transition:opacity 1.6s var(--ease)}
-  .admit .bg i.on{opacity:1;animation:kb 16s ease-out forwards}
+  .admit .bg i.on{opacity:1;animation:kbs 16s ease-out forwards}
+  @keyframes kbs{from{transform:scale(1)}to{transform:scale(1.04)}}
   @media (prefers-reduced-motion: reduce){.admit .bg i{transition:none}.admit .bg i.on{animation:none}}
 
   /* hero variant B (?hero=b) */
@@ -763,7 +770,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="9"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="10"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
