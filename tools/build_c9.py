@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="7">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="8">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -111,6 +111,16 @@ reel_mk = ('<section class="reel" aria-hidden="true"><div class="reel-track" id=
            + "".join(f'<div class="vidcard"><video muted playsinline preload="none" data-src="{FILM[f]}" data-s="{a}" data-e="{b}"></video></div>' for f, a, b in CLIPS)
            + "</div></section>\n")
 
+# closer slideshow photos (NGN, 1400px)
+CLOSER_PHOTOS = [U + "/" + f for f in (
+ "2024/07/Convocation1400.jpg",                        # 1 phone lights, convocation arena
+ "2026/08/LondonConvocation1400.jpg",                  # 2 London convocation, overhead on confetti
+ "2026/09/091026_CV_London_Convocation_041.jpg",       # 3 London convocation, confetti on stage
+ "2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg",   # 4 Oakland convocation
+ "2026/09/090826_AS_NYC_convocation_072.jpg",          # 5 NYC convocation
+ "2026/09/091626_MMU_Parade_of_Flags_007.jpg",         # 6 Parade of Flags
+ "2026/09/Fenway1400.jpg",                             # 7 graduates with home-country flags
+ "2026/09/1400_1a30c6.jpg")]                           # 8 students in motion on a campus path
 admit_mk = rest_mk[:rest_mk.index("</section>") + len("</section>")]
 _a = "<p>First-year, transfer, graduate, online, or start abroad with N.U.in. However you get here, experience starts on day one.</p>"
 assert admit_mk.count(_a) == 1
@@ -121,9 +131,12 @@ for a, b in (('<a class="pill red" href="#">Apply</a>', '<a class="pill red" hre
              ('<a class="pill ghostw" href="#">Request info</a>', '<a class="pill ghostw" href="https://studentfinance.northeastern.edu/">Financial aid</a>')):
     assert admit_mk.count(a) == 1, a
     admit_mk = admit_mk.replace(a, b)
-_bg = "background-image:url('https://news.northeastern.edu/wp-content/uploads/2025/05/1400-thumbnail-v2.png')"
+_bg = """<div class="bg" data-plx="34" style="background-image:url('https://news.northeastern.edu/wp-content/uploads/2025/05/1400-thumbnail-v2.png')"></div>"""
 assert admit_mk.count(_bg) == 1
-admit_mk = admit_mk.replace(_bg, "background-image:url('../img/closer-london.jpg');background-position:center 40%")
+# London stage, Oakland, NYC, phone lights, London overhead, Parade of Flags, campus path, Fenway flags
+_order = [2, 3, 4, 0, 1, 5, 7, 6]
+admit_mk = admit_mk.replace(_bg, '<div class="bg" data-plx="34">' + "".join(
+    '<i%s data-bg="%s"></i>' % (' class="on"' if k == 0 else "", CLOSER_PHOTOS[n]) for k, n in enumerate(_order)) + "</div>")
 
 # features: Co-op, Research, Global network, Admissions (student life + athletics), Entrepreneurship
 S = {s["title"]: s for s in SHOWS}
@@ -263,6 +276,11 @@ NEW_CSS = r'''
   .ep img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px}
   .ep span{font-size:14px;line-height:1.35}
 
+  /* closer slideshow */
+  .admit .bg i{position:absolute;inset:0;background-size:cover;background-position:center 45%;opacity:0;transition:opacity 1.6s var(--ease)}
+  .admit .bg i.on{opacity:1;animation:kb 16s ease-out forwards}
+  @media (prefers-reduced-motion: reduce){.admit .bg i{transition:none}.admit .bg i.on{animation:none}}
+
   /* hero variant B (?hero=b) */
   .hero-b .hx-eps{display:none}
   .hero-b #hxCta{position:absolute;right:var(--edge);bottom:0;margin:0}
@@ -330,6 +348,135 @@ NEW_CSS = r'''
   @media (max-width:820px){.reel{padding:clamp(56px,8svh,90px) 0}.reel .vidcard{height:70svh}}
   @media (prefers-reduced-motion: reduce){.reel{overflow-x:auto}}
 
+  /* row mockup A · Preview */
+  .pv{position:absolute;z-index:40;display:block;border-radius:12px;overflow:hidden;background:#18181D;color:#fff;
+    box-shadow:0 30px 70px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.08);opacity:0;pointer-events:none;
+    transition:transform .34s cubic-bezier(.2,.8,.2,1),opacity .2s}
+  .pv.on{opacity:1;pointer-events:auto}
+  .pv-img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+  .pv-b{display:block;padding:16px 18px 18px;opacity:0;transition:opacity .25s .14s}
+  .pv.on .pv-b{opacity:1}
+  .pv-meta{display:block;font-size:13px;color:#A9A9B2}
+  .pv-t{display:block;margin-top:6px;font-size:18px;font-weight:600;line-height:1.25;text-wrap:balance}
+  .pv-x{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:8px;font-size:14.5px;line-height:1.45;color:#D4D4D4}
+  .pv-cta{display:inline-flex;align-items:center;gap:8px;margin-top:14px;height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#0B0B0E;font-size:14px;font-weight:600}
+
+  /* row mockup B · Spotlight */
+  .rows-b .crow{position:relative;margin-top:clamp(12px,2svh,24px);min-height:clamp(600px,84svh,820px);display:flex;flex-direction:column;
+    overflow:hidden;padding-top:clamp(28px,5svh,56px);--ch:clamp(190px,15vw,232px)}
+  .rows-b .crow > .wrap{position:relative;z-index:1;width:100%;margin-bottom:auto}
+  .sp-bg{position:absolute;inset:0}
+  .sp-bg i{position:absolute;inset:0;background-size:cover;background-position:center 35%;opacity:0;transition:opacity .9s var(--ease)}
+  .sp-bg i.on{opacity:1;animation:kb 22s ease-in-out infinite alternate}
+  .sp-bg::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(to right,rgba(11,11,14,.94) 0%,rgba(11,11,14,.6) 38%,rgba(11,11,14,.08) 70%),
+               linear-gradient(to top,var(--dark) 0%,rgba(11,11,14,.55) 32%,transparent 58%),linear-gradient(to bottom,var(--dark) 0%,transparent 16%)}
+  .sp-in{position:relative;z-index:1;order:1;padding:0 var(--edge);margin-bottom:clamp(14px,2.4svh,26px)}
+  .sp-copy{max-width:580px;transition:opacity .22s}
+  .sp-copy.swap{opacity:0}
+  .sp-meta,.cf-meta{margin:0;font-size:14px;color:#A9A9B2}
+  .sp-t{margin:10px 0 0;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance}
+  .sp-x,.cf-x{margin:14px 0 0;font-size:16.5px;line-height:1.5;color:#D4D4D4;max-width:50ch;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .rows-b .crow-body{order:2;z-index:1}
+  .rows-b .cc{transition:box-shadow .3s,transform .3s var(--ease)}
+  .rows-b .cc-t{font-size:14px;padding:0 12px 14px}
+  .rows-b .cc:not(.on) img{filter:brightness(.62)}
+  .rows-b .cc.on{box-shadow:0 0 0 2px #fff;transform:translateY(-6px)}
+  @media (prefers-reduced-motion: reduce){.sp-bg i{transition:none}.sp-bg i.on{animation:none}}
+
+  /* row mockup C · Coverflow */
+  .cf{margin-top:clamp(24px,4svh,44px);overflow-x:clip;--chh:clamp(320px,44svh,470px);--cw:calc(var(--chh) * 2 / 3)}
+  .cf-tabs{display:flex;gap:8px;flex-wrap:wrap}
+  .cf-tab{all:unset;cursor:pointer;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;color:#D4D4D4;border:1px solid rgba(255,255,255,.22);transition:.2s}
+  .cf-tab:hover{border-color:#fff;color:#fff}
+  .cf-tab[aria-selected="true"]{background:#fff;color:#0B0B0E;border-color:#fff}
+  .cf-tab:focus-visible,.cf-nav:focus-visible,.cf-stage:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .cf-stage{position:relative;height:var(--chh);margin:clamp(32px,5svh,56px) 0 clamp(60px,8svh,96px);perspective:1500px;transition:opacity .22s}
+  .cf-stage.swap,.cf-copy.swap{opacity:0}
+  .cf-card{position:absolute;left:50%;top:0;width:var(--cw);height:100%;margin-left:calc(var(--cw) / -2);border-radius:14px;overflow:hidden;
+    transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s,filter .5s;filter:brightness(.5);box-shadow:0 30px 60px rgba(0,0,0,.55);
+    -webkit-box-reflect:below 8px linear-gradient(transparent 72%,rgba(255,255,255,.16))}
+  .cf-card.on{filter:none}
+  .cf-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  .cf-info{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px}
+  .cf-copy{text-align:center;max-width:640px;margin:0 auto;transition:opacity .2s}
+  .cf-t{margin:8px 0 0;font-size:clamp(24px,2.2vw,32px);font-weight:400;letter-spacing:-.015em;line-height:1.15;text-wrap:balance}
+  .cf-x{margin-left:auto;margin-right:auto;-webkit-line-clamp:2}
+  .cf-nav{all:unset;box-sizing:border-box;cursor:pointer;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);transition:background .2s,color .2s}
+  .cf-nav:hover{background:#fff;color:#0B0B0E}
+  .cf-nav svg{width:24px;height:24px}
+  .cf-nav.prev svg{transform:scaleX(-1)}
+  @media (max-width:720px){.cf-info{grid-template-columns:1fr}.cf-nav{display:none}}
+
+  /* the tab mockups drop the default card chrome (overlay, ring, lift, dimmed image) */
+  .tabs-1 .ln::after,.tabs-2 .ln::after,.tabs-3 .ln::after{display:none}
+  .tabs-1 .ln,.tabs-2 .ln,.tabs-3 .ln,.tabs-1 .ln:hover,.tabs-2 .ln:hover,.tabs-3 .ln:hover,
+  .tabs-1 .ln[aria-pressed="true"],.tabs-2 .ln[aria-pressed="true"],.tabs-3 .ln[aria-pressed="true"]{box-shadow:none;transform:none;overflow:visible;height:auto;background:none}
+  .tabs-1 .ch-pv img{position:static;filter:none}
+  /* hero tabs 1 · Chapters: a five-part timeline with hover previews */
+  .tabs-1 .hx-sh{display:none}
+  .ch-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;padding:0 var(--edge)}
+  .tabs-1 .ln{all:unset;box-sizing:border-box;position:relative;cursor:pointer;padding-top:16px;display:block}
+  .tabs-1 .ln-pb{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,.25);overflow:hidden}
+  .tabs-1 .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:#fff}
+  .tabs-1 .ln[aria-pressed="true"] .ln-pb::after{width:max(calc(var(--pb,0) * 100%), 2px)}
+  .ch-n{display:block;font-size:13px;color:#8A8A93;font-variant-numeric:tabular-nums}
+  .ch-t{display:block;margin-top:6px;font-size:clamp(17px,1.5vw,22px);font-weight:400;color:#A9A9B2;transition:color .3s}
+  .tabs-1 .ln:hover .ch-t,.tabs-1 .ln[aria-pressed="true"] .ch-t{color:#fff}
+  .ch-pv{position:absolute;left:0;bottom:calc(100% + 14px);width:min(240px,100%);aspect-ratio:16/10;border-radius:10px;overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);opacity:0;transform:translateY(10px) scale(.96);transform-origin:bottom left;
+    transition:opacity .25s,transform .3s var(--ease);pointer-events:none}
+  .ch-pv img{width:100%;height:100%;object-fit:cover}
+  .tabs-1 .ln:hover .ch-pv{opacity:1;transform:none}
+  .tabs-1 .ln:focus-visible{outline:2px solid #fff;outline-offset:6px}
+
+  /* hero tabs 2 · Index: the list is the headline; hover previews a feature */
+  .tabs-2 .hx-title,.tabs-2 .hx-eps,.tabs-2 .hx-sh{display:none}
+  .tabs-2 .hx-in{left:auto;right:0;width:min(520px,44%);bottom:clamp(48px,9svh,110px);padding:0 var(--edge) 0 0}
+  .tabs-2 .hx-shows{right:auto;bottom:clamp(48px,9svh,110px);padding-left:var(--edge)}
+  .ix{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+  .tabs-2 .ln{all:unset;box-sizing:border-box;position:relative;cursor:pointer;padding:2px 0 8px}
+  .ix-t{display:block;font-size:clamp(40px,5.2vw,84px);font-weight:200;letter-spacing:-.035em;line-height:1;color:rgba(255,255,255,.28);
+    transition:color .35s,transform .45s var(--ease)}
+  .tabs-2 .ln:hover .ix-t{color:rgba(255,255,255,.7)}
+  .tabs-2 .ln[aria-pressed="true"] .ix-t{color:#fff;transform:translateX(18px)}
+  .tabs-2 .ln-pb{position:absolute;left:18px;right:0;top:auto;bottom:2px;height:2px;background:rgba(255,255,255,.2);opacity:0;transition:opacity .3s}
+  .tabs-2 .ln[aria-pressed="true"] .ln-pb{opacity:1}
+  .tabs-2 .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:var(--red)}
+  .tabs-2 .ln:focus-visible{outline:2px solid #fff;outline-offset:4px}
+  .tabs-2 .hx-shade{background:linear-gradient(to right,rgba(11,11,14,.85) 0%,rgba(11,11,14,.35) 45%,rgba(11,11,14,.55) 100%),
+    linear-gradient(to top,var(--dark) 0%,transparent 45%)}
+  @media (max-width:899px){
+    .tabs-2 .hx-in{left:0;width:auto;padding:0 var(--edge);bottom:auto;top:110px}
+    .ix-t{font-size:clamp(30px,9vw,44px)}
+  }
+
+  /* hero tabs 3 · Stories: circular thumbnails with a progress ring */
+  .tabs-3 .hx-sh{display:none}
+  .st-row{display:flex;gap:clamp(18px,3vw,40px);padding:0 var(--edge);overflow-x:auto;scrollbar-width:none}
+  .tabs-3 .ln{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;flex:0 0 auto}
+  .st-ring{position:relative;display:block;width:clamp(76px,7vw,104px);aspect-ratio:1}
+  .st-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+  .st-ring circle{fill:none;stroke-width:3}
+  .st-track{stroke:rgba(255,255,255,.28)}
+  .st-prog{stroke:#fff;stroke-dasharray:295.3;stroke-dashoffset:calc(295.3 * (1 - var(--pb,0)));stroke-linecap:round;opacity:0}
+  .tabs-3 .ln[aria-pressed="true"] .st-prog{opacity:1}
+  .st-ring img{position:absolute;inset:8%;width:84%;height:84%;border-radius:50%;object-fit:cover;filter:brightness(.7) saturate(.85);
+    transition:transform .35s var(--ease),filter .35s}
+  .tabs-3 .ln:hover img{transform:scale(1.06);filter:none}
+  .tabs-3 .ln[aria-pressed="true"] img{filter:none}
+  .st-t{font-size:14px;font-weight:500;color:#A9A9B2;white-space:nowrap}
+  .tabs-3 .ln[aria-pressed="true"] .st-t{color:#fff}
+  .tabs-3 .ln:focus-visible .st-ring{outline:2px solid #fff;outline-offset:4px;border-radius:50%}
+
+  /* mockup switcher */
+  .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
+    backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
+  .vswitch a{padding:8px 14px;border-radius:999px;color:#C9C9CF;white-space:nowrap}
+  .vswitch a.on{background:#fff;color:#0B0B0E;font-weight:600}
+  .vswitch.right{left:auto;right:16px}
+
   /* concept 2's globe: flush on this page, dissolving into its neighbors */
   .scrolly{border-radius:0;margin-top:0}
   .gt-card{right:var(--edge)}
@@ -345,6 +492,22 @@ const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replac
 const FEATS = __FEATS__;
 
 /* ============ billboard ============ */
+/* hero tab mockups: ?tabs=1 Chapters, 2 Index, 3 Stories (they reuse .ln + --pb, so rotation is shared) */
+const TV = new URLSearchParams(location.search).get("tabs");
+if (["1", "2", "3"].includes(TV)) {
+  document.documentElement.classList.add("tabs-" + TV);
+  const shows = $("#hxShows");
+  if (TV === "1") shows.innerHTML = `<div class="ch-row" role="group" aria-label="Choose a feature">` + FEATS.map((f, i) =>
+    `<button class="ln" data-i="${i}" aria-pressed="${i ? "false" : "true"}"><i class="ln-pb"></i>` +
+    `<span class="ch-n">${String(i + 1).padStart(2, "0")}</span><span class="ch-t">${esc(f.t)}</span>` +
+    `<span class="ch-pv" aria-hidden="true"><img src="${esc(f.card)}" alt=""></span></button>`).join("") + `</div>`;
+  if (TV === "2") shows.innerHTML = `<div class="ix" role="group" aria-label="Choose a feature">` + FEATS.map((f, i) =>
+    `<button class="ln" data-i="${i}" aria-pressed="${i ? "false" : "true"}"><span class="ix-t">${esc(f.t)}</span><i class="ln-pb"></i></button>`).join("") + `</div>`;
+  if (TV === "3") shows.innerHTML = `<div class="st-row" role="group" aria-label="Choose a feature">` + FEATS.map((f, i) =>
+    `<button class="ln" data-i="${i}" aria-pressed="${i ? "false" : "true"}"><span class="st-ring">` +
+    `<svg viewBox="0 0 100 100" aria-hidden="true"><circle class="st-track" cx="50" cy="50" r="47"/><circle class="st-prog" cx="50" cy="50" r="47"/></svg>` +
+    `<img src="${esc(f.card)}" alt=""></span><span class="st-t">${esc(f.t)}</span></button>`).join("") + `</div>`;
+}
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");
 let cur = 0, elapsed = 0, hxVisible = true, hoverShows = false;
 const vidOf = i => layers[i].querySelector("video");
@@ -355,7 +518,7 @@ function fillHero(f) {
   const cta = $("#hxCta");
   cta.hidden = !f.cta;
   if (f.cta) { cta.href = f.cta.href; $("#hxCtaL").textContent = f.cta.label; }
-  $("#hxEps").innerHTML = `<h3>More from ${esc(f.t)}</h3>` + f.eps.map(e =>
+  $("#hxEps").innerHTML = f.eps.slice(0, 3).map(e =>
     `<a class="ep" href="${esc(e.u)}"><img src="${esc(e.img)}" alt="" loading="lazy"><span>${esc(e.t)}</span></a>`).join("");
 }
 /* one title size for every feature: the largest at which the longest title fits the copy column,
@@ -382,10 +545,11 @@ function selectF(i) {
   setTimeout(() => { fillHero(FEATS[i]); hxIn.classList.remove("swap"); }, reduceMotion ? 0 : 350);
 }
 lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i)));
+if (TV === "2") lnBtns.forEach(b => { let t; b.addEventListener("pointerenter", () => { t = setTimeout(() => selectF(+b.dataset.i), 220); }); b.addEventListener("pointerleave", () => clearTimeout(t)); });
 /* auto-rotate every 12s; the loader fills per frame on the active card */
 const ROTATE_MS = 12000;
-$(".hx-lineup").addEventListener("pointerenter", () => hoverShows = true);
-$(".hx-lineup").addEventListener("pointerleave", () => hoverShows = false);
+$("#hxShows").addEventListener("pointerenter", () => hoverShows = true);
+$("#hxShows").addEventListener("pointerleave", () => hoverShows = false);
 if (!reduceMotion) {
   let lastT = 0;
   const tick = now => {
@@ -428,11 +592,18 @@ if (!reduceMotion) {
 fillHero(FEATS[0]);
 playI(0);
 
-/* closer photo preview: ?closer=1..8 */
+/* ============ closer: photos crossfade every 5s while it's on screen ============ */
 {
-  const CLOSERS = __CLOSERS__, n = +new URLSearchParams(location.search).get("closer");
-  const bg = $(".admit .bg");
-  if (bg && n >= 1 && n <= CLOSERS.length) { bg.style.backgroundImage = `url('${CLOSERS[n - 1]}')`; bg.style.backgroundPosition = "center 45%"; }
+  const admit = $(".admit"), shots = $$(".admit .bg i");
+  let k = 0, vis = false, loaded = false;
+  new IntersectionObserver(es => es.forEach(e => {
+    vis = e.isIntersecting;
+    if (vis && !loaded) { loaded = true; shots.forEach(i => i.style.backgroundImage = `url('${i.dataset.bg}')`); }
+  }), { rootMargin: "800px 0px" }).observe(admit);
+  if (!reduceMotion) setInterval(() => {
+    if (!vis || document.hidden) return;
+    shots[k].classList.remove("on"); k = (k + 1) % shots.length; shots[k].classList.add("on");
+  }, 5000);
 }
 
 /* ============ rows: a featured card, then portrait posters ============ */
@@ -494,12 +665,16 @@ function mountRow(sec, items) {
 }
 
 /* live NGN: news posts only (no "Photos:" galleries), no story repeated across rows */
-const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e.u, img: e.img }));
+const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e.u, img: e.img, wide: e.img }));
+const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();
+document.documentElement.classList.add("rows-" + (["a", "b", "c"].includes(RV) ? RV : "current"));
+const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
+const ARROW = `__ARROW__`, CHEV = `__CHEV__`;
 (async () => {
-  const API = "https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=24&_embed=wp:featuredmedia&_fields=link,title,_links,_embedded&";
+  const API = "https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=24&_embed=wp:featuredmedia&_fields=link,title,excerpt,date,_links,_embedded&";
   const rows = $$(".crow[data-q]");
   const data = await Promise.all(rows.map(sec => fetch(API + sec.dataset.q).then(r => r.ok ? r.json() : []).catch(() => [])));
-  const shown = new Set(), tmp = document.createElement("div");
+  const shown = new Set(), tmp = document.createElement("div"), topics = [];
   const text = html => { tmp.innerHTML = html; return tmp.textContent.trim(); };
   rows.forEach((sec, k) => {
     const items = data[k].filter(p => !/^Photos:/i.test(p.title.rendered) && !shown.has(p.link)).map(p => {
@@ -508,26 +683,166 @@ const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e
       const sz = (m.media_details && m.media_details.sizes) || {};
       const img = (sz["newspack-article-block-portrait-medium"] || sz.large || sz.medium_large || m).source_url;
       if (!img) return null;
-      return { t: text(p.title.rendered), u: p.link, img };
+      return { t: text(p.title.rendered), u: p.link, img, wide: (sz.large || sz.medium_large || m).source_url,
+               x: text((p.excerpt && p.excerpt.rendered) || ""), d: p.date };
     }).filter(Boolean).slice(0, 14);
-    if (items.length < 4) { if (!k) mountRow(sec, FALLBACK); return; }
+    const label = sec.getAttribute("aria-label");
+    if (items.length < 4) { if (!k) topics.push({ sec, label, items: FALLBACK }); return; }
     items.forEach(c => shown.add(c.u));
-    mountRow(sec, items);
+    topics.push({ sec, label, items });
   });
+  if (RV === "b") topics.forEach(spotlight);
+  else if (RV === "c") coverflow(topics);
+  else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
+
+/* A · Preview: hovering a poster grows a floating story card out of it (it overlays, nothing reflows) */
+function previews(topics) {
+  if (!matchMedia("(hover: hover)").matches) return;
+  const pv = document.createElement("a");
+  pv.className = "pv";
+  pv.innerHTML = `<img class="pv-img" alt=""><span class="pv-b"><span class="pv-meta"></span><span class="pv-t"></span><span class="pv-x"></span><span class="pv-cta">Read story ${ARROW}</span></span>`;
+  document.body.appendChild(pv);
+  let showT, hideT;
+  const hide = () => { clearTimeout(showT); pv.classList.remove("on"); };
+  const show = (el, it, label) => {
+    pv.href = it.u;
+    pv.querySelector(".pv-img").src = it.wide || it.img;
+    pv.querySelector(".pv-meta").textContent = [label, fmtDate(it.d)].filter(Boolean).join(" · ");
+    pv.querySelector(".pv-t").textContent = it.t;
+    pv.querySelector(".pv-x").textContent = it.x || "";
+    const r = el.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+    const pad = parseFloat(getComputedStyle(el.parentElement).paddingLeft);
+    const w = Math.min(460, Math.max(r.width * 1.9, 340));
+    pv.style.transition = "none"; pv.classList.remove("on"); pv.style.width = w + "px"; pv.style.transform = "none";
+    const h = pv.offsetHeight;
+    const left = Math.max(pad, Math.min(vw - pad - w, r.left + r.width / 2 - w / 2));
+    const top = Math.max(scrollY + 84, r.top + scrollY + r.height / 2 - h / 2);
+    pv.style.left = left + "px"; pv.style.top = top + "px";
+    const dx = r.left + r.width / 2 - (left + w / 2), dy = r.top + scrollY + r.height / 2 - (top + h / 2);
+    pv.style.transform = `translate(${dx}px, ${dy}px) scale(${r.width / w}, ${r.height / h})`;
+    void pv.offsetWidth;
+    pv.style.transition = ""; pv.classList.add("on"); pv.style.transform = "none";
+  };
+  topics.forEach(tp => tp.sec.querySelectorAll(".cc").forEach((el, i) => {
+    el.addEventListener("pointerenter", () => { clearTimeout(hideT); clearTimeout(showT); showT = setTimeout(() => show(el, tp.items[i], tp.label), 380); });
+    el.addEventListener("pointerleave", () => { clearTimeout(showT); hideT = setTimeout(hide, 160); });
+  }));
+  pv.addEventListener("pointerenter", () => clearTimeout(hideT));
+  pv.addEventListener("pointerleave", () => { hideT = setTimeout(hide, 160); });
+  addEventListener("scroll", hide, { passive: true });
+}
+
+/* B · Spotlight: each topic is a stage; the focused story fills it, the posters run along the bottom */
+function spotlight(tp) {
+  const sec = tp.sec, items = tp.items;
+  sec.classList.add("sp");
+  sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
+    `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-meta"></p><p class="sp-t"></p><p class="sp-x"></p>` +
+    `<a class="hx-btn sp-btn" href="#">Read story ${ARROW}</a></div></div>`);
+  mountRow(sec, items);
+  const bgs = sec.querySelectorAll(".sp-bg i"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
+  let cur = -1, layer = 0, t;
+  const set = i => {
+    if (i === cur) return;
+    cur = i; const it = items[i];
+    layer ^= 1;
+    bgs[layer].style.backgroundImage = `url('${it.wide || it.img}')`;
+    bgs[layer].classList.add("on"); bgs[layer ^ 1].classList.remove("on");
+    cards.forEach((c, k) => c.classList.toggle("on", k === i));
+    copy.classList.add("swap");
+    setTimeout(() => {
+      copy.querySelector(".sp-meta").textContent = [tp.label, fmtDate(it.d)].filter(Boolean).join(" · ");
+      copy.querySelector(".sp-t").textContent = it.t;
+      copy.querySelector(".sp-x").textContent = it.x || "";
+      copy.querySelector(".sp-btn").href = it.u;
+      copy.classList.remove("swap");
+    }, reduceMotion ? 0 : 220);
+  };
+  cards.forEach((c, k) => {
+    c.addEventListener("pointerenter", () => { clearTimeout(t); t = setTimeout(() => set(k), 140); });
+    c.addEventListener("focus", () => set(k));
+  });
+  set(0);
+}
+
+/* C · Coverflow: one module, topic tabs over a 3D coverflow; the centered story carries the details */
+function coverflow(topics) {
+  topics.forEach(tp => tp.sec.hidden = true);
+  const host = document.createElement("div");
+  host.className = "cf";
+  host.innerHTML = `<div class="wrap cf-tabs" role="tablist" aria-label="Topics">` +
+    topics.map((tp, n) => `<button role="tab" class="cf-tab" aria-selected="${n ? "false" : "true"}" data-i="${n}">${esc(tp.label)}</button>`).join("") +
+    `</div><div class="cf-stage" tabindex="0" aria-label="Stories, use the arrow keys to browse"></div>` +
+    `<div class="wrap cf-info"><button class="cf-nav prev" aria-label="Previous story">${CHEV}</button>` +
+    `<div class="cf-copy" aria-live="polite"><p class="cf-meta"></p><p class="cf-t"></p><p class="cf-x"></p><a class="hx-btn cf-btn" href="#">Read story ${ARROW}</a></div>` +
+    `<button class="cf-nav next" aria-label="Next story">${CHEV}</button></div>`;
+  $(".rows").appendChild(host);
+  const stage = host.querySelector(".cf-stage"), copy = host.querySelector(".cf-copy");
+  let items = [], cards = [], i = 0, topic = 0;
+  const layout = () => {
+    const cw = cards[0] ? cards[0].offsetWidth : 240;
+    cards.forEach((c, k) => {
+      const o = k - i, a = Math.abs(o), sg = Math.sign(o);
+      const x = o === 0 ? 0 : sg * (cw * .74 + (a - 1) * cw * .3);
+      c.style.transform = `translateX(${x.toFixed(1)}px) translateZ(${a ? -150 - a * 30 : 0}px) rotateY(${a ? -sg * 50 : 0}deg)`;
+      c.style.zIndex = 100 - a; c.style.opacity = a > 5 ? 0 : 1;
+      c.classList.toggle("on", !o); c.tabIndex = o ? -1 : 0;
+    });
+  };
+  const info = () => {
+    const it = items[i]; copy.classList.add("swap");
+    setTimeout(() => {
+      copy.querySelector(".cf-meta").textContent = [topics[topic].label, fmtDate(it.d)].filter(Boolean).join(" · ");
+      copy.querySelector(".cf-t").textContent = it.t;
+      copy.querySelector(".cf-x").textContent = it.x || "";
+      copy.querySelector(".cf-btn").href = it.u;
+      copy.classList.remove("swap");
+    }, reduceMotion ? 0 : 180);
+  };
+  const go = n => { const m = Math.max(0, Math.min(items.length - 1, n)); if (m === i && cards.length) return; i = m; layout(); info(); };
+  const load = n => {
+    topic = n; items = topics[n].items; i = 0;
+    stage.innerHTML = items.map(it => `<a class="cf-card" href="${esc(it.u)}"><img src="${esc(it.img)}" alt="" loading="lazy"></a>`).join("");
+    cards = [...stage.children];
+    cards.forEach((c, k) => c.addEventListener("click", e => { if (k !== i) { e.preventDefault(); go(k); } }));
+    layout(); info();
+  };
+  host.querySelectorAll(".cf-tab").forEach(b => b.addEventListener("click", () => {
+    host.querySelectorAll(".cf-tab").forEach(x => x.setAttribute("aria-selected", x === b ? "true" : "false"));
+    stage.classList.add("swap");
+    setTimeout(() => { load(+b.dataset.i); stage.classList.remove("swap"); }, reduceMotion ? 0 : 220);
+  }));
+  host.querySelector(".cf-nav.prev").onclick = () => go(i - 1);
+  host.querySelector(".cf-nav.next").onclick = () => go(i + 1);
+  stage.addEventListener("keydown", e => { if (e.key === "ArrowRight") go(i + 1); if (e.key === "ArrowLeft") go(i - 1); });
+  let x0 = null;
+  stage.addEventListener("pointerdown", e => { x0 = e.clientX; });
+  stage.addEventListener("pointerup", e => { if (x0 !== null && Math.abs(e.clientX - x0) > 40) go(i + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+  addEventListener("resize", layout);
+  load(0);
+}
+
+/* switcher for the hero tab mockups (only when ?tabs= is in the URL) */
+if (new URLSearchParams(location.search).has("tabs")) {
+  const bar = document.createElement("nav");
+  bar.className = "vswitch right"; bar.setAttribute("aria-label", "Hero tab mockups");
+  bar.innerHTML = [["0", "Current"], ["1", "1 · Chapters"], ["2", "2 · Index"], ["3", "3 · Stories"]]
+    .map(([k, l]) => `<a href="?tabs=${k}" class="${(["1", "2", "3"].includes(TV) ? TV : "0") === k ? "on" : ""}">${l}</a>`).join("");
+  document.body.appendChild(bar);
+}
+
+/* switcher for the row mockups (only when ?rows= is in the URL) */
+if (new URLSearchParams(location.search).has("rows")) {
+  const bar = document.createElement("nav");
+  bar.className = "vswitch"; bar.setAttribute("aria-label", "Story row mockups");
+  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["c", "C · Coverflow"]]
+    .map(([k, l]) => `<a href="?rows=${k}" class="${(["a", "b", "c"].includes(RV) ? RV : "current") === k ? "on" : ""}">${l}</a>`).join("");
+  document.body.appendChild(bar);
+}
 }
 '''
-# closer photo candidates, previewed with ?closer=1..8 until one is chosen
-CLOSERS = [U + "/" + f for f in (
- "2024/07/Convocation1400.jpg",                        # 1 phone lights, convocation arena
- "2026/08/LondonConvocation1400.jpg",                  # 2 London convocation, overhead on confetti
- "2026/09/091026_CV_London_Convocation_041.jpg",       # 3 London convocation, confetti on stage
- "2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg",   # 4 Oakland convocation
- "2026/09/090826_AS_NYC_convocation_072.jpg",          # 5 NYC convocation
- "2026/09/091626_MMU_Parade_of_Flags_007.jpg",         # 6 Parade of Flags
- "2026/09/Fenway1400.jpg",                             # 7 graduates with home-country flags
- "2026/09/1400_1a30c6.jpg")]                           # 8 students in motion on a campus path
-NEW_JS = NEW_JS.replace("__CLOSERS__", json.dumps(CLOSERS))
+NEW_JS = NEW_JS.replace("__ARROW__", g["ICON_ARROW"]).replace("__CHEV__", CHEV)
 NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).replace("</", "<\\/"))
 
 page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
@@ -537,9 +852,9 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
         + "\n" + tail_js + "/* ============ boot ============ */\nnav.classList.toggle(\"solid\", scrollY > 60);\nresize();\nrequestAnimationFrame(frame);\n</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
-assert page.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
+assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="7"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="8"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
