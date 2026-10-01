@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="10">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="11">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -150,7 +150,7 @@ def feat(t, src, v=None, still=None, card=None, **kw):
     s = S[src] if src else {}
     return {"t": t, "v": v, "img": still or s.get("still") or s.get("thumb"), "card": card or s.get("thumb"),
             "syn": kw["syn"],
-            "cta": kw.get("cta", s.get("cta")), "eps": kw.get("eps", s.get("eps", []))[:4]}
+            "cta": kw.get("cta", s.get("cta")), "eps": kw.get("eps", s.get("eps", []))[:4], "h": kw["h"]}
 # every feature plays a full 1920x1080 film (the 640x360 proxies looked blown up full-bleed)
 HD = {"coop": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4",
       "research": "https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4",
@@ -160,16 +160,16 @@ HD = {"coop": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experie
 # copy: brand voice (trusted, empowering, confident), brand facts only. Co-op numbers from the
 # key-terms entry; network numbers from the boilerplate; research line from the research messaging page.
 FEATS = [
- feat("Co‑op", "Co‑op", v=HD["coop"], card="../img/aquarium-dive.jpg",
+ feat("Co‑op", "Co‑op", v=HD["coop"], h="Experiential learning", card="../img/aquarium-dive.jpg",
       syn="Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.",
       cta={"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}),
- feat("Research", "Research", v=HD["research"],
+ feat("Research", "Research", v=HD["research"], h="Breakthroughs begin here",
       syn="Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.",
       cta={"label": "Explore research", "href": "https://research.northeastern.edu/"}),
- feat("Global network", "Global network", v=HD["global"], card="../img/global-london.jpg",
+ feat("Global network", "Global network", v=HD["global"], h="Immersed in the world", card="../img/global-london.jpg",
       syn="Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.",
       cta={"label": "See the network", "href": "#campuses"}),
- feat("AI", None, v=HD["ai"], still=U+"/2026/09/AImakerspace1400.jpg",
+ feat("AI", None, v=HD["ai"], h="Shaping responsible, human-centered AI", still=U+"/2026/09/AImakerspace1400.jpg",
       card=U+"/2026/09/Francesco_Restuccia_1400.jpg",
       syn="AI is reshaping every field. Students build it on co‑op, faculty advance it in the lab, and both bring the human judgment it needs.",
       cta={"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"},
@@ -177,7 +177,7 @@ FEATS = [
            ep("The student refining AI at one of the largest real estate firms", U+"/2026/08/Co-op_AI_1400.jpg", NGN+"/2026/09/09/real-estate-ai-co-op/"),
            ep("In Serbia, she helped build an AI to give activists worldwide a leg up", U+"/2026/08/081426_MM_Ayla_DiBattista_006.jpg", NGN+"/2026/09/03/ayla-dibattista-co-op-northeastern/"),
            ep("This professor is making AI systems more aware of their ignorance", U+"/2026/09/Francesco_Restuccia_1400.jpg", NGN+"/2026/09/21/northeastern-pecase-award-2026/")]),
- feat("Entrepreneurship", None, v=HD["ent"], still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
+ feat("Entrepreneurship", None, v=HD["ent"], h="Ideas into ventures", still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
       syn="Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.",
       cta={"label": "Read founder stories", "href": NGN + "/tag/entrepreneurship/"}, eps=EP_ENT),
 ]
@@ -203,7 +203,7 @@ HERO = f'''<script>if (/[?&]hero=b\\b/.test(location.search)) document.documentE
   <h1 class="vh">Northeastern University</h1>
   <div class="hx-in" id="hxIn">
     <div class="hx-copy" aria-live="polite">
-      <h2 class="hx-title" id="hxTitle">{h(F0["t"])}</h2>
+      <h2 class="hx-title" id="hxTitle">{h(F0["h"])}</h2>
       <p class="hx-syn" id="hxSyn">{h(F0["syn"])}</p>
       <a class="hx-btn" id="hxCta" href="#" hidden><span id="hxCtaL"></span>{g["ICON_ARROW"]}</a>
     </div>
@@ -265,8 +265,9 @@ NEW_CSS = r'''
     display:flex;align-items:flex-end;justify-content:space-between;gap:48px;padding:0 var(--edge)}
   .hx-copy,.hx-eps{transition:opacity .35s var(--ease)}
   .hx-in.swap .hx-copy,.hx-in.swap .hx-eps{opacity:0}
-  .hx-copy{flex:1 1 auto;min-width:0;max-width:640px}
-  .hx-title{margin:0;font-size:clamp(56px,7.4vw,124px);font-weight:200;letter-spacing:-.04em;line-height:.92;white-space:nowrap}
+  .hx-copy{flex:1 1 auto;min-width:0;max-width:760px}
+  .hx-title{margin:0;font-size:clamp(48px,6.2vw,104px);font-weight:200;letter-spacing:-.035em;line-height:.98;text-wrap:balance;
+    min-height:calc(2 * .98em);display:flex;align-items:flex-end}
   .hx-syn{margin:18px 0 0;font-size:clamp(16px,1.25vw,19px);line-height:1.5;color:#E5E5E5;max-width:44ch}
   .hx-btn{all:unset;box-sizing:border-box;display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 24px;margin-top:22px;
     border-radius:999px;font-size:16px;font-weight:600;cursor:pointer;background:#fff;color:#0B0B0E;transition:background .2s}
@@ -439,7 +440,7 @@ let cur = 0, elapsed = 0, hxVisible = true, hoverShows = false;
 const vidOf = i => layers[i].querySelector("video");
 const playI = i => { const v = vidOf(i); if (v && !reduceMotion) v.play().catch(() => {}); };
 function fillHero(f) {
-  $("#hxTitle").textContent = f.t;
+  $("#hxTitle").textContent = f.h;
   $("#hxSyn").textContent = f.syn;
   const cta = $("#hxCta");
   cta.hidden = !f.cta;
@@ -451,13 +452,14 @@ function fillHero(f) {
    so switching features never changes the type size and Entrepreneurship never meets the panel */
 function fitHeroTitle() {
   const t = $("#hxTitle"), keep = t.textContent;
-  t.style.fontSize = "";
+  t.style.fontSize = ""; t.style.minHeight = "0";
   let fs = parseFloat(getComputedStyle(t).fontSize);
+  const fits = () => t.scrollWidth <= t.clientWidth && t.offsetHeight <= fs * .98 * 2 + 2;
   for (const f of FEATS) {
-    t.textContent = f.t;
-    while (fs > 32 && t.scrollWidth > t.clientWidth) { fs -= 2; t.style.fontSize = fs + "px"; }
+    t.textContent = f.h;
+    while (fs > 32 && !fits()) { fs -= 2; t.style.fontSize = fs + "px"; }
   }
-  t.textContent = keep;
+  t.textContent = keep; t.style.minHeight = "";
 }
 function selectF(i) {
   elapsed = 0;
@@ -770,7 +772,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="10"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="11"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
