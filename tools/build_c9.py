@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="3">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="4">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -52,14 +52,12 @@ COPY = [
  (globe_mk, "Northeastern's 14 campuses, 8 N.U.in locations, and 4,705 Fall 2026 co‑op placements. Scroll for the tour, click a red pin for a story, drag to rotate.",
             "Northeastern’s 14 campuses, eight N.U.in locations, and this fall’s co‑op locations. Scroll for the tour, select a red pin for a story, drag to rotate."),
  (globe_mk, "<p>A connected network of campuses across the U.S., U.K., and Canada, where each one opens doors to all the others.</p>",
-            "<p>One network across the U.S., U.K., and Canada. No single campus sits at the center.</p>"),
+            "<p>One network across the world.</p>"),
  (globe_mk, "<p>Through N.U.in, new students begin their Northeastern degree at one of eight partner institutions across Europe.</p>",
             "<p>Through N.U.in, new students begin their Northeastern degree at a partner institution in Europe.</p>"),
  (globe_mk, "</b> co‑op placements</div>", "</b> co‑ops</div>"),
  (globe_mk, "<p>Full-time, paid positions in every kind of workplace.</p>",
             "<p>More than a century of students working with employer partners around the world. Each dot is a city where a student is on co‑op this fall.</p>"),
- (globe_mk, '<div class="big">And co‑op is only the start.</div><p>Research, service, global study: experience runs through the whole degree.</p>',
-            '<div class="big">Co‑op is one part.</div><p>Experiential learning at Northeastern also includes research with faculty, service with community partners, and study abroad on Dialogue of Civilizations programs.</p>'),
  (sheet_mk, "patents and counting", "patents"),
  (sheet_mk, '<span class="g-n">5,000+</span><span class="g-l">cities and towns</span>', '<span class="g-n">3,900+</span><span class="g-l">employer partners worldwide</span>'),
  (sheet_mk, '<span class="g-n">10,000+</span><span class="g-l">employer partners</span>', '<span class="g-n">100+</span><span class="g-l">years of co‑op</span>'),
@@ -71,6 +69,21 @@ for src_name, a, b in [("globe_mk" if blk is globe_mk else "sheet_mk", a, b) for
     blk = globals()[src_name]
     assert blk.count(a) == 1, a[:70]
     globals()[src_name] = blk.replace(a, b)
+# the globe tour ends on the co-op beat (the outro step is cut)
+_i = globe_mk.index('    <div class="step" data-step="outro">'); _j = globe_mk.index("\n  </div>\n</div>", _i)
+globe_mk = globe_mk[:_i].rstrip() + "\n" + globe_mk[_j:]
+# 2. the co-op story card never covers the pin: while it's open the globe eases left of it
+assert c2_js.count("W > 900 ? W * 0.62 : W * 0.5") == 3  # render, dot hover, pin click
+c2_js = c2_js.replace("W > 900 ? W * 0.62 : W * 0.5", "globeCX()")
+assert c2_js.count("function render(now) {") == 1
+c2_js = c2_js.replace("function render(now) {", """let globeShift = 0;
+const globeCX = () => W > 900 ? W * 0.62 - globeShift : W * 0.5;
+function render(now) {""")
+assert c2_js.count("function frame(now) {\n  if (stageVisible) {") == 1
+c2_js = c2_js.replace("function frame(now) {\n  if (stageVisible) {", """function frame(now) {
+  if (stageVisible) {
+    const gc = W > 900 && !gtCard.hidden ? gtCard.getBoundingClientRect() : null;
+    globeShift += ((gc ? Math.max(0, W * 0.62 - (gc.left - 240)) : 0) - globeShift) * (reduceMotion ? 1 : .06);""")
 assert c2_js.count("const COOP_DISPLAY_TOTAL = 500000;") == 1
 _t = '<b>${fmt(best[2])}</b> co‑op placement${best[2] === 1 ? "" : "s"}`'
 assert c2_js.count(_t) == 1
@@ -131,7 +144,7 @@ FEATS = [
  feat("Research", "Research", v="../hero-sm.mp4",
       syn="Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.",
       cta={"label": "Explore research", "href": "https://research.northeastern.edu/"}),
- feat("Global network", "Global network", v=S["Global network"]["video"],
+ feat("Global network", "Global network", v=S["Global network"]["video"], card="../img/global-london.jpg",
       syn="Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.",
       cta={"label": "See the network", "href": "#campuses"}),
  feat("Admissions", "Your turn.", v="../jamie-sm.mp4", card=U+"/2026/09/090826_MM_convocation_147.jpg",
@@ -157,7 +170,8 @@ def show_card(i, f):
             f'<span class="ln-t">{h(f["t"])}</span><i class="ln-pb"></i></button>')
 
 F0 = FEATS[0]
-HERO = f'''<section class="hx" id="top" aria-label="Featured">
+HERO = f'''<script>if (/[?&]hero=b\\b/.test(location.search)) document.documentElement.classList.add("hero-b")</script>
+<section class="hx" id="top" aria-label="Featured">
   <div class="hx-media" id="hxMedia">{"".join(layer(i, f) for i, f in enumerate(FEATS))}</div>
   <div class="hx-shade"></div>
   <h1 class="vh">Northeastern University</h1>
@@ -185,9 +199,10 @@ def row(rid, label, q=None, hidden=True):
             f'<div class="crow-strip"></div>'
             f'<button class="pad next" aria-label="Scroll {label} forward">{CHEV}</button></div></section>\n')
 
+NGN_LOCKUP = open(os.path.join(HERE, "ngn-lockup.svg")).read().replace('<svg class="ngn-lockup"', '<svg class="ngn-lockup" aria-hidden="true" focusable="false"')
 ROWS = ('<section class="rows" aria-labelledby="rowsT">\n'
-        '  <div class="wrap rows-head"><h2 id="rowsT">Stories from</h2><a href="https://news.northeastern.edu/" aria-label="Northeastern Global News">'
-        + NGN_LOGO + '</a></div>\n'
+        '  <div class="wrap rows-head"><h2 id="rowsT"><a href="https://news.northeastern.edu/"><span class="vh">Northeastern Global News</span>'
+        + NGN_LOCKUP + '</a></h2><p class="rows-tag">Stories from the university, stories from the world.</p></div>\n'
         + row("ngnRow", "Latest", "", hidden=False)
         + row("entRow", "Entrepreneurship", "tags=9287")
         + row("aiRow", "AI", "tags=9865,9843")
@@ -237,6 +252,12 @@ NEW_CSS = r'''
   .ep img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px}
   .ep span{font-size:14px;line-height:1.35}
 
+  /* hero variant B (?hero=b) */
+  .hero-b .hx-eps{display:none}
+  .hero-b #hxCta{position:absolute;right:var(--edge);bottom:0;margin:0}
+  .hero-b .hx-syn{max-width:52ch}
+  @media (max-width:899px){.hero-b #hxCta{position:static;margin-top:22px}}
+
   /* "Only at Northeastern": portrait feature cards */
   .hx-shows{position:absolute;z-index:3;left:0;right:0;bottom:clamp(18px,3svh,36px)}
   .hx-sh{margin:0;padding:0 var(--edge);font-size:clamp(17px,1.35vw,20px);font-weight:600;color:#E5E5E5}
@@ -262,9 +283,10 @@ NEW_CSS = r'''
 
   /* rows: a featured card, then portrait posters; edge paddles scroll */
   .rows{position:relative;z-index:2;color:#fff;padding:clamp(40px,7svh,80px) 0 clamp(60px,9svh,110px)}
-  .rows-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .rows-head h2{margin:0;font-size:clamp(22px,2vw,30px);font-weight:600;letter-spacing:-.015em}
-  .rows-head .w-logo{height:24px;width:auto;display:block}
+  .rows-head h2{margin:0;line-height:0}
+  .rows-head h2 a{display:inline-block;--wp--custom--color--emphasize:#fff;--wp--custom--color--background:var(--dark)}
+  .rows-head .ngn-lockup{height:clamp(22px,2.2vw,30px);width:auto;display:block}
+  .rows-tag{margin:12px 0 0;font-size:clamp(15px,1.2vw,17px);color:#A9A9B2}
   .crow{margin-top:clamp(28px,4.4svh,50px);--ch:clamp(280px,23vw,360px);--pw:calc(var(--ch) * 2 / 3)}
   .crow[hidden]{display:none}
   .crow h3{margin:0;font-size:clamp(17px,1.4vw,21px);font-weight:600;color:#E5E5E5}
@@ -488,9 +510,9 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="3"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="4"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
-for gone in ["placement", "one way in", "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
+for gone in ["placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
 for out in OUT:
     open(out, "w").write(page)

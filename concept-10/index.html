@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="3">
+<meta name="concept10-rev" content="4">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -347,6 +347,12 @@
   .ep img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px}
   .ep span{font-size:14px;line-height:1.35}
 
+  /* hero variant B (?hero=b) */
+  .hero-b .hx-eps{display:none}
+  .hero-b #hxCta{position:absolute;right:var(--edge);bottom:0;margin:0}
+  .hero-b .hx-syn{max-width:52ch}
+  @media (max-width:899px){.hero-b #hxCta{position:static;margin-top:22px}}
+
   /* "Only at Northeastern": portrait feature cards */
   .hx-shows{position:absolute;z-index:3;left:0;right:0;bottom:clamp(18px,3svh,36px)}
   .hx-sh{margin:0;padding:0 var(--edge);font-size:clamp(17px,1.35vw,20px);font-weight:600;color:#E5E5E5}
@@ -372,9 +378,10 @@
 
   /* rows: a featured card, then portrait posters; edge paddles scroll */
   .rows{position:relative;z-index:2;color:#fff;padding:clamp(40px,7svh,80px) 0 clamp(60px,9svh,110px)}
-  .rows-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-  .rows-head h2{margin:0;font-size:clamp(22px,2vw,30px);font-weight:600;letter-spacing:-.015em}
-  .rows-head .w-logo{height:24px;width:auto;display:block}
+  .rows-head h2{margin:0;line-height:0}
+  .rows-head h2 a{display:inline-block;--wp--custom--color--emphasize:#fff;--wp--custom--color--background:var(--dark)}
+  .rows-head .ngn-lockup{height:clamp(22px,2.2vw,30px);width:auto;display:block}
+  .rows-tag{margin:12px 0 0;font-size:clamp(15px,1.2vw,17px);color:#A9A9B2}
   .crow{margin-top:clamp(28px,4.4svh,50px);--ch:clamp(280px,23vw,360px);--pw:calc(var(--ch) * 2 / 3)}
   .crow[hidden]{display:none}
   .crow h3{margin:0;font-size:clamp(17px,1.4vw,21px);font-weight:600;color:#E5E5E5}
@@ -704,6 +711,7 @@
   </div>
 </div>
 
+<script>if (/[?&]hero=b\b/.test(location.search)) document.documentElement.classList.add("hero-b")</script>
 <section class="hx" id="top" aria-label="Featured">
   <div class="hx-media" id="hxMedia"><div class="hl on"><video muted loop playsinline preload="auto" poster="../img/apple-coop.jpg" src="../coop-sm.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" src="../hero-sm.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" src="https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg" src="../jamie-sm.mp4"></video></div><div class="hl kb"><img src="https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg" alt="" loading="lazy"></div></div>
   <div class="hx-shade"></div>
@@ -718,12 +726,91 @@
   </div>
   <div class="hx-shows" id="hxShows">
     <h2 class="hx-sh">Only at Northeastern</h2>
-    <div class="hx-lineup" role="group" aria-label="Choose a feature"><button class="ln" data-i="0" aria-pressed="true"><img src="../img/aquarium-dive.jpg" alt="" loading="lazy"><span class="ln-t">Co‑op</span><i class="ln-pb"></i></button><button class="ln" data-i="1" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><span class="ln-t">Research</span><i class="ln-pb"></i></button><button class="ln" data-i="2" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" alt="" loading="lazy"><span class="ln-t">Global network</span><i class="ln-pb"></i></button><button class="ln" data-i="3" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg" alt="" loading="lazy"><span class="ln-t">Admissions</span><i class="ln-pb"></i></button><button class="ln" data-i="4" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg" alt="" loading="lazy"><span class="ln-t">Entrepreneurship</span><i class="ln-pb"></i></button></div>
+    <div class="hx-lineup" role="group" aria-label="Choose a feature"><button class="ln" data-i="0" aria-pressed="true"><img src="../img/aquarium-dive.jpg" alt="" loading="lazy"><span class="ln-t">Co‑op</span><i class="ln-pb"></i></button><button class="ln" data-i="1" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" alt="" loading="lazy"><span class="ln-t">Research</span><i class="ln-pb"></i></button><button class="ln" data-i="2" aria-pressed="false"><img src="../img/global-london.jpg" alt="" loading="lazy"><span class="ln-t">Global network</span><i class="ln-pb"></i></button><button class="ln" data-i="3" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg" alt="" loading="lazy"><span class="ln-t">Admissions</span><i class="ln-pb"></i></button><button class="ln" data-i="4" aria-pressed="false"><img src="https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg" alt="" loading="lazy"><span class="ln-t">Entrepreneurship</span><i class="ln-pb"></i></button></div>
   </div>
 </section>
 <main>
 <section class="rows" aria-labelledby="rowsT">
-  <div class="wrap rows-head"><h2 id="rowsT">Stories from</h2><a href="https://news.northeastern.edu/" aria-label="Northeastern Global News"><svg class="w-logo" viewBox="0 0 380 102" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Northeastern Global News"><path d="M330.519 1.38965V11.2966H362.874L334.034 40.1918L341.025 47.2092L370.112 18.0525V50.9655H380V1.38965H330.519Z" fill="#C8102E"></path><path d="M0 100.541V1.4585H17.8395L72.5255 69.4585V1.4585H92.1915V100.541H74.0636L19.6661 33.2707V100.541H0Z" fill="white"></path><path d="M107.751 50.9931C107.751 22.0291 129.587 0 158.496 0C175.607 0 191.414 8.17321 201.824 23.2675L186.319 34.3577C178.601 22.6896 168.548 18.2315 158.496 18.2315C140.505 18.2315 127.912 31.7985 127.912 50.9931C127.912 70.1878 141.013 83.7548 159.004 83.7548C175.456 83.7548 184.712 74.0542 186.965 63.5419H157.04V46.5488H206.85C207.139 49.1081 207.207 52.0251 207.207 54.5018C207.207 79.9709 189.299 102 159.004 102C128.708 102 107.737 79.9709 107.737 51.0069L107.751 50.9931Z" fill="white"></path><path d="M222.781 100.541V1.4585H240.621L295.307 69.4585V1.4585H314.973V100.541H296.845L242.447 33.2707V100.541H222.781V100.541Z" fill="white"></path></svg></a></div>
+  <div class="wrap rows-head"><h2 id="rowsT"><a href="https://news.northeastern.edu/"><span class="vh">Northeastern Global News</span><svg class="ngn-lockup" aria-hidden="true" focusable="false" viewBox="0 0 573 48" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style>
+            .ngn-lockup__monogram-block {fill: var(--wp--custom--color--emphasize, #000) }
+            .ngn-lockup__monogram-letter {fill: var(--wp--custom--color--background, #fff)}
+            .ngn-lockup__wordmark-letter {fill: var(--wp--custom--color--emphasize, #000) }
+            .ngn-lockup__arrow {fill: var(--wp--custom--color--accent, #cf2b28) }
+        </style>
+    </defs>
+    <g class="ngn-lockup__monogram">
+        <rect class="ngn-lockup__monogram-block" width="48" height="48"/>
+        <path class="ngn-lockup__monogram-letter"
+              d="M12 30.1752C12 26.8663 14.4988 24.3487 17.8053 24.3487C19.763 24.3487 21.5696 25.282 22.7612 27.0082L20.987 28.2747C20.1037 26.9419 18.9553 26.4328 17.8053 26.4328C15.7474 26.4328 14.3076 27.9831 14.3076 30.1752C14.3076 32.3672 15.8075 33.9175 17.8639 33.9175C19.7461 33.9175 20.8035 32.8084 21.0625 31.6083H17.6388V29.6661H23.3362C23.3701 29.9577 23.3778 30.2909 23.3778 30.5747C23.3778 33.4841 21.3292 36.0001 17.8639 36.0001C14.3986 36.0001 12 33.4825 12 30.1736V30.1752Z"
+        />
+        <path class="ngn-lockup__monogram-letter"
+              d="M25.5147 35.8336V24.7407H27.514L33.6446 32.3534V24.7407H35.8489V35.8336H33.8172L27.7206 28.3025V35.8336H25.5163H25.5147Z"
+        />
+        <path class="ngn-lockup__monogram-letter"
+              d="M12.7119 23.0929V12H14.7112L20.8418 19.6128V12H23.0461V23.0929H21.0144L14.9178 15.5619V23.0929H12.7135H12.7119Z"
+        />
+        <path class="ngn-lockup__arrow"
+              d="M24.7647 12.0015V14.2182H32.0129L25.5509 20.6848L27.117 22.2537L33.6345 15.7315V23.0928H35.8497V12.0015H24.7647Z"
+        />
+    </g>
+    <g class="ngn-lockup__wordmark">
+        <path class="ngn-lockup__arrow" d="M544.6,10v5.7h18.7l-16.6,16.6l4,4l16.8-16.8v18.9h5.7V10H544.6z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M64,38.6V10.1h5.1l15.8,19.6V10.1h5.7v28.5h-5.2L69.7,19.2v19.4H64z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M93.6,28.5c0-5.9,4.6-10.5,10.8-10.5c6.2,0,10.8,4.6,10.8,10.5c0,5.9-4.6,10.5-10.8,10.5
+			C98.1,39,93.6,34.4,93.6,28.5z M104.3,34.1c3.2,0,5.4-2.4,5.4-5.6c0-3.2-2.2-5.6-5.4-5.6c-3.2,0-5.4,2.4-5.4,5.6
+			C98.9,31.7,101.2,34.1,104.3,34.1z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M117.6,18.4h5.2l0.1,2.8c1-2.1,3-3.2,5.2-3.2c1.2,0,2.2,0.3,2.6,0.5l-0.4,4.8c-0.5-0.2-1.4-0.5-2.5-0.5
+			c-2.4,0-4.9,1.3-4.9,5.4v10.3h-5.4V18.4z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M129.9,22.9v-4.5h3.4v-6.5h5.2v6.5h6v4.5h-5.9v8.3c0,2.1,1.2,3,3,3c1,0,2.3-0.2,3.4-0.7l0.5,4.5
+			c-1.2,0.6-3.2,1-4.9,1c-4.4,0-7.4-2.3-7.4-7v-9.1L129.9,22.9L129.9,22.9z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M147.1,38.6V9h5.4v11.5c1.1-1.3,3.1-2.6,6-2.6c4.6,0,7.9,3.1,7.9,7.9v12.7h-5.4V27.3c0-2.8-1.8-4.3-4.1-4.3
+			c-2.3,0-4.4,1.5-4.4,4.3v11.3H147.1z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M168.7,28.5c0-6.2,4.4-10.5,10.4-10.5c5.5,0,9.8,3.7,9.8,9.8c0,0.7-0.1,1.5-0.2,2.3H174c0.4,2.4,2.8,4,5.4,4
+			c2,0,3.7-0.9,5-2.8l3.8,2.9c-1.9,3.1-5.4,4.8-9,4.8C172.8,39,168.7,34.3,168.7,28.5z M183.8,26.5c-0.3-2.2-2.1-4-4.7-4
+			c-2.6,0-4.7,1.7-5,4H183.8L183.8,26.5z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M190,32.8c0-3.8,3.5-6.4,8.8-6.4c1.4,0,2.9,0.2,4.2,0.7v-0.5c0-2.2-1.8-3.8-4.4-3.8c-2.3,0-4,1.1-5.3,2.5
+			l-3.1-3.1c1.4-1.8,4.3-4.2,8.6-4.2c5.9,0,9.6,3.1,9.6,8.2v12.4h-5.1v-2.2c-1.1,1.6-3.2,2.7-5.7,2.7C193,39,190,36.5,190,32.8
+			L190,32.8z M195.1,32.5c0,1.5,1.3,2.5,3.4,2.5c2.6,0,4.6-1.7,4.6-4.3c-1-0.4-2.3-0.8-3.9-0.8C196.7,29.9,195.1,31,195.1,32.5z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M214.2,31.4c1.2,1.9,3.3,3.1,5.3,3.1c1.6,0,2.9-0.6,2.9-1.8c0-1.1-1.1-1.4-3.5-2c-4.4-1-7.5-2.4-7.5-6.5
+			c0-3.8,3.5-6.2,7.9-6.2c4.1,0,6.6,2,8.1,4.2l-3.4,2.8c-0.9-1.4-2.4-2.5-4.5-2.5c-1.7,0-2.9,0.6-2.9,1.6c0,1.1,1.3,1.4,3.8,2.1
+			c4.5,1.1,7.3,2.5,7.3,6.5c0,4-3.7,6.3-8,6.3c-4,0-7.2-1.8-9-4.7L214.2,31.4L214.2,31.4z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M227.6,22.9v-4.5h3.4v-6.5h5.2v6.5h6v4.5h-5.9v8.3c0,2.1,1.2,3,3,3c1,0,2.3-0.2,3.4-0.7l0.5,4.5
+			c-1.2,0.6-3.2,1-4.9,1c-4.4,0-7.4-2.3-7.4-7v-9.1L227.6,22.9L227.6,22.9z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M242.8,28.5c0-6.2,4.4-10.5,10.4-10.5c5.5,0,9.8,3.7,9.8,9.8c0,0.7-0.1,1.5-0.2,2.3h-14.6
+			c0.4,2.4,2.8,4,5.4,4c2,0,3.7-0.9,5-2.8l3.8,2.9c-1.9,3.1-5.4,4.8-9,4.8C246.9,39,242.8,34.3,242.8,28.5z M257.9,26.5
+			c-0.3-2.2-2.1-4-4.7-4c-2.6,0-4.7,1.7-5,4H257.9L257.9,26.5z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M265.4,18.4h5.2l0.1,2.8c1-2.1,3-3.2,5.2-3.2c1.2,0,2.2,0.3,2.6,0.5l-0.4,4.8c-0.5-0.2-1.4-0.5-2.5-0.5
+			c-2.4,0-4.9,1.3-4.9,5.4v10.3h-5.4V18.4z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M280.1,38.6V18.4h5.1l0.1,2.3c1-1.4,3.2-2.8,6.2-2.8c4.7,0,8,3.1,8,7.9v12.7h-5.4V27.3c0-2.8-1.8-4.3-4.2-4.3
+			c-2.4,0-4.5,1.5-4.5,4.3v11.3H280.1z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M310.2,24.3c0-8.3,6.3-14.7,14.6-14.7c4.9,0,9.5,2.4,12.5,6.7l-4.5,3.2c-2.2-3.4-5.1-4.6-8-4.6
+			c-5.2,0-8.8,3.9-8.8,9.4s3.8,9.4,9,9.4c4.7,0,7.4-2.8,8.1-5.8h-8.6V23h14.4c0.1,0.7,0.1,1.6,0.1,2.3c0,7.3-5.2,13.7-13.9,13.7
+			C316.2,39,310.2,32.6,310.2,24.3L310.2,24.3z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M346.6,38.6h-5.4V9h5.4V38.6z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M349.1,28.5c0-5.9,4.6-10.5,10.8-10.5c6.2,0,10.8,4.6,10.8,10.5c0,5.9-4.6,10.5-10.8,10.5
+			C353.7,39,349.1,34.4,349.1,28.5z M359.9,34.1c3.2,0,5.4-2.4,5.4-5.6c0-3.2-2.2-5.6-5.4-5.6c-3.2,0-5.4,2.4-5.4,5.6
+			C354.5,31.7,356.7,34.1,359.9,34.1z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M373.1,38.6V9h5.3v11.8c1.3-1.7,3.4-2.9,6.6-2.9c5.7,0,9.8,4.3,9.8,10.5c0,6.1-4.1,10.5-9.8,10.5
+			c-3,0-5.3-1-6.6-2.6l-0.1,2.1H373.1L373.1,38.6z M384,34.2c3.2,0,5.5-2.5,5.5-5.7c0-3.2-2.2-5.6-5.5-5.6s-5.5,2.4-5.5,5.6
+			S380.8,34.2,384,34.2z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M396,32.8c0-3.8,3.5-6.4,8.8-6.4c1.4,0,2.9,0.2,4.2,0.7v-0.5c0-2.2-1.8-3.8-4.4-3.8c-2.3,0-4,1.1-5.3,2.5
+			l-3.1-3.1c1.4-1.8,4.3-4.2,8.6-4.2c5.9,0,9.6,3.1,9.6,8.2v12.4h-5.1v-2.2c-1.1,1.6-3.2,2.7-5.7,2.7C399,39,396,36.5,396,32.8
+			L396,32.8z M401.1,32.5c0,1.5,1.3,2.5,3.4,2.5c2.6,0,4.6-1.7,4.6-4.3c-1-0.4-2.3-0.8-3.9-0.8C402.7,29.9,401.1,31,401.1,32.5z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M423.5,38.6h-5.4V9h5.4V38.6z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M436.3,38.6V10.1h5.1l15.8,19.6V10.1h5.7v28.5h-5.2l-15.7-19.4v19.4H436.3z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M465.9,28.5c0-6.2,4.4-10.5,10.4-10.5c5.5,0,9.8,3.7,9.8,9.8c0,0.7-0.1,1.5-0.2,2.3h-14.6
+			c0.4,2.4,2.8,4,5.4,4c2,0,3.7-0.9,5-2.8l3.8,2.9c-1.9,3.1-5.4,4.8-9,4.8C470,39,465.9,34.3,465.9,28.5z M481,26.5
+			c-0.3-2.2-2.1-4-4.7-4s-4.7,1.7-5,4H481L481,26.5z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M486.1,18.4h5.6l4,14.7l4.3-14.4h4.8l4.3,14.4l4-14.7h5.6l-5.9,20.2H506l-3.6-12.2l-3.6,12.2h-6.7L486.1,18.4
+			z"/>
+        <path class="ngn-lockup__wordmark-letter" d="M522.1,31.4c1.2,1.9,3.3,3.1,5.3,3.1c1.6,0,2.9-0.6,2.9-1.8c0-1.1-1.1-1.4-3.5-2c-4.4-1-7.5-2.4-7.5-6.5
+			c0-3.8,3.5-6.2,7.9-6.2c4.1,0,6.6,2,8.1,4.2l-3.4,2.8c-0.9-1.4-2.4-2.5-4.5-2.5c-1.7,0-2.9,0.6-2.9,1.6c0,1.1,1.3,1.4,3.8,2.1
+			c4.5,1.1,7.3,2.5,7.3,6.5c0,4-3.7,6.3-8,6.3c-4,0-7.2-1.8-9-4.7L522.1,31.4L522.1,31.4z"/>
+
+    </g>
+</svg></a></h2><p class="rows-tag">Stories from the university, stories from the world.</p></div>
 <section class="crow" data-q="" id="ngnRow" aria-label="Latest"><div class="wrap"><h3>Latest</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
 <section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap"><h3>Entrepreneurship</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
 <section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="AI"><div class="wrap"><h3>AI</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
@@ -752,7 +839,7 @@
     <div class="step" data-step="campuses">
       <div class="card">
         <div class="big"><b>14</b> campuses</div>
-        <p>One network across the U.S., U.K., and Canada. No single campus sits at the center.</p>
+        <p>One network across the world.</p>
       </div>
     </div>
 
@@ -767,14 +854,6 @@
       <div class="card">
         <div class="big"><b><span id="coopcount">0</span>+</b> co‑ops</div>
         <p>More than a century of students working with employer partners around the world. Each dot is a city where a student is on co‑op this fall.</p>
-      </div>
-    </div>
-
-    <div class="step" data-step="outro">
-      <div class="card">
-        <div class="big">Co‑op is one part.</div><p>Experiential learning at Northeastern also includes research with faculty, service with community partners, and study abroad on Dialogue of Civilizations programs.</p>
-        
-        
       </div>
     </div>
 
@@ -1075,12 +1154,14 @@ function label(text, x, y, a) {
   ctx.fillText(text, bx + 6, by + 9.5);
 }
 
+let globeShift = 0;
+const globeCX = () => W > 900 ? W * 0.62 - globeShift : W * 0.5;
 function render(now) {
   ctx.clearRect(0, 0, W, H);
   labelBoxes = [];
   const R0 = Math.min(W, H) * 0.42;
   const R = R0 * cur.k;
-  const cx = W > 900 ? W * 0.62 : W * 0.5;
+  const cx = globeCX();
   const cy = H * 0.52;
 
   /* atmosphere glow just outside the limb */
@@ -1273,6 +1354,8 @@ new IntersectionObserver(es => es.forEach(e => stageVisible = e.isIntersecting),
 
 function frame(now) {
   if (stageVisible) {
+    const gc = W > 900 && !gtCard.hidden ? gtCard.getBoundingClientRect() : null;
+    globeShift += ((gc ? Math.max(0, W * 0.62 - (gc.left - 240)) : 0) - globeShift) * (reduceMotion ? 1 : .06);
     if (fly) {
       const t = clamp01((now - fly.t0) / fly.dur);
       const e = easeIO(t);
@@ -1348,7 +1431,7 @@ function pickDot(e) {
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
   const R0 = Math.min(W, H) * 0.42;
   const R = R0 * cur.k;
-  const cx = W > 900 ? W * 0.62 : W * 0.5;
+  const cx = globeCX();
   const cy = H * 0.52;
   let best = null, bestD = 1e9;
   for (const d of COOPS) {
@@ -1426,7 +1509,7 @@ canvas.addEventListener("click", e => {
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
   const R = Math.min(W, H) * 0.42 * cur.k;
-  const cx = W > 900 ? W * 0.62 : W * 0.5;
+  const cx = globeCX();
   const cy = H * 0.52;
   for (let i = 0; i < STORY_PINS.length; i++) {
     const [x, y, v] = project(STORY_PINS[i][0], STORY_PINS[i][1], R, cx, cy);
@@ -1565,7 +1648,7 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 {
 /* ============ concept-7 ============ */
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
-const FEATS = [{"t": "Co‑op", "v": "../coop-sm.mp4", "img": "../img/apple-coop.jpg", "card": "../img/aquarium-dive.jpg", "syn": "Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.", "cta": {"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}, "eps": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}]}, {"t": "Research", "v": "../hero-sm.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "syn": "Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.", "cta": {"label": "Explore research", "href": "https://research.northeastern.edu/"}, "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}]}, {"t": "Global network", "v": "https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "syn": "Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.", "cta": {"label": "See the network", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}]}, {"t": "Admissions", "v": "../jamie-sm.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "syn": "Start your degree in Boston, London, New York City, or Oakland, or begin abroad with N.U.in. Come see a campus for yourself.", "cta": {"label": "Apply", "href": "https://admissions.northeastern.edu/"}, "eps": [{"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}, {"t": "This graduate uses baking to cook up conversation about mental health", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Dayna-Altman1400.jpg", "u": "https://news.northeastern.edu/2026/09/15/bake-it-till-you-make-it-mental-health/"}, {"t": "Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg", "u": "https://news.northeastern.edu/2026/09/30/husky-cam-schlittler-yankees-red-sox-playoffs/"}, {"t": "Northeastern women’s hockey team’s title run ends in semifinals", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg", "u": "https://news.northeastern.edu/2026/03/20/huskies-buckeyes-womens-hockey-frozen-four/"}]}, {"t": "Entrepreneurship", "v": null, "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "syn": "Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.", "cta": {"label": "Read founder stories", "href": "https://news.northeastern.edu/tag/entrepreneurship/"}, "eps": [{"t": "Student startup develops hands-on learning toy for future engineers", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "u": "https://news.northeastern.edu/2026/07/31/nexttile-startup-stem-northeastern/"}, {"t": "Founders pitch startups in Dragons’ Den-style event for funding", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "u": "https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"}, {"t": "Revolutionizing dental hygiene, starting with your toothbrush", "img": "https://news.northeastern.edu/wp-content/uploads/2025/08/NOOK_1400.jpg", "u": "https://news.northeastern.edu/2026/07/15/how-to-keep-toothbrush-clean-nook/"}, {"t": "Is this healthy energy drink coming to a store near you?", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/"}]}];
+const FEATS = [{"t": "Co‑op", "v": "../coop-sm.mp4", "img": "../img/apple-coop.jpg", "card": "../img/aquarium-dive.jpg", "syn": "Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.", "cta": {"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}, "eps": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}]}, {"t": "Research", "v": "../hero-sm.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "syn": "Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.", "cta": {"label": "Explore research", "href": "https://research.northeastern.edu/"}, "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}]}, {"t": "Global network", "v": "https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "card": "../img/global-london.jpg", "syn": "Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.", "cta": {"label": "See the network", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}]}, {"t": "Admissions", "v": "../jamie-sm.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/090826_MM_convocation_147.jpg", "syn": "Start your degree in Boston, London, New York City, or Oakland, or begin abroad with N.U.in. Come see a campus for yourself.", "cta": {"label": "Apply", "href": "https://admissions.northeastern.edu/"}, "eps": [{"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}, {"t": "This graduate uses baking to cook up conversation about mental health", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Dayna-Altman1400.jpg", "u": "https://news.northeastern.edu/2026/09/15/bake-it-till-you-make-it-mental-health/"}, {"t": "Former Husky Cam Schlittler stars as Yankees rout hometown Red Sox", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Cam-Schlittler-1400.jpg", "u": "https://news.northeastern.edu/2026/09/30/husky-cam-schlittler-yankees-red-sox-playoffs/"}, {"t": "Northeastern women’s hockey team’s title run ends in semifinals", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/JIM22137.jpg", "u": "https://news.northeastern.edu/2026/03/20/huskies-buckeyes-womens-hockey-frozen-four/"}]}, {"t": "Entrepreneurship", "v": null, "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "syn": "Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.", "cta": {"label": "Read founder stories", "href": "https://news.northeastern.edu/tag/entrepreneurship/"}, "eps": [{"t": "Student startup develops hands-on learning toy for future engineers", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "u": "https://news.northeastern.edu/2026/07/31/nexttile-startup-stem-northeastern/"}, {"t": "Founders pitch startups in Dragons’ Den-style event for funding", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "u": "https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"}, {"t": "Revolutionizing dental hygiene, starting with your toothbrush", "img": "https://news.northeastern.edu/wp-content/uploads/2025/08/NOOK_1400.jpg", "u": "https://news.northeastern.edu/2026/07/15/how-to-keep-toothbrush-clean-nook/"}, {"t": "Is this healthy energy drink coming to a store near you?", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/"}]}];
 
 /* ============ billboard ============ */
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");
