@@ -1,5 +1,5 @@
 """Concept 10: immersive streaming. The page opens on a full-bleed billboard
-(per-feature film, synopsis, stories panel) over an "Only at Northeastern"
+(per-feature film, synopsis, stories panel) over a
 row of portrait feature cards; then live NGN rows (a static featured card,
 then portrait posters, Netflix-style edge paddles); concept 2's scroll-driven
 globe tour, research sheet and co-op rail; concept 4's portrait video reel;
@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="8">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="9">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -204,7 +204,6 @@ HERO = f'''<script>if (/[?&]hero=b\\b/.test(location.search)) document.documentE
     <aside class="hx-eps" id="hxEps" aria-label="Stories from this feature"></aside>
   </div>
   <div class="hx-shows" id="hxShows">
-    <h2 class="hx-sh">Only at Northeastern</h2>
     <div class="hx-lineup" role="group" aria-label="Choose a feature">{"".join(show_card(i, f) for i, f in enumerate(FEATS))}</div>
   </div>
 </section>
@@ -287,10 +286,9 @@ NEW_CSS = r'''
   .hero-b .hx-syn{max-width:52ch}
   @media (max-width:899px){.hero-b #hxCta{position:static;margin-top:22px}}
 
-  /* "Only at Northeastern": portrait feature cards */
+  /* feature cards under the hero */
   .hx-shows{position:absolute;z-index:3;left:0;right:0;bottom:clamp(18px,3svh,36px)}
-  .hx-sh{margin:0;padding:0 var(--edge);font-size:clamp(17px,1.35vw,20px);font-weight:600;color:#E5E5E5}
-  .hx-lineup{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:14px var(--edge) 6px}
+  .hx-lineup{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;padding:10px var(--edge) 6px}
   .hx-lineup::-webkit-scrollbar{display:none}
   .ln{all:unset;box-sizing:border-box;cursor:pointer;position:relative;flex:1 1 0;min-width:0;height:clamp(130px,17svh,180px);
     border-radius:8px;overflow:hidden;background:#141419;transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
@@ -361,28 +359,27 @@ NEW_CSS = r'''
   .pv-x{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-top:8px;font-size:14.5px;line-height:1.45;color:#D4D4D4}
   .pv-cta{display:inline-flex;align-items:center;gap:8px;margin-top:14px;height:38px;padding:0 16px;border-radius:999px;background:#fff;color:#0B0B0E;font-size:14px;font-weight:600}
 
-  /* row mockup B · Spotlight */
-  .rows-b .crow{position:relative;margin-top:clamp(12px,2svh,24px);min-height:clamp(600px,84svh,820px);display:flex;flex-direction:column;
-    overflow:hidden;padding-top:clamp(28px,5svh,56px);--ch:clamp(190px,15vw,232px)}
-  .rows-b .crow > .wrap{position:relative;z-index:1;width:100%;margin-bottom:auto}
-  .sp-bg{position:absolute;inset:0}
-  .sp-bg i{position:absolute;inset:0;background-size:cover;background-position:center 35%;opacity:0;transition:opacity .9s var(--ease)}
-  .sp-bg i.on{opacity:1;animation:kb 22s ease-in-out infinite alternate}
-  .sp-bg::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(to right,rgba(11,11,14,.94) 0%,rgba(11,11,14,.6) 38%,rgba(11,11,14,.08) 70%),
-               linear-gradient(to top,var(--dark) 0%,rgba(11,11,14,.55) 32%,transparent 58%),linear-gradient(to bottom,var(--dark) 0%,transparent 16%)}
-  .sp-in{position:relative;z-index:1;order:1;padding:0 var(--edge);margin-bottom:clamp(14px,2.4svh,26px)}
-  .sp-copy{max-width:580px;transition:opacity .22s}
+  /* row mockup B · Spotlight (quiet): caption over the strip, faint color wash, focused poster lifts */
+  .rows-b .crow{position:relative;display:flex;flex-direction:column;--ch:clamp(250px,21vw,320px)}
+  .rows-b .crow > .wrap{position:relative;z-index:1;width:100%}
+  .sp-bg{position:absolute;left:0;right:0;top:-12%;bottom:-12%;pointer-events:none;
+    -webkit-mask-image:radial-gradient(70% 60% at 35% 55%,#000,transparent);mask-image:radial-gradient(70% 60% at 35% 55%,#000,transparent)}
+  .sp-bg i{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;filter:blur(70px) saturate(1.3);transition:opacity 1.1s var(--ease)}
+  .sp-bg i.on{opacity:.32}
+  .sp-in{position:relative;z-index:1;order:1;padding:0 var(--edge);margin-top:12px}
+  .sp-copy{max-width:720px;min-height:calc(13px * 1.5 + 2 * 1.2em * 1 + 2 * 15.5px * 1.45 + 56px);transition:opacity .22s}
   .sp-copy.swap{opacity:0}
-  .sp-meta,.cf-meta{margin:0;font-size:14px;color:#A9A9B2}
-  .sp-t{margin:10px 0 0;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance}
-  .sp-x,.cf-x{margin:14px 0 0;font-size:16.5px;line-height:1.5;color:#D4D4D4;max-width:50ch;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .sp-meta,.cf-meta{margin:0;font-size:13.5px;color:#A9A9B2}
+  .sp-t{margin:6px 0 0;font-size:clamp(20px,1.7vw,26px);font-weight:400;letter-spacing:-.012em;line-height:1.2;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .sp-x,.cf-x{margin:8px 0 0;font-size:15.5px;line-height:1.45;color:#C9C9CF;max-width:62ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .sp-btn{margin-top:10px;color:#fff}
   .rows-b .crow-body{order:2;z-index:1}
-  .rows-b .cc{transition:box-shadow .3s,transform .3s var(--ease)}
-  .rows-b .cc-t{font-size:14px;padding:0 12px 14px}
-  .rows-b .cc:not(.on) img{filter:brightness(.62)}
-  .rows-b .cc.on{box-shadow:0 0 0 2px #fff;transform:translateY(-6px)}
-  @media (prefers-reduced-motion: reduce){.sp-bg i{transition:none}.sp-bg i.on{animation:none}}
+  .rows-b .cc{transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+  .rows-b .cc img{transition:filter .35s,transform .6s var(--ease)}
+  .rows-b .crow-strip:hover .cc:not(.on) img,.rows-b .cc:not(.on) img{filter:brightness(.55)}
+  .rows-b .cc.on{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,.55)}
+  @media (prefers-reduced-motion: reduce){.sp-bg i{transition:none}}
 
   /* row mockup C · Coverflow */
   .cf{margin-top:clamp(24px,4svh,44px);overflow-x:clip;--chh:clamp(320px,44svh,470px);--cw:calc(var(--chh) * 2 / 3)}
@@ -409,73 +406,11 @@ NEW_CSS = r'''
   .cf-nav.prev svg{transform:scaleX(-1)}
   @media (max-width:720px){.cf-info{grid-template-columns:1fr}.cf-nav{display:none}}
 
-  /* the tab mockups drop the default card chrome (overlay, ring, lift, dimmed image) */
-  .tabs-1 .ln::after,.tabs-2 .ln::after,.tabs-3 .ln::after{display:none}
-  .tabs-1 .ln,.tabs-2 .ln,.tabs-3 .ln,.tabs-1 .ln:hover,.tabs-2 .ln:hover,.tabs-3 .ln:hover,
-  .tabs-1 .ln[aria-pressed="true"],.tabs-2 .ln[aria-pressed="true"],.tabs-3 .ln[aria-pressed="true"]{box-shadow:none;transform:none;overflow:visible;height:auto;background:none}
-  .tabs-1 .ch-pv img{position:static;filter:none}
-  /* hero tabs 1 · Chapters: a five-part timeline with hover previews */
-  .tabs-1 .hx-sh{display:none}
-  .ch-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;padding:0 var(--edge)}
-  .tabs-1 .ln{all:unset;box-sizing:border-box;position:relative;cursor:pointer;padding-top:16px;display:block}
-  .tabs-1 .ln-pb{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,.25);overflow:hidden}
-  .tabs-1 .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:#fff}
-  .tabs-1 .ln[aria-pressed="true"] .ln-pb::after{width:max(calc(var(--pb,0) * 100%), 2px)}
-  .ch-n{display:block;font-size:13px;color:#8A8A93;font-variant-numeric:tabular-nums}
-  .ch-t{display:block;margin-top:6px;font-size:clamp(17px,1.5vw,22px);font-weight:400;color:#A9A9B2;transition:color .3s}
-  .tabs-1 .ln:hover .ch-t,.tabs-1 .ln[aria-pressed="true"] .ch-t{color:#fff}
-  .ch-pv{position:absolute;left:0;bottom:calc(100% + 14px);width:min(240px,100%);aspect-ratio:16/10;border-radius:10px;overflow:hidden;
-    box-shadow:0 20px 50px rgba(0,0,0,.6);opacity:0;transform:translateY(10px) scale(.96);transform-origin:bottom left;
-    transition:opacity .25s,transform .3s var(--ease);pointer-events:none}
-  .ch-pv img{width:100%;height:100%;object-fit:cover}
-  .tabs-1 .ln:hover .ch-pv{opacity:1;transform:none}
-  .tabs-1 .ln:focus-visible{outline:2px solid #fff;outline-offset:6px}
-
-  /* hero tabs 2 · Index: the list is the headline; hover previews a feature */
-  .tabs-2 .hx-title,.tabs-2 .hx-eps,.tabs-2 .hx-sh{display:none}
-  .tabs-2 .hx-in{left:auto;right:0;width:min(520px,44%);bottom:clamp(48px,9svh,110px);padding:0 var(--edge) 0 0}
-  .tabs-2 .hx-shows{right:auto;bottom:clamp(48px,9svh,110px);padding-left:var(--edge)}
-  .ix{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-  .tabs-2 .ln{all:unset;box-sizing:border-box;position:relative;cursor:pointer;padding:2px 0 8px}
-  .ix-t{display:block;font-size:clamp(40px,5.2vw,84px);font-weight:200;letter-spacing:-.035em;line-height:1;color:rgba(255,255,255,.28);
-    transition:color .35s,transform .45s var(--ease)}
-  .tabs-2 .ln:hover .ix-t{color:rgba(255,255,255,.7)}
-  .tabs-2 .ln[aria-pressed="true"] .ix-t{color:#fff;transform:translateX(18px)}
-  .tabs-2 .ln-pb{position:absolute;left:18px;right:0;top:auto;bottom:2px;height:2px;background:rgba(255,255,255,.2);opacity:0;transition:opacity .3s}
-  .tabs-2 .ln[aria-pressed="true"] .ln-pb{opacity:1}
-  .tabs-2 .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:var(--red)}
-  .tabs-2 .ln:focus-visible{outline:2px solid #fff;outline-offset:4px}
-  .tabs-2 .hx-shade{background:linear-gradient(to right,rgba(11,11,14,.85) 0%,rgba(11,11,14,.35) 45%,rgba(11,11,14,.55) 100%),
-    linear-gradient(to top,var(--dark) 0%,transparent 45%)}
-  @media (max-width:899px){
-    .tabs-2 .hx-in{left:0;width:auto;padding:0 var(--edge);bottom:auto;top:110px}
-    .ix-t{font-size:clamp(30px,9vw,44px)}
-  }
-
-  /* hero tabs 3 · Stories: circular thumbnails with a progress ring */
-  .tabs-3 .hx-sh{display:none}
-  .st-row{display:flex;gap:clamp(18px,3vw,40px);padding:0 var(--edge);overflow-x:auto;scrollbar-width:none}
-  .tabs-3 .ln{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;flex:0 0 auto}
-  .st-ring{position:relative;display:block;width:clamp(76px,7vw,104px);aspect-ratio:1}
-  .st-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
-  .st-ring circle{fill:none;stroke-width:3}
-  .st-track{stroke:rgba(255,255,255,.28)}
-  .st-prog{stroke:#fff;stroke-dasharray:295.3;stroke-dashoffset:calc(295.3 * (1 - var(--pb,0)));stroke-linecap:round;opacity:0}
-  .tabs-3 .ln[aria-pressed="true"] .st-prog{opacity:1}
-  .st-ring img{position:absolute;inset:8%;width:84%;height:84%;border-radius:50%;object-fit:cover;filter:brightness(.7) saturate(.85);
-    transition:transform .35s var(--ease),filter .35s}
-  .tabs-3 .ln:hover img{transform:scale(1.06);filter:none}
-  .tabs-3 .ln[aria-pressed="true"] img{filter:none}
-  .st-t{font-size:14px;font-weight:500;color:#A9A9B2;white-space:nowrap}
-  .tabs-3 .ln[aria-pressed="true"] .st-t{color:#fff}
-  .tabs-3 .ln:focus-visible .st-ring{outline:2px solid #fff;outline-offset:4px;border-radius:50%}
-
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
     backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
   .vswitch a{padding:8px 14px;border-radius:999px;color:#C9C9CF;white-space:nowrap}
   .vswitch a.on{background:#fff;color:#0B0B0E;font-weight:600}
-  .vswitch.right{left:auto;right:16px}
 
   /* concept 2's globe: flush on this page, dissolving into its neighbors */
   .scrolly{border-radius:0;margin-top:0}
@@ -492,22 +427,6 @@ const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replac
 const FEATS = __FEATS__;
 
 /* ============ billboard ============ */
-/* hero tab mockups: ?tabs=1 Chapters, 2 Index, 3 Stories (they reuse .ln + --pb, so rotation is shared) */
-const TV = new URLSearchParams(location.search).get("tabs");
-if (["1", "2", "3"].includes(TV)) {
-  document.documentElement.classList.add("tabs-" + TV);
-  const shows = $("#hxShows");
-  if (TV === "1") shows.innerHTML = `<div class="ch-row" role="group" aria-label="Choose a feature">` + FEATS.map((f, i) =>
-    `<button class="ln" data-i="${i}" aria-pressed="${i ? "false" : "true"}"><i class="ln-pb"></i>` +
-    `<span class="ch-n">${String(i + 1).padStart(2, "0")}</span><span class="ch-t">${esc(f.t)}</span>` +
-    `<span class="ch-pv" aria-hidden="true"><img src="${esc(f.card)}" alt=""></span></button>`).join("") + `</div>`;
-  if (TV === "2") shows.innerHTML = `<div class="ix" role="group" aria-label="Choose a feature">` + FEATS.map((f, i) =>
-    `<button class="ln" data-i="${i}" aria-pressed="${i ? "false" : "true"}"><span class="ix-t">${esc(f.t)}</span><i class="ln-pb"></i></button>`).join("") + `</div>`;
-  if (TV === "3") shows.innerHTML = `<div class="st-row" role="group" aria-label="Choose a feature">` + FEATS.map((f, i) =>
-    `<button class="ln" data-i="${i}" aria-pressed="${i ? "false" : "true"}"><span class="st-ring">` +
-    `<svg viewBox="0 0 100 100" aria-hidden="true"><circle class="st-track" cx="50" cy="50" r="47"/><circle class="st-prog" cx="50" cy="50" r="47"/></svg>` +
-    `<img src="${esc(f.card)}" alt=""></span><span class="st-t">${esc(f.t)}</span></button>`).join("") + `</div>`;
-}
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");
 let cur = 0, elapsed = 0, hxVisible = true, hoverShows = false;
 const vidOf = i => layers[i].querySelector("video");
@@ -545,7 +464,6 @@ function selectF(i) {
   setTimeout(() => { fillHero(FEATS[i]); hxIn.classList.remove("swap"); }, reduceMotion ? 0 : 350);
 }
 lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i)));
-if (TV === "2") lnBtns.forEach(b => { let t; b.addEventListener("pointerenter", () => { t = setTimeout(() => selectF(+b.dataset.i), 220); }); b.addEventListener("pointerleave", () => clearTimeout(t)); });
 /* auto-rotate every 12s; the loader fills per frame on the active card */
 const ROTATE_MS = 12000;
 $("#hxShows").addEventListener("pointerenter", () => hoverShows = true);
@@ -739,7 +657,7 @@ function spotlight(tp) {
   sec.classList.add("sp");
   sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
     `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-meta"></p><p class="sp-t"></p><p class="sp-x"></p>` +
-    `<a class="hx-btn sp-btn" href="#">Read story ${ARROW}</a></div></div>`);
+    `<a class="storylink sp-btn" href="#">Read story</a></div></div>`);
   mountRow(sec, items);
   const bgs = sec.querySelectorAll(".sp-bg i"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
   let cur = -1, layer = 0, t;
@@ -752,7 +670,7 @@ function spotlight(tp) {
     cards.forEach((c, k) => c.classList.toggle("on", k === i));
     copy.classList.add("swap");
     setTimeout(() => {
-      copy.querySelector(".sp-meta").textContent = [tp.label, fmtDate(it.d)].filter(Boolean).join(" · ");
+      copy.querySelector(".sp-meta").textContent = fmtDate(it.d);
       copy.querySelector(".sp-t").textContent = it.t;
       copy.querySelector(".sp-x").textContent = it.x || "";
       copy.querySelector(".sp-btn").href = it.u;
@@ -823,15 +741,6 @@ function coverflow(topics) {
   load(0);
 }
 
-/* switcher for the hero tab mockups (only when ?tabs= is in the URL) */
-if (new URLSearchParams(location.search).has("tabs")) {
-  const bar = document.createElement("nav");
-  bar.className = "vswitch right"; bar.setAttribute("aria-label", "Hero tab mockups");
-  bar.innerHTML = [["0", "Current"], ["1", "1 · Chapters"], ["2", "2 · Index"], ["3", "3 · Stories"]]
-    .map(([k, l]) => `<a href="?tabs=${k}" class="${(["1", "2", "3"].includes(TV) ? TV : "0") === k ? "on" : ""}">${l}</a>`).join("");
-  document.body.appendChild(bar);
-}
-
 /* switcher for the row mockups (only when ?rows= is in the URL) */
 if (new URLSearchParams(location.search).has("rows")) {
   const bar = document.createElement("nav");
@@ -854,9 +763,9 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="8"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="9"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
-for gone in ["placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
+for gone in ["Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
 for out in OUT:
     open(out, "w").write(page)
