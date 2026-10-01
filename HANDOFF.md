@@ -948,3 +948,26 @@ nav/footer/brand.
 - build_c9.py exec()s build_c8.py's prefix for the nav/footer/show data.
   build_c8.py carries concept-6 rev 4 edits (portrait live topic rows); the
   rev-4 concept-6/index.html itself was NOT deployed, live concept-6 is rev 3.
+
+## Concept 11: concept 10 with the image Spotlight rows (concept-11/, tools/build_c9.py)
+
+Published 2026-10-01 as its own link. build_c9.py writes concept-10 and then
+concept-11 from the same page, changing only the rev meta (concept11-rev) and
+the default story-row treatment (rows "b": the focused story's full-size NGN
+photo in a framed 16:9 panel beside a caption, posters below). ?rows= still
+switches treatments on either page.
+
+State of the page at rev 12 / concept-11 rev 1:
+- Hero: five features (Co-op, Research, Global network, AI, Entrepreneurship),
+  each a 1920x1080 film (co-op, research.northeastern.edu, admissions, Roux,
+  D'Amore-McKim); headlines Experiential learning / Breakthroughs begin here /
+  Immersed in the world / Shaping responsible, human-centered AI / Ideas into
+  ventures (the last is a placeholder Zach hasn't settled), two lines max at
+  one fitted size; three NGN stories at right; feature cards auto-rotate every
+  12s with a top loader.
+- Rows: live NGN topics; Spotlight (b) default on concept-11, posters on
+  concept-10. Mockups: a Preview, b Spotlight, b2 Quiet, c Coverflow.
+- Globe tour (concept 2), research sheet, co-op rail, b-roll reel, then the
+  Your turn. closer crossfading eight NGN photos (decoded <img> layers,
+  next photo pre-painted at opacity .001, no zoom).
+- Unverified numbers: 500,000+ all-time co-ops, $296M / 50+ / 510.

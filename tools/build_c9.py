@@ -809,3 +809,14 @@ for gone in ["kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in"
 for out in OUT:
     open(out, "w").write(page)
 print("built", len(page), "bytes ->", OUT[0])
+
+# concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
+p11 = page
+for x, y in (('<meta name="concept10-rev" content="12">', '<meta name="concept11-rev" content="1">'),
+             ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
+              'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
+    assert p11.count(x) == 1, x
+    p11 = p11.replace(x, y)
+os.makedirs(os.path.join(ROOT, "concept-11"), exist_ok=True)
+open(os.path.join(ROOT, "concept-11/index.html"), "w").write(p11)
+print("built", len(p11), "bytes -> concept-11/index.html")
