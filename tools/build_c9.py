@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="6">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="7">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -150,10 +150,14 @@ FEATS = [
  feat("Global network", "Global network", v=S["Global network"]["video"], card="../img/global-london.jpg",
       syn="Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.",
       cta={"label": "See the network", "href": "#campuses"}),
- feat("Admissions", "Your turn.", v="../jamie-sm.mp4", card=U+"/2026/09/090826_MM_convocation_147.jpg",
-      syn="Start your degree in Boston, London, New York City, or Oakland, or begin abroad with N.U.in. Come see a campus for yourself.",
-      cta={"label": "Apply", "href": "https://admissions.northeastern.edu/"},
-      eps=[g["EP_LIFE"][1], g["EP_LIFE"][2], g["EP_ATHLETICS"][0], g["EP_ATHLETICS"][1]]),
+ feat("AI", None, still=U+"/2026/09/AImakerspace1400.jpg",
+      card=U+"/2026/09/Francesco_Restuccia_1400.jpg",
+      syn="AI is reshaping every field. Students build it on co‑op, faculty advance it in the lab, and both bring the human judgment it needs.",
+      cta={"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"},
+      eps=[ep("Query, create or be curious at new AI Makerspace in Boston", U+"/2026/09/AImakerspace1400.jpg", NGN+"/2026/09/23/ai-makerspace-boston-campus/"),
+           ep("The student refining AI at one of the largest real estate firms", U+"/2026/08/Co-op_AI_1400.jpg", NGN+"/2026/09/09/real-estate-ai-co-op/"),
+           ep("In Serbia, she helped build an AI to give activists worldwide a leg up", U+"/2026/08/081426_MM_Ayla_DiBattista_006.jpg", NGN+"/2026/09/03/ayla-dibattista-co-op-northeastern/"),
+           ep("This professor is making AI systems more aware of their ignorance", U+"/2026/09/Francesco_Restuccia_1400.jpg", NGN+"/2026/09/21/northeastern-pecase-award-2026/")]),
  feat("Entrepreneurship", None, still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
       syn="Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.",
       cta={"label": "Read founder stories", "href": NGN + "/tag/entrepreneurship/"}, eps=EP_ENT),
@@ -424,6 +428,13 @@ if (!reduceMotion) {
 fillHero(FEATS[0]);
 playI(0);
 
+/* closer photo preview: ?closer=1..8 */
+{
+  const CLOSERS = __CLOSERS__, n = +new URLSearchParams(location.search).get("closer");
+  const bg = $(".admit .bg");
+  if (bg && n >= 1 && n <= CLOSERS.length) { bg.style.backgroundImage = `url('${CLOSERS[n - 1]}')`; bg.style.backgroundPosition = "center 45%"; }
+}
+
 /* ============ rows: a featured card, then portrait posters ============ */
 const card = c => `<a class="cc" href="${esc(c.u)}">` +
   `<img src="${esc(c.img)}" alt="" loading="lazy"><span class="cc-t">${esc(c.t)}</span></a>`;
@@ -506,6 +517,17 @@ const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e
 })();
 }
 '''
+# closer photo candidates, previewed with ?closer=1..8 until one is chosen
+CLOSERS = [U + "/" + f for f in (
+ "2024/07/Convocation1400.jpg",                        # 1 phone lights, convocation arena
+ "2026/08/LondonConvocation1400.jpg",                  # 2 London convocation, overhead on confetti
+ "2026/09/091026_CV_London_Convocation_041.jpg",       # 3 London convocation, confetti on stage
+ "2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg",   # 4 Oakland convocation
+ "2026/09/090826_AS_NYC_convocation_072.jpg",          # 5 NYC convocation
+ "2026/09/091626_MMU_Parade_of_Flags_007.jpg",         # 6 Parade of Flags
+ "2026/09/Fenway1400.jpg",                             # 7 graduates with home-country flags
+ "2026/09/1400_1a30c6.jpg")]                           # 8 students in motion on a campus path
+NEW_JS = NEW_JS.replace("__CLOSERS__", json.dumps(CLOSERS))
 NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).replace("</", "<\\/"))
 
 page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
@@ -517,7 +539,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert page.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="6"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="7"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", "Only at Northeastern", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
