@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="11">
+<meta name="concept10-rev" content="12">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -349,10 +349,11 @@
   .ep span{font-size:14px;line-height:1.35}
 
   /* closer slideshow */
-  .admit .bg i{position:absolute;inset:0;background-size:cover;background-position:center 45%;opacity:0;transition:opacity 1.6s var(--ease)}
-  .admit .bg i.on{opacity:1;animation:kbs 16s ease-out forwards}
-  @keyframes kbs{from{transform:scale(1)}to{transform:scale(1.04)}}
-  @media (prefers-reduced-motion: reduce){.admit .bg i{transition:none}.admit .bg i.on{animation:none}}
+  .admit .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;opacity:0;
+    transition:opacity 1.8s ease-in-out;will-change:opacity}
+  .admit .bg img.on{opacity:1}
+  .admit .bg img.pre{opacity:.001}
+  @media (prefers-reduced-motion: reduce){.admit .bg img{transition:none}}
 
   /* hero variant B (?hero=b) */
   .hero-b .hx-eps{display:none}
@@ -454,6 +455,20 @@
   .rows-b .crow-strip:hover .cc:not(.on) img,.rows-b .cc:not(.on) img{filter:brightness(.55)}
   .rows-b .cc.on{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,.55)}
   @media (prefers-reduced-motion: reduce){.sp-bg i{transition:none}}
+
+  /* B (image) vs B2 (quiet) */
+  .sp-fig{display:none}
+  .rows-bimg .sp-bg{display:none}
+  .rows-bimg .crow{--ch:clamp(200px,16vw,250px)}
+  .rows-bimg .sp-in{display:flex;align-items:center;justify-content:space-between;gap:clamp(28px,4vw,64px);margin:14px 0 6px}
+  .rows-bimg .sp-copy{flex:1 1 0;max-width:560px;min-height:0}
+  .rows-bimg .sp-t{font-size:clamp(24px,2.3vw,36px);font-weight:300;letter-spacing:-.02em;line-height:1.12;-webkit-line-clamp:3}
+  .rows-bimg .sp-x{-webkit-line-clamp:3}
+  .rows-bimg .sp-fig{display:block;position:relative;flex:0 0 min(52%,720px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#141419;
+    box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .sp-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s var(--ease)}
+  .sp-fig img.on{opacity:1}
+  @media (max-width:820px){.rows-bimg .sp-in{flex-direction:column-reverse;align-items:stretch}.rows-bimg .sp-fig{flex:none;width:100%}}
 
   /* row mockup C · Coverflow */
   .cf{margin-top:clamp(24px,4svh,44px);overflow-x:clip;--chh:clamp(320px,44svh,470px);--cw:calc(var(--chh) * 2 / 3)}
@@ -1013,7 +1028,7 @@
 
 <section class="reel" aria-hidden="true"><div class="reel-track" id="reelTrack"><div class="vidcard"><video muted playsinline preload="none" data-src="https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4" data-s="0.5" data-e="6"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4" data-s="0.5" data-e="6"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4" data-s="24" data-e="29.5"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm" data-s="8.5" data-e="14"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="../hero.mp4" data-s="0" data-e="9"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4" data-s="7" data-e="11.5"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://nyc.northeastern.edu/wp-content/uploads/NYC-Home_SLOW.mp4" data-s="0" data-e="9"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4" data-s="6.5" data-e="9.5"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4" data-s="55" data-e="62"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm" data-s="31" data-e="36"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4" data-s="30" data-e="36"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4" data-s="7.5" data-e="9.5"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4" data-s="16" data-e="19.5"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://www.nulondon.ac.uk/wp-content/uploads/2026/02/Discover-your-path-at-Northeastern-University-London.mp4" data-s="3" data-e="9"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4" data-s="13" data-e="18"></video></div><div class="vidcard"><video muted playsinline preload="none" data-src="https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4" data-s="1" data-e="7"></video></div></div></section>
 <section class="admit" id="admit">
-  <div class="bg" data-plx="34"><i class="on" data-bg="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg"></i><i data-bg="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg"></i></div>
+  <div class="bg" data-plx="34"><img class="on" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" alt="" decoding="async"></div>
   <div class="inner">
     <h2>Your turn.</h2>
     <p>The world doesn’t wait. Neither do you. Undergraduate, graduate, transfer, and online programs across our campus network.</p>
@@ -1794,16 +1809,26 @@ playI(0);
 
 /* ============ closer: photos crossfade every 5s while it's on screen ============ */
 {
-  const admit = $(".admit"), shots = $$(".admit .bg i");
-  let k = 0, vis = false, loaded = false;
+  const admit = $(".admit"), shots = $$(".admit .bg img");
+  let k = 0, vis = false, started = false;
+  /* each photo is fully decoded before it fades in, so nothing decodes mid-fade */
+  const ready = img => { if (!img.src) img.src = img.dataset.src; return img.decode().catch(() => {}); };
+  /* the upcoming photo is decoded and kept painted at near-zero opacity, so its fade-in never stalls */
+  const prime = img => ready(img).then(() => img.classList.add("pre"));
+  const step = async () => {
+    const next = shots[(k + 1) % shots.length];
+    await prime(next);
+    if (vis && !document.hidden) {
+      shots[k].classList.remove("on"); k = (k + 1) % shots.length;
+      next.classList.remove("pre"); next.classList.add("on");
+      setTimeout(() => prime(shots[(k + 1) % shots.length]), 2000);
+    }
+    setTimeout(step, 5000);
+  };
   new IntersectionObserver(es => es.forEach(e => {
     vis = e.isIntersecting;
-    if (vis && !loaded) { loaded = true; shots.forEach(i => i.style.backgroundImage = `url('${i.dataset.bg}')`); }
+    if (vis && !started) { started = true; ready(shots[0]); prime(shots[1]); if (!reduceMotion) setTimeout(step, 5000); }
   }), { rootMargin: "800px 0px" }).observe(admit);
-  if (!reduceMotion) setInterval(() => {
-    if (!vis || document.hidden) return;
-    shots[k].classList.remove("on"); k = (k + 1) % shots.length; shots[k].classList.add("on");
-  }, 5000);
 }
 
 /* ============ rows: a featured card, then portrait posters ============ */
@@ -1867,7 +1892,8 @@ function mountRow(sec, items) {
 /* live NGN: news posts only (no "Photos:" galleries), no story repeated across rows */
 const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e.u, img: e.img, wide: e.img }));
 const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();
-document.documentElement.classList.add("rows-" + (["a", "b", "c"].includes(RV) ? RV : "current"));
+const RVK = ["a", "b", "b2", "c"].includes(RV) ? RV : "current";
+document.documentElement.classList.add("rows-" + RVK, ...(RV === "b" ? ["rows-b", "rows-bimg"] : RV === "b2" ? ["rows-b"] : []));
 const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
 const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, CHEV = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 (async () => {
@@ -1883,7 +1909,7 @@ const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true
       const sz = (m.media_details && m.media_details.sizes) || {};
       const img = (sz["newspack-article-block-portrait-medium"] || sz.large || sz.medium_large || m).source_url;
       if (!img) return null;
-      return { t: text(p.title.rendered), u: p.link, img, wide: (sz.large || sz.medium_large || m).source_url,
+      return { t: text(p.title.rendered), u: p.link, img, wide: (sz.large || sz.medium_large || m).source_url, full: m.source_url,
                x: text((p.excerpt && p.excerpt.rendered) || ""), d: p.date };
     }).filter(Boolean).slice(0, 14);
     const label = sec.getAttribute("aria-label");
@@ -1891,7 +1917,7 @@ const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true
     items.forEach(c => shown.add(c.u));
     topics.push({ sec, label, items });
   });
-  if (RV === "b") topics.forEach(spotlight);
+  if (RV === "b" || RV === "b2") topics.forEach(spotlight);
   else if (RV === "c") coverflow(topics);
   else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
@@ -1939,9 +1965,9 @@ function spotlight(tp) {
   sec.classList.add("sp");
   sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
     `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-meta"></p><p class="sp-t"></p><p class="sp-x"></p>` +
-    `<a class="storylink sp-btn" href="#">Read story</a></div></div>`);
+    `<a class="storylink sp-btn" href="#">Read story</a></div><div class="sp-fig" aria-hidden="true"><img alt=""><img alt=""></div></div>`);
   mountRow(sec, items);
-  const bgs = sec.querySelectorAll(".sp-bg i"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
+  const bgs = sec.querySelectorAll(".sp-bg i"), figs = sec.querySelectorAll(".sp-fig img"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
   let cur = -1, layer = 0, t;
   const set = i => {
     if (i === cur) return;
@@ -1949,6 +1975,10 @@ function spotlight(tp) {
     layer ^= 1;
     bgs[layer].style.backgroundImage = `url('${it.wide || it.img}')`;
     bgs[layer].classList.add("on"); bgs[layer ^ 1].classList.remove("on");
+    /* the framed photo: full-size original, swapped in only once decoded */
+    const f = figs[layer], other = figs[layer ^ 1], want = it.full || it.wide || it.img;
+    f.src = want;
+    f.decode().catch(() => {}).then(() => { if (items[cur] === it) { f.classList.add("on"); other.classList.remove("on"); } });
     cards.forEach((c, k) => c.classList.toggle("on", k === i));
     copy.classList.add("swap");
     setTimeout(() => {
@@ -2027,8 +2057,8 @@ function coverflow(topics) {
 if (new URLSearchParams(location.search).has("rows")) {
   const bar = document.createElement("nav");
   bar.className = "vswitch"; bar.setAttribute("aria-label", "Story row mockups");
-  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["c", "C · Coverflow"]]
-    .map(([k, l]) => `<a href="?rows=${k}" class="${(["a", "b", "c"].includes(RV) ? RV : "current") === k ? "on" : ""}">${l}</a>`).join("");
+  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["b2", "B2 · Quiet"], ["c", "C · Coverflow"]]
+    .map(([k, l]) => `<a href="?rows=${k}" class="${RVK === k ? "on" : ""}">${l}</a>`).join("");
   document.body.appendChild(bar);
 }
 }

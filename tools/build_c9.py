@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="11">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="12">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -136,7 +136,7 @@ assert admit_mk.count(_bg) == 1
 # London stage, Oakland, NYC, phone lights, London overhead, Parade of Flags, campus path, Fenway flags
 _order = [2, 3, 4, 0, 1, 5, 7, 6]
 admit_mk = admit_mk.replace(_bg, '<div class="bg" data-plx="34">' + "".join(
-    '<i%s data-bg="%s"></i>' % (' class="on"' if k == 0 else "", CLOSER_PHOTOS[n]) for k, n in enumerate(_order)) + "</div>")
+    '<img%s data-src="%s" alt="" decoding="async">' % (' class="on"' if k == 0 else "", CLOSER_PHOTOS[n]) for k, n in enumerate(_order)) + "</div>")
 
 # features: Co-op, Research, Global network, Admissions (student life + athletics), Entrepreneurship
 S = {s["title"]: s for s in SHOWS}
@@ -283,10 +283,11 @@ NEW_CSS = r'''
   .ep span{font-size:14px;line-height:1.35}
 
   /* closer slideshow */
-  .admit .bg i{position:absolute;inset:0;background-size:cover;background-position:center 45%;opacity:0;transition:opacity 1.6s var(--ease)}
-  .admit .bg i.on{opacity:1;animation:kbs 16s ease-out forwards}
-  @keyframes kbs{from{transform:scale(1)}to{transform:scale(1.04)}}
-  @media (prefers-reduced-motion: reduce){.admit .bg i{transition:none}.admit .bg i.on{animation:none}}
+  .admit .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 45%;opacity:0;
+    transition:opacity 1.8s ease-in-out;will-change:opacity}
+  .admit .bg img.on{opacity:1}
+  .admit .bg img.pre{opacity:.001}
+  @media (prefers-reduced-motion: reduce){.admit .bg img{transition:none}}
 
   /* hero variant B (?hero=b) */
   .hero-b .hx-eps{display:none}
@@ -388,6 +389,20 @@ NEW_CSS = r'''
   .rows-b .crow-strip:hover .cc:not(.on) img,.rows-b .cc:not(.on) img{filter:brightness(.55)}
   .rows-b .cc.on{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,.55)}
   @media (prefers-reduced-motion: reduce){.sp-bg i{transition:none}}
+
+  /* B (image) vs B2 (quiet) */
+  .sp-fig{display:none}
+  .rows-bimg .sp-bg{display:none}
+  .rows-bimg .crow{--ch:clamp(200px,16vw,250px)}
+  .rows-bimg .sp-in{display:flex;align-items:center;justify-content:space-between;gap:clamp(28px,4vw,64px);margin:14px 0 6px}
+  .rows-bimg .sp-copy{flex:1 1 0;max-width:560px;min-height:0}
+  .rows-bimg .sp-t{font-size:clamp(24px,2.3vw,36px);font-weight:300;letter-spacing:-.02em;line-height:1.12;-webkit-line-clamp:3}
+  .rows-bimg .sp-x{-webkit-line-clamp:3}
+  .rows-bimg .sp-fig{display:block;position:relative;flex:0 0 min(52%,720px);aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#141419;
+    box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  .sp-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s var(--ease)}
+  .sp-fig img.on{opacity:1}
+  @media (max-width:820px){.rows-bimg .sp-in{flex-direction:column-reverse;align-items:stretch}.rows-bimg .sp-fig{flex:none;width:100%}}
 
   /* row mockup C · Coverflow */
   .cf{margin-top:clamp(24px,4svh,44px);overflow-x:clip;--chh:clamp(320px,44svh,470px);--cw:calc(var(--chh) * 2 / 3)}
@@ -521,16 +536,26 @@ playI(0);
 
 /* ============ closer: photos crossfade every 5s while it's on screen ============ */
 {
-  const admit = $(".admit"), shots = $$(".admit .bg i");
-  let k = 0, vis = false, loaded = false;
+  const admit = $(".admit"), shots = $$(".admit .bg img");
+  let k = 0, vis = false, started = false;
+  /* each photo is fully decoded before it fades in, so nothing decodes mid-fade */
+  const ready = img => { if (!img.src) img.src = img.dataset.src; return img.decode().catch(() => {}); };
+  /* the upcoming photo is decoded and kept painted at near-zero opacity, so its fade-in never stalls */
+  const prime = img => ready(img).then(() => img.classList.add("pre"));
+  const step = async () => {
+    const next = shots[(k + 1) % shots.length];
+    await prime(next);
+    if (vis && !document.hidden) {
+      shots[k].classList.remove("on"); k = (k + 1) % shots.length;
+      next.classList.remove("pre"); next.classList.add("on");
+      setTimeout(() => prime(shots[(k + 1) % shots.length]), 2000);
+    }
+    setTimeout(step, 5000);
+  };
   new IntersectionObserver(es => es.forEach(e => {
     vis = e.isIntersecting;
-    if (vis && !loaded) { loaded = true; shots.forEach(i => i.style.backgroundImage = `url('${i.dataset.bg}')`); }
+    if (vis && !started) { started = true; ready(shots[0]); prime(shots[1]); if (!reduceMotion) setTimeout(step, 5000); }
   }), { rootMargin: "800px 0px" }).observe(admit);
-  if (!reduceMotion) setInterval(() => {
-    if (!vis || document.hidden) return;
-    shots[k].classList.remove("on"); k = (k + 1) % shots.length; shots[k].classList.add("on");
-  }, 5000);
 }
 
 /* ============ rows: a featured card, then portrait posters ============ */
@@ -594,7 +619,8 @@ function mountRow(sec, items) {
 /* live NGN: news posts only (no "Photos:" galleries), no story repeated across rows */
 const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e.u, img: e.img, wide: e.img }));
 const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();
-document.documentElement.classList.add("rows-" + (["a", "b", "c"].includes(RV) ? RV : "current"));
+const RVK = ["a", "b", "b2", "c"].includes(RV) ? RV : "current";
+document.documentElement.classList.add("rows-" + RVK, ...(RV === "b" ? ["rows-b", "rows-bimg"] : RV === "b2" ? ["rows-b"] : []));
 const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
 const ARROW = `__ARROW__`, CHEV = `__CHEV__`;
 (async () => {
@@ -610,7 +636,7 @@ const ARROW = `__ARROW__`, CHEV = `__CHEV__`;
       const sz = (m.media_details && m.media_details.sizes) || {};
       const img = (sz["newspack-article-block-portrait-medium"] || sz.large || sz.medium_large || m).source_url;
       if (!img) return null;
-      return { t: text(p.title.rendered), u: p.link, img, wide: (sz.large || sz.medium_large || m).source_url,
+      return { t: text(p.title.rendered), u: p.link, img, wide: (sz.large || sz.medium_large || m).source_url, full: m.source_url,
                x: text((p.excerpt && p.excerpt.rendered) || ""), d: p.date };
     }).filter(Boolean).slice(0, 14);
     const label = sec.getAttribute("aria-label");
@@ -618,7 +644,7 @@ const ARROW = `__ARROW__`, CHEV = `__CHEV__`;
     items.forEach(c => shown.add(c.u));
     topics.push({ sec, label, items });
   });
-  if (RV === "b") topics.forEach(spotlight);
+  if (RV === "b" || RV === "b2") topics.forEach(spotlight);
   else if (RV === "c") coverflow(topics);
   else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
@@ -666,9 +692,9 @@ function spotlight(tp) {
   sec.classList.add("sp");
   sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
     `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-meta"></p><p class="sp-t"></p><p class="sp-x"></p>` +
-    `<a class="storylink sp-btn" href="#">Read story</a></div></div>`);
+    `<a class="storylink sp-btn" href="#">Read story</a></div><div class="sp-fig" aria-hidden="true"><img alt=""><img alt=""></div></div>`);
   mountRow(sec, items);
-  const bgs = sec.querySelectorAll(".sp-bg i"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
+  const bgs = sec.querySelectorAll(".sp-bg i"), figs = sec.querySelectorAll(".sp-fig img"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
   let cur = -1, layer = 0, t;
   const set = i => {
     if (i === cur) return;
@@ -676,6 +702,10 @@ function spotlight(tp) {
     layer ^= 1;
     bgs[layer].style.backgroundImage = `url('${it.wide || it.img}')`;
     bgs[layer].classList.add("on"); bgs[layer ^ 1].classList.remove("on");
+    /* the framed photo: full-size original, swapped in only once decoded */
+    const f = figs[layer], other = figs[layer ^ 1], want = it.full || it.wide || it.img;
+    f.src = want;
+    f.decode().catch(() => {}).then(() => { if (items[cur] === it) { f.classList.add("on"); other.classList.remove("on"); } });
     cards.forEach((c, k) => c.classList.toggle("on", k === i));
     copy.classList.add("swap");
     setTimeout(() => {
@@ -754,8 +784,8 @@ function coverflow(topics) {
 if (new URLSearchParams(location.search).has("rows")) {
   const bar = document.createElement("nav");
   bar.className = "vswitch"; bar.setAttribute("aria-label", "Story row mockups");
-  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["c", "C · Coverflow"]]
-    .map(([k, l]) => `<a href="?rows=${k}" class="${(["a", "b", "c"].includes(RV) ? RV : "current") === k ? "on" : ""}">${l}</a>`).join("");
+  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["b2", "B2 · Quiet"], ["c", "C · Coverflow"]]
+    .map(([k, l]) => `<a href="?rows=${k}" class="${RVK === k ? "on" : ""}">${l}</a>`).join("");
   document.body.appendChild(bar);
 }
 }
@@ -772,9 +802,9 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="11"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="12"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
-for gone in ["Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
+for gone in ["kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
 for out in OUT:
     open(out, "w").write(page)
