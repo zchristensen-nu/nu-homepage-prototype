@@ -96,7 +96,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="18">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="19">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -555,6 +555,11 @@ NEW_CSS = r'''
 
 NEW_JS = r'''{
 /* ============ concept-7 ============ */
+/* nav: hovering anything in the bar that isn't a dropdown trigger (Global Entrepreneurship, AI,
+   logo, search, Apply) closes an open panel; moving down into the panel itself keeps it open */
+$$("#nav .row a, #nav .row .nvicon, #nav .row .tkv-open").forEach(el => el.addEventListener("mouseenter", () => {
+  clearTimeout(mHoverT); mCloseAll();
+}));
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const FEATS = __FEATS__;
 
@@ -929,7 +934,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="18"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="19"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -939,7 +944,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="18">', '<meta name="concept11-rev" content="7">'),
+for x, y in (('<meta name="concept10-rev" content="19">', '<meta name="concept11-rev" content="8">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
