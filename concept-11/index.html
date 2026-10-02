@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="2">
+<meta name="concept11-rev" content="3">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -460,7 +460,13 @@
   .rows-bfull .crow{margin-top:clamp(12px,2svh,24px);min-height:clamp(600px,84svh,820px);overflow:hidden;
     padding-top:clamp(28px,5svh,56px);--ch:clamp(190px,15vw,232px)}
   .rows-bfull .crow > .wrap{margin-bottom:auto}
-  .rows-bfull .sp-bg{inset:0;-webkit-mask-image:none;mask-image:none}
+  /* the photo is never drawn wider than its 1400px source: edge-to-edge up to 1400px viewports,
+     centered with soft side fades beyond that (keeps it 1:1 or smaller, so it never upscales) */
+  .rows-bfull .sp-bg{inset:0;left:50%;right:auto;width:min(100%,1400px);transform:translateX(-50%);-webkit-mask-image:none;mask-image:none}
+  @media (min-width:1401px){
+    .rows-bfull .sp-bg{-webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);
+                       mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent)}
+  }
   .rows-bfull .sp-bg i{filter:none;background-position:center 35%;transition:opacity .8s var(--ease)}
   .rows-bfull .sp-bg i.on{opacity:1}
   .rows-bfull .sp-bg::after{content:"";position:absolute;inset:0;

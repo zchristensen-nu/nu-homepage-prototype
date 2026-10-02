@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="13">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="14">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -394,7 +394,13 @@ NEW_CSS = r'''
   .rows-bfull .crow{margin-top:clamp(12px,2svh,24px);min-height:clamp(600px,84svh,820px);overflow:hidden;
     padding-top:clamp(28px,5svh,56px);--ch:clamp(190px,15vw,232px)}
   .rows-bfull .crow > .wrap{margin-bottom:auto}
-  .rows-bfull .sp-bg{inset:0;-webkit-mask-image:none;mask-image:none}
+  /* the photo is never drawn wider than its 1400px source: edge-to-edge up to 1400px viewports,
+     centered with soft side fades beyond that (keeps it 1:1 or smaller, so it never upscales) */
+  .rows-bfull .sp-bg{inset:0;left:50%;right:auto;width:min(100%,1400px);transform:translateX(-50%);-webkit-mask-image:none;mask-image:none}
+  @media (min-width:1401px){
+    .rows-bfull .sp-bg{-webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);
+                       mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent)}
+  }
   .rows-bfull .sp-bg i{filter:none;background-position:center 35%;transition:opacity .8s var(--ease)}
   .rows-bfull .sp-bg i.on{opacity:1}
   .rows-bfull .sp-bg::after{content:"";position:absolute;inset:0;
@@ -826,7 +832,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="13"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="14"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -836,7 +842,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="13">', '<meta name="concept11-rev" content="2">'),
+for x, y in (('<meta name="concept10-rev" content="14">', '<meta name="concept11-rev" content="3">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
