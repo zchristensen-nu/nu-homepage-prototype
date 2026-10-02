@@ -96,7 +96,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="19">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="20">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -147,6 +147,8 @@ globe_mk = globe_mk[:_i].rstrip() + "\n" + globe_mk[_j:]
 # 2. the co-op story card never covers the pin: while it's open the globe eases left of it
 assert c2_js.count("W > 900 ? W * 0.62 : W * 0.5") == 3  # render, dot hover, pin click
 c2_js = c2_js.replace("W > 900 ? W * 0.62 : W * 0.5", "globeCX()")
+_n = c2_js.count("const cy = H * 0.52;"); assert _n >= 2, _n
+c2_js = c2_js.replace("const cy = H * 0.52;", "const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */")
 assert c2_js.count("function render(now) {") == 1
 c2_js = c2_js.replace("function render(now) {", """let globeShift = 0;
 const globeCX = () => W > 900 ? W * 0.62 - globeShift : W * 0.5;
@@ -538,6 +540,31 @@ NEW_CSS = r'''
   .mp-lead-wide{max-width:none;flex:0 0 300px}
   .mp-lead-wide .storylink{display:flex}
 
+  /* phone menu hierarchy */
+  .tkv-sub.open{columns:auto;padding:4px 0 26px}
+  .tkv-ov{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 20px}
+  .tkv-sub .tkv-ov a{padding:8px 16px;border:1px solid rgba(255,255,255,.3);border-radius:999px;font-size:14px;font-weight:500;color:#fff}
+  .tkv-sub .tkv-ov a:hover{background:#fff;color:#0B0B0E}
+  .tkv-sec+.tkv-sec{margin-top:20px}
+  .tkv-h{margin:0 0 4px;font-size:13px;color:#8a8a92}
+  .tkv-sub .tkv-sec a{display:block;padding:7px 0;font-size:16px;color:#E5E5E5}
+  #tsub-5.open{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+  .tkv-g[aria-expanded="true"]{color:#fff}
+
+  /* globe on phones: beat text rides high, the co-op story card is a compact strip docked at the bottom */
+  @media (max-width:720px){
+    .step{align-items:flex-start;padding-bottom:0}
+    .step .card{position:sticky;top:88px;text-shadow:0 2px 18px rgba(0,0,0,.75)}
+    .step .big{font-size:clamp(34px,10vw,48px)}
+    .gt-card{display:grid;grid-template-columns:96px 1fr;left:16px;right:16px;bottom:12px}
+    .gt-card img{width:96px;height:100%;min-height:96px;aspect-ratio:auto}
+    .gtc-body{padding:10px 12px}
+    .gtc-body h3{font-size:15px;margin-top:4px}
+    .gtc-body .storylink{margin-top:6px;font-size:13px}
+    .gt-step{grid-column:1/-1;padding:6px 10px}
+    .gt-arrow{width:32px;height:32px}
+  }
+
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
     backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
@@ -555,6 +582,20 @@ NEW_CSS = r'''
 
 NEW_JS = r'''{
 /* ============ concept-7 ============ */
+/* phone menu: each section mirrors its desktop dropdown (overview pills, then labeled link groups) */
+{
+  const MAP = { "tsub-0": "mp-admissions", "tsub-2": "mp-experiential", "tsub-3": "mp-research", "tsub-4": "mp-global", "tsub-6": "mp-more" };
+  const ah = a => `<a href="${a.getAttribute("href")}">${a.textContent.trim()}</a>`;
+  for (const [sub, panel] of Object.entries(MAP)) {
+    const sEl = document.getElementById(sub), pEl = document.getElementById(panel);
+    if (!sEl || !pEl) continue;
+    const ov = [...pEl.querySelectorAll(".mp-lead .storylink")];
+    const secs = [...pEl.querySelectorAll(".mp-col")].map(c => ({ h: (c.querySelector(".mp-h") || {}).textContent || "", links: [...c.querySelectorAll(".mp-links a")] }))
+      .filter(x => x.links.length && x.h.trim() !== "Campuses");
+    sEl.innerHTML = (ov.length ? `<div class="tkv-ov">${ov.map(ah).join("")}</div>` : "") +
+      secs.map(x => `<div class="tkv-sec">${x.h ? `<p class="tkv-h">${x.h}</p>` : ""}${x.links.map(ah).join("")}</div>`).join("");
+  }
+}
 /* nav: hovering anything in the bar that isn't a dropdown trigger (Global Entrepreneurship, AI,
    logo, search, Apply) closes an open panel; moving down into the panel itself keeps it open */
 $$("#nav .row a, #nav .row .nvicon, #nav .row .tkv-open").forEach(el => el.addEventListener("mouseenter", () => {
@@ -934,7 +975,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="19"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="20"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -944,7 +985,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="19">', '<meta name="concept11-rev" content="8">'),
+for x, y in (('<meta name="concept10-rev" content="20">', '<meta name="concept11-rev" content="9">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="19">
+<meta name="concept10-rev" content="20">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -531,6 +531,31 @@
   .mp-lead .storylink+.storylink{margin-top:6px}
   .mp-lead-wide{max-width:none;flex:0 0 300px}
   .mp-lead-wide .storylink{display:flex}
+
+  /* phone menu hierarchy */
+  .tkv-sub.open{columns:auto;padding:4px 0 26px}
+  .tkv-ov{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 20px}
+  .tkv-sub .tkv-ov a{padding:8px 16px;border:1px solid rgba(255,255,255,.3);border-radius:999px;font-size:14px;font-weight:500;color:#fff}
+  .tkv-sub .tkv-ov a:hover{background:#fff;color:#0B0B0E}
+  .tkv-sec+.tkv-sec{margin-top:20px}
+  .tkv-h{margin:0 0 4px;font-size:13px;color:#8a8a92}
+  .tkv-sub .tkv-sec a{display:block;padding:7px 0;font-size:16px;color:#E5E5E5}
+  #tsub-5.open{display:grid;grid-template-columns:1fr 1fr;column-gap:16px}
+  .tkv-g[aria-expanded="true"]{color:#fff}
+
+  /* globe on phones: beat text rides high, the co-op story card is a compact strip docked at the bottom */
+  @media (max-width:720px){
+    .step{align-items:flex-start;padding-bottom:0}
+    .step .card{position:sticky;top:88px;text-shadow:0 2px 18px rgba(0,0,0,.75)}
+    .step .big{font-size:clamp(34px,10vw,48px)}
+    .gt-card{display:grid;grid-template-columns:96px 1fr;left:16px;right:16px;bottom:12px}
+    .gt-card img{width:96px;height:100%;min-height:96px;aspect-ratio:auto}
+    .gtc-body{padding:10px 12px}
+    .gtc-body h3{font-size:15px;margin-top:4px}
+    .gtc-body .storylink{margin-top:6px;font-size:13px}
+    .gt-step{grid-column:1/-1;padding:6px 10px}
+    .gt-arrow{width:32px;height:32px}
+  }
 
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
@@ -1257,7 +1282,7 @@ function render(now) {
   const R0 = Math.min(W, H) * 0.42;
   const R = R0 * cur.k;
   const cx = globeCX();
-  const cy = H * 0.52;
+  const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */
 
   /* atmosphere glow just outside the limb */
   const atm = ctx.createRadialGradient(cx, cy, R * 0.97, cx, cy, R * 1.06);
@@ -1527,7 +1552,7 @@ function pickDot(e) {
   const R0 = Math.min(W, H) * 0.42;
   const R = R0 * cur.k;
   const cx = globeCX();
-  const cy = H * 0.52;
+  const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */
   let best = null, bestD = 1e9;
   for (const d of COOPS) {
     const [x, y, v] = project(d[0], d[1], R, cx, cy);
@@ -1605,7 +1630,7 @@ canvas.addEventListener("click", e => {
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
   const R = Math.min(W, H) * 0.42 * cur.k;
   const cx = globeCX();
-  const cy = H * 0.52;
+  const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */
   for (let i = 0; i < STORY_PINS.length; i++) {
     const [x, y, v] = project(STORY_PINS[i][0], STORY_PINS[i][1], R, cx, cy);
     if (v > 0 && Math.hypot(mx - x, my - y) < 16) { openStory(i); return; }
@@ -1742,6 +1767,20 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 {
 /* ============ concept-7 ============ */
+/* phone menu: each section mirrors its desktop dropdown (overview pills, then labeled link groups) */
+{
+  const MAP = { "tsub-0": "mp-admissions", "tsub-2": "mp-experiential", "tsub-3": "mp-research", "tsub-4": "mp-global", "tsub-6": "mp-more" };
+  const ah = a => `<a href="${a.getAttribute("href")}">${a.textContent.trim()}</a>`;
+  for (const [sub, panel] of Object.entries(MAP)) {
+    const sEl = document.getElementById(sub), pEl = document.getElementById(panel);
+    if (!sEl || !pEl) continue;
+    const ov = [...pEl.querySelectorAll(".mp-lead .storylink")];
+    const secs = [...pEl.querySelectorAll(".mp-col")].map(c => ({ h: (c.querySelector(".mp-h") || {}).textContent || "", links: [...c.querySelectorAll(".mp-links a")] }))
+      .filter(x => x.links.length && x.h.trim() !== "Campuses");
+    sEl.innerHTML = (ov.length ? `<div class="tkv-ov">${ov.map(ah).join("")}</div>` : "") +
+      secs.map(x => `<div class="tkv-sec">${x.h ? `<p class="tkv-h">${x.h}</p>` : ""}${x.links.map(ah).join("")}</div>`).join("");
+  }
+}
 /* nav: hovering anything in the bar that isn't a dropdown trigger (Global Entrepreneurship, AI,
    logo, search, Apply) closes an open panel; moving down into the panel itself keeps it open */
 $$("#nav .row a, #nav .row .nvicon, #nav .row .tkv-open").forEach(el => el.addEventListener("mouseenter", () => {
