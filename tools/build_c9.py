@@ -23,8 +23,80 @@ header_mk, footer_mk, lenis_js, rest_mk = g["header_mk"], g["footer_mk"], g["len
 land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tail_js"))
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
+# navigation: Admissions + Academics become one deduplicated dropdown; Global & Campuses becomes
+# Global Network; Global Entrepreneurism and AI become top-level links (out of the dead # link and More)
+ENT_URL, AI_URL = "https://entrepreneurship.northeastern.edu/", "https://www.northeastern.edu/ai/"
+def nav_edit(src, a, b, n=1):
+    assert src.count(a) == n, (src.count(a), a[:70]); return src.replace(a, b)
+header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>
+      <button class="mnav-btn" data-panel="mp-academics" aria-expanded="false">Academics</button>""",
+    """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions &amp; Academics</button>""")
+header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global &amp; Campuses</button>""",
+    f"""      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global Network</button>
+      <a class="mnav-a" href="{ENT_URL}">Global Entrepreneurism</a>
+      <a class="mnav-a" href="{AI_URL}">AI</a>""")
+_a0 = header_mk.index('<div class="mpanel" id="mp-admissions"'); _a1 = header_mk.index('<div class="mpanel" id="mp-experiential"')
+_feat = header_mk[_a0:_a1]
+_feat = _feat[_feat.index('<a class="mp-feat"'):]
+_feat = _feat[:_feat.index("</a>") + 4]
+header_mk = header_mk[:_a0] + f"""<div class="mpanel" id="mp-admissions" hidden><div class="wrap mp-in">
+      <div class="mp-lead mp-lead-wide"><div class="mp-title">Admissions &amp; Academics</div><p>However you learn best, there is a path here.</p>
+        <a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions</a>
+        <a class="storylink" href="https://www.northeastern.edu/academics/">Academics</a></div>
+      <div class="mp-col"><div class="mp-h">Apply</div><div class="mp-links">
+        <a href="https://admissions.northeastern.edu/">Undergraduate admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law school admissions</a>
+        <a href="https://admissions.northeastern.edu/visit/">Visit a campus</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Programs</div><div class="mp-links">
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and schools</a>
+        <a href="https://phd.northeastern.edu/">Doctoral programs</a>
+        <a href="https://online.northeastern.edu/">Online education</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's degree completion</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Get started</div><div class="mp-links">
+        <a href="https://studentfinance.northeastern.edu/">Financial aid</a>
+        <a href="https://www.northeastern.edu/orientation/">Orientation and family programs</a>
+        <a href="https://academicplan.northeastern.edu/">Academic plan</a>
+      </div></div>
+  </div></div>
+  """ + header_mk[_a1:]
+header_mk = nav_edit(header_mk, """        <a href="#">Entrepreneurship</a>
+""", "", 2)            # Experiential panel + mobile menu
+header_mk = nav_edit(header_mk, f"""        <a href="{AI_URL}">Artificial Intelligence</a>
+""", "", 2)  # More panel + mobile menu
+# mobile menu: one merged group, renamed Global, and the two new direct links
+_t0 = header_mk.index('<button class="tkv-g" data-sub="tsub-0"'); _t0 = header_mk.rindex('<div class="tkv-grp">', 0, _t0)
+_t1 = header_mk.index('<button class="tkv-g" data-sub="tsub-2"'); _t1 = header_mk.rindex('<div class="tkv-grp">', 0, _t1)
+header_mk = header_mk[:_t0] + """<div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions &amp; Academics<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-0">
+        <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
+        <a href="https://www.northeastern.edu/academics/">Academics overview</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law school admissions</a>
+        <a href="https://admissions.northeastern.edu/visit/">Visit a campus</a>
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and schools</a>
+        <a href="https://phd.northeastern.edu/">Doctoral programs</a>
+        <a href="https://online.northeastern.edu/">Online education</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's degree completion</a>
+        <a href="https://studentfinance.northeastern.edu/">Financial aid</a>
+        <a href="https://www.northeastern.edu/orientation/">Orientation and family programs</a>
+        <a href="https://academicplan.northeastern.edu/">Academic plan</a>
+      </div>
+    </div>
+    """ + header_mk[_t1:]
+header_mk = nav_edit(header_mk, 'aria-expanded="false">Global<span class="tkv-c"', 'aria-expanded="false">Global Network<span class="tkv-c"')
+_t2 = header_mk.index('<button class="tkv-g" data-sub="tsub-5"'); _t2 = header_mk.rindex('<div class="tkv-grp">', 0, _t2)
+header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entrepreneurism<span aria-hidden="true">&#8594;</span></a>
+    <a class="tkv-l" href="{AI_URL}">AI<span aria-hidden="true">&#8594;</span></a>
+    """ + header_mk[_t2:]
+footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
+
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="15">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="16">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -177,7 +249,7 @@ FEATS = [
            ep("The student refining AI at one of the largest real estate firms", U+"/2026/08/Co-op_AI_1400.jpg", NGN+"/2026/09/09/real-estate-ai-co-op/"),
            ep("In Serbia, she helped build an AI to give activists worldwide a leg up", U+"/2026/08/081426_MM_Ayla_DiBattista_006.jpg", NGN+"/2026/09/03/ayla-dibattista-co-op-northeastern/"),
            ep("This professor is making AI systems more aware of their ignorance", U+"/2026/09/Francesco_Restuccia_1400.jpg", NGN+"/2026/09/21/northeastern-pecase-award-2026/")]),
- feat("Entrepreneurship", None, v=HD["ent"], h="Ideas into ventures", still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
+ feat("Entrepreneurship", None, v=HD["ent"], h="Start something, anywhere", still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
       syn="Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.",
       cta={"label": "Read founder stories", "href": NGN + "/tag/entrepreneurship/"}, eps=EP_ENT),
 ]
@@ -379,7 +451,7 @@ NEW_CSS = r'''
   .sp-copy{max-width:720px;min-height:calc(13px * 1.5 + 2 * 1.2em * 1 + 2 * 15.5px * 1.45 + 56px);transition:opacity .22s}
   .sp-copy.swap{opacity:0}
   .sp-meta,.cf-meta{margin:0;font-size:13.5px;color:#A9A9B2}
-  .sp-t{margin:6px 0 0;font-size:clamp(20px,1.7vw,26px);font-weight:400;letter-spacing:-.012em;line-height:1.2;
+  .sp-t{margin:0;font-size:clamp(20px,1.7vw,26px);font-weight:400;letter-spacing:-.012em;line-height:1.2;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .sp-x,.cf-x{margin:8px 0 0;font-size:15.5px;line-height:1.45;color:#C9C9CF;max-width:62ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .sp-btn{margin-top:10px;color:#fff}
@@ -408,7 +480,7 @@ NEW_CSS = r'''
                linear-gradient(to top,var(--dark) 0%,rgba(11,11,14,.55) 32%,transparent 58%),linear-gradient(to bottom,var(--dark) 0%,transparent 16%)}
   .rows-bfull .sp-in{margin:0 0 clamp(14px,2.4svh,26px)}
   .rows-bfull .sp-copy{max-width:580px;min-height:0}
-  .rows-bfull .sp-t{margin-top:10px;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance;-webkit-line-clamp:3}
+  .rows-bfull .sp-t{margin-top:0;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance;-webkit-line-clamp:3}
   .rows-bfull .sp-x{margin-top:14px;font-size:16.5px;line-height:1.5;color:#D4D4D4;max-width:50ch;-webkit-line-clamp:3}
   .rows-bfull .sp-btn{display:inline-flex;align-items:center;height:44px;padding:0 22px;margin-top:20px;border:0;border-radius:999px;
     background:#fff;color:#0B0B0E;font-size:15px;font-weight:600}
@@ -454,6 +526,17 @@ NEW_CSS = r'''
   .cf-nav svg{width:24px;height:24px}
   .cf-nav.prev svg{transform:scaleX(-1)}
   @media (max-width:720px){.cf-info{grid-template-columns:1fr}.cf-nav{display:none}}
+
+  /* nav: top-level links beside the dropdowns, and the mobile menu's direct links */
+  .mnav-a{font-size:14px;color:#fff;opacity:.85;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+  .mnav-a:hover{opacity:1}
+  .mnav-btn{white-space:nowrap}
+  .tkv-l{display:flex;justify-content:space-between;align-items:center;font-size:clamp(21px,2.4vw,28px);font-weight:300;color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.14);padding:18px 0}
+  .tkv-l:hover{color:#FFB3BE}
+  .mp-lead .storylink+.storylink{margin-top:6px}
+  .mp-lead-wide{max-width:none;flex:0 0 300px}
+  .mp-lead-wide .storylink{display:flex}
 
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
@@ -687,7 +770,7 @@ function previews(topics) {
   const show = (el, it, label) => {
     pv.href = it.u;
     pv.querySelector(".pv-img").src = it.wide || it.img;
-    pv.querySelector(".pv-meta").textContent = [label, fmtDate(it.d)].filter(Boolean).join(" · ");
+    pv.querySelector(".pv-meta").textContent = label;
     pv.querySelector(".pv-t").textContent = it.t;
     pv.querySelector(".pv-x").textContent = it.x || "";
     const r = el.getBoundingClientRect(), vw = document.documentElement.clientWidth;
@@ -717,7 +800,7 @@ function spotlight(tp) {
   const sec = tp.sec, items = tp.items;
   sec.classList.add("sp");
   sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
-    `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-meta"></p><p class="sp-t"></p><p class="sp-x"></p>` +
+    `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-t"></p><p class="sp-x"></p>` +
     `<a class="storylink sp-btn" href="#">Read story</a></div><div class="sp-fig" aria-hidden="true"><img alt=""><img alt=""></div></div>`);
   mountRow(sec, items);
   const bgs = sec.querySelectorAll(".sp-bg i"), figs = sec.querySelectorAll(".sp-fig img"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
@@ -739,7 +822,6 @@ function spotlight(tp) {
     cards.forEach((c, k) => c.classList.toggle("on", k === i));
     copy.classList.add("swap");
     setTimeout(() => {
-      copy.querySelector(".sp-meta").textContent = fmtDate(it.d);
       copy.querySelector(".sp-t").textContent = it.t;
       copy.querySelector(".sp-x").textContent = it.x || "";
       copy.querySelector(".sp-btn").href = it.u;
@@ -795,7 +877,7 @@ function coverflow(topics) {
   const info = () => {
     const it = items[i]; copy.classList.add("swap");
     setTimeout(() => {
-      copy.querySelector(".cf-meta").textContent = [topics[topic].label, fmtDate(it.d)].filter(Boolean).join(" · ");
+      copy.querySelector(".cf-meta").textContent = topics[topic].label;
       copy.querySelector(".cf-t").textContent = it.t;
       copy.querySelector(".cf-x").textContent = it.x || "";
       copy.querySelector(".cf-btn").href = it.u;
@@ -847,9 +929,9 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="15"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="16"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
-for gone in ["kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
+for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
 for out in OUT:
     open(out, "w").write(page)
@@ -857,7 +939,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="15">', '<meta name="concept11-rev" content="4">'),
+for x, y in (('<meta name="concept10-rev" content="16">', '<meta name="concept11-rev" content="5">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x

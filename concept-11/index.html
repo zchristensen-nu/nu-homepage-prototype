@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="4">
+<meta name="concept11-rev" content="5">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -445,7 +445,7 @@
   .sp-copy{max-width:720px;min-height:calc(13px * 1.5 + 2 * 1.2em * 1 + 2 * 15.5px * 1.45 + 56px);transition:opacity .22s}
   .sp-copy.swap{opacity:0}
   .sp-meta,.cf-meta{margin:0;font-size:13.5px;color:#A9A9B2}
-  .sp-t{margin:6px 0 0;font-size:clamp(20px,1.7vw,26px);font-weight:400;letter-spacing:-.012em;line-height:1.2;
+  .sp-t{margin:0;font-size:clamp(20px,1.7vw,26px);font-weight:400;letter-spacing:-.012em;line-height:1.2;
     display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .sp-x,.cf-x{margin:8px 0 0;font-size:15.5px;line-height:1.45;color:#C9C9CF;max-width:62ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .sp-btn{margin-top:10px;color:#fff}
@@ -474,7 +474,7 @@
                linear-gradient(to top,var(--dark) 0%,rgba(11,11,14,.55) 32%,transparent 58%),linear-gradient(to bottom,var(--dark) 0%,transparent 16%)}
   .rows-bfull .sp-in{margin:0 0 clamp(14px,2.4svh,26px)}
   .rows-bfull .sp-copy{max-width:580px;min-height:0}
-  .rows-bfull .sp-t{margin-top:10px;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance;-webkit-line-clamp:3}
+  .rows-bfull .sp-t{margin-top:0;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance;-webkit-line-clamp:3}
   .rows-bfull .sp-x{margin-top:14px;font-size:16.5px;line-height:1.5;color:#D4D4D4;max-width:50ch;-webkit-line-clamp:3}
   .rows-bfull .sp-btn{display:inline-flex;align-items:center;height:44px;padding:0 22px;margin-top:20px;border:0;border-radius:999px;
     background:#fff;color:#0B0B0E;font-size:15px;font-weight:600}
@@ -520,6 +520,17 @@
   .cf-nav svg{width:24px;height:24px}
   .cf-nav.prev svg{transform:scaleX(-1)}
   @media (max-width:720px){.cf-info{grid-template-columns:1fr}.cf-nav{display:none}}
+
+  /* nav: top-level links beside the dropdowns, and the mobile menu's direct links */
+  .mnav-a{font-size:14px;color:#fff;opacity:.85;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+  .mnav-a:hover{opacity:1}
+  .mnav-btn{white-space:nowrap}
+  .tkv-l{display:flex;justify-content:space-between;align-items:center;font-size:clamp(21px,2.4vw,28px);font-weight:300;color:#fff;
+    border-bottom:1px solid rgba(255,255,255,.14);padding:18px 0}
+  .tkv-l:hover{color:#FFB3BE}
+  .mp-lead .storylink+.storylink{margin-top:6px}
+  .mp-lead-wide{max-width:none;flex:0 0 300px}
+  .mp-lead-wide .storylink{display:flex}
 
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
@@ -584,11 +595,12 @@
   <div class="wrap row">
     <a class="wordmark" href="#" aria-label="Northeastern University home"><img src="data:image/png;base64,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" alt=""></a>
     <nav class="mnav" aria-label="Primary">
-      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>
-      <button class="mnav-btn" data-panel="mp-academics" aria-expanded="false">Academics</button>
+      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions &amp; Academics</button>
       <button class="mnav-btn" data-panel="mp-experiential" aria-expanded="false">Experiential Learning</button>
       <button class="mnav-btn" data-panel="mp-research" aria-expanded="false">Research</button>
-      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global &amp; Campuses</button>
+      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global Network</button>
+      <a class="mnav-a" href="https://entrepreneurship.northeastern.edu/">Global Entrepreneurism</a>
+      <a class="mnav-a" href="https://www.northeastern.edu/ai/">AI</a>
     </nav>
     <div class="nvright">
       <button class="nvicon" id="srch-open" aria-label="Search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
@@ -598,40 +610,32 @@
     </div>
   </div>
   <div class="mpanel" id="mp-admissions" hidden><div class="wrap mp-in">
-      <div class="mp-lead"><div class="mp-title">Admissions</div><p>However you learn best, there is a path here.</p><a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions overview</a></div>
+      <div class="mp-lead mp-lead-wide"><div class="mp-title">Admissions &amp; Academics</div><p>However you learn best, there is a path here.</p>
+        <a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions</a>
+        <a class="storylink" href="https://www.northeastern.edu/academics/">Academics</a></div>
       <div class="mp-col"><div class="mp-h">Apply</div><div class="mp-links">
-        <a href="https://admissions.northeastern.edu/">Undergraduate Admissions</a>
-        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate Admissions</a>
-        <a href="https://law.northeastern.edu/admissions/">Law School Admissions</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law school admissions</a>
+        <a href="https://admissions.northeastern.edu/visit/">Visit a campus</a>
+      </div></div>
+      <div class="mp-col"><div class="mp-h">Programs</div><div class="mp-links">
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and schools</a>
+        <a href="https://phd.northeastern.edu/">Doctoral programs</a>
+        <a href="https://online.northeastern.edu/">Online education</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's degree completion</a>
       </div></div>
       <div class="mp-col"><div class="mp-h">Get started</div><div class="mp-links">
-        <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
-        <a href="https://www.northeastern.edu/orientation/">Student Orientation and Family Programs</a>
-        <a href="https://admissions.northeastern.edu/visit/">Visit</a>
+        <a href="https://studentfinance.northeastern.edu/">Financial aid</a>
+        <a href="https://www.northeastern.edu/orientation/">Orientation and family programs</a>
+        <a href="https://academicplan.northeastern.edu/">Academic plan</a>
       </div></div>
-      <a class="mp-feat" href="https://news.northeastern.edu/2023/05/08/childhood-friends-india-america/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/05/050523_AS_best_friends_-1400.jpg" alt="" loading="lazy"><span class="ft">A life-changing year at Northeastern, as experienced by best friends from India</span><span class="fl">Read on NGN &#8594;</span></a>
-  </div></div>
-  <div class="mpanel" id="mp-academics" hidden><div class="wrap mp-in">
-      <div class="mp-lead"><div class="mp-title">Academics</div><p>150+ majors across nine colleges and schools.</p><a class="storylink" href="https://www.northeastern.edu/academics/">Academics overview</a></div>
-      <div class="mp-col"><div class="mp-h">Degrees</div><div class="mp-links">
-        <a href="https://admissions.northeastern.edu/">Undergraduate</a>
-        <a href="https://graduate.northeastern.edu/">Graduate</a>
-        <a href="https://phd.northeastern.edu/">Doctoral</a>
-        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
-      </div></div>
-      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
-        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
-        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
-        <a href="https://online.northeastern.edu/">Online Education</a>
-      </div></div>
-      <a class="mp-feat" href="https://news.northeastern.edu/2024/04/10/clara-wu-high-school-letter/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2024/04/Clara-Wu_1400.jpg" alt="" loading="lazy"><span class="ft">A 2023 graduate reflects on her Northeastern experience</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-experiential" hidden><div class="wrap mp-in">
       <div class="mp-lead"><div class="mp-title">Experiential Learning</div><p>Learning that happens on the job, in the field, everywhere.</p><a class="storylink" href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a></div>
       <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
         <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
         <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
-        <a href="#">Entrepreneurship</a>
         <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
       </div></div>
       <a class="mp-feat" href="https://news.northeastern.edu/2024/10/16/high-speed-satellite-network-research/"><div class="mp-h">From the newsroom</div><img src="../img/satellite-testbed.jpg" alt="" loading="lazy"><span class="ft">Students and faculty build a satellite testbed for ultra-fast internet from space</span><span class="fl">Read on NGN &#8594;</span></a>
@@ -690,7 +694,6 @@
         <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
         <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
         <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
-        <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
       </div></div>
       <div class="mp-col"><div class="mp-h">More from Northeastern</div><div class="mp-links">
         <a href="https://calendar.northeastern.edu/">Events</a>
@@ -721,27 +724,21 @@
       <input type="search" name="query" placeholder="Search Northeastern" autocomplete="off">
     </form>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions &amp; Academics<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-0">
         <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
-        <a href="https://admissions.northeastern.edu/">Undergraduate Admissions</a>
-        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate Admissions</a>
-        <a href="https://law.northeastern.edu/admissions/">Law School Admissions</a>
-        <a href="https://studentfinance.northeastern.edu/">Financial Services</a>
-        <a href="https://www.northeastern.edu/orientation/">Student Orientation and Family Programs</a>
-      </div>
-    </div>
-    <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-1" aria-expanded="false">Academics<span class="tkv-c" aria-hidden="true">+</span></button>
-      <div class="tkv-sub" id="tsub-1">
         <a href="https://www.northeastern.edu/academics/">Academics overview</a>
-        <a href="https://admissions.northeastern.edu/">Undergraduate</a>
-        <a href="https://graduate.northeastern.edu/">Graduate</a>
-        <a href="https://phd.northeastern.edu/">Doctoral</a>
-        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's Degree Completion</a>
-        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and Schools</a>
-        <a href="https://academicplan.northeastern.edu/">Academic Plan</a>
-        <a href="https://online.northeastern.edu/">Online Education</a>
+        <a href="https://admissions.northeastern.edu/">Undergraduate admissions</a>
+        <a href="https://graduate.northeastern.edu/admissions-information/how-to-apply/the-process">Graduate admissions</a>
+        <a href="https://law.northeastern.edu/admissions/">Law school admissions</a>
+        <a href="https://admissions.northeastern.edu/visit/">Visit a campus</a>
+        <a href="https://www.northeastern.edu/academics/colleges-and-schools/">Colleges and schools</a>
+        <a href="https://phd.northeastern.edu/">Doctoral programs</a>
+        <a href="https://online.northeastern.edu/">Online education</a>
+        <a href="https://bachelors-completion.northeastern.edu/">Bachelor's degree completion</a>
+        <a href="https://studentfinance.northeastern.edu/">Financial aid</a>
+        <a href="https://www.northeastern.edu/orientation/">Orientation and family programs</a>
+        <a href="https://academicplan.northeastern.edu/">Academic plan</a>
       </div>
     </div>
     <div class="tkv-grp">
@@ -750,7 +747,6 @@
         <a href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a>
         <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
         <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
-        <a href="#">Entrepreneurship</a>
         <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
       </div>
     </div>
@@ -768,7 +764,7 @@
       </div>
     </div>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global Network<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-4">
         <a href="https://www.northeastern.edu/our-global-university-system/">Global overview</a>
         <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
@@ -780,6 +776,8 @@
         <a href="https://globalsafety.northeastern.edu/">Global Safety and Support</a>
       </div>
     </div>
+    <a class="tkv-l" href="https://entrepreneurship.northeastern.edu/">Global Entrepreneurism<span aria-hidden="true">&#8594;</span></a>
+    <a class="tkv-l" href="https://www.northeastern.edu/ai/">AI<span aria-hidden="true">&#8594;</span></a>
     <div class="tkv-grp">
       <button class="tkv-g" data-sub="tsub-5" aria-expanded="false">Campuses<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-5">
@@ -809,7 +807,6 @@
         <a href="https://hr.northeastern.edu/">Careers at Northeastern</a>
         <a href="https://belonging.northeastern.edu/">Belonging at Northeastern</a>
         <a href="https://publicart.northeastern.edu/">Public Art at Northeastern</a>
-        <a href="https://www.northeastern.edu/ai/">Artificial Intelligence</a>
       </div>
     </div>
     <div class="tkv-more">
@@ -1092,7 +1089,7 @@
         <div class="f-col"><div class="mp-h">Experiential Learning</div>
           <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
           <a href="https://www.northeastern.edu/co-op">Co‑op</a>
-          <a href="#">Entrepreneurship</a>
+          <a href="https://entrepreneurship.northeastern.edu/">Entrepreneurship</a>
           <a href="https://chancellor.northeastern.edu/">Office of the Chancellor</a>
         </div>
         <div class="f-col"><div class="mp-h">Research</div>
@@ -1746,7 +1743,7 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 {
 /* ============ concept-7 ============ */
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
-const FEATS = [{"t": "Co‑op", "v": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4", "img": "../img/apple-coop.jpg", "card": "../img/aquarium-dive.jpg", "syn": "Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.", "cta": {"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}, "eps": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}], "h": "Experiential learning"}, {"t": "Research", "v": "https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "syn": "Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.", "cta": {"label": "Explore research", "href": "https://research.northeastern.edu/"}, "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}], "h": "Breakthroughs begin here"}, {"t": "Global network", "v": "https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "card": "../img/global-london.jpg", "syn": "Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.", "cta": {"label": "See the network", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}], "h": "Immersed in the world"}, {"t": "AI", "v": "https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "syn": "AI is reshaping every field. Students build it on co‑op, faculty advance it in the lab, and both bring the human judgment it needs.", "cta": {"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"}, "eps": [{"t": "Query, create or be curious at new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "The student refining AI at one of the largest real estate firms", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Co-op_AI_1400.jpg", "u": "https://news.northeastern.edu/2026/09/09/real-estate-ai-co-op/"}, {"t": "In Serbia, she helped build an AI to give activists worldwide a leg up", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/081426_MM_Ayla_DiBattista_006.jpg", "u": "https://news.northeastern.edu/2026/09/03/ayla-dibattista-co-op-northeastern/"}, {"t": "This professor is making AI systems more aware of their ignorance", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "u": "https://news.northeastern.edu/2026/09/21/northeastern-pecase-award-2026/"}], "h": "Shaping responsible, human-centered AI"}, {"t": "Entrepreneurship", "v": "https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "syn": "Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.", "cta": {"label": "Read founder stories", "href": "https://news.northeastern.edu/tag/entrepreneurship/"}, "eps": [{"t": "Student startup develops hands-on learning toy for future engineers", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "u": "https://news.northeastern.edu/2026/07/31/nexttile-startup-stem-northeastern/"}, {"t": "Founders pitch startups in Dragons’ Den-style event for funding", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "u": "https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"}, {"t": "Revolutionizing dental hygiene, starting with your toothbrush", "img": "https://news.northeastern.edu/wp-content/uploads/2025/08/NOOK_1400.jpg", "u": "https://news.northeastern.edu/2026/07/15/how-to-keep-toothbrush-clean-nook/"}, {"t": "Is this healthy energy drink coming to a store near you?", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/"}], "h": "Ideas into ventures"}];
+const FEATS = [{"t": "Co‑op", "v": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4", "img": "../img/apple-coop.jpg", "card": "../img/aquarium-dive.jpg", "syn": "Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.", "cta": {"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}, "eps": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}], "h": "Experiential learning"}, {"t": "Research", "v": "https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "syn": "Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.", "cta": {"label": "Explore research", "href": "https://research.northeastern.edu/"}, "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}], "h": "Breakthroughs begin here"}, {"t": "Global network", "v": "https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "card": "../img/global-london.jpg", "syn": "Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.", "cta": {"label": "See the network", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}], "h": "Immersed in the world"}, {"t": "AI", "v": "https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "syn": "AI is reshaping every field. Students build it on co‑op, faculty advance it in the lab, and both bring the human judgment it needs.", "cta": {"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"}, "eps": [{"t": "Query, create or be curious at new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "The student refining AI at one of the largest real estate firms", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Co-op_AI_1400.jpg", "u": "https://news.northeastern.edu/2026/09/09/real-estate-ai-co-op/"}, {"t": "In Serbia, she helped build an AI to give activists worldwide a leg up", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/081426_MM_Ayla_DiBattista_006.jpg", "u": "https://news.northeastern.edu/2026/09/03/ayla-dibattista-co-op-northeastern/"}, {"t": "This professor is making AI systems more aware of their ignorance", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "u": "https://news.northeastern.edu/2026/09/21/northeastern-pecase-award-2026/"}], "h": "Shaping responsible, human-centered AI"}, {"t": "Entrepreneurship", "v": "https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "syn": "Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.", "cta": {"label": "Read founder stories", "href": "https://news.northeastern.edu/tag/entrepreneurship/"}, "eps": [{"t": "Student startup develops hands-on learning toy for future engineers", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "u": "https://news.northeastern.edu/2026/07/31/nexttile-startup-stem-northeastern/"}, {"t": "Founders pitch startups in Dragons’ Den-style event for funding", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "u": "https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"}, {"t": "Revolutionizing dental hygiene, starting with your toothbrush", "img": "https://news.northeastern.edu/wp-content/uploads/2025/08/NOOK_1400.jpg", "u": "https://news.northeastern.edu/2026/07/15/how-to-keep-toothbrush-clean-nook/"}, {"t": "Is this healthy energy drink coming to a store near you?", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/"}], "h": "Start something, anywhere"}];
 
 /* ============ billboard ============ */
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");
@@ -1960,7 +1957,7 @@ function previews(topics) {
   const show = (el, it, label) => {
     pv.href = it.u;
     pv.querySelector(".pv-img").src = it.wide || it.img;
-    pv.querySelector(".pv-meta").textContent = [label, fmtDate(it.d)].filter(Boolean).join(" · ");
+    pv.querySelector(".pv-meta").textContent = label;
     pv.querySelector(".pv-t").textContent = it.t;
     pv.querySelector(".pv-x").textContent = it.x || "";
     const r = el.getBoundingClientRect(), vw = document.documentElement.clientWidth;
@@ -1990,7 +1987,7 @@ function spotlight(tp) {
   const sec = tp.sec, items = tp.items;
   sec.classList.add("sp");
   sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
-    `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-meta"></p><p class="sp-t"></p><p class="sp-x"></p>` +
+    `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-t"></p><p class="sp-x"></p>` +
     `<a class="storylink sp-btn" href="#">Read story</a></div><div class="sp-fig" aria-hidden="true"><img alt=""><img alt=""></div></div>`);
   mountRow(sec, items);
   const bgs = sec.querySelectorAll(".sp-bg i"), figs = sec.querySelectorAll(".sp-fig img"), copy = sec.querySelector(".sp-copy"), cards = [...sec.querySelectorAll(".cc")];
@@ -2012,7 +2009,6 @@ function spotlight(tp) {
     cards.forEach((c, k) => c.classList.toggle("on", k === i));
     copy.classList.add("swap");
     setTimeout(() => {
-      copy.querySelector(".sp-meta").textContent = fmtDate(it.d);
       copy.querySelector(".sp-t").textContent = it.t;
       copy.querySelector(".sp-x").textContent = it.x || "";
       copy.querySelector(".sp-btn").href = it.u;
@@ -2068,7 +2064,7 @@ function coverflow(topics) {
   const info = () => {
     const it = items[i]; copy.classList.add("swap");
     setTimeout(() => {
-      copy.querySelector(".cf-meta").textContent = [topics[topic].label, fmtDate(it.d)].filter(Boolean).join(" · ");
+      copy.querySelector(".cf-meta").textContent = topics[topic].label;
       copy.querySelector(".cf-t").textContent = it.t;
       copy.querySelector(".cf-x").textContent = it.x || "";
       copy.querySelector(".cf-btn").href = it.u;
