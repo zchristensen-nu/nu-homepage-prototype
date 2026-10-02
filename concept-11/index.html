@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="3">
+<meta name="concept11-rev" content="4">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -2019,9 +2019,24 @@ function spotlight(tp) {
       copy.classList.remove("swap");
     }, reduceMotion ? 0 : 220);
   };
+  /* a focused poster never sits half under a paddle: the row slides it into the clear lane,
+     and hover is ignored briefly so the poster that slides under the pointer doesn't steal focus */
+  const strip = sec.querySelector(".crow-strip");
+  let quietUntil = 0;
+  const reveal = c => {
+    const s = strip.getBoundingClientRect(), pl = parseFloat(getComputedStyle(strip).paddingLeft), r = c.getBoundingClientRect();
+    const d = r.right > s.right - pl ? r.right - (s.right - pl) : r.left < s.left + pl ? r.left - (s.left + pl) : 0;
+    if (Math.abs(d) < 2) return;
+    quietUntil = performance.now() + 700;
+    strip.scrollBy({ left: d, behavior: reduceMotion ? "auto" : "smooth" });
+  };
   cards.forEach((c, k) => {
-    c.addEventListener("pointerenter", () => { clearTimeout(t); t = setTimeout(() => set(k), 140); });
-    c.addEventListener("focus", () => set(k));
+    c.addEventListener("pointerenter", () => {
+      clearTimeout(t);
+      if (performance.now() < quietUntil) return;
+      t = setTimeout(() => { set(k); reveal(c); }, 140);
+    });
+    c.addEventListener("focus", () => { set(k); reveal(c); });
   });
   set(0);
 }

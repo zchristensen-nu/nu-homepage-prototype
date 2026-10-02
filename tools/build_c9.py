@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="14">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="15">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -746,9 +746,24 @@ function spotlight(tp) {
       copy.classList.remove("swap");
     }, reduceMotion ? 0 : 220);
   };
+  /* a focused poster never sits half under a paddle: the row slides it into the clear lane,
+     and hover is ignored briefly so the poster that slides under the pointer doesn't steal focus */
+  const strip = sec.querySelector(".crow-strip");
+  let quietUntil = 0;
+  const reveal = c => {
+    const s = strip.getBoundingClientRect(), pl = parseFloat(getComputedStyle(strip).paddingLeft), r = c.getBoundingClientRect();
+    const d = r.right > s.right - pl ? r.right - (s.right - pl) : r.left < s.left + pl ? r.left - (s.left + pl) : 0;
+    if (Math.abs(d) < 2) return;
+    quietUntil = performance.now() + 700;
+    strip.scrollBy({ left: d, behavior: reduceMotion ? "auto" : "smooth" });
+  };
   cards.forEach((c, k) => {
-    c.addEventListener("pointerenter", () => { clearTimeout(t); t = setTimeout(() => set(k), 140); });
-    c.addEventListener("focus", () => set(k));
+    c.addEventListener("pointerenter", () => {
+      clearTimeout(t);
+      if (performance.now() < quietUntil) return;
+      t = setTimeout(() => { set(k); reveal(c); }, 140);
+    });
+    c.addEventListener("focus", () => { set(k); reveal(c); });
   });
   set(0);
 }
@@ -832,7 +847,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="14"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="15"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -842,7 +857,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="14">', '<meta name="concept11-rev" content="3">'),
+for x, y in (('<meta name="concept10-rev" content="15">', '<meta name="concept11-rev" content="4">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
