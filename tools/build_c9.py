@@ -24,7 +24,7 @@ land, coops, helpers, tail_js = (g[k] for k in ("land", "coops", "helpers", "tai
 SHOWS, MONO, NGN_LOGO, h, NGN, U, ep = g["SHOWS"], g["MONO"], g["NGN_LOGO"], g["h"], g["NGN"], g["U"], g["ep"]
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="12">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="13">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -390,7 +390,27 @@ NEW_CSS = r'''
   .rows-b .cc.on{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,.55)}
   @media (prefers-reduced-motion: reduce){.sp-bg i{transition:none}}
 
-  /* B (image) vs B2 (quiet) */
+  /* B · full-bleed stage: the focused story's 1400px original fills the row (no zoom), text on a left gradient */
+  .rows-bfull .crow{margin-top:clamp(12px,2svh,24px);min-height:clamp(600px,84svh,820px);overflow:hidden;
+    padding-top:clamp(28px,5svh,56px);--ch:clamp(190px,15vw,232px)}
+  .rows-bfull .crow > .wrap{margin-bottom:auto}
+  .rows-bfull .sp-bg{inset:0;-webkit-mask-image:none;mask-image:none}
+  .rows-bfull .sp-bg i{filter:none;background-position:center 35%;transition:opacity .8s var(--ease)}
+  .rows-bfull .sp-bg i.on{opacity:1}
+  .rows-bfull .sp-bg::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(to right,rgba(11,11,14,.94) 0%,rgba(11,11,14,.6) 38%,rgba(11,11,14,.08) 70%),
+               linear-gradient(to top,var(--dark) 0%,rgba(11,11,14,.55) 32%,transparent 58%),linear-gradient(to bottom,var(--dark) 0%,transparent 16%)}
+  .rows-bfull .sp-in{margin:0 0 clamp(14px,2.4svh,26px)}
+  .rows-bfull .sp-copy{max-width:580px;min-height:0}
+  .rows-bfull .sp-t{margin-top:10px;font-size:clamp(30px,3.2vw,50px);font-weight:300;letter-spacing:-.025em;line-height:1.06;text-wrap:balance;-webkit-line-clamp:3}
+  .rows-bfull .sp-x{margin-top:14px;font-size:16.5px;line-height:1.5;color:#D4D4D4;max-width:50ch;-webkit-line-clamp:3}
+  .rows-bfull .sp-btn{display:inline-flex;align-items:center;height:44px;padding:0 22px;margin-top:20px;border:0;border-radius:999px;
+    background:#fff;color:#0B0B0E;font-size:15px;font-weight:600}
+  .rows-bfull .sp-btn:hover{background:rgba(255,255,255,.84);color:#0B0B0E}
+  .rows-bfull .cc-t{font-size:14px;padding:0 12px 14px}
+  .rows-bfull .cc.on{box-shadow:0 0 0 2px #fff,0 18px 40px rgba(0,0,0,.55)}
+
+  /* B3 (framed photo) vs B2 (quiet) */
   .sp-fig{display:none}
   .rows-bimg .sp-bg{display:none}
   .rows-bimg .crow{--ch:clamp(200px,16vw,250px)}
@@ -619,8 +639,8 @@ function mountRow(sec, items) {
 /* live NGN: news posts only (no "Photos:" galleries), no story repeated across rows */
 const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e.u, img: e.img, wide: e.img }));
 const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();
-const RVK = ["a", "b", "b2", "c"].includes(RV) ? RV : "current";
-document.documentElement.classList.add("rows-" + RVK, ...(RV === "b" ? ["rows-b", "rows-bimg"] : RV === "b2" ? ["rows-b"] : []));
+const RVK = ["a", "b", "b2", "b3", "c"].includes(RV) ? RV : "current";
+document.documentElement.classList.add("rows-" + RVK, ...({ b: ["rows-b", "rows-bfull"], b2: ["rows-b"], b3: ["rows-b", "rows-bimg"] }[RV] || []));
 const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
 const ARROW = `__ARROW__`, CHEV = `__CHEV__`;
 (async () => {
@@ -644,7 +664,7 @@ const ARROW = `__ARROW__`, CHEV = `__CHEV__`;
     items.forEach(c => shown.add(c.u));
     topics.push({ sec, label, items });
   });
-  if (RV === "b" || RV === "b2") topics.forEach(spotlight);
+  if (["b", "b2", "b3"].includes(RV)) topics.forEach(spotlight);
   else if (RV === "c") coverflow(topics);
   else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
@@ -700,8 +720,12 @@ function spotlight(tp) {
     if (i === cur) return;
     cur = i; const it = items[i];
     layer ^= 1;
-    bgs[layer].style.backgroundImage = `url('${it.wide || it.img}')`;
-    bgs[layer].classList.add("on"); bgs[layer ^ 1].classList.remove("on");
+    const stage = bgs[layer], prev = bgs[layer ^ 1], pic = new Image();
+    pic.src = it.full || it.wide || it.img;
+    pic.decode().catch(() => {}).then(() => {
+      if (items[cur] !== it) return;
+      stage.style.backgroundImage = `url('${pic.src}')`; stage.classList.add("on"); prev.classList.remove("on");
+    });
     /* the framed photo: full-size original, swapped in only once decoded */
     const f = figs[layer], other = figs[layer ^ 1], want = it.full || it.wide || it.img;
     f.src = want;
@@ -784,7 +808,7 @@ function coverflow(topics) {
 if (new URLSearchParams(location.search).has("rows")) {
   const bar = document.createElement("nav");
   bar.className = "vswitch"; bar.setAttribute("aria-label", "Story row mockups");
-  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["b2", "B2 · Quiet"], ["c", "C · Coverflow"]]
+  bar.innerHTML = [["current", "Current"], ["a", "A · Preview"], ["b", "B · Spotlight"], ["b2", "B2 · Quiet"], ["b3", "B3 · Framed"], ["c", "C · Coverflow"]]
     .map(([k, l]) => `<a href="?rows=${k}" class="${RVK === k ? "on" : ""}">${l}</a>`).join("");
   document.body.appendChild(bar);
 }
@@ -802,7 +826,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="12"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="13"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ["kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -812,7 +836,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="12">', '<meta name="concept11-rev" content="1">'),
+for x, y in (('<meta name="concept10-rev" content="13">', '<meta name="concept11-rev" content="2">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
