@@ -30,7 +30,7 @@ def nav_edit(src, a, b, n=1):
     assert src.count(a) == n, (src.count(a), a[:70]); return src.replace(a, b)
 header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>
       <button class="mnav-btn" data-panel="mp-academics" aria-expanded="false">Academics</button>""",
-    """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions &amp; Academics</button>""")
+    """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Academics</button>""")
 header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global &amp; Campuses</button>""",
     f"""      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global Network</button>
       <a class="mnav-a" href="{ENT_URL}">Global Entrepreneurship</a>
@@ -40,7 +40,7 @@ _feat = header_mk[_a0:_a1]
 _feat = _feat[_feat.index('<a class="mp-feat"'):]
 _feat = _feat[:_feat.index("</a>") + 4]
 header_mk = header_mk[:_a0] + f"""<div class="mpanel" id="mp-admissions" hidden><div class="wrap mp-in">
-      <div class="mp-lead mp-lead-wide"><div class="mp-title">Admissions &amp; Academics</div><p>However you learn best, there is a path here.</p>
+      <div class="mp-lead mp-lead-wide"><div class="mp-title">Academics</div><p>However you learn best, there is a path here.</p>
         <a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions</a>
         <a class="storylink" href="https://www.northeastern.edu/academics/">Academics</a></div>
       <div class="mp-col"><div class="mp-h">Apply</div><div class="mp-links">
@@ -70,7 +70,7 @@ header_mk = nav_edit(header_mk, f"""        <a href="{AI_URL}">Artificial Intell
 _t0 = header_mk.index('<button class="tkv-g" data-sub="tsub-0"'); _t0 = header_mk.rindex('<div class="tkv-grp">', 0, _t0)
 _t1 = header_mk.index('<button class="tkv-g" data-sub="tsub-2"'); _t1 = header_mk.rindex('<div class="tkv-grp">', 0, _t1)
 header_mk = header_mk[:_t0] + """<div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions &amp; Academics<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Academics<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-0">
         <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
         <a href="https://www.northeastern.edu/academics/">Academics overview</a>
@@ -96,7 +96,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="17">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="18">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -929,7 +929,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="17"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="18"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -939,7 +939,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="17">', '<meta name="concept11-rev" content="6">'),
+for x, y in (('<meta name="concept10-rev" content="18">', '<meta name="concept11-rev" content="7">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
