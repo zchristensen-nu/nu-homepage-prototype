@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="22">
+<meta name="concept10-rev" content="23">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -415,8 +415,11 @@
   @media (hover:none){.pad{display:none}}
 
   /* the reel: portrait b-roll drifting left to right */
-  .reel{position:relative;z-index:2;padding:clamp(90px,13svh,180px) 0;overflow:hidden}
-  .reel-track{display:flex;gap:16px;width:max-content;will-change:transform}
+  .reel{position:relative;z-index:2;padding:clamp(90px,13svh,180px) 0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+    overscroll-behavior-x:contain;cursor:grab}
+  .reel::-webkit-scrollbar{display:none}
+  .reel.drag{cursor:grabbing}
+  .reel-track{display:flex;gap:16px;width:max-content}
   .reel .vidcard{flex:0 0 auto;height:min(66svh,740px);aspect-ratio:9/16}
   @media (max-width:820px){.reel{padding:clamp(56px,8svh,90px) 0}.reel .vidcard{height:70svh}}
   @media (prefers-reduced-motion: reduce){.reel{overflow-x:auto}}
@@ -460,6 +463,8 @@
   .rows-bfull .crow{margin-top:clamp(12px,2svh,24px);min-height:clamp(600px,84svh,820px);overflow:hidden;
     padding-top:clamp(28px,5svh,56px);--ch:clamp(190px,15vw,232px)}
   .rows-bfull .crow > .wrap{margin-bottom:auto}
+  .rows-bfull .crow + .crow{margin-top:clamp(36px,6svh,72px)}
+  .rows-bfull .crow + .crow::before{content:"";position:absolute;z-index:2;top:0;left:var(--edge);right:var(--edge);height:1px;background:rgba(255,255,255,.14)}
   /* the photo is never drawn wider than its 1400px source: edge-to-edge up to 1400px viewports,
      centered with soft side fades beyond that (keeps it 1:1 or smaller, so it never upscales) */
   .rows-bfull .sp-bg{inset:0;left:50%;right:auto;width:min(100%,1400px);transform:translateX(-50%);-webkit-mask-image:none;mask-image:none}
@@ -533,7 +538,7 @@
   .mp-lead-wide .storylink{display:flex}
 
   /* phone menu hierarchy */
-  .tkv-sub.open{columns:auto;padding:4px 0 26px}
+  .tkv-sub.open{columns:auto;padding:18px 0 30px}
   .tkv-ov{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 20px}
   .tkv-sub .tkv-ov a{padding:8px 16px;border:1px solid rgba(255,255,255,.3);border-radius:999px;font-size:14px;font-weight:500;color:#fff}
   .tkv-sub .tkv-ov a:hover{background:#fff;color:#0B0B0E}
@@ -545,9 +550,17 @@
 
   /* globe on phones: beat text rides high, the co-op story card is a compact strip docked at the bottom */
   @media (max-width:720px){
-    .step{align-items:flex-start;padding-bottom:0}
-    .step .card{position:sticky;top:88px;text-shadow:0 2px 18px rgba(0,0,0,.75)}
-    .step .big{font-size:clamp(34px,10vw,48px)}
+    /* every step's text shares one caption slot under the nav; the step at mid-screen is "current" */
+    .step{min-height:95svh}
+    .steps .step .card{position:fixed;z-index:6;top:84px;left:20px;right:20px;max-width:none;pointer-events:none;
+      opacity:0;transform:translateY(16px);transition:opacity .28s ease,transform .28s ease;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+    .steps .step.past .card{transform:translateY(-14px)}
+    .steps .step.cur .card{opacity:1;transform:none;pointer-events:auto;
+      transition:opacity .55s .22s cubic-bezier(.2,.8,.2,1),transform .55s .22s cubic-bezier(.2,.8,.2,1)}
+    .step .big{font-size:clamp(32px,9.5vw,46px)}
+    .step p{margin-top:10px;font-size:15px}
+    /* the caption reads over the planet: a deeper wash at the top of the stage */
+    .stage::before{height:42svh;background:linear-gradient(var(--dark) 0%,var(--dark) 34%,rgba(11,11,14,.6) 70%,transparent)}
     .gt-card{display:grid;grid-template-columns:96px 1fr;left:16px;right:16px;bottom:12px}
     .gt-card img{width:96px;height:100%;min-height:96px;aspect-ratio:auto}
     .gtc-body{padding:10px 12px}
@@ -600,6 +613,15 @@
     backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
   .vswitch a{padding:8px 14px;border-radius:999px;color:#C9C9CF;white-space:nowrap}
   .vswitch a.on{background:#fff;color:#0B0B0E;font-weight:600}
+
+  /* co-op rail: full-height panels, no dead space */
+  .j-stage{justify-content:flex-start;padding:clamp(84px,11svh,104px) 0 clamp(18px,3svh,30px)}
+  .j-head{padding-bottom:clamp(16px,2.6svh,28px)}
+  .j-rail{flex:1 1 auto;min-height:0;align-items:stretch;padding-left:max(var(--edge), calc(50vw - (100svh - 280px) * .75))}
+  .j-panel{height:auto}
+  .j-photo img{height:100%;width:auto}
+  .j-stage > .wrap:last-child{flex:none}
+  .j-bar{margin-top:clamp(16px,2.6svh,28px)}
 
   /* concept 2's globe: flush on this page, dissolving into its neighbors */
   .scrolly{border-radius:0;margin-top:0}
@@ -1805,12 +1827,25 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 {
 /* ============ concept-7 ============ */
+/* globe on phones: exactly one current step (the one at mid-screen) owns the caption slot;
+   steps above it are "past" so they leave upward; the co-op card only shows on its step */
 {
-  const coopsStep = $('.step[data-step="coops"]');
-  if (coopsStep) addEventListener("scroll", () => {
-    if (innerWidth > 720 || gtCard.hidden) return;
-    if (coopsStep.getBoundingClientRect().bottom < innerHeight * .5) gtCard.hidden = true;
-  }, { passive: true });
+  const steps = $$(".step"), coopsStep = $('.step[data-step="coops"]');
+  let curStep = null;
+  const upd = () => {
+    if (innerWidth > 720) { steps.forEach(s => s.classList.remove("cur", "past")); return; }
+    const mid = innerHeight * .5;
+    const now = steps.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || null;
+    if (now !== curStep) {
+      curStep = now;
+      const k = steps.indexOf(now), lastPast = steps.every(s => s.getBoundingClientRect().bottom <= mid);
+      steps.forEach((s, i) => { s.classList.toggle("cur", s === now); s.classList.toggle("past", lastPast || (k >= 0 && i < k)); });
+    }
+    const want = curStep === coopsStep;
+    if (gtCard.hidden === want) gtCard.hidden = !want;
+  };
+  addEventListener("scroll", () => requestAnimationFrame(upd), { passive: true });
+  addEventListener("resize", upd); upd();
 }
 /* phone menu: each section mirrors its desktop dropdown (overview pills, then labeled link groups) */
 {
@@ -1979,25 +2014,28 @@ function mountRow(sec, items) {
     v.addEventListener("ended", () => { v.currentTime = +v.dataset.s; v.play().catch(() => {}); });
     vio.observe(v);
   });
+  /* the strip is a real scroller: swipe or trackpad-scroll it, drag it with a mouse; it drifts
+     rightward on its own and pauses for a moment after you touch it. Cards recycle at both ends. */
+  let pos = 0, last = 0, on = false, holdUntil = 0, drag = null;
+  const W = () => track.firstElementChild.offsetWidth + GAP;
+  const recycle = () => {
+    while (reel.scrollLeft < W()) { const c = track.lastElementChild; track.prepend(c); reel.scrollLeft += W(); const v = c.querySelector("video"); if (v.src) v.play().catch(() => {}); }
+    while (reel.scrollLeft > reel.scrollWidth - reel.clientWidth - W()) { const c = track.firstElementChild; track.append(c); reel.scrollLeft -= W(); }
+  };
+  reel.scrollLeft = W() * 2; pos = reel.scrollLeft;
+  new IntersectionObserver(es => { on = es[0].isIntersecting; }).observe(reel);
+  const hold = () => { holdUntil = performance.now() + 1800; };
+  ["touchstart", "wheel"].forEach(ev => reel.addEventListener(ev, hold, { passive: true }));
+  reel.addEventListener("scroll", () => { if (Math.abs(reel.scrollLeft - pos) > 2) hold(); pos = reel.scrollLeft; recycle(); pos = reel.scrollLeft; }, { passive: true });
+  reel.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse") return; drag = { x: e.clientX, s: reel.scrollLeft }; reel.classList.add("drag"); hold(); });
+  addEventListener("pointermove", e => { if (!drag) return; reel.scrollLeft = drag.s - (e.clientX - drag.x); hold(); });
+  addEventListener("pointerup", () => { drag = null; reel.classList.remove("drag"); });
   if (!reduceMotion) {
-    let x = -(track.firstElementChild.offsetWidth + GAP), last = 0, on = false;
-    new IntersectionObserver(es => { on = es[0].isIntersecting; }).observe(reel);
     const step = now => {
       const dt = last ? Math.min(50, now - last) : 0; last = now;
-      if (on) {
-        x += dt * .045;
-        /* once a gap opens on the left, the card that just left on the right comes round */
-        if (x > 0) {
-          const c = track.lastElementChild;
-          track.prepend(c);
-          x -= c.offsetWidth + GAP;
-          const v = c.querySelector("video"); if (v.src) v.play().catch(() => {});
-        }
-        track.style.transform = `translateX(${x.toFixed(1)}px)`;
-      }
+      if (on && !drag && now > holdUntil) { pos -= dt * .045; reel.scrollLeft = pos; recycle(); pos = reel.scrollLeft; }
       requestAnimationFrame(step);
     };
-    track.style.transform = `translateX(${x}px)`;
     requestAnimationFrame(step);
   }
 }
