@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="18">
+<meta name="concept11-rev" content="19">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -2181,15 +2181,14 @@ if (GV && GVS.includes(GV)) {
     box.setAttribute("aria-live", "polite");
     stage.append(box);
     const ls = [...box.children];
-    const BOS = CAMPUSES.find(c => c[2] === "Boston");
-    STORY_PINS.length = 0; STORY_PINS.push([BOS[0], BOS[1]]); storySel = 0;
+    /* no starting campus: "One university" is the whole globe, then every campus lights at once */
     const place = () => {
       if (innerWidth > 720) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
       const H = innerHeight, top = 84 + box.offsetHeight + 24, bottom = H - 30;
       window.GLOBE_CY = ((top + bottom) / 2) / H; window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 6, innerWidth / 2 - 18) / Math.min(innerWidth, H));
     };
     const STATES = [
-      { campus: 0, nuin: 0, coops: 0, spins: 1, k: 1 },
+      { campus: 0, nuin: 0, coops: 0, spins: 0, k: 1 },
       { campus: 1, nuin: 0, coops: 0, spins: 0, k: 1 },
       { campus: 1, nuin: 1, coops: 0, spins: 0, k: 1 },
       { campus: 1, nuin: 1, coops: 1, spins: 0, k: .96 },
