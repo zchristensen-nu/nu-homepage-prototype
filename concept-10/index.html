@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="25">
+<meta name="concept10-rev" content="26">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -551,16 +551,16 @@
   /* globe on phones: beat text rides high, the co-op story card is a compact strip docked at the bottom */
   @media (max-width:720px){
     /* every step's text shares one caption slot under the nav; the step at mid-screen is "current" */
-    .step{min-height:95svh}
-    .steps .step .card{position:fixed;z-index:6;top:84px;left:20px;right:20px;max-width:none;pointer-events:none;
+    .gv-cap .step{min-height:95svh}
+    .gv-cap .steps .step .card{position:fixed;z-index:6;top:84px;left:20px;right:20px;max-width:none;pointer-events:none;
       opacity:0;transform:translateY(16px);transition:opacity .28s ease,transform .28s ease;text-shadow:0 2px 18px rgba(0,0,0,.6)}
-    .steps .step.past .card{transform:translateY(-14px)}
-    .steps .step.cur .card{opacity:1;transform:none;pointer-events:auto;
+    .gv-cap .steps .step.past .card{transform:translateY(-14px)}
+    .gv-cap .steps .step.cur .card{opacity:1;transform:none;pointer-events:auto;
       transition:opacity .55s .22s cubic-bezier(.2,.8,.2,1),transform .55s .22s cubic-bezier(.2,.8,.2,1)}
-    .step .big{font-size:clamp(32px,9.5vw,46px)}
-    .step p{margin-top:10px;font-size:15px}
+    .gv-cap .step .big{font-size:clamp(32px,9.5vw,46px)}
+    .gv-cap .step p{margin-top:10px;font-size:15px}
     /* the caption reads over the planet: a deeper wash at the top of the stage */
-    .stage::before{height:42svh;background:linear-gradient(var(--dark) 0%,var(--dark) 34%,rgba(11,11,14,.6) 70%,transparent)}
+    .gv-cap .stage::before{height:42svh;background:linear-gradient(var(--dark) 0%,var(--dark) 34%,rgba(11,11,14,.6) 70%,transparent)}
     .gt-card{display:grid;grid-template-columns:96px 1fr;left:16px;right:16px;bottom:12px}
     .gt-card img{width:96px;height:100%;min-height:96px;aspect-ratio:auto}
     .gtc-body{padding:10px 12px}
@@ -606,8 +606,94 @@
     .rows-b .crow-strip{scroll-snap-type:x mandatory}
     .rows-b .cc{scroll-snap-align:start}
     /* globe: room after the last beat so its text and card clear out before the next section */
-    .steps{padding-bottom:70svh}
+    .gv-cap .steps{padding-bottom:70svh}
   }
+
+  /* ===== globe treatments on phones (?globe=a..e) ===== */
+  .gv-a #gt-card,.gv-b #gt-card,.gv-c #gt-card,.gv-d #gt-card,.gv-e #gt-card{display:none!important}
+  /* shared story card */
+  .gvc{flex:0 0 84%;scroll-snap-align:center;display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:center;padding:10px;border-radius:16px;
+    background:rgba(20,20,26,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1);
+    transition:border-color .3s,background .3s}
+  .gvc.on{border-color:rgba(255,255,255,.5)}
+  .gvc img{width:84px;height:84px;object-fit:cover;border-radius:10px}
+  .gvc-loc,.gvl-loc,.gve-loc{margin:0;font-size:12.5px;color:#A9A9B2}
+  .gvc-t{margin:3px 0 0;font-size:14.5px;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .gvc-a,.gvl-a,.gve-a{display:inline-block;margin-top:6px;font-size:13px;font-weight:600;color:#fff}
+  /* A · Stage */
+  .gva-prog{position:fixed;z-index:7;top:80px;left:20px;display:flex;gap:6px;opacity:0;transition:opacity .4s}
+  .gva-prog.on{opacity:1}
+  .gva-prog i{width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:background .4s}
+  .gva-prog i.on{background:#fff}
+  .gv-a.gv-cap .steps .step .card{top:98px}
+  .gva-dock{position:fixed;z-index:7;left:0;right:0;bottom:14px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:0 20px;scrollbar-width:none;opacity:0;transform:translateY(20px);pointer-events:none;transition:opacity .4s,transform .4s}
+  .gva-dock::-webkit-scrollbar{display:none}
+  .gv-coop .gva-dock{opacity:1;transform:none;pointer-events:auto}
+  .gv-a .stage::after{height:30svh}
+  /* B · Tabs */
+  .gv-b .scrolly{padding:84px 0 56px}
+  .gv-b .steps{display:none}
+  .gv-b .stage{position:relative;height:min(100vw,58svh)}
+  .gv-b .stage::before,.gv-b .stage::after{display:none}
+  .gvb{padding:0 20px 8px}
+  .gvb-tabs{display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+  .gvb-tabs button{all:unset;flex:1;text-align:center;padding:10px 0;border-radius:999px;font-size:14.5px;font-weight:600;color:#C9C9CF;cursor:pointer;transition:.25s}
+  .gvb-tabs button[aria-selected="true"]{background:#fff;color:#0B0B0E}
+  .gvb-panes{padding:0 20px}
+  .gvb-pane{display:none}
+  .gvb-pane.on{display:block;animation:gvin .5s cubic-bezier(.2,.8,.2,1)}
+  @keyframes gvin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .gvb-pane .card{opacity:1!important;transform:none!important;max-width:none}
+  .gvb-pane .big{font-size:clamp(32px,9vw,44px)}
+  .gvb-pane p{font-size:15.5px}
+  .gvb-list{margin-top:22px;display:grid;gap:8px}
+  .gvl{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;padding:8px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid transparent;cursor:pointer}
+  .gvl.on{border-color:rgba(255,255,255,.45);background:rgba(255,255,255,.09)}
+  .gvl img{width:64px;height:64px;object-fit:cover;border-radius:10px}
+  .gvl-t{margin:2px 0 0;font-size:14.5px;line-height:1.3;color:#fff}
+  .gvl .gvl-a{display:none}
+  .gvl.on .gvl-a{display:inline-block}
+  /* C · Horizon */
+  .gv-c .stage::before{height:56svh;background:linear-gradient(var(--dark) 0%,var(--dark) 30%,rgba(11,11,14,.35) 80%,transparent)}
+  .gv-c.gv-cap .step .big{font-size:clamp(38px,11vw,54px)}
+  .gv-c.gv-cap .steps .step .card{top:110px}
+  .gvc-dock{bottom:18px}
+  /* D · Stories */
+  .gv-d .steps{display:none}
+  .gv-d .stage{position:relative;height:100svh}
+  .gv-d .stage::before{height:44svh}
+  .gvd{position:absolute;inset:0;z-index:6;pointer-events:none}
+  .gvd-bars{position:absolute;top:80px;left:20px;right:20px;display:flex;gap:4px}
+  .gvd-bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.25);overflow:hidden}
+  .gvd-bars b{display:block;height:100%;width:0;background:#fff}
+  .gvd-cap{position:absolute;top:100px;left:20px;right:20px;z-index:2;pointer-events:auto;transition:opacity .22s}
+  .gvd-cap.swap{opacity:0}
+  .gvd-cap .card{opacity:1!important;transform:none!important;max-width:none}
+  .gvd-cap .big{font-size:clamp(32px,9.5vw,46px)}
+  .gvd-kick{margin:0;font-size:13.5px;color:#A9A9B2}
+  .gvd-t{margin:8px 0 0;font-size:clamp(26px,7.4vw,34px);font-weight:300;letter-spacing:-.02em;line-height:1.12}
+  .gvd-a{display:inline-flex;align-items:center;height:42px;padding:0 20px;margin-top:16px;border-radius:999px;background:#fff;color:#0B0B0E;font-size:15px;font-weight:600}
+  .gvd-prev,.gvd-next{all:unset;position:absolute;top:96px;bottom:0;pointer-events:auto;cursor:pointer}
+  .gvd-prev{left:0;width:30%}.gvd-next{right:0;width:70%}
+  .gvd-hint{position:absolute;bottom:22px;left:0;right:0;margin:0;text-align:center;font-size:13px;color:#8A8A93}
+  /* E · Split */
+  .gv-e .stage{position:sticky;top:64px;height:46svh;z-index:6;background:var(--dark)}
+  .gv-e .stage::before{display:none}
+  .gv-e .stage::after{height:14svh}
+  .gv-e .steps{margin-top:0;padding:10svh 20px 30svh}
+  .gv-e .step,.gv-e .gve-story{min-height:0;display:block;margin:0 0 34svh;padding:0}
+  .gv-e .step .card,.gve{display:block;max-width:none;opacity:.4;transform:none;padding:20px;border-radius:16px;background:#141419;border:1px solid rgba(255,255,255,.08);transition:opacity .4s}
+  .gv-e .step.on .card,.gv-e .gve-story.on .gve{opacity:1}
+  .gv-e .step .big{font-size:clamp(30px,8.6vw,40px)}
+  .gve img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
+  .gve-b{margin-top:12px}
+  .gve-t{margin:4px 0 0;font-size:18px;line-height:1.3;color:#fff}
+  /* switcher */
+  .gvswitch{position:fixed;z-index:300;left:8px;right:8px;bottom:10px;display:flex;justify-content:space-between;gap:2px;padding:5px;border-radius:999px;
+    background:rgba(20,20,26,.94);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:12.5px}
+  .gvswitch a{padding:8px 10px;border-radius:999px;color:#C9C9CF;white-space:nowrap}
+  .gvswitch a.on{background:#fff;color:#0B0B0E;font-weight:600}
 
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
@@ -1349,10 +1435,10 @@ const globeCX = () => W > 900 ? W * 0.62 - globeShift : W * 0.5;
 function render(now) {
   ctx.clearRect(0, 0, W, H);
   labelBoxes = [];
-  const R0 = Math.min(W, H) * 0.42;
+  const R0 = Math.min(W, H) * (W > 720 ? 0.42 : (window.GLOBE_R || 0.42));
   const R = R0 * cur.k;
   const cx = globeCX();
-  const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */
+  const cy = H * (W > 720 ? 0.52 : (window.GLOBE_CY || 0.6));  /* phones: position set by the mobile treatment */
 
   /* atmosphere glow just outside the limb */
   const atm = ctx.createRadialGradient(cx, cy, R * 0.97, cx, cy, R * 1.06);
@@ -1568,7 +1654,7 @@ function frame(now) {
       cur[key] += (tgt[key] - cur[key]) * (reduceMotion ? 1 : 0.08);
     if (igniteT0 !== null) {
       const p = clamp01((now - igniteT0) / 1800);
-      $("#coopcount").textContent = fmt(Math.round(COOP_DISPLAY_TOTAL * (reduceMotion ? 1 : easeOut(p))));
+      ($("#coopcount") || {}).textContent = fmt(Math.round(COOP_DISPLAY_TOTAL * (reduceMotion ? 1 : easeOut(p))));
       if (p >= 1) igniteT0 = null;
     }
     render(now);
@@ -1589,7 +1675,7 @@ canvas.addEventListener("pointerdown", e => {
 });
 canvas.addEventListener("pointermove", e => {
   if (!dragging) { pickDot(e); return; }
-  const R = Math.min(W, H) * 0.42 * cur.k;
+  const R = Math.min(W, H) * (W > 720 ? 0.42 : (window.GLOBE_R || 0.42)) * cur.k;
   const perPx = 60 / R;
   const now = performance.now();
   const dx = e.clientX - lastPt[0], dy = e.clientY - lastPt[1];
@@ -1619,10 +1705,10 @@ function pickDot(e) {
   if (cur.coops < .3) { hideGtip(); return; }
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  const R0 = Math.min(W, H) * 0.42;
+  const R0 = Math.min(W, H) * (W > 720 ? 0.42 : (window.GLOBE_R || 0.42));
   const R = R0 * cur.k;
   const cx = globeCX();
-  const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */
+  const cy = H * (W > 720 ? 0.52 : (window.GLOBE_CY || 0.6));  /* phones: position set by the mobile treatment */
   let best = null, bestD = 1e9;
   for (const d of COOPS) {
     const [x, y, v] = project(d[0], d[1], R, cx, cy);
@@ -1698,9 +1784,9 @@ canvas.addEventListener("click", e => {
   if (cur.spins < .3) return;
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-  const R = Math.min(W, H) * 0.42 * cur.k;
+  const R = Math.min(W, H) * (W > 720 ? 0.42 : (window.GLOBE_R || 0.42)) * cur.k;
   const cx = globeCX();
-  const cy = H * (W > 720 ? 0.52 : 0.6);  /* phones: globe sits lower, beat text rides above it */
+  const cy = H * (W > 720 ? 0.52 : (window.GLOBE_CY || 0.6));  /* phones: position set by the mobile treatment */
   for (let i = 0; i < STORY_PINS.length; i++) {
     const [x, y, v] = project(STORY_PINS[i][0], STORY_PINS[i][1], R, cx, cy);
     if (v > 0 && Math.hypot(mx - x, my - y) < 16) { openStory(i); return; }
@@ -1748,6 +1834,7 @@ const scEl = $(".scrolly");
 const ENTRY_FROM = { lon: -50, lat: 25, k: 1 };
 const ENTRY_TO = { lon: -78, lat: 42, k: 1.35 };
 const entryUpd = () => {
+  if (window.GV_NOENTRY) return;
   const r = scEl.getBoundingClientRect();
   if (r.top <= 0 || r.top >= innerHeight) return;
   const p = easeIO(clamp01((innerHeight - r.top) / innerHeight));
@@ -1854,6 +1941,210 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
     cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
   }
 }
+
+/* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
+const GVM = matchMedia("(max-width:720px)").matches;
+const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "now").toLowerCase()) : null;
+const GVS = ["now", "a", "b", "c", "d", "e"];
+if (GV && GVS.includes(GV)) {
+  const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
+  root.classList.add("gv-" + GV);
+  if (["now", "a", "c"].includes(GV)) root.classList.add("gv-cap");
+  const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
+  const escH = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+  const stepEls = $$(".step"), stepName = s => s.dataset.step;
+  const LABEL = { campuses: "Campuses", nuin: "N.U.in", coops: "Co‑op" };
+  /* drive the camera directly (what a scroll step does, without needing the step) */
+  const view = name => {
+    const v = VIEWS[name];
+    startFly({ lon: v.lon !== undefined ? v.lon : cur.lon, lat: v.lat !== undefined ? v.lat : cur.lat, k: v.k });
+    for (const key of LAYER_KEYS) tgt[key] = v[key];
+    focus = null; autorotate = !!v.auto; storySel = -1;
+    if (v.count && !counted) { counted = true; ignite = 1; igniteT0 = performance.now() + 500; }
+  };
+  const story = (i, opts = {}) => {
+    storySel = i; const st = TOUR_STORIES[i];
+    startFly({ lon: st.view.lon, lat: opts.lat !== undefined ? opts.lat : st.view.lat, k: opts.k !== undefined ? opts.k : st.view.k * (window.GV_STORYK || 1) });
+    Object.assign(tgt, { coops: .5, campus: .1, nuin: 0, labelC: 0, labelN: 0, spins: 1 });
+    autorotate = false;
+  };
+  const storyCard = (st, i, cls) => `<div class="${cls}" data-i="${i}"><img src="${escH(st.img)}" alt="" loading="lazy">` +
+    `<div class="${cls}-b"><p class="${cls}-loc">${escH(st.loc)}</p><p class="${cls}-t">${escH(st.t)}</p>` +
+    `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
+  const relayout = () => { if (typeof resize === "function") resize(); };
+  /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
+  if (GV !== "now") { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  /* one tracker: the step under mid-screen is current; it alone moves the camera */
+  const trackSteps = fn => {
+    let curS;
+    const f = () => {
+      const mid = innerHeight * .5;
+      const now = stepEls.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || null;
+      if (now !== curS) { curS = now; fn(now); }
+    };
+    addEventListener("scroll", () => requestAnimationFrame(f), { passive: true }); f();
+  };
+
+  /* A · Stage: pinned; progress above the caption; globe centred between caption and a swipeable story dock */
+  if (GV === "a") {
+    const prog = el("div", "gva-prog", stepEls.map(() => "<i></i>").join(""));
+    const dock = el("div", "gva-dock", TOUR_STORIES.map((st, i) => storyCard(st, i, "gvc")).join(""));
+    stage.append(prog, dock);
+    const place = () => {
+      const H = innerHeight, top = 270, bottom = H - 170;
+      window.GLOBE_CY = ((top + bottom) / 2) / H;
+      window.GLOBE_R = Math.min((bottom - top) / 2 - 8, innerWidth / 2 - 14) / Math.min(innerWidth, H) / 1.0;
+    };
+    place(); addEventListener("resize", place);
+    window.GV_STORYK = .62;
+    const marks = [...prog.children];
+    stepIO.disconnect();
+    trackSteps(st => {
+      const k = stepEls.indexOf(st);
+      prog.classList.toggle("on", k >= 0);
+      marks.forEach((m, i) => m.classList.toggle("on", i <= k));
+      if (st) view(st.dataset.step);
+    });
+    let t;
+    dock.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
+      const c = [...dock.children], mid = dock.scrollLeft + dock.clientWidth / 2;
+      const i = c.reduce((b, n, k) => Math.abs(n.offsetLeft + n.offsetWidth / 2 - mid) < Math.abs(c[b].offsetLeft + c[b].offsetWidth / 2 - mid) ? k : b, 0);
+      c.forEach((n, k) => n.classList.toggle("on", k === i));
+      if (dock.dataset.touched) story(i);
+    }, 120); }, { passive: true });
+    dock.addEventListener("touchstart", () => dock.dataset.touched = "1", { passive: true });
+    dock.firstElementChild.classList.add("on");
+  }
+
+  /* B · Tabs: unpinned; a segmented control over a square globe; co-op tab lists the stories */
+  if (GV === "b") {
+    window.GV_NOENTRY = true; window.GLOBE_CY = .5; window.GLOBE_R = .38; window.GV_STORYK = .7;
+    const wrap = el("div", "gvb");
+    const tabs = el("div", "gvb-tabs", stepEls.map((s, i) => `<button role="tab" aria-selected="${i ? "false" : "true"}" data-i="${i}">${LABEL[stepName(s)]}</button>`).join(""));
+    tabs.setAttribute("role", "tablist");
+    const panes = el("div", "gvb-panes");
+    stepEls.forEach((s, i) => {
+      const pane = el("div", "gvb-pane" + (i ? "" : " on")); pane.append(s.querySelector(".card"));
+      if (stepName(s) === "coops") pane.append(el("div", "gvb-list", TOUR_STORIES.map((st, k) => storyCard(st, k, "gvl")).join("")));
+      panes.append(pane);
+    });
+    scrolly.insertBefore(wrap, stage); wrap.append(tabs); stage.after(panes);
+    const go = i => {
+      [...tabs.children].forEach((b, k) => b.setAttribute("aria-selected", k === i ? "true" : "false"));
+      [...panes.children].forEach((p, k) => p.classList.toggle("on", k === i));
+      panes.querySelectorAll(".gvl").forEach(n => n.classList.remove("on"));
+      view(stepName(stepEls[i]));
+    };
+    tabs.addEventListener("click", e => { const b = e.target.closest("button"); if (b) go(+b.dataset.i); });
+    panes.addEventListener("click", e => {
+      const row = e.target.closest(".gvl"); if (!row || e.target.closest("a")) return;
+      panes.querySelectorAll(".gvl").forEach(n => n.classList.toggle("on", n === row));
+      story(+row.dataset.i); stage.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    });
+    let first = true;
+    new IntersectionObserver(es => { if (es[0].isIntersecting && first) { first = false; go(0); } }, { threshold: .3 }).observe(stage);
+    relayout();
+  }
+
+  /* C · Horizon: pinned; a huge planet rising from the bottom; scroll turns it continuously */
+  if (GV === "c") {
+    window.GV_NOENTRY = true;
+    const placeC = () => { const H = innerHeight, W = innerWidth, R = W * 1.18; window.GLOBE_R = R / Math.min(W, H); window.GLOBE_CY = (H * .44 + R) / H; };
+    placeC(); addEventListener("resize", placeC);
+    for (const k in VIEWS) { delete VIEWS[k].lon; delete VIEWS[k].lat; VIEWS[k].k = 1; VIEWS[k].auto = false; }
+    stepIO.disconnect();
+    trackSteps(st => { if (st) view(st.dataset.step); });
+    const dock = el("div", "gva-dock gvc-dock", TOUR_STORIES.map((st, i) => storyCard(st, i, "gvc")).join(""));
+    stage.append(dock);
+    const steps = $(".steps");
+    let pauseAt = null;
+    const scrub = () => {
+      const r = steps.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+      if (pauseAt !== null) { if (Math.abs(scrollY - pauseAt) < 60) return; pauseAt = null; storySel = -1; }
+      const p = clamp01((innerHeight * .5 - r.top) / Math.max(1, r.height - innerHeight * .7));
+      fly = null; tgt.lon = -112 + 135 * p; tgt.lat = 8 - 4 * p; tgt.k = 1;
+    };
+    addEventListener("scroll", () => requestAnimationFrame(scrub), { passive: true }); scrub();
+    let t;
+    dock.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
+      const c = [...dock.children], mid = dock.scrollLeft + dock.clientWidth / 2;
+      const i = c.reduce((b, n, k) => Math.abs(n.offsetLeft + n.offsetWidth / 2 - mid) < Math.abs(c[b].offsetLeft + c[b].offsetWidth / 2 - mid) ? k : b, 0);
+      c.forEach((n, k) => n.classList.toggle("on", k === i));
+      if (dock.dataset.touched) { pauseAt = scrollY; story(i, { k: 1, lat: TOUR_STORIES[i].view.lat - 34 }); }
+    }, 120); }, { passive: true });
+    dock.addEventListener("touchstart", () => dock.dataset.touched = "1", { passive: true });
+    dock.firstElementChild.classList.add("on");
+  }
+
+  /* D · Stories: one full-screen panel you tap through, Instagram-stories style */
+  if (GV === "d") {
+    window.GV_NOENTRY = true; window.GV_STORYK = .7;
+    const segs = [...stepEls.map(s => ({ kind: "beat", name: stepName(s), card: s.querySelector(".card") })),
+                  ...TOUR_STORIES.map((st, i) => ({ kind: "story", i, st }))];
+    const ui = el("div", "gvd");
+    ui.innerHTML = `<div class="gvd-bars">${segs.map(() => "<i><b></b></i>").join("")}</div><div class="gvd-cap"></div>` +
+      `<button class="gvd-prev" aria-label="Previous"></button><button class="gvd-next" aria-label="Next"></button><p class="gvd-hint">Tap to continue</p>`;
+    stage.append(ui);
+    const cap = ui.querySelector(".gvd-cap"), bars = [...ui.querySelectorAll(".gvd-bars b")];
+    const keep = el("div", "gvd-keep"); keep.hidden = true; ui.append(keep);
+    segs.forEach(sg => { if (sg.card) keep.append(sg.card); });
+    const place = () => { const H = innerHeight; window.GLOBE_CY = .6; window.GLOBE_R = Math.min(.44, (H * .5) / Math.min(innerWidth, H) / 2.1); };
+    place();
+    let k = -1, t0 = 0, vis = false, paused = false, DUR = 6500;
+    const show = n => {
+      k = Math.max(0, Math.min(segs.length - 1, n)); t0 = performance.now();
+      bars.forEach((b, i) => b.style.width = i < k ? "100%" : "0%");
+      const sg = segs[k];
+      cap.classList.add("swap");
+      setTimeout(() => {
+        [...cap.children].forEach(n => n.classList.contains("card") ? keep.append(n) : n.remove());
+        if (sg.kind === "beat") { cap.append(sg.card); view(sg.name); }
+        else { cap.innerHTML = `<p class="gvd-kick">Co‑op story · ${escH(sg.st.loc)}</p><p class="gvd-t">${escH(sg.st.t)}</p><a class="gvd-a" href="${escH(sg.st.url)}">Read the story<span aria-hidden="true"> →</span></a>`; story(sg.i); }
+        cap.classList.remove("swap");
+      }, k === 0 && !cap.children.length ? 0 : 220);
+    };
+    ui.querySelector(".gvd-next").onclick = () => show(k + 1 >= segs.length ? 0 : k + 1);
+    ui.querySelector(".gvd-prev").onclick = () => show(k - 1);
+    let holdT;
+    ui.addEventListener("pointerdown", () => { holdT = setTimeout(() => paused = true, 250); });
+    addEventListener("pointerup", () => { clearTimeout(holdT); if (paused) setTimeout(() => paused = false, 0); });
+    new IntersectionObserver(es => { vis = es[0].intersectionRatio > .6; if (vis && k < 0) show(0); }, { threshold: [0, .6, 1] }).observe(stage);
+    const loop = now => {
+      if (vis && !paused && !document.hidden && k >= 0) {
+        if (reduceMotion) { t0 = now; } else {
+          const f = Math.min(1, (now - t0) / DUR); bars[k].style.width = (f * 100).toFixed(1) + "%";
+          if (f >= 1 && k < segs.length - 1) show(k + 1);
+        }
+      } else if (k >= 0) t0 = now - (parseFloat(bars[k].style.width) || 0) / 100 * DUR;
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+    relayout();
+  }
+
+  /* E · Split: the globe pins in the top half; cards scroll up beneath it and steer it */
+  if (GV === "e") {
+    window.GV_NOENTRY = true; window.GLOBE_CY = .54; window.GLOBE_R = .44; window.GV_STORYK = .8;
+    const steps = $(".steps");
+    TOUR_STORIES.forEach((st, i) => steps.append(el("div", "gve-story", storyCard(st, i, "gve"))));
+    const cards = [...steps.children];
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      cards.forEach(c => c.classList.toggle("on", c === e.target));
+      if (e.target.classList.contains("step")) view(e.target.dataset.step);
+      else story(+e.target.querySelector(".gve").dataset.i);
+    }), { rootMargin: "-58% 0px -30% 0px" });
+    cards.forEach(c => io.observe(c));
+    relayout();
+  }
+
+  /* treatment switcher (only when ?globe= is in the URL) */
+  if (new URLSearchParams(location.search).has("globe")) {
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split" };
+    const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
+    bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
+  }
+}
 {
 /* ============ concept-7 ============ */
 /* globe on phones: exactly one current step (the one at mid-screen) owns the caption slot;
@@ -1862,16 +2153,17 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
   const steps = $$(".step"), coopsStep = $('.step[data-step="coops"]');
   let curStep = null;
   const upd = () => {
-    if (innerWidth > 720) { steps.forEach(s => s.classList.remove("cur", "past")); return; }
+    if (innerWidth > 720 || !document.documentElement.classList.contains("gv-cap")) { steps.forEach(s => s.classList.remove("cur", "past")); return; }
     const mid = innerHeight * .5;
-    const now = steps.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || null;
+    const pinned = $(".scrolly").getBoundingClientRect().top <= 70;
+    const now = pinned ? (steps.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || null) : null;
     if (now !== curStep) {
       curStep = now;
       const k = steps.indexOf(now), lastPast = steps.every(s => s.getBoundingClientRect().bottom <= mid);
       steps.forEach((s, i) => { s.classList.toggle("cur", s === now); s.classList.toggle("past", lastPast || (k >= 0 && i < k)); });
     }
-    const want = curStep === coopsStep;
-    if (gtCard.hidden === want) gtCard.hidden = !want;
+    document.documentElement.classList.toggle("gv-coop", curStep === coopsStep);
+    if (document.documentElement.classList.contains("gv-now")) { const want = curStep === coopsStep; if (gtCard.hidden === want) gtCard.hidden = !want; }
   };
   addEventListener("scroll", () => requestAnimationFrame(upd), { passive: true });
   addEventListener("resize", upd); upd();
