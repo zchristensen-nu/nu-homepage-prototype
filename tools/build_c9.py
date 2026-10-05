@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="27">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="28">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -660,6 +660,7 @@ NEW_CSS = r'''
   .gvc-loc,.gvl-loc,.gve-loc{margin:0;font-size:12.5px;color:#A9A9B2}
   .gvc-t{margin:3px 0 0;font-size:14.5px;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .gvc-a,.gvl-a,.gve-a{display:inline-block;margin-top:6px;font-size:13px;font-weight:600;color:#fff}
+  .gv-places{margin:12px 0 0!important;font-size:13px!important;line-height:1.6;color:#8A8A93;max-width:none}
   /* A · Stage */
   .gv-a .stage canvas{cursor:default}
   .gva-prog{position:fixed;z-index:7;top:80px;left:20px;display:flex;gap:6px;opacity:0;transition:opacity .4s}
@@ -814,6 +815,15 @@ if (GV && GVS.includes(GV)) {
     };
     addEventListener("scroll", () => requestAnimationFrame(f), { passive: true }); f();
   };
+
+  /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
+  if (GV !== "now") {
+    VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
+    const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
+    const order = ["Boston", "London", "New York City", "Oakland"];
+    list("campuses", [...order, ...CAMPUSES.map(c => c[2]).filter(n => !order.includes(n))]);
+    list("nuin", NUIN.map(c => c[2]));
+  }
 
   /* A · Stage: pinned; progress above the caption; globe centred between caption and a swipeable story dock */
   if (GV === "a") {
@@ -1432,7 +1442,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="27"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="28"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1442,7 +1452,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="27">', '<meta name="concept11-rev" content="16">'),
+for x, y in (('<meta name="concept10-rev" content="28">', '<meta name="concept11-rev" content="17">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
