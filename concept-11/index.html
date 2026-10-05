@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="17">
+<meta name="concept11-rev" content="18">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -691,6 +691,22 @@
   .gve img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
   .gve-b{margin-top:12px}
   .gve-t{margin:4px 0 0;font-size:18px;line-height:1.3;color:#fff}
+  /* GUS */
+  .gv-gus #gt-card,.gv-gus .stage .hint{display:none!important}
+  .gv-gus .steps{height:460svh;padding:0}
+  .gv-gus .steps > *{display:none}
+  .gv-gus .stage::before{display:none}
+  .gus{position:absolute;z-index:6;left:var(--edge);top:50%;transform:translateY(-50%);max-width:min(560px,40vw);pointer-events:none}
+  .gus-l{margin:0;font-size:clamp(34px,4.6vw,72px);font-weight:200;letter-spacing:-.035em;line-height:1.05;color:#fff;
+    opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+  .gus-l.past{opacity:.32;transform:none}
+  .gus-l.on{opacity:1;transform:none}
+  .gus-l:last-child.on{font-weight:300}
+  @media (max-width:720px){
+    .gus{top:84px;left:20px;right:20px;max-width:none;transform:none}
+    .gus-l{font-size:clamp(28px,8.4vw,38px)}
+  }
+  @media (prefers-reduced-motion: reduce){.gus-l{transition:none}}
   /* switcher */
   .gvswitch{position:fixed;z-index:300;left:8px;right:8px;bottom:10px;display:flex;justify-content:space-between;gap:2px;padding:5px;border-radius:999px;
     background:rgba(20,20,26,.94);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:12.5px}
@@ -817,7 +833,7 @@
       </div></div>
   </div></div>
   <div class="mpanel" id="mp-experiential" hidden><div class="wrap mp-in">
-      <div class="mp-lead"><div class="mp-title">Experiential Learning</div><p>Learning that happens on the job, in the field, everywhere.</p><a class="storylink" href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a></div>
+      <div class="mp-lead"><div class="mp-title">Experiential Learning</div><p>Education on the job, in the field, everywhere.</p><a class="storylink" href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a></div>
       <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
         <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
         <a href="https://www.northeastern.edu/co-op">Cooperative Education</a>
@@ -868,7 +884,7 @@
         <a href="https://toronto.northeastern.edu/">Toronto, ON</a>
         <a href="https://vancouver.northeastern.edu/">Vancouver, BC</a>
       </div></div>
-      <a class="mp-feat" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><span class="ft">Learning how global negotiation really works</span><span class="fl">Read on NGN &#8594;</span></a>
+      <a class="mp-feat" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"><div class="mp-h">From the newsroom</div><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><span class="ft">How global negotiation really works</span><span class="fl">Read on NGN &#8594;</span></a>
   </div></div>
   <div class="mpanel" id="mp-more" hidden><div class="wrap mp-in">
       <div class="mp-col"><div class="mp-h">About</div><div class="mp-links">
@@ -1013,7 +1029,7 @@
   <h1 class="vh">Northeastern University</h1>
   <div class="hx-in" id="hxIn">
     <div class="hx-copy" aria-live="polite">
-      <h2 class="hx-title" id="hxTitle">Learning by doing</h2>
+      <h2 class="hx-title" id="hxTitle">Learn by doing</h2>
       <p class="hx-syn" id="hxSyn">Every part of your journey at Northeastern is built for immersive learning, innovation, and integrating emerging technologies, like AI, to enhance creativity and career readiness.</p>
       <a class="hx-btn" id="hxCta" href="#" hidden><span id="hxCtaL"></span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
@@ -1156,7 +1172,7 @@
           <div class="xshade"></div>
           <div class="xbody">
             <h3>Robots walk to class here. Student researchers are teaching them how</h3>
-            <a class="storylink" href="https://news.northeastern.edu/2025/10/01/walking-the-future/">Walking the future</a>
+            <a class="storylink" href="https://news.northeastern.edu/2025/10/01/walking-the-future/">Robots on campus</a>
           </div>
           <span class="xtag">Field robotics</span>
         </article>
@@ -1218,9 +1234,9 @@
         <h2><span class="line"><span>Put experience to work.</span></span></h2>
       </div>
       <div class="j-rail" id="jRail">
-<a class="j-panel j-photo" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Harvesting oysters on Maine's Nonesuch River</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
+<a class="j-panel j-photo" href="https://news.northeastern.edu/2022/11/01/oyster-harvesting-maine/"><img src="../img/oyster-dock.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Oyster harvests on Maine's Nonesuch River</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">3,900+</span><span class="g-l">employer partners worldwide</span></div></div>
-<a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Developing cameras for Apple products</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
+<a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"><img src="../img/apple-coop.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Camera development for Apple products</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">100+</span><span class="g-l">years of co‑op</span></div></div>
 <a class="j-panel j-photo" href="https://news.northeastern.edu/2025/01/24/microscopy-skills-transfer-industries/"><img src="../img/microscopy-coop.jpg" alt="" loading="lazy"><span class="j-cap"><span class="j-cap-t">Microscopy, from diabetes research to EV batteries</span><span class="j-cap-r">Read on NGN &#8594;</span></span></a>
 <div class="j-panel j-stat"><div><span class="g-n">350K+</span><span class="g-l">alumni around the world</span></div></div>
@@ -1736,7 +1752,7 @@ const NGN = "https://news.northeastern.edu";
 const TOUR_STORIES = [
   { loc: "Cupertino, California", view: { lon: -122.03, lat: 37.32, k: 2.4 }, focus: [37.32, -122.03],
     img: "../img/apple-coop.jpg",
-    t: "Developing cameras for Apple products, on co‑op",
+    t: "Camera development for Apple products, on co‑op",
     url: NGN + "/2025/01/15/apple-co-op-camera-process-engineer/" },
   { loc: "Phnom Penh, Cambodia", view: { lon: 104.92, lat: 11.56, k: 2.4 }, focus: [11.56, 104.92],
     img: NGN + "/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg",
@@ -1744,7 +1760,7 @@ const TOUR_STORIES = [
     url: NGN + "/2023/11/06/harpswell-foundation-co-op-cambodian-women/" },
   { loc: "Geneva, Switzerland", view: { lon: 6.14, lat: 46.2, k: 2.6 }, focus: [46.2, 6.14],
     img: NGN + "/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg",
-    t: "Learning how global negotiation really works",
+    t: "How global negotiation really works",
     url: NGN + "/2023/11/27/dialogue-of-civilizations-geneva-anniversary/" },
   { loc: "Vienna, Austria", view: { lon: 16.37, lat: 48.21, k: 2.6 }, focus: [48.21, 16.37],
     img: NGN + "/wp-content/uploads/2023/09/Vienna1400.jpg",
@@ -1752,7 +1768,7 @@ const TOUR_STORIES = [
     url: NGN + "/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/" },
   { loc: "Scarborough, Maine", view: { lon: -70.33, lat: 43.58, k: 2.4 }, focus: [43.58, -70.33],
     img: "../img/oyster-coop.jpg",
-    t: "Harvesting oysters on Maine's Nonesuch River, on co‑op",
+    t: "Oyster harvests on Maine's Nonesuch River, on co‑op",
     url: NGN + "/2022/11/01/oyster-harvesting-maine/" },
 ];
 const STORY_PINS = TOUR_STORIES.map(st => st.focus);
@@ -1950,8 +1966,9 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
-const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "a").toLowerCase()) : null;
-const GVS = ["now", "a", "b", "c", "d", "e"];
+const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
+const GV = GVP === "gus" ? "gus" : (GVM ? (GVP || "a") : null);
+const GVS = ["now", "a", "b", "c", "d", "e", "gus"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
   root.classList.add("gv-" + GV);
@@ -1979,7 +1996,7 @@ if (GV && GVS.includes(GV)) {
     `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
-  if (GV !== "now") { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  if (GV !== "now" && GV !== "gus") { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
   /* one tracker: the step under mid-screen is current; it alone moves the camera */
   const trackSteps = fn => {
     let curS;
@@ -1992,7 +2009,7 @@ if (GV && GVS.includes(GV)) {
   };
 
   /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
-  if (GV !== "now") {
+  if (GV !== "now" && GV !== "gus") {
     VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
     const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
     const order = ["Boston", "London", "New York City", "Oakland"];
@@ -2155,9 +2172,54 @@ if (GV && GVS.includes(GV)) {
     relayout();
   }
 
+  /* GUS · one sentence builds as you scroll; each phrase lights its own layer. No flights, no labels. */
+  if (GV === "gus") {
+    window.GV_NOENTRY = true;
+    stepIO.disconnect();
+    const LINES = ["One university.", "14 campuses.", "8 places to begin.", "Co‑op on every continent.", "All of it, yours."];
+    const box = el("div", "gus", LINES.map(t => `<p class="gus-l">${escH(t)}</p>`).join(""));
+    box.setAttribute("aria-live", "polite");
+    stage.append(box);
+    const ls = [...box.children];
+    const BOS = CAMPUSES.find(c => c[2] === "Boston");
+    STORY_PINS.length = 0; STORY_PINS.push([BOS[0], BOS[1]]); storySel = 0;
+    const place = () => {
+      if (innerWidth > 720) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
+      const H = innerHeight, top = 84 + box.offsetHeight + 24, bottom = H - 30;
+      window.GLOBE_CY = ((top + bottom) / 2) / H; window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 6, innerWidth / 2 - 18) / Math.min(innerWidth, H));
+    };
+    const STATES = [
+      { campus: 0, nuin: 0, coops: 0, spins: 1, k: 1 },
+      { campus: 1, nuin: 0, coops: 0, spins: 0, k: 1 },
+      { campus: 1, nuin: 1, coops: 0, spins: 0, k: 1 },
+      { campus: 1, nuin: 1, coops: 1, spins: 0, k: .96 },
+      { campus: 1, nuin: 1, coops: 1, spins: 0, k: .9 },
+    ];
+    cur.lon = tgt.lon = -42; cur.lat = tgt.lat = 30; cur.k = tgt.k = 1;
+    Object.assign(cur, STATES[0]); Object.assign(tgt, STATES[0]); cur.labelC = tgt.labelC = 0; cur.labelN = tgt.labelN = 0;
+    fly = null; autorotate = true;
+    let beat = -1;
+    const TH = [0, .17, .36, .55, .74];
+    const upd = () => {
+      const r = scrolly.getBoundingClientRect(), p = clamp01(-r.top / Math.max(1, r.height - innerHeight));
+      let b = 0; TH.forEach((t, i) => { if (p >= t) b = i; });
+      if (b === beat) return; beat = b;
+      ls.forEach((l, i) => { l.classList.toggle("on", i === b); l.classList.toggle("past", i < b); });
+      const st = STATES[b]; for (const k of ["campus", "nuin", "coops", "spins"]) tgt[k] = st[k]; tgt.k = st.k;
+      labelOff();
+    };
+    const labelOff = () => { tgt.labelC = 0; tgt.labelN = 0; };
+    /* a slow, steady turn (the engine's idle spin is quickened by a third) */
+    const drift = () => { if (!fly) tgt.lon -= .02; requestAnimationFrame(drift); };
+    if (!reduceMotion) requestAnimationFrame(drift);
+    addEventListener("scroll", () => requestAnimationFrame(upd), { passive: true });
+    addEventListener("resize", () => { place(); relayout(); });
+    requestAnimationFrame(() => { place(); relayout(); upd(); });
+  }
+
   /* treatment switcher (only when ?globe= is in the URL) */
   if (new URLSearchParams(location.search).has("globe")) {
-    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split" };
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS" };
     const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
     bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
   }
@@ -2205,7 +2267,7 @@ $$("#nav .row a, #nav .row .nvicon, #nav .row .tkv-open").forEach(el => el.addEv
   clearTimeout(mHoverT); mCloseAll();
 }));
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
-const FEATS = [{"t": "Co‑op", "v": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4", "img": "../img/apple-coop.jpg", "card": "../img/aquarium-dive.jpg", "syn": "Every part of your journey at Northeastern is built for immersive learning, innovation, and integrating emerging technologies, like AI, to enhance creativity and career readiness.", "cta": {"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}, "eps": [{"t": "Developing cameras for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "Learning how global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}], "h": "Learning by doing"}, {"t": "Research", "v": "https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "syn": "Northeastern is an R1 research enterprise that advances work in health, security, and sustainability with partners in industry, government, and communities.", "cta": {"label": "Explore research", "href": "https://research.northeastern.edu/"}, "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}], "h": "Breakthroughs begin here"}, {"t": "Global network", "v": "https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "card": "../img/global-london.jpg", "syn": "Our dynamic network of campuses, alumni, and partners is designed to maximize opportunities for powerful educational experiences, influential research, and compelling collaborations in every part of the world.", "cta": {"label": "See the network", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}], "h": "Live, learn, and innovate without boundaries"}, {"t": "AI", "v": "https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "syn": "We bring together researchers, applied AI experts, educators, and industry partners to advance AI in health, life sciences, responsible AI, climate and sustainability, and real-world organizational practice.", "cta": {"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"}, "eps": [{"t": "Query, create or be curious at new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "The student refining AI at one of the largest real estate firms", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Co-op_AI_1400.jpg", "u": "https://news.northeastern.edu/2026/09/09/real-estate-ai-co-op/"}, {"t": "In Serbia, she helped build an AI to give activists worldwide a leg up", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/081426_MM_Ayla_DiBattista_006.jpg", "u": "https://news.northeastern.edu/2026/09/03/ayla-dibattista-co-op-northeastern/"}, {"t": "This professor is making AI systems more aware of their ignorance", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "u": "https://news.northeastern.edu/2026/09/21/northeastern-pecase-award-2026/"}], "h": "Shaping responsible, human-centered AI"}, {"t": "Entrepreneurship", "v": "https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "syn": "Learn, create, launch, and scale with one of the most extensive entrepreneurship support systems in the world.", "cta": {"label": "Read founder stories", "href": "https://news.northeastern.edu/tag/entrepreneurship/"}, "eps": [{"t": "Student startup develops hands-on learning toy for future engineers", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "u": "https://news.northeastern.edu/2026/07/31/nexttile-startup-stem-northeastern/"}, {"t": "Founders pitch startups in Dragons’ Den-style event for funding", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "u": "https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"}, {"t": "Revolutionizing dental hygiene, starting with your toothbrush", "img": "https://news.northeastern.edu/wp-content/uploads/2025/08/NOOK_1400.jpg", "u": "https://news.northeastern.edu/2026/07/15/how-to-keep-toothbrush-clean-nook/"}, {"t": "Is this healthy energy drink coming to a store near you?", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/"}], "h": "Built to move ideas forward. Faster."}];
+const FEATS = [{"t": "Co‑op", "v": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4", "img": "../img/apple-coop.jpg", "card": "../img/aquarium-dive.jpg", "syn": "Every part of your journey at Northeastern is built for immersive learning, innovation, and integrating emerging technologies, like AI, to enhance creativity and career readiness.", "cta": {"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}, "eps": [{"t": "Camera development for Apple products, on co‑op", "img": "../img/apple-coop.jpg", "u": "https://news.northeastern.edu/2025/01/15/apple-co-op-camera-process-engineer/"}, {"t": "Teacher, mentor, big sister: six months in a Cambodian dormitory", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Cecile-Doehrty_1400.jpg", "u": "https://news.northeastern.edu/2023/11/06/harpswell-foundation-co-op-cambodian-women/"}, {"t": "How global negotiation really works", "img": "https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg", "u": "https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"}, {"t": "Coffeehouses, Mozart and international finance, on co‑op", "img": "https://news.northeastern.edu/wp-content/uploads/2023/09/Vienna1400.jpg", "u": "https://news.northeastern.edu/2023/10/13/unitcargo-finance-co-op-vienna-switzerland/"}], "h": "Learn by doing"}, {"t": "Research", "v": "https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "syn": "Northeastern is an R1 research enterprise that advances work in health, security, and sustainability with partners in industry, government, and communities.", "cta": {"label": "Explore research", "href": "https://research.northeastern.edu/"}, "eps": [{"t": "This Northeastern researcher is making ‘waves’ with magnets", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg", "u": "https://news.northeastern.edu/2026/09/14/magnons-quantum-computing-research/"}, {"t": "Robots walk to class here. Researchers are teaching them how", "img": "https://news.northeastern.edu/wp-content/uploads/2025/09/093025_MM_Field_Robotos_Lab_033.jpg", "u": "https://news.northeastern.edu/2025/10/01/walking-the-future/"}, {"t": "Cracking the axolotl code: how to regrow limbs and stay young", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072226_AS_-Calina_Copos_010.jpg", "u": "https://news.northeastern.edu/2026/07/27/axolotl-regeneration-anti-aging/"}, {"t": "Scientists put algae to work making fuel. AI keeps watch", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Biofuel1400.jpg", "u": "https://news.northeastern.edu/2026/08/28/algae-biofuel-ai-research/"}], "h": "Breakthroughs begin here"}, {"t": "Global network", "v": "https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "card": "../img/global-london.jpg", "syn": "Our dynamic network of campuses, alumni, and partners is designed to maximize opportunities for powerful educational experiences, influential research, and compelling collaborations in every part of the world.", "cta": {"label": "See the network", "href": "#campuses"}, "eps": [{"t": "Northeastern students make a fast start to London life", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg", "u": "https://news.northeastern.edu/2026/09/08/move-in-week-london-campus/"}, {"t": "Query, create or be curious at the new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "All-analog Oakland student government race brings record voter turnout", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/092226_LC_Student_Government_Event_020.jpg", "u": "https://news.northeastern.edu/2026/09/25/northeastern-oakland-student-elections/"}], "h": "Live, learn, and innovate without boundaries"}, {"t": "AI", "v": "https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "syn": "We bring together researchers, applied AI experts, educators, and industry partners to advance AI in health, life sciences, responsible AI, climate and sustainability, and real-world organizational practice.", "cta": {"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"}, "eps": [{"t": "Query, create or be curious at new AI Makerspace in Boston", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg", "u": "https://news.northeastern.edu/2026/09/23/ai-makerspace-boston-campus/"}, {"t": "The student refining AI at one of the largest real estate firms", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/Co-op_AI_1400.jpg", "u": "https://news.northeastern.edu/2026/09/09/real-estate-ai-co-op/"}, {"t": "In Serbia, she helped build an AI to give activists worldwide a leg up", "img": "https://news.northeastern.edu/wp-content/uploads/2026/08/081426_MM_Ayla_DiBattista_006.jpg", "u": "https://news.northeastern.edu/2026/09/03/ayla-dibattista-co-op-northeastern/"}, {"t": "This professor is making AI systems more aware of their ignorance", "img": "https://news.northeastern.edu/wp-content/uploads/2026/09/Francesco_Restuccia_1400.jpg", "u": "https://news.northeastern.edu/2026/09/21/northeastern-pecase-award-2026/"}], "h": "Responsible, human-centered AI"}, {"t": "Entrepreneurship", "v": "https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "card": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "syn": "Learn, create, launch, and scale with one of the most extensive entrepreneurship support systems in the world.", "cta": {"label": "Read founder stories", "href": "https://news.northeastern.edu/tag/entrepreneurship/"}, "eps": [{"t": "Student startup develops hands-on learning toy for future engineers", "img": "https://news.northeastern.edu/wp-content/uploads/2026/07/072426_MM_NextTile_002.jpg", "u": "https://news.northeastern.edu/2026/07/31/nexttile-startup-stem-northeastern/"}, {"t": "Founders pitch startups in Dragons’ Den-style event for funding", "img": "https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg", "u": "https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"}, {"t": "Revolutionizing dental hygiene, starting with your toothbrush", "img": "https://news.northeastern.edu/wp-content/uploads/2025/08/NOOK_1400.jpg", "u": "https://news.northeastern.edu/2026/07/15/how-to-keep-toothbrush-clean-nook/"}, {"t": "Is this healthy energy drink coming to a store near you?", "img": "https://news.northeastern.edu/wp-content/uploads/2026/03/033126_MM_The_Market_031.jpg", "u": "https://news.northeastern.edu/2026/04/10/healthy-energy-drink-journee/"}], "h": "Built to move ideas forward. Faster."}];
 
 /* ============ billboard ============ */
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");

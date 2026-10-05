@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="28">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="29">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -266,7 +266,7 @@ HD = {"coop": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experie
 # copy: brand voice (trusted, empowering, confident), brand facts only. Co-op numbers from the
 # key-terms entry; network numbers from the boilerplate; research line from the research messaging page.
 FEATS = [
- feat("Co‑op", "Co‑op", v=HD["coop"], h="Learning by doing", card="../img/aquarium-dive.jpg",
+ feat("Co‑op", "Co‑op", v=HD["coop"], h="Learn by doing", card="../img/aquarium-dive.jpg",
       syn="Every part of your journey at Northeastern is built for immersive learning, innovation, and integrating emerging technologies, like AI, to enhance creativity and career readiness.",
       cta={"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}),
  feat("Research", "Research", v=HD["research"], h="Breakthroughs begin here",
@@ -275,7 +275,7 @@ FEATS = [
  feat("Global network", "Global network", v=HD["global"], h="Live, learn, and innovate without boundaries", card="../img/global-london.jpg",
       syn="Our dynamic network of campuses, alumni, and partners is designed to maximize opportunities for powerful educational experiences, influential research, and compelling collaborations in every part of the world.",
       cta={"label": "See the network", "href": "#campuses"}),
- feat("AI", None, v=HD["ai"], h="Shaping responsible, human-centered AI", still=U+"/2026/09/AImakerspace1400.jpg",
+ feat("AI", None, v=HD["ai"], h="Responsible, human-centered AI", still=U+"/2026/09/AImakerspace1400.jpg",
       card=U+"/2026/09/Francesco_Restuccia_1400.jpg",
       syn="We bring together researchers, applied AI experts, educators, and industry partners to advance AI in health, life sciences, responsible AI, climate and sustainability, and real-world organizational practice.",
       cta={"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"},
@@ -731,6 +731,22 @@ NEW_CSS = r'''
   .gve img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
   .gve-b{margin-top:12px}
   .gve-t{margin:4px 0 0;font-size:18px;line-height:1.3;color:#fff}
+  /* GUS */
+  .gv-gus #gt-card,.gv-gus .stage .hint{display:none!important}
+  .gv-gus .steps{height:460svh;padding:0}
+  .gv-gus .steps > *{display:none}
+  .gv-gus .stage::before{display:none}
+  .gus{position:absolute;z-index:6;left:var(--edge);top:50%;transform:translateY(-50%);max-width:min(560px,40vw);pointer-events:none}
+  .gus-l{margin:0;font-size:clamp(34px,4.6vw,72px);font-weight:200;letter-spacing:-.035em;line-height:1.05;color:#fff;
+    opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+  .gus-l.past{opacity:.32;transform:none}
+  .gus-l.on{opacity:1;transform:none}
+  .gus-l:last-child.on{font-weight:300}
+  @media (max-width:720px){
+    .gus{top:84px;left:20px;right:20px;max-width:none;transform:none}
+    .gus-l{font-size:clamp(28px,8.4vw,38px)}
+  }
+  @media (prefers-reduced-motion: reduce){.gus-l{transition:none}}
   /* switcher */
   .gvswitch{position:fixed;z-index:300;left:8px;right:8px;bottom:10px;display:flex;justify-content:space-between;gap:2px;padding:5px;border-radius:999px;
     background:rgba(20,20,26,.94);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:12.5px}
@@ -775,8 +791,9 @@ NEW_CSS = r'''
 GLOBE_VARIANTS = r'''
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
-const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "a").toLowerCase()) : null;
-const GVS = ["now", "a", "b", "c", "d", "e"];
+const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
+const GV = GVP === "gus" ? "gus" : (GVM ? (GVP || "a") : null);
+const GVS = ["now", "a", "b", "c", "d", "e", "gus"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
   root.classList.add("gv-" + GV);
@@ -804,7 +821,7 @@ if (GV && GVS.includes(GV)) {
     `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
-  if (GV !== "now") { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  if (GV !== "now" && GV !== "gus") { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
   /* one tracker: the step under mid-screen is current; it alone moves the camera */
   const trackSteps = fn => {
     let curS;
@@ -817,7 +834,7 @@ if (GV && GVS.includes(GV)) {
   };
 
   /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
-  if (GV !== "now") {
+  if (GV !== "now" && GV !== "gus") {
     VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
     const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
     const order = ["Boston", "London", "New York City", "Oakland"];
@@ -980,9 +997,54 @@ if (GV && GVS.includes(GV)) {
     relayout();
   }
 
+  /* GUS · one sentence builds as you scroll; each phrase lights its own layer. No flights, no labels. */
+  if (GV === "gus") {
+    window.GV_NOENTRY = true;
+    stepIO.disconnect();
+    const LINES = ["One university.", "14 campuses.", "8 places to begin.", "Co‑op on every continent.", "All of it, yours."];
+    const box = el("div", "gus", LINES.map(t => `<p class="gus-l">${escH(t)}</p>`).join(""));
+    box.setAttribute("aria-live", "polite");
+    stage.append(box);
+    const ls = [...box.children];
+    const BOS = CAMPUSES.find(c => c[2] === "Boston");
+    STORY_PINS.length = 0; STORY_PINS.push([BOS[0], BOS[1]]); storySel = 0;
+    const place = () => {
+      if (innerWidth > 720) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
+      const H = innerHeight, top = 84 + box.offsetHeight + 24, bottom = H - 30;
+      window.GLOBE_CY = ((top + bottom) / 2) / H; window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 6, innerWidth / 2 - 18) / Math.min(innerWidth, H));
+    };
+    const STATES = [
+      { campus: 0, nuin: 0, coops: 0, spins: 1, k: 1 },
+      { campus: 1, nuin: 0, coops: 0, spins: 0, k: 1 },
+      { campus: 1, nuin: 1, coops: 0, spins: 0, k: 1 },
+      { campus: 1, nuin: 1, coops: 1, spins: 0, k: .96 },
+      { campus: 1, nuin: 1, coops: 1, spins: 0, k: .9 },
+    ];
+    cur.lon = tgt.lon = -42; cur.lat = tgt.lat = 30; cur.k = tgt.k = 1;
+    Object.assign(cur, STATES[0]); Object.assign(tgt, STATES[0]); cur.labelC = tgt.labelC = 0; cur.labelN = tgt.labelN = 0;
+    fly = null; autorotate = true;
+    let beat = -1;
+    const TH = [0, .17, .36, .55, .74];
+    const upd = () => {
+      const r = scrolly.getBoundingClientRect(), p = clamp01(-r.top / Math.max(1, r.height - innerHeight));
+      let b = 0; TH.forEach((t, i) => { if (p >= t) b = i; });
+      if (b === beat) return; beat = b;
+      ls.forEach((l, i) => { l.classList.toggle("on", i === b); l.classList.toggle("past", i < b); });
+      const st = STATES[b]; for (const k of ["campus", "nuin", "coops", "spins"]) tgt[k] = st[k]; tgt.k = st.k;
+      labelOff();
+    };
+    const labelOff = () => { tgt.labelC = 0; tgt.labelN = 0; };
+    /* a slow, steady turn (the engine's idle spin is quickened by a third) */
+    const drift = () => { if (!fly) tgt.lon -= .02; requestAnimationFrame(drift); };
+    if (!reduceMotion) requestAnimationFrame(drift);
+    addEventListener("scroll", () => requestAnimationFrame(upd), { passive: true });
+    addEventListener("resize", () => { place(); relayout(); });
+    requestAnimationFrame(() => { place(); relayout(); upd(); });
+  }
+
   /* treatment switcher (only when ?globe= is in the URL) */
   if (new URLSearchParams(location.search).has("globe")) {
-    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split" };
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS" };
     const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
     bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
   }
@@ -1439,12 +1501,23 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
         + lenis_js + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + c2_js + GLOBE_PINCH + GLOBE_VARIANTS + NEW_JS
         + "\n" + tail_js + "/* ============ boot ============ */\nnav.classList.toggle(\"solid\", scrollY > 60);\nresize();\nrequestAnimationFrame(frame);\n</script>\n")
 
+GERUNDS = [
+ ("Developing cameras for Apple products", "Camera development for Apple products"),
+ ("Harvesting oysters on Maine's Nonesuch River", "Oyster harvests on Maine's Nonesuch River"),
+ ("Harvesting oysters on Maine’s Nonesuch River", "Oyster harvests on Maine’s Nonesuch River"),
+ ("Learning how global negotiation really works", "How global negotiation really works"),
+ ("Learning that happens on the job, in the field, everywhere.", "Education on the job, in the field, everywhere."),
+ (">Walking the future<", ">Robots on campus<"),
+]
+for a, b in GERUNDS:
+    assert a in page or "’" in a, a
+    page = page.replace(a, b)
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="28"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="29"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
-for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
+for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
 for out in OUT:
     open(out, "w").write(page)
@@ -1452,7 +1525,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="28">', '<meta name="concept11-rev" content="17">'),
+for x, y in (('<meta name="concept10-rev" content="29">', '<meta name="concept11-rev" content="18">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
