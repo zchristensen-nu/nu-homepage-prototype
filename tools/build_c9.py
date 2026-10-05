@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="21">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="22">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -131,8 +131,11 @@ COPY = [
             "<p>Through N.U.in, new students begin their Northeastern degree at a partner institution in Europe.</p>"),
  (globe_mk, "</b> co‑op placements</div>", "</b> co‑ops</div>"),
  (globe_mk, "<p>Full-time, paid positions in every kind of workplace.</p>",
-            "<p>More than a century of students working with employer partners around the world. Each dot is a city where a student is on co‑op this fall.</p>"),
+            "<p>More than a century of students working with employer partners around the world.</p>"),
  (sheet_mk, "patents and counting", "patents"),
+ (sheet_mk, "Our research story starts in the world.", "Where removing barriers ignites collaboration, innovation, and results"),
+ (sheet_mk, "While most research institutions study the world, our faculty and students solve problems at the center of it.",
+            "We offer leading-edge labs, tools, and technologies for our researchers and partners to tackle large-scale problems from all angles."),
  (sheet_mk, '<span class="g-n">5,000+</span><span class="g-l">cities and towns</span>', '<span class="g-n">3,900+</span><span class="g-l">employer partners worldwide</span>'),
  (sheet_mk, '<span class="g-n">10,000+</span><span class="g-l">employer partners</span>', '<span class="g-n">100+</span><span class="g-l">years of co‑op</span>'),
  (sheet_mk, '<span class="g-n">250+</span><span class="g-l">countries and territories</span>', '<span class="g-n">350K+</span><span class="g-l">alumni around the world</span>'),
@@ -236,25 +239,25 @@ HD = {"coop": "https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experie
 # copy: brand voice (trusted, empowering, confident), brand facts only. Co-op numbers from the
 # key-terms entry; network numbers from the boilerplate; research line from the research messaging page.
 FEATS = [
- feat("Co‑op", "Co‑op", v=HD["coop"], h="Experiential learning", card="../img/aquarium-dive.jpg",
-      syn="Up to three co‑ops, each up to six months of full-time work with an employer partner in your field. More than nine out of 10 undergraduates do at least one.",
+ feat("Co‑op", "Co‑op", v=HD["coop"], h="Learning by doing", card="../img/aquarium-dive.jpg",
+      syn="Every part of your journey at Northeastern is built for immersive learning, innovation, and integrating emerging technologies, like AI, to enhance creativity and career readiness.",
       cta={"label": "Explore co‑op", "href": "https://www.northeastern.edu/co-op"}),
  feat("Research", "Research", v=HD["research"], h="Breakthroughs begin here",
-      syn="Faculty and students advance work in health, security, and sustainability with partners in industry, government, and communities. Undergraduates join labs early.",
+      syn="Northeastern is an R1 research enterprise that advances work in health, security, and sustainability with partners in industry, government, and communities.",
       cta={"label": "Explore research", "href": "https://research.northeastern.edu/"}),
- feat("Global network", "Global network", v=HD["global"], h="Immersed in the world", card="../img/global-london.jpg",
-      syn="Our network spans 14 campuses across the U.S., U.K., and Canada and more than 3,900 partners worldwide. Start on one campus and follow opportunities across all of them.",
+ feat("Global network", "Global network", v=HD["global"], h="Live, learn, and innovate without boundaries", card="../img/global-london.jpg",
+      syn="Our dynamic network of campuses, alumni, and partners is designed to maximize opportunities for powerful educational experiences, influential research, and compelling collaborations in every part of the world.",
       cta={"label": "See the network", "href": "#campuses"}),
  feat("AI", None, v=HD["ai"], h="Shaping responsible, human-centered AI", still=U+"/2026/09/AImakerspace1400.jpg",
       card=U+"/2026/09/Francesco_Restuccia_1400.jpg",
-      syn="AI is reshaping every field. Students build it on co‑op, faculty advance it in the lab, and both bring the human judgment it needs.",
+      syn="We bring together researchers, applied AI experts, educators, and industry partners to advance AI in health, life sciences, responsible AI, climate and sustainability, and real-world organizational practice.",
       cta={"label": "Explore AI at Northeastern", "href": "https://www.northeastern.edu/ai/"},
       eps=[ep("Query, create or be curious at new AI Makerspace in Boston", U+"/2026/09/AImakerspace1400.jpg", NGN+"/2026/09/23/ai-makerspace-boston-campus/"),
            ep("The student refining AI at one of the largest real estate firms", U+"/2026/08/Co-op_AI_1400.jpg", NGN+"/2026/09/09/real-estate-ai-co-op/"),
            ep("In Serbia, she helped build an AI to give activists worldwide a leg up", U+"/2026/08/081426_MM_Ayla_DiBattista_006.jpg", NGN+"/2026/09/03/ayla-dibattista-co-op-northeastern/"),
            ep("This professor is making AI systems more aware of their ignorance", U+"/2026/09/Francesco_Restuccia_1400.jpg", NGN+"/2026/09/21/northeastern-pecase-award-2026/")]),
- feat("Entrepreneurship", None, v=HD["ent"], h="Start something, anywhere", still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
-      syn="Entrepreneurship spans the world. Student founders build ventures, test them with customers, and pitch them for funding.",
+ feat("Entrepreneurship", None, v=HD["ent"], h="Built to move ideas forward. Faster.", still=U+"/2026/06/060426_CV_GLS_day1_048.jpg", card=U+"/2026/07/072426_MM_NextTile_002.jpg",
+      syn="Learn, create, launch, and scale with one of the most extensive entrepreneurship support systems in the world.",
       cta={"label": "Read founder stories", "href": NGN + "/tag/entrepreneurship/"}, eps=EP_ENT),
 ]
 assert len(FEATS) == 5 and all(f["eps"] and f["img"] and f["card"] and f["cta"] and f["v"] in HD.values() for f in FEATS)
@@ -307,7 +310,7 @@ assert NGN_LOCKUP.count('viewBox="0 0 573 48"') == 1 and "ngn-lockup__monogram-b
 NGN_LOCKUP = NGN_LOCKUP.replace('viewBox="0 0 573 48"', 'viewBox="64 0 509 48"')
 ROWS = ('<section class="rows" aria-labelledby="rowsT">\n'
         '  <div class="wrap rows-head"><h2 id="rowsT"><a href="https://news.northeastern.edu/"><span class="vh">Northeastern Global News</span>'
-        + NGN_LOCKUP + '</a></h2><p class="rows-tag">Stories from the university, stories from the world.</p></div>\n'
+        + NGN_LOCKUP + '</a></h2><p class="rows-tag">Stories from the university and the world.</p></div>\n'
         + row("ngnRow", "Latest", "", hidden=False)
         + row("entRow", "Entrepreneurship", "tags=9287")
         + row("aiRow", "AI", "tags=9865,9843")
@@ -1025,7 +1028,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="21"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="22"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1035,7 +1038,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="21">', '<meta name="concept11-rev" content="10">'),
+for x, y in (('<meta name="concept10-rev" content="22">', '<meta name="concept11-rev" content="11">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
