@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="26">
+<meta name="concept10-rev" content="27">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -621,6 +621,7 @@
   .gvc-t{margin:3px 0 0;font-size:14.5px;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .gvc-a,.gvl-a,.gve-a{display:inline-block;margin-top:6px;font-size:13px;font-weight:600;color:#fff}
   /* A · Stage */
+  .gv-a .stage canvas{cursor:default}
   .gva-prog{position:fixed;z-index:7;top:80px;left:20px;display:flex;gap:6px;opacity:0;transition:opacity .4s}
   .gva-prog.on{opacity:1}
   .gva-prog i{width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:background .4s}
@@ -694,6 +695,8 @@
     background:rgba(20,20,26,.94);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:12.5px}
   .gvswitch a{padding:8px 10px;border-radius:999px;color:#C9C9CF;white-space:nowrap}
   .gvswitch a.on{background:#fff;color:#0B0B0E;font-weight:600}
+
+  @media (max-width:720px){ #research{padding-top:48px} }
 
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
@@ -1407,7 +1410,7 @@ function project(lat, lng, R, cx, cy, alt) {
 
 let labelBoxes = [];
 function label(text, x, y, a) {
-  ctx.font = "500 11px 'FF Real Head','Lato',sans-serif";
+  ctx.font = (W <= 720 ? "500 10.5px" : "500 11px") + " 'FF Real Head','Lato',sans-serif";
   ctx.textAlign = "left"; ctx.textBaseline = "middle";
   const w = ctx.measureText(text).width;
   /* every city keeps its label: walk candidate positions until one fits */
@@ -1417,12 +1420,13 @@ function label(text, x, y, a) {
     [x - w - 22, y - 28], [x - w - 22, y + 10],
     [x + 10, y - 47], [x + 10, y + 29],
   ];
-  let bx = cand[0][0], by = cand[0][1];
+  let bx = cand[0][0], by = cand[0][1], placed = false;
   for (const [tx, ty] of cand) {
     const hit = labelBoxes.some(b =>
       tx < b.x + b.w && b.x < tx + w + 12 && ty < b.y + b.h && b.y < ty + 18);
-    if (!hit) { bx = tx; by = ty; break; }
+    if (!hit) { bx = tx; by = ty; placed = true; break; }
   }
+  if (!placed && W <= 720) return;  /* phones: a label that can't sit clear of the others is dropped, its dot stays */
   labelBoxes.push({ x: bx, y: by, w: w + 12, h: 18 });
   ctx.fillStyle = `rgba(11,11,14,${.55 * a})`;
   ctx.fillRect(bx, by, w + 12, 18);
@@ -1665,6 +1669,7 @@ function frame(now) {
 /* ---------- drag to rotate, with inertia ---------- */
 let dragging = false, lastPt = null, lastT = 0, dragV = 0;
 canvas.addEventListener("pointerdown", e => {
+  if (W <= 720) return;  /* phones: the globe is locked; the page scrolls freely */
   dragging = true; fly = null; spinV = 0; dragV = 0;
   lastPt = [e.clientX, e.clientY]; lastT = performance.now();
   canvas.classList.add("dragging");
@@ -1936,7 +1941,7 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
       if (!pinch || e.touches.length !== 2) return;
       e.preventDefault();
       fly = null; dragging = false;
-      cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
+      if (innerWidth > 720) cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
     }, { passive: false });
     cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
   }
@@ -1944,7 +1949,7 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
-const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "now").toLowerCase()) : null;
+const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "a").toLowerCase()) : null;
 const GVS = ["now", "a", "b", "c", "d", "e"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
@@ -2003,7 +2008,9 @@ if (GV && GVS.includes(GV)) {
       const k = stepEls.indexOf(st);
       prog.classList.toggle("on", k >= 0);
       marks.forEach((m, i) => m.classList.toggle("on", i <= k));
-      if (st) view(st.dataset.step);
+      if (!st) return;
+      view(st.dataset.step);
+      if (st.dataset.step === "coops") { const on = [...dock.children].findIndex(n => n.classList.contains("on")); story(Math.max(0, on)); }
     });
     let t;
     dock.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {

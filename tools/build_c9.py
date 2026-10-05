@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="26">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="27">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -158,6 +158,26 @@ _n = c2_js.count("Math.min(W, H) * 0.42"); assert _n == 4, _n
 c2_js = c2_js.replace("Math.min(W, H) * 0.42", "Math.min(W, H) * (W > 720 ? 0.42 : (window.GLOBE_R || 0.42))")
 assert c2_js.count('$("#coopcount").textContent = ') == 1
 c2_js = c2_js.replace('$("#coopcount").textContent = ', '($("#coopcount") || {}).textContent = ')
+_l = """  let bx = cand[0][0], by = cand[0][1];
+  for (const [tx, ty] of cand) {
+    const hit = labelBoxes.some(b =>
+      tx < b.x + b.w && b.x < tx + w + 12 && ty < b.y + b.h && b.y < ty + 18);
+    if (!hit) { bx = tx; by = ty; break; }
+  }"""
+assert c2_js.count(_l) == 1
+c2_js = c2_js.replace(_l, """  let bx = cand[0][0], by = cand[0][1], placed = false;
+  for (const [tx, ty] of cand) {
+    const hit = labelBoxes.some(b =>
+      tx < b.x + b.w && b.x < tx + w + 12 && ty < b.y + b.h && b.y < ty + 18);
+    if (!hit) { bx = tx; by = ty; placed = true; break; }
+  }
+  if (!placed && W <= 720) return;  /* phones: a label that can't sit clear of the others is dropped, its dot stays */""")
+_f = "ctx.font = \"500 11px 'FF Real Head','Lato',sans-serif\";"
+assert c2_js.count(_f) == 1
+c2_js = c2_js.replace(_f, "ctx.font = (W <= 720 ? \"500 10.5px\" : \"500 11px\") + \" 'FF Real Head','Lato',sans-serif\";")
+_d = 'canvas.addEventListener("pointerdown", e => {\n  dragging = true;'
+assert c2_js.count(_d) == 1
+c2_js = c2_js.replace(_d, 'canvas.addEventListener("pointerdown", e => {\n  if (W <= 720) return;  /* phones: the globe is locked; the page scrolls freely */\n  dragging = true;')
 _e = "const entryUpd = () => {\n  const r = scEl.getBoundingClientRect();"
 assert c2_js.count(_e) == 1
 c2_js = c2_js.replace(_e, "const entryUpd = () => {\n  if (window.GV_NOENTRY) return;\n  const r = scEl.getBoundingClientRect();")
@@ -641,6 +661,7 @@ NEW_CSS = r'''
   .gvc-t{margin:3px 0 0;font-size:14.5px;line-height:1.3;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .gvc-a,.gvl-a,.gve-a{display:inline-block;margin-top:6px;font-size:13px;font-weight:600;color:#fff}
   /* A · Stage */
+  .gv-a .stage canvas{cursor:default}
   .gva-prog{position:fixed;z-index:7;top:80px;left:20px;display:flex;gap:6px;opacity:0;transition:opacity .4s}
   .gva-prog.on{opacity:1}
   .gva-prog i{width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:background .4s}
@@ -715,6 +736,8 @@ NEW_CSS = r'''
   .gvswitch a{padding:8px 10px;border-radius:999px;color:#C9C9CF;white-space:nowrap}
   .gvswitch a.on{background:#fff;color:#0B0B0E;font-weight:600}
 
+  @media (max-width:720px){ #research{padding-top:48px} }
+
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
     backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
@@ -751,7 +774,7 @@ NEW_CSS = r'''
 GLOBE_VARIANTS = r'''
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
-const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "now").toLowerCase()) : null;
+const GV = GVM ? ((new URLSearchParams(location.search).get("globe") || "a").toLowerCase()) : null;
 const GVS = ["now", "a", "b", "c", "d", "e"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
@@ -810,7 +833,9 @@ if (GV && GVS.includes(GV)) {
       const k = stepEls.indexOf(st);
       prog.classList.toggle("on", k >= 0);
       marks.forEach((m, i) => m.classList.toggle("on", i <= k));
-      if (st) view(st.dataset.step);
+      if (!st) return;
+      view(st.dataset.step);
+      if (st.dataset.step === "coops") { const on = [...dock.children].findIndex(n => n.classList.contains("on")); story(Math.max(0, on)); }
     });
     let t;
     dock.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
@@ -967,7 +992,7 @@ GLOBE_PINCH = r'''/* globe: a two-finger pinch zooms the planet, never the page 
       if (!pinch || e.touches.length !== 2) return;
       e.preventDefault();
       fly = null; dragging = false;
-      cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
+      if (innerWidth > 720) cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
     }, { passive: false });
     cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
   }
@@ -1407,7 +1432,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="26"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="27"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1417,7 +1442,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="26">', '<meta name="concept11-rev" content="15">'),
+for x, y in (('<meta name="concept10-rev" content="27">', '<meta name="concept11-rev" content="16">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
