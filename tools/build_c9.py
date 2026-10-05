@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="23">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="24">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -607,6 +607,7 @@ NEW_CSS = r'''
   @media (max-width:720px){
     .rows-bfull .crow{min-height:0;padding-top:0;--ch:172px;--pw:150px}
     .rows-bfull .crow > .wrap{order:-2;margin-bottom:12px}
+    .rows-bfull .crow + .crow{margin-top:44px;padding-top:32px}
     .rows-bfull .sp-bg{position:relative;order:-1;inset:auto;left:auto;transform:none;width:100%;aspect-ratio:16/10;flex:none}
     .rows-bfull .sp-bg::after{background:linear-gradient(to bottom,transparent 50%,rgba(11,11,14,.7) 80%,var(--dark) 100%)}
     .rows-bfull .sp-in{margin:-44px 0 16px}
@@ -645,6 +646,26 @@ NEW_CSS = r'''
 
 '''
 
+GLOBE_PINCH = r'''/* globe: a two-finger pinch zooms the planet, never the page (page zoom elsewhere is untouched) */
+{
+  const cv = $("#globe");
+  if (cv) {
+    ["gesturestart", "gesturechange", "gestureend"].forEach(ev => cv.addEventListener(ev, e => e.preventDefault()));
+    let pinch = null;
+    const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    cv.addEventListener("touchstart", e => {
+      if (e.touches.length === 2) { e.preventDefault(); pinch = { d: dist(e.touches), k: cur.k }; dragging = false; }
+    }, { passive: false });
+    cv.addEventListener("touchmove", e => {
+      if (!pinch || e.touches.length !== 2) return;
+      e.preventDefault();
+      fly = null; dragging = false;
+      cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
+    }, { passive: false });
+    cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
+  }
+}
+'''
 NEW_JS = r'''{
 /* ============ concept-7 ============ */
 /* globe on phones: exactly one current step (the one at mid-screen) owns the caption slot;
@@ -1060,13 +1081,13 @@ NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).repla
 page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
         + header_mk + HERO + "<main>\n" + ROWS + globe_mk + sheet_mk + reel_mk + admit_mk + "\n</main>\n" + footer_mk + "\n"
-        + lenis_js + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + c2_js + NEW_JS
+        + lenis_js + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + c2_js + GLOBE_PINCH + NEW_JS
         + "\n" + tail_js + "/* ============ boot ============ */\nnav.classList.toggle(\"solid\", scrollY > 60);\nresize();\nrequestAnimationFrame(frame);\n</script>\n")
 
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="23"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="24"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1076,7 +1097,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="23">', '<meta name="concept11-rev" content="12">'),
+for x, y in (('<meta name="concept10-rev" content="24">', '<meta name="concept11-rev" content="13">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x

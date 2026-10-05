@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="12">
+<meta name="concept11-rev" content="13">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -594,6 +594,7 @@
   @media (max-width:720px){
     .rows-bfull .crow{min-height:0;padding-top:0;--ch:172px;--pw:150px}
     .rows-bfull .crow > .wrap{order:-2;margin-bottom:12px}
+    .rows-bfull .crow + .crow{margin-top:44px;padding-top:32px}
     .rows-bfull .sp-bg{position:relative;order:-1;inset:auto;left:auto;transform:none;width:100%;aspect-ratio:16/10;flex:none}
     .rows-bfull .sp-bg::after{background:linear-gradient(to bottom,transparent 50%,rgba(11,11,14,.7) 80%,var(--dark) 100%)}
     .rows-bfull .sp-in{margin:-44px 0 16px}
@@ -1825,6 +1826,25 @@ const lineIO = new IntersectionObserver(es => es.forEach(e => {
 }), { threshold: 0.3 });
 $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
+/* globe: a two-finger pinch zooms the planet, never the page (page zoom elsewhere is untouched) */
+{
+  const cv = $("#globe");
+  if (cv) {
+    ["gesturestart", "gesturechange", "gestureend"].forEach(ev => cv.addEventListener(ev, e => e.preventDefault()));
+    let pinch = null;
+    const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    cv.addEventListener("touchstart", e => {
+      if (e.touches.length === 2) { e.preventDefault(); pinch = { d: dist(e.touches), k: cur.k }; dragging = false; }
+    }, { passive: false });
+    cv.addEventListener("touchmove", e => {
+      if (!pinch || e.touches.length !== 2) return;
+      e.preventDefault();
+      fly = null; dragging = false;
+      cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
+    }, { passive: false });
+    cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
+  }
+}
 {
 /* ============ concept-7 ============ */
 /* globe on phones: exactly one current step (the one at mid-screen) owns the caption slot;
