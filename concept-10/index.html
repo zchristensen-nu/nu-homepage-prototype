@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="20">
+<meta name="concept10-rev" content="21">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -380,7 +380,7 @@
   .ln[aria-pressed="true"] .ln-pb{opacity:1}
   .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:#fff;border-radius:inherit}
   @media (max-width:899px){.hx-eps{display:none}}
-  @media (max-width:640px){.hx{min-height:700px}.hx-btn{height:44px;padding:0 18px;font-size:15px}.ln{flex:0 0 118px;height:140px}}
+  @media (max-width:640px){.hx{min-height:700px}.hx-btn{height:44px;padding:0 18px;font-size:15px}.ln{flex:0 0 158px;height:104px}.ln-t{font-size:17px}}
   @media (prefers-reduced-motion: reduce){.hl,.hx-copy,.hx-eps,.ln{transition:none}.hl.kb.on img{animation:none}}
 
   /* rows: a featured card, then portrait posters; edge paddles scroll */
@@ -557,6 +557,44 @@
     .gt-arrow{width:32px;height:32px}
   }
 
+  /* nav legibility: a soft dark wash behind the transparent bar */
+  .nav::before{content:"";position:absolute;left:0;right:0;top:0;height:170%;z-index:-1;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(0,0,0,.6) 0%,rgba(0,0,0,.28) 55%,transparent 100%);transition:opacity .35s}
+  .nav.solid::before{opacity:0}
+
+  /* phone nav: compact icon controls, one primary button */
+  .tkv-open .tko-i{display:none}
+  @media (max-width:960px){
+    .nav .row{gap:12px;height:64px}
+    .nav .wordmark img{height:24px}
+    .nvright{gap:2px}
+    .nvicon{width:44px;height:44px}
+    .navx .tkv-open{width:44px;height:44px;padding:0;border:0;border-radius:50%;align-items:center;justify-content:center}
+    .tkv-open .tko-i{display:block}
+    .tkv-open .tko-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    .nav .apply{margin-left:8px}
+    .nav .apply .pill{padding:0 18px;height:38px;display:inline-flex;align-items:center;font-size:14px;font-weight:600;
+      background:#fff;color:#0B0B0E;border-color:#fff}
+  }
+
+  /* Spotlight on phones: photo on top fading into the text, fixed-height caption, snapping posters */
+  @media (max-width:720px){
+    .rows-bfull .crow{min-height:0;padding-top:0;--ch:172px;--pw:150px}
+    .rows-bfull .crow > .wrap{order:-2;margin-bottom:12px}
+    .rows-bfull .sp-bg{position:relative;order:-1;inset:auto;left:auto;transform:none;width:100%;aspect-ratio:16/10;flex:none}
+    .rows-bfull .sp-bg::after{background:linear-gradient(to bottom,transparent 50%,rgba(11,11,14,.7) 80%,var(--dark) 100%)}
+    .rows-bfull .sp-in{margin:-44px 0 16px}
+    .rows-bfull .sp-copy{min-height:224px}
+    .rows-bfull .sp-t{font-size:26px;line-height:1.12}
+    .rows-bfull .sp-x{margin-top:10px;font-size:15.5px}
+    .rows-bfull .sp-btn{height:42px;margin-top:16px}
+    .rows-bfull .cc-t{font-size:13px;line-height:1.2;padding:0 10px 12px}
+    .rows-b .crow-strip{scroll-snap-type:x mandatory}
+    .rows-b .cc{scroll-snap-align:start}
+    /* globe: room after the last beat so its text and card clear out before the next section */
+    .steps{padding-bottom:70svh}
+  }
+
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
     backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
@@ -630,7 +668,7 @@
     <div class="nvright">
       <button class="nvicon" id="srch-open" aria-label="Search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="M14 14l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
       <button class="mnav-btn morebtn" data-panel="mp-more" aria-expanded="false">More</button>
-      <button class="tkv-open mobilemenu" id="tkv-open" aria-expanded="false">Menu</button>
+      <button class="tkv-open mobilemenu" id="tkv-open" aria-expanded="false"><svg class="tko-i" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M3 7h16M3 15h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="tko-l">Menu</span></button>
       <span class="apply"><a class="pill" href="#admit">Apply</a></span>
     </div>
   </div>
@@ -1767,6 +1805,13 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 {
 /* ============ concept-7 ============ */
+{
+  const coopsStep = $('.step[data-step="coops"]');
+  if (coopsStep) addEventListener("scroll", () => {
+    if (innerWidth > 720 || gtCard.hidden) return;
+    if (coopsStep.getBoundingClientRect().bottom < innerHeight * .5) gtCard.hidden = true;
+  }, { passive: true });
+}
 /* phone menu: each section mirrors its desktop dropdown (overview pills, then labeled link groups) */
 {
   const MAP = { "tsub-0": "mp-admissions", "tsub-2": "mp-experiential", "tsub-3": "mp-research", "tsub-4": "mp-global", "tsub-6": "mp-more" };
@@ -1851,12 +1896,13 @@ new IntersectionObserver(es => es.forEach(e => {
   if (v) { if (hxVisible) playI(cur); else v.pause(); }
 })).observe(hx);
 /* card titles wrap by word; shrink only when a single word is wider than the card */
+/* every card label shares one size: the largest at which the longest single word fits */
 function fitTitles() {
-  $$(".ln-t").forEach(t => {
-    t.style.fontSize = "";
-    let fs = parseFloat(getComputedStyle(t).fontSize);
-    while (fs > 11 && t.scrollWidth > t.clientWidth) { fs -= .5; t.style.fontSize = fs + "px"; }
-  });
+  const ts = $$(".ln-t");
+  ts.forEach(t => t.style.fontSize = "");
+  let fs = parseFloat(getComputedStyle(ts[0]).fontSize);
+  for (const t of ts) { t.style.fontSize = fs + "px"; while (fs > 11 && t.scrollWidth > t.clientWidth) { fs -= .5; t.style.fontSize = fs + "px"; } }
+  ts.forEach(t => t.style.fontSize = fs + "px");
 }
 const shows = $("#hxShows");
 const layout = () => { fitTitles(); fitHeroTitle(); hx.style.setProperty("--shh", shows.offsetHeight + "px"); };
@@ -2070,12 +2116,14 @@ function spotlight(tp) {
     quietUntil = performance.now() + 700;
     strip.scrollBy({ left: d, behavior: reduceMotion ? "auto" : "smooth" });
   };
+  const canHover = matchMedia("(hover: hover)").matches;
   cards.forEach((c, k) => {
-    c.addEventListener("pointerenter", () => {
+    if (canHover) c.addEventListener("pointerenter", () => {
       clearTimeout(t);
       if (performance.now() < quietUntil) return;
       t = setTimeout(() => { set(k); reveal(c); }, 140);
     });
+    c.addEventListener("click", e => { e.preventDefault(); set(k); reveal(c); });
     c.addEventListener("focus", () => { set(k); reveal(c); });
   });
   set(0);

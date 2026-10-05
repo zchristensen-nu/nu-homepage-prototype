@@ -66,6 +66,8 @@ header_mk = nav_edit(header_mk, """        <a href="#">Entrepreneurship</a>
 """, "", 2)            # Experiential panel + mobile menu
 header_mk = nav_edit(header_mk, f"""        <a href="{AI_URL}">Artificial Intelligence</a>
 """, "", 2)  # More panel + mobile menu
+header_mk = nav_edit(header_mk, '<button class="tkv-open mobilemenu" id="tkv-open" aria-expanded="false">Menu</button>',
+    '<button class="tkv-open mobilemenu" id="tkv-open" aria-expanded="false"><svg class="tko-i" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M3 7h16M3 15h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="tko-l">Menu</span></button>')
 # mobile menu: one merged group, renamed Global, and the two new direct links
 _t0 = header_mk.index('<button class="tkv-g" data-sub="tsub-0"'); _t0 = header_mk.rindex('<div class="tkv-grp">', 0, _t0)
 _t1 = header_mk.index('<button class="tkv-g" data-sub="tsub-2"'); _t1 = header_mk.rindex('<div class="tkv-grp">', 0, _t1)
@@ -96,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="20">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="21">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -388,7 +390,7 @@ NEW_CSS = r'''
   .ln[aria-pressed="true"] .ln-pb{opacity:1}
   .ln-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:#fff;border-radius:inherit}
   @media (max-width:899px){.hx-eps{display:none}}
-  @media (max-width:640px){.hx{min-height:700px}.hx-btn{height:44px;padding:0 18px;font-size:15px}.ln{flex:0 0 118px;height:140px}}
+  @media (max-width:640px){.hx{min-height:700px}.hx-btn{height:44px;padding:0 18px;font-size:15px}.ln{flex:0 0 158px;height:104px}.ln-t{font-size:17px}}
   @media (prefers-reduced-motion: reduce){.hl,.hx-copy,.hx-eps,.ln{transition:none}.hl.kb.on img{animation:none}}
 
   /* rows: a featured card, then portrait posters; edge paddles scroll */
@@ -565,6 +567,44 @@ NEW_CSS = r'''
     .gt-arrow{width:32px;height:32px}
   }
 
+  /* nav legibility: a soft dark wash behind the transparent bar */
+  .nav::before{content:"";position:absolute;left:0;right:0;top:0;height:170%;z-index:-1;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(0,0,0,.6) 0%,rgba(0,0,0,.28) 55%,transparent 100%);transition:opacity .35s}
+  .nav.solid::before{opacity:0}
+
+  /* phone nav: compact icon controls, one primary button */
+  .tkv-open .tko-i{display:none}
+  @media (max-width:960px){
+    .nav .row{gap:12px;height:64px}
+    .nav .wordmark img{height:24px}
+    .nvright{gap:2px}
+    .nvicon{width:44px;height:44px}
+    .navx .tkv-open{width:44px;height:44px;padding:0;border:0;border-radius:50%;align-items:center;justify-content:center}
+    .tkv-open .tko-i{display:block}
+    .tkv-open .tko-l{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+    .nav .apply{margin-left:8px}
+    .nav .apply .pill{padding:0 18px;height:38px;display:inline-flex;align-items:center;font-size:14px;font-weight:600;
+      background:#fff;color:#0B0B0E;border-color:#fff}
+  }
+
+  /* Spotlight on phones: photo on top fading into the text, fixed-height caption, snapping posters */
+  @media (max-width:720px){
+    .rows-bfull .crow{min-height:0;padding-top:0;--ch:172px;--pw:150px}
+    .rows-bfull .crow > .wrap{order:-2;margin-bottom:12px}
+    .rows-bfull .sp-bg{position:relative;order:-1;inset:auto;left:auto;transform:none;width:100%;aspect-ratio:16/10;flex:none}
+    .rows-bfull .sp-bg::after{background:linear-gradient(to bottom,transparent 50%,rgba(11,11,14,.7) 80%,var(--dark) 100%)}
+    .rows-bfull .sp-in{margin:-44px 0 16px}
+    .rows-bfull .sp-copy{min-height:224px}
+    .rows-bfull .sp-t{font-size:26px;line-height:1.12}
+    .rows-bfull .sp-x{margin-top:10px;font-size:15.5px}
+    .rows-bfull .sp-btn{height:42px;margin-top:16px}
+    .rows-bfull .cc-t{font-size:13px;line-height:1.2;padding:0 10px 12px}
+    .rows-b .crow-strip{scroll-snap-type:x mandatory}
+    .rows-b .cc{scroll-snap-align:start}
+    /* globe: room after the last beat so its text and card clear out before the next section */
+    .steps{padding-bottom:70svh}
+  }
+
   /* mockup switcher */
   .vswitch{position:fixed;left:16px;bottom:16px;z-index:300;display:flex;gap:4px;padding:6px;border-radius:999px;background:rgba(20,20,26,.92);
     backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);font-size:13px}
@@ -582,6 +622,13 @@ NEW_CSS = r'''
 
 NEW_JS = r'''{
 /* ============ concept-7 ============ */
+{
+  const coopsStep = $('.step[data-step="coops"]');
+  if (coopsStep) addEventListener("scroll", () => {
+    if (innerWidth > 720 || gtCard.hidden) return;
+    if (coopsStep.getBoundingClientRect().bottom < innerHeight * .5) gtCard.hidden = true;
+  }, { passive: true });
+}
 /* phone menu: each section mirrors its desktop dropdown (overview pills, then labeled link groups) */
 {
   const MAP = { "tsub-0": "mp-admissions", "tsub-2": "mp-experiential", "tsub-3": "mp-research", "tsub-4": "mp-global", "tsub-6": "mp-more" };
@@ -666,12 +713,13 @@ new IntersectionObserver(es => es.forEach(e => {
   if (v) { if (hxVisible) playI(cur); else v.pause(); }
 })).observe(hx);
 /* card titles wrap by word; shrink only when a single word is wider than the card */
+/* every card label shares one size: the largest at which the longest single word fits */
 function fitTitles() {
-  $$(".ln-t").forEach(t => {
-    t.style.fontSize = "";
-    let fs = parseFloat(getComputedStyle(t).fontSize);
-    while (fs > 11 && t.scrollWidth > t.clientWidth) { fs -= .5; t.style.fontSize = fs + "px"; }
-  });
+  const ts = $$(".ln-t");
+  ts.forEach(t => t.style.fontSize = "");
+  let fs = parseFloat(getComputedStyle(ts[0]).fontSize);
+  for (const t of ts) { t.style.fontSize = fs + "px"; while (fs > 11 && t.scrollWidth > t.clientWidth) { fs -= .5; t.style.fontSize = fs + "px"; } }
+  ts.forEach(t => t.style.fontSize = fs + "px");
 }
 const shows = $("#hxShows");
 const layout = () => { fitTitles(); fitHeroTitle(); hx.style.setProperty("--shh", shows.offsetHeight + "px"); };
@@ -885,12 +933,14 @@ function spotlight(tp) {
     quietUntil = performance.now() + 700;
     strip.scrollBy({ left: d, behavior: reduceMotion ? "auto" : "smooth" });
   };
+  const canHover = matchMedia("(hover: hover)").matches;
   cards.forEach((c, k) => {
-    c.addEventListener("pointerenter", () => {
+    if (canHover) c.addEventListener("pointerenter", () => {
       clearTimeout(t);
       if (performance.now() < quietUntil) return;
       t = setTimeout(() => { set(k); reveal(c); }, 140);
     });
+    c.addEventListener("click", e => { e.preventDefault(); set(k); reveal(c); });
     c.addEventListener("focus", () => { set(k); reveal(c); });
   });
   set(0);
@@ -975,7 +1025,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="20"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="21"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -985,7 +1035,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="20">', '<meta name="concept11-rev" content="9">'),
+for x, y in (('<meta name="concept10-rev" content="21">', '<meta name="concept11-rev" content="10">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
