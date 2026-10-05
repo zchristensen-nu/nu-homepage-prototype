@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="24">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="25">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -635,7 +635,16 @@ NEW_CSS = r'''
   .j-panel{height:auto}
   .j-photo img{height:100%;width:auto}
   .j-stage > .wrap:last-child{flex:none}
-  .j-bar{margin-top:clamp(16px,2.6svh,28px)}
+  .j-stat{aspect-ratio:3/4;max-width:82vw;background:#141419;border:1px solid rgba(255,255,255,.08);
+    align-items:flex-start;justify-content:flex-end;padding:clamp(24px,3vw,44px)}
+  .j-stat .g-n{font-size:clamp(72px,13svh,170px)}
+  .j-stat .g-l{margin-top:14px;font-size:clamp(16px,1.4vw,20px);color:#C9C9CF}
+  .j-outro{aspect-ratio:3/4;max-width:82vw;justify-content:flex-end;padding:clamp(24px,3vw,44px)}
+  .j-stage > .wrap:last-child{width:100%;box-sizing:border-box;display:flex;align-items:center;gap:clamp(16px,3vw,32px);margin-top:clamp(16px,2.6svh,28px)}
+  .j-bar{flex:1 1 auto;margin:0}
+  .j-stage > .wrap:last-child .storylink{flex:none;margin:0 !important;height:44px;padding:0 22px;border:1.5px solid rgba(255,255,255,.6);
+    border-radius:999px;font-size:15px;font-weight:600;color:#fff !important;align-items:center}
+  .j-stage > .wrap:last-child .storylink:hover{background:#fff;color:#0B0B0E !important;border-color:#fff}
 
   /* concept 2's globe: flush on this page, dissolving into its neighbors */
   .scrolly{border-radius:0;margin-top:0}
@@ -855,30 +864,42 @@ function mountRow(sec, items) {
     v.addEventListener("ended", () => { v.currentTime = +v.dataset.s; v.play().catch(() => {}); });
     vio.observe(v);
   });
-  /* the strip is a real scroller: swipe or trackpad-scroll it, drag it with a mouse; it drifts
-     rightward on its own and pauses for a moment after you touch it. Cards recycle at both ends. */
-  let pos = 0, last = 0, on = false, holdUntil = 0, drag = null;
-  const W = () => track.firstElementChild.offsetWidth + GAP;
-  const recycle = () => {
-    while (reel.scrollLeft < W()) { const c = track.lastElementChild; track.prepend(c); reel.scrollLeft += W(); const v = c.querySelector("video"); if (v.src) v.play().catch(() => {}); }
-    while (reel.scrollLeft > reel.scrollWidth - reel.clientWidth - W()) { const c = track.firstElementChild; track.append(c); reel.scrollLeft -= W(); }
+  /* the strip is a real scroller (swipe, trackpad, mouse drag) holding three copies of the clips.
+     It drifts rightward on its own; after the user scrolls it re-centres by exactly one copy, but only
+     once they've let go, so a fling in either direction never gets interrupted. */
+  let pos, last = 0, on = false, holdUntil = 0, drag = null, touching = false, userAt = 0;
+  const N = track.children.length;
+  for (let r = 0; r < 2; r++) [...track.children].slice(0, N).forEach(c => {
+    const k = c.cloneNode(true), v = k.querySelector("video");
+    v.addEventListener("timeupdate", () => { if (v.currentTime >= +v.dataset.e) v.currentTime = +v.dataset.s; });
+    vio.observe(v); track.append(k);
+  });
+  const SET = () => track.children[N].offsetLeft - track.children[0].offsetLeft;
+  const recentre = () => {
+    const w = SET();
+    if (reel.scrollLeft < w * .5) reel.scrollLeft += w; else if (reel.scrollLeft > w * 1.5) reel.scrollLeft -= w;
+    pos = reel.scrollLeft;
   };
-  reel.scrollLeft = W() * 2; pos = reel.scrollLeft;
+  reel.scrollLeft = SET(); pos = reel.scrollLeft;
   new IntersectionObserver(es => { on = es[0].isIntersecting; }).observe(reel);
   const hold = () => { holdUntil = performance.now() + 1800; };
-  ["touchstart", "wheel"].forEach(ev => reel.addEventListener(ev, hold, { passive: true }));
-  reel.addEventListener("scroll", () => { if (Math.abs(reel.scrollLeft - pos) > 2) hold(); pos = reel.scrollLeft; recycle(); pos = reel.scrollLeft; }, { passive: true });
+  reel.addEventListener("touchstart", () => { touching = true; hold(); }, { passive: true });
+  reel.addEventListener("touchend", () => { touching = false; hold(); }, { passive: true });
+  reel.addEventListener("wheel", hold, { passive: true });
+  reel.addEventListener("scroll", () => { if (Math.abs(reel.scrollLeft - pos) > 2) { userAt = performance.now(); hold(); } pos = reel.scrollLeft; }, { passive: true });
   reel.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse") return; drag = { x: e.clientX, s: reel.scrollLeft }; reel.classList.add("drag"); hold(); });
-  addEventListener("pointermove", e => { if (!drag) return; reel.scrollLeft = drag.s - (e.clientX - drag.x); hold(); });
-  addEventListener("pointerup", () => { drag = null; reel.classList.remove("drag"); });
-  if (!reduceMotion) {
-    const step = now => {
-      const dt = last ? Math.min(50, now - last) : 0; last = now;
-      if (on && !drag && now > holdUntil) { pos -= dt * .045; reel.scrollLeft = pos; recycle(); pos = reel.scrollLeft; }
-      requestAnimationFrame(step);
-    };
+  addEventListener("pointermove", e => { if (!drag) return; reel.scrollLeft = drag.s - (e.clientX - drag.x); pos = reel.scrollLeft; hold(); });
+  addEventListener("pointerup", () => { if (drag) { drag = null; reel.classList.remove("drag"); } });
+  const step = now => {
+    const dt = last ? Math.min(50, now - last) : 0; last = now;
+    const idle = !touching && !drag && now - userAt > 300;
+    if (on && idle) {
+      if (!reduceMotion && now > holdUntil) { pos -= dt * .045; reel.scrollLeft = pos; pos = reel.scrollLeft; }
+      recentre();
+    }
     requestAnimationFrame(step);
-  }
+  };
+  requestAnimationFrame(step);
 }
 
 /* live NGN: news posts only (no "Photos:" galleries), no story repeated across rows */
@@ -1087,7 +1108,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="24"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="25"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1097,7 +1118,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="24">', '<meta name="concept11-rev" content="13">'),
+for x, y in (('<meta name="concept10-rev" content="25">', '<meta name="concept11-rev" content="14">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
