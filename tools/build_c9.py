@@ -33,7 +33,7 @@ header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp
     """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Academics</button>""")
 header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global &amp; Campuses</button>""",
     f"""      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global Network</button>
-      <a class="mnav-a" href="{ENT_URL}">Global Entrepreneurship</a>
+      <a class="mnav-a" href="{ENT_URL}">Entrepreneurship</a>
       <a class="mnav-a" href="{AI_URL}">AI</a>""")
 _a0 = header_mk.index('<div class="mpanel" id="mp-admissions"'); _a1 = header_mk.index('<div class="mpanel" id="mp-experiential"')
 _feat = header_mk[_a0:_a1]
@@ -92,10 +92,11 @@ header_mk = header_mk[:_t0] + """<div class="tkv-grp">
     """ + header_mk[_t1:]
 header_mk = nav_edit(header_mk, 'aria-expanded="false">Global<span class="tkv-c"', 'aria-expanded="false">Global Network<span class="tkv-c"')
 _t2 = header_mk.index('<button class="tkv-g" data-sub="tsub-5"'); _t2 = header_mk.rindex('<div class="tkv-grp">', 0, _t2)
-header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entrepreneurship<span aria-hidden="true">&#8594;</span></a>
+header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Entrepreneurship<span aria-hidden="true">&#8594;</span></a>
     <a class="tkv-l" href="{AI_URL}">AI<span aria-hidden="true">&#8594;</span></a>
     """ + header_mk[_t2:]
-header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admit">Apply</a></span>', '')
+header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admit">Apply</a></span>',
+                     '<span class="apply"><a class="pill" href="https://giving.northeastern.edu/">Donate</a></span>')
 # social links as the live site's icons (WordPress core social-link SVGs), text kept as the accessible name
 _SOC = json.load(open(os.path.join(os.path.dirname(__file__), "social-icons.json")))
 for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/northeastern"), ("twitter", "X", "https://x.com/northeastern"),
@@ -107,7 +108,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="56">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="58">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -695,6 +696,10 @@ NEW_CSS = r'''
   .nav.scrolled .lockup .lk-word{opacity:0;transform:translateX(-24px)}
   @media (max-width:720px){ .nav .wordmark{--lh:50px} .nav.scrolled .wordmark{--lh:40px} }
   /* links centred on the page, so they also hold still while the logo peels */
+  /* 961-1200: tighter bar so the Donate button fits beside the full lockup */
+  @media (min-width:961px) and (max-width:1200px){ .nav .row{column-gap:14px} .mnav{gap:14px} .mnav-btn,.mnav-a{font-size:13.5px}
+    .nvright{gap:2px} .apply{margin-left:4px} .apply .pill{padding:8px 16px} .nav .wordmark{--lh:54px} }
+  @media (min-width:961px) and (max-width:1023px){ .nav .wordmark{width:calc(var(--lh) * 1.12)} .nav .lockup .lk-word{opacity:0} }  /* no room for the wordmark */
   @media (min-width:961px){ .nav .row{display:grid;grid-template-columns:1fr auto 1fr}
     .nav .wordmark{justify-self:start} .nav .nvright{justify-self:end;margin-left:0} }
 
@@ -2038,7 +2043,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="56"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="58"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -2048,7 +2053,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="56">', '<meta name="concept11-rev" content="45">'),
+for x, y in (('<meta name="concept10-rev" content="58">', '<meta name="concept11-rev" content="47">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2059,7 +2064,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="45">', '<meta name="concept12-rev" content="15">'),
+for x, y in (('<meta name="concept11-rev" content="47">', '<meta name="concept12-rev" content="17">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
