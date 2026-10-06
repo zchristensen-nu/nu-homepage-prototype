@@ -96,10 +96,18 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
     <a class="tkv-l" href="{AI_URL}">AI<span aria-hidden="true">&#8594;</span></a>
     """ + header_mk[_t2:]
 header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admit">Apply</a></span>', '')
+# social links as the live site's icons (WordPress core social-link SVGs), text kept as the accessible name
+_SOC = json.load(open(os.path.join(os.path.dirname(__file__), "social-icons.json")))
+for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/northeastern"), ("twitter", "X", "https://x.com/northeastern"),
+                        ("youtube", "YouTube", "https://www.youtube.com/user/Northeastern"), ("linkedin", "LinkedIn", "https://www.linkedin.com/school/northeastern-university/"),
+                        ("instagram", "Instagram", "https://www.instagram.com/northeastern"), ("tiktok", "TikTok", "https://www.tiktok.com/@northeastern")):
+    _a = f'<a href="{_url}">{_name}</a>'
+    assert footer_mk.count(_a) == 1, _a
+    footer_mk = footer_mk.replace(_a, f'<a href="{_url.replace("@northeastern", "@northeasternu")}" aria-label="{_name}">{_SOC[_k]}</a>')
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="47">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="48">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -656,6 +664,9 @@ NEW_CSS = r'''
   .nav::before{content:"";position:absolute;left:0;right:0;top:0;height:170%;z-index:-1;pointer-events:none;
     background:linear-gradient(to bottom,rgba(0,0,0,.6) 0%,rgba(0,0,0,.28) 55%,transparent 100%);transition:opacity .35s}
   .nav.solid::before{opacity:0}
+  .f-soc{gap:18px;align-items:center}
+  .f-soc a{display:grid;place-items:center;width:40px;height:40px;margin:-8px;transition:color .2s}
+  .f-soc svg{width:22px;height:22px;fill:currentColor}
   /* lockup is 486x180 with the N spanning x 35-192: the link clips to the N's width and the negative margin
      puts the N's left edge on the page gutter */
   .nav .wordmark{--lh:56px;height:var(--lh);width:calc(var(--lh) * 2.7);margin-left:calc(var(--lh) * -.194);overflow:hidden;flex:none;
@@ -1970,7 +1981,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="47"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="48"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1980,7 +1991,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="47">', '<meta name="concept11-rev" content="36">'),
+for x, y in (('<meta name="concept10-rev" content="48">', '<meta name="concept11-rev" content="37">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -1991,7 +2002,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="36">', '<meta name="concept12-rev" content="6">'),
+for x, y in (('<meta name="concept11-rev" content="37">', '<meta name="concept12-rev" content="7">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
