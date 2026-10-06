@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="36">
+<meta name="concept10-rev" content="37">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -780,6 +780,15 @@
     .hz-p{font-size:12.5px;margin-top:7px}
     .hz-x{display:none}
     .hz-stops li.on .hz-x{display:block;font-size:11.5px}
+  }
+
+  /* SIDE: the horizon idea with content on the left and the globe on the right */
+  .gv-side .hz{top:50%;transform:translateY(-50%);right:auto;width:min(440px,36vw)}
+  .gv-side .hz-stops{grid-template-columns:1fr;gap:16px;margin-top:20px}
+  .gv-side .hz-p{margin-top:8px}
+  @media (max-width:720px){
+    .gv-side .hz{top:84px;transform:none;left:20px;right:20px;width:auto}
+    .gv-side .hz-stops{grid-template-columns:repeat(var(--n,3),1fr);gap:6px;margin-top:12px}
   }
 
   /* GUS */
@@ -1787,7 +1796,7 @@ function frame(now) {
 /* ---------- drag to rotate, with inertia ---------- */
 let dragging = false, lastPt = null, lastT = 0, dragV = 0;
 canvas.addEventListener("pointerdown", e => {
-  if (W <= 720) return;  /* phones: the globe is locked; the page scrolls freely */
+  if (W <= 720 || window.GLOBE_LOCK) return;  /* phones: the globe is locked; the page scrolls freely */
   dragging = true; fly = null; spinV = 0; dragV = 0;
   lastPt = [e.clientX, e.clientY]; lastT = performance.now();
   canvas.classList.add("dragging");
@@ -2059,7 +2068,7 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
       if (!pinch || e.touches.length !== 2) return;
       e.preventDefault();
       fly = null; dragging = false;
-      if (innerWidth > 720) cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
+      if (innerWidth > 720 && !window.GLOBE_LOCK) cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
     }, { passive: false });
     cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
   }
@@ -2068,8 +2077,8 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
 const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
-const GV = ["gus", "paths", "horizon"].includes(GVP) ? GVP : (GVM ? (GVP || "a") : null);
-const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths", "horizon"];
+const GV = ["gus", "paths", "horizon", "side"].includes(GVP) ? GVP : (GVM ? (GVP || "a") : null);
+const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths", "horizon", "side"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
   root.classList.add("gv-" + GV);
@@ -2097,7 +2106,7 @@ if (GV && GVS.includes(GV)) {
     `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
-  if (!["now", "gus", "paths", "horizon"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  if (!["now", "gus", "paths", "horizon", "side"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
   /* one tracker: the step under mid-screen is current; it alone moves the camera */
   const trackSteps = fn => {
     let curS;
@@ -2110,7 +2119,7 @@ if (GV && GVS.includes(GV)) {
   };
 
   /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
-  if (!["now", "gus", "paths", "horizon"].includes(GV)) {
+  if (!["now", "gus", "paths", "horizon", "side"].includes(GV)) {
     VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
     const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
     const order = ["Boston", "London", "New York City", "Oakland"];
@@ -2319,7 +2328,7 @@ if (GV && GVS.includes(GV)) {
 
   /* PATHS · real journeys across the network, drawn one stop at a time (no connecting lines) */
   if (GV === "paths") {
-    window.GV_NOENTRY = true;
+    window.GV_NOENTRY = true; window.GLOBE_LOCK = true;
     stepIO.disconnect();
     window.PATH_ARCS = [];
     const P = [{"kind": "Student", "title": "Start abroad, then Boston", "url": "https://news.northeastern.edu/2026/01/16/nu-in-students-boston-transition/", "stops": [{"place": "Greece", "note": "First semester through N.U.in", "ll": [40.64, 22.94]}, {"place": "Boston", "note": "Spring semester on the Boston campus", "ll": [42.34, -71.09]}]}, {"kind": "Research", "title": "One institute, three campuses", "k": 1.05, "url": "https://news.northeastern.edu/2026/05/04/network-science-institute-global-presence/", "stops": [{"place": "Boston", "note": "Teams on the Boston campus", "ll": [42.34, -71.09]}, {"place": "London", "note": "A hub on the London campus", "ll": [51.51, -0.07]}, {"place": "Portland, Maine", "note": "A hub at the Roux Institute", "ll": [43.66, -70.26]}]}, {"kind": "Student", "title": "From one lab to the next", "k": 1.0, "url": "https://news.northeastern.edu/2026/07/22/nematodes-research-labs/", "stops": [{"place": "Oakland", "note": "A year of research on the Oakland campus", "ll": [37.78, -122.18]}, {"place": "Boston", "note": "A lab position on the Boston campus", "ll": [42.34, -71.09]}]}, {"kind": "Research", "title": "Chip research on two coasts", "k": 1.0, "url": "https://news.northeastern.edu/2024/04/29/bicoastal-institute-nanosystems-innovation/", "stops": [{"place": "Boston", "note": "A 15,000-square-foot laboratory", "ll": [42.34, -71.09]}, {"place": "Burlington", "note": "A 20,000-square-foot clean room", "ll": [42.48, -71.2]}, {"place": "Oakland", "note": "A new West Coast facility", "ll": [37.78, -122.18]}]}, {"kind": "Student", "title": "London, Oakland, then Boston", "k": 0.95, "url": "https://news.northeastern.edu/2024/09/12/enrollment-statistics-2024/", "stops": [{"place": "London", "note": "One semester on the London campus", "ll": [51.51, -0.07]}, {"place": "Oakland", "note": "One semester on the Oakland campus", "ll": [37.78, -122.18]}, {"place": "Boston", "note": "The rest of the degree", "ll": [42.34, -71.09]}]}, {"kind": "Student", "title": "A first year in Oakland", "k": 1.0, "url": "https://news.northeastern.edu/2026/09/03/new-oakland-students-move-in-2026/", "stops": [{"place": "Oakland", "note": "First year on the Oakland campus", "ll": [37.78, -122.18]}, {"place": "Boston", "note": "Then on to the Boston campus", "ll": [42.34, -71.09]}]}, {"kind": "One possible path", "title": "Starting abroad, ending in the Bay Area", "k": 0.95, "url": "", "stops": [{"place": "Rome", "note": "First semester through N.U.in", "ll": [41.9, 12.5]}, {"place": "Boston", "note": "Campus", "ll": [42.34, -71.09]}, {"place": "New York City", "note": "Co‑op", "ll": [40.71, -74.01]}, {"place": "New York City", "note": "Campus", "ll": [40.77, -73.98]}, {"place": "San Francisco", "note": "Co‑op", "ll": [37.77, -122.42]}, {"place": "Oakland", "note": "Campus", "ll": [37.78, -122.18]}]}];
@@ -2392,33 +2401,48 @@ if (GV && GVS.includes(GV)) {
 
   /* HORIZON · the planet rises from the bottom; a path's stops sit across the top like stories,
      dim until reached; each fills as the globe turns to it */
-  if (GV === "horizon") {
-    window.GV_NOENTRY = true; window.GLOBE_ALL = true; window.PATH_LIFT = .45;
+  if (GV === "horizon" || GV === "side") {
+    const SIDE = GV === "side";
+    if (SIDE) root.classList.add("gv-horizon");
+    window.GV_NOENTRY = true; window.GLOBE_LOCK = true; window.GLOBE_ALL = !SIDE; window.PATH_LIFT = SIDE ? .8 : .45;
     stepIO.disconnect();
     window.PATH_ARCS = [];
     const P = [{"kind": "Student", "title": "Start abroad, then Boston", "url": "https://news.northeastern.edu/2026/01/16/nu-in-students-boston-transition/", "stops": [{"place": "Greece", "note": "First semester through N.U.in", "ll": [40.64, 22.94]}, {"place": "Boston", "note": "Spring semester on the Boston campus", "ll": [42.34, -71.09]}]}, {"kind": "Research", "title": "One institute, three campuses", "k": 1.05, "url": "https://news.northeastern.edu/2026/05/04/network-science-institute-global-presence/", "stops": [{"place": "Boston", "note": "Teams on the Boston campus", "ll": [42.34, -71.09]}, {"place": "London", "note": "A hub on the London campus", "ll": [51.51, -0.07]}, {"place": "Portland, Maine", "note": "A hub at the Roux Institute", "ll": [43.66, -70.26]}]}, {"kind": "Student", "title": "From one lab to the next", "k": 1.0, "url": "https://news.northeastern.edu/2026/07/22/nematodes-research-labs/", "stops": [{"place": "Oakland", "note": "A year of research on the Oakland campus", "ll": [37.78, -122.18]}, {"place": "Boston", "note": "A lab position on the Boston campus", "ll": [42.34, -71.09]}]}, {"kind": "Research", "title": "Chip research on two coasts", "k": 1.0, "url": "https://news.northeastern.edu/2024/04/29/bicoastal-institute-nanosystems-innovation/", "stops": [{"place": "Boston", "note": "A 15,000-square-foot laboratory", "ll": [42.34, -71.09]}, {"place": "Burlington", "note": "A 20,000-square-foot clean room", "ll": [42.48, -71.2]}, {"place": "Oakland", "note": "A new West Coast facility", "ll": [37.78, -122.18]}]}, {"kind": "Student", "title": "London, Oakland, then Boston", "k": 0.95, "url": "https://news.northeastern.edu/2024/09/12/enrollment-statistics-2024/", "stops": [{"place": "London", "note": "One semester on the London campus", "ll": [51.51, -0.07]}, {"place": "Oakland", "note": "One semester on the Oakland campus", "ll": [37.78, -122.18]}, {"place": "Boston", "note": "The rest of the degree", "ll": [42.34, -71.09]}]}, {"kind": "Student", "title": "A first year in Oakland", "k": 1.0, "url": "https://news.northeastern.edu/2026/09/03/new-oakland-students-move-in-2026/", "stops": [{"place": "Oakland", "note": "First year on the Oakland campus", "ll": [37.78, -122.18]}, {"place": "Boston", "note": "Then on to the Boston campus", "ll": [42.34, -71.09]}]}, {"kind": "One possible path", "title": "Starting abroad, ending in the Bay Area", "k": 0.95, "url": "", "stops": [{"place": "Rome", "note": "First semester through N.U.in", "ll": [41.9, 12.5]}, {"place": "Boston", "note": "Campus", "ll": [42.34, -71.09]}, {"place": "New York City", "note": "Co‑op", "ll": [40.71, -74.01]}, {"place": "New York City", "note": "Campus", "ll": [40.77, -73.98]}, {"place": "San Francisco", "note": "Co‑op", "ll": [37.77, -122.42]}, {"place": "Oakland", "note": "Campus", "ll": [37.78, -122.18]}]}];
     const ui = el("div", "hz");
     ui.innerHTML = `<h2 class="hz-h">No two paths look the same.</h2>` +
-      `<div class="hz-meta" aria-live="polite"><p class="hz-t"><span class="hz-k"></span><span class="hz-n"></span></p>` +
-      `<div class="hz-nav"><a class="hz-a" href="#">Read the story<span aria-hidden="true"> →</span></a>` +
-      `<button class="hz-b" data-d="-1" aria-label="Previous path">←</button><button class="hz-b" data-d="1" aria-label="Next path">→</button></div></div>` +
+      `<div class="hz-meta" aria-live="polite"><p class="hz-t"><span class="hz-k"></span></p>` +
+      `<div class="hz-nav"><button class="hz-b" data-d="-1" aria-label="Previous path">←</button><button class="hz-b" data-d="1" aria-label="Next path">→</button></div></div>` +
       `<ol class="hz-stops"></ol>`;
     stage.append(ui);
-    const list = ui.querySelector(".hz-stops"), link = ui.querySelector(".hz-a"), meta = ui.querySelector(".hz-meta");
+    const list = ui.querySelector(".hz-stops");
     const BACK = { campus: .1, nuin: .08, coops: .1, labelC: 0, labelN: 0, spins: 1 };
     Object.assign(cur, BACK); Object.assign(tgt, BACK);
     autorotate = false; fly = null;
     $("#globe").addEventListener("click", e => e.stopImmediatePropagation(), true);
-    let crest = .5;
+    let crest = { R: 1000, cap: 400 };
     const place = () => {
       const W = innerWidth, H = innerHeight, phone = W <= 720;
+      if (SIDE) {
+        if (!phone) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
+        const top = ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 18, bottom = H - 24;
+        window.GLOBE_CY = ((top + bottom) / 2) / H; window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 4, W / 2 - 18) / Math.min(W, H));
+        return;
+      }
       const R = phone ? W * 1.15 : Math.max(W * .62, H * 1.0);
       const topOfDisk = Math.max(ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 30, H * (phone ? .5 : .46));
       window.GLOBE_R = R / Math.min(W, H); window.GLOBE_CY = (topOfDisk + R) / H;
-      crest = (H - topOfDisk) / R;
+      crest = { R, cap: H - topOfDisk };
     };
     let pi = 0, si = -1, t0 = 0, vis = false;
-    const DWELL = 1800, HOLD = 2200;
+    const DWELL = 2400, HOLD = 3000;
+    /* zoom with the hop: close stops get a close camera, ocean crossings stay wide */
+    const angDeg = (a, b) => { const p1 = a[0] * RAD, p2 = b[0] * RAD, dl = (b[1] - a[1]) * RAD;
+      return Math.acos(Math.max(-1, Math.min(1, Math.sin(p1) * Math.sin(p2) + Math.cos(p1) * Math.cos(p2) * Math.cos(dl)))) / RAD; };
+    const zoomFor = (pth, j) => {
+      const prev = pth.stops[j - 1] || pth.stops[j + 1]; if (!prev) return 1;
+      const d = angDeg(prev.ll, pth.stops[j].ll), near = d < 6 ? 1 : d < 25 ? .45 : 0;
+      return SIDE ? 1.05 + near * .65 : 1 + near * .45;
+    };
     const stopAt = j => {
       si = j; t0 = performance.now();
       const st = P[pi].stops[j];
@@ -2426,20 +2450,26 @@ if (GV && GVS.includes(GV)) {
       window.PATH_LABEL = { ll: st.ll, text: st.place };
       STORY_PINS.push(st.ll); storySel = j;
       /* tilt so the stop rides just over the crest of the horizon */
-      const tilt = Math.asin(Math.min(.95, 1 - crest * .45)) / RAD;
-      fly = null; tgt.lon = st.ll[1]; tgt.lat = st.ll[0] - tilt; tgt.k = 1;  /* a direct ease, quicker than a flight */
-      [...list.children].forEach((li, k) => { li.classList.toggle("on", k === j); li.classList.toggle("past", k < j); });
+      /* horizon: tilt so the stop sits a third of the way down the visible cap at this zoom */
+      const kk = zoomFor(P[pi], j);
+      const tilt = SIDE ? 4 : Math.asin(Math.max(-.95, Math.min(.95, (crest.R - crest.cap * .38) / (crest.R * kk)))) / RAD;
+      fly = null; tgt.lon = st.ll[1]; tgt.lat = st.ll[0] - tilt; tgt.k = zoomFor(P[pi], j);  /* a direct ease, smoother than a flight */
+      const last = j >= P[pi].stops.length - 1;
+      [...list.children].forEach((li, k) => {
+        li.classList.toggle("on", k === j); li.classList.toggle("past", k < j);
+        const b = li.querySelector("b");
+        b.style.transition = "none"; b.style.width = k < j ? "100%" : "0%";
+        if (k === j && !reduceMotion) { void b.offsetWidth; b.style.transition = `width ${last ? HOLD : DWELL}ms linear`; b.style.width = "100%"; }
+      });
     };
     const showPath = i => {
       pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0; window.PATH_ARCS = []; window.PATH_LABEL = null;
       const pth = P[pi];
       ui.classList.add("swap");
       setTimeout(() => {
-        ui.querySelector(".hz-k").textContent = pth.kind + " · " + pth.title;
-        ui.querySelector(".hz-n").textContent = `${pi + 1} / ${P.length}`;
+        ui.querySelector(".hz-k").textContent = pth.kind;
         list.style.setProperty("--n", pth.stops.length);
         list.innerHTML = pth.stops.map(st => `<li><i aria-hidden="true"><b></b></i><span class="hz-p">${escH(st.place)}</span><span class="hz-x">${escH(st.note)}</span></li>`).join("");
-        link.hidden = !pth.url; if (pth.url) link.href = pth.url;
         ui.classList.remove("swap");
         place(); relayout();
         stopAt(0);
@@ -2449,8 +2479,6 @@ if (GV && GVS.includes(GV)) {
     new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; }, { threshold: [0, .5, 1] }).observe(stage);
     const loop = now => {
       if (vis && !document.hidden && si >= 0 && !reduceMotion) {
-        const fills = [...list.querySelectorAll("b")];
-        fills.forEach((b, k) => b.style.width = k < si ? "100%" : k > si ? "0%" : Math.min(100, (now - t0) / (si >= P[pi].stops.length - 1 ? HOLD : DWELL) * 100).toFixed(1) + "%");
         const last = si >= P[pi].stops.length - 1;
         if (!last && now - t0 > DWELL) stopAt(si + 1);
         else if (last && now - t0 > HOLD) showPath(pi + 1);
@@ -2465,7 +2493,7 @@ if (GV && GVS.includes(GV)) {
 
   /* treatment switcher (only when ?globe= is in the URL) */
   if (new URLSearchParams(location.search).has("globe")) {
-    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths", horizon: "Horizon" };
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths", horizon: "Horizon", side: "Side" };
     const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
     bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
   }

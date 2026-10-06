@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="36">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="37">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -178,7 +178,7 @@ assert c2_js.count(_f) == 1
 c2_js = c2_js.replace(_f, "ctx.font = (W <= 720 ? \"500 10.5px\" : \"500 11px\") + \" 'FF Real Head','Lato',sans-serif\";")
 _d = 'canvas.addEventListener("pointerdown", e => {\n  dragging = true;'
 assert c2_js.count(_d) == 1
-c2_js = c2_js.replace(_d, 'canvas.addEventListener("pointerdown", e => {\n  if (W <= 720) return;  /* phones: the globe is locked; the page scrolls freely */\n  dragging = true;')
+c2_js = c2_js.replace(_d, 'canvas.addEventListener("pointerdown", e => {\n  if (W <= 720 || window.GLOBE_LOCK) return;  /* phones: the globe is locked; the page scrolls freely */\n  dragging = true;')
 _pa = "  /* story pins: pulsing markers that open the docked story card */"
 assert c2_js.count(_pa) == 1
 c2_js = c2_js.replace(_pa, r"""  /* path arcs: thin great-circle arcs that draw themselves in, led by a soft point; fade as a group */
@@ -858,6 +858,15 @@ NEW_CSS = r'''
     .hz-stops li.on .hz-x{display:block;font-size:11.5px}
   }
 
+  /* SIDE: the horizon idea with content on the left and the globe on the right */
+  .gv-side .hz{top:50%;transform:translateY(-50%);right:auto;width:min(440px,36vw)}
+  .gv-side .hz-stops{grid-template-columns:1fr;gap:16px;margin-top:20px}
+  .gv-side .hz-p{margin-top:8px}
+  @media (max-width:720px){
+    .gv-side .hz{top:84px;transform:none;left:20px;right:20px;width:auto}
+    .gv-side .hz-stops{grid-template-columns:repeat(var(--n,3),1fr);gap:6px;margin-top:12px}
+  }
+
   /* GUS */
   .gv-gus #gt-card,.gv-gus .stage .hint{display:none!important}
   .gv-gus .steps{height:460svh;padding:0}
@@ -919,8 +928,8 @@ GLOBE_VARIANTS = r'''
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
 const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
-const GV = ["gus", "paths", "horizon"].includes(GVP) ? GVP : (GVM ? (GVP || "a") : null);
-const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths", "horizon"];
+const GV = ["gus", "paths", "horizon", "side"].includes(GVP) ? GVP : (GVM ? (GVP || "a") : null);
+const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths", "horizon", "side"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
   root.classList.add("gv-" + GV);
@@ -948,7 +957,7 @@ if (GV && GVS.includes(GV)) {
     `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
-  if (!["now", "gus", "paths", "horizon"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  if (!["now", "gus", "paths", "horizon", "side"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
   /* one tracker: the step under mid-screen is current; it alone moves the camera */
   const trackSteps = fn => {
     let curS;
@@ -961,7 +970,7 @@ if (GV && GVS.includes(GV)) {
   };
 
   /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
-  if (!["now", "gus", "paths", "horizon"].includes(GV)) {
+  if (!["now", "gus", "paths", "horizon", "side"].includes(GV)) {
     VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
     const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
     const order = ["Boston", "London", "New York City", "Oakland"];
@@ -1170,7 +1179,7 @@ if (GV && GVS.includes(GV)) {
 
   /* PATHS · real journeys across the network, drawn one stop at a time (no connecting lines) */
   if (GV === "paths") {
-    window.GV_NOENTRY = true;
+    window.GV_NOENTRY = true; window.GLOBE_LOCK = true;
     stepIO.disconnect();
     window.PATH_ARCS = [];
     const P = __PATHS__;
@@ -1243,33 +1252,48 @@ if (GV && GVS.includes(GV)) {
 
   /* HORIZON · the planet rises from the bottom; a path's stops sit across the top like stories,
      dim until reached; each fills as the globe turns to it */
-  if (GV === "horizon") {
-    window.GV_NOENTRY = true; window.GLOBE_ALL = true; window.PATH_LIFT = .45;
+  if (GV === "horizon" || GV === "side") {
+    const SIDE = GV === "side";
+    if (SIDE) root.classList.add("gv-horizon");
+    window.GV_NOENTRY = true; window.GLOBE_LOCK = true; window.GLOBE_ALL = !SIDE; window.PATH_LIFT = SIDE ? .8 : .45;
     stepIO.disconnect();
     window.PATH_ARCS = [];
     const P = __PATHS__;
     const ui = el("div", "hz");
     ui.innerHTML = `<h2 class="hz-h">No two paths look the same.</h2>` +
-      `<div class="hz-meta" aria-live="polite"><p class="hz-t"><span class="hz-k"></span><span class="hz-n"></span></p>` +
-      `<div class="hz-nav"><a class="hz-a" href="#">Read the story<span aria-hidden="true"> →</span></a>` +
-      `<button class="hz-b" data-d="-1" aria-label="Previous path">←</button><button class="hz-b" data-d="1" aria-label="Next path">→</button></div></div>` +
+      `<div class="hz-meta" aria-live="polite"><p class="hz-t"><span class="hz-k"></span></p>` +
+      `<div class="hz-nav"><button class="hz-b" data-d="-1" aria-label="Previous path">←</button><button class="hz-b" data-d="1" aria-label="Next path">→</button></div></div>` +
       `<ol class="hz-stops"></ol>`;
     stage.append(ui);
-    const list = ui.querySelector(".hz-stops"), link = ui.querySelector(".hz-a"), meta = ui.querySelector(".hz-meta");
+    const list = ui.querySelector(".hz-stops");
     const BACK = { campus: .1, nuin: .08, coops: .1, labelC: 0, labelN: 0, spins: 1 };
     Object.assign(cur, BACK); Object.assign(tgt, BACK);
     autorotate = false; fly = null;
     $("#globe").addEventListener("click", e => e.stopImmediatePropagation(), true);
-    let crest = .5;
+    let crest = { R: 1000, cap: 400 };
     const place = () => {
       const W = innerWidth, H = innerHeight, phone = W <= 720;
+      if (SIDE) {
+        if (!phone) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
+        const top = ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 18, bottom = H - 24;
+        window.GLOBE_CY = ((top + bottom) / 2) / H; window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 4, W / 2 - 18) / Math.min(W, H));
+        return;
+      }
       const R = phone ? W * 1.15 : Math.max(W * .62, H * 1.0);
       const topOfDisk = Math.max(ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 30, H * (phone ? .5 : .46));
       window.GLOBE_R = R / Math.min(W, H); window.GLOBE_CY = (topOfDisk + R) / H;
-      crest = (H - topOfDisk) / R;
+      crest = { R, cap: H - topOfDisk };
     };
     let pi = 0, si = -1, t0 = 0, vis = false;
-    const DWELL = 1800, HOLD = 2200;
+    const DWELL = 2400, HOLD = 3000;
+    /* zoom with the hop: close stops get a close camera, ocean crossings stay wide */
+    const angDeg = (a, b) => { const p1 = a[0] * RAD, p2 = b[0] * RAD, dl = (b[1] - a[1]) * RAD;
+      return Math.acos(Math.max(-1, Math.min(1, Math.sin(p1) * Math.sin(p2) + Math.cos(p1) * Math.cos(p2) * Math.cos(dl)))) / RAD; };
+    const zoomFor = (pth, j) => {
+      const prev = pth.stops[j - 1] || pth.stops[j + 1]; if (!prev) return 1;
+      const d = angDeg(prev.ll, pth.stops[j].ll), near = d < 6 ? 1 : d < 25 ? .45 : 0;
+      return SIDE ? 1.05 + near * .65 : 1 + near * .45;
+    };
     const stopAt = j => {
       si = j; t0 = performance.now();
       const st = P[pi].stops[j];
@@ -1277,20 +1301,26 @@ if (GV && GVS.includes(GV)) {
       window.PATH_LABEL = { ll: st.ll, text: st.place };
       STORY_PINS.push(st.ll); storySel = j;
       /* tilt so the stop rides just over the crest of the horizon */
-      const tilt = Math.asin(Math.min(.95, 1 - crest * .45)) / RAD;
-      fly = null; tgt.lon = st.ll[1]; tgt.lat = st.ll[0] - tilt; tgt.k = 1;  /* a direct ease, quicker than a flight */
-      [...list.children].forEach((li, k) => { li.classList.toggle("on", k === j); li.classList.toggle("past", k < j); });
+      /* horizon: tilt so the stop sits a third of the way down the visible cap at this zoom */
+      const kk = zoomFor(P[pi], j);
+      const tilt = SIDE ? 4 : Math.asin(Math.max(-.95, Math.min(.95, (crest.R - crest.cap * .38) / (crest.R * kk)))) / RAD;
+      fly = null; tgt.lon = st.ll[1]; tgt.lat = st.ll[0] - tilt; tgt.k = zoomFor(P[pi], j);  /* a direct ease, smoother than a flight */
+      const last = j >= P[pi].stops.length - 1;
+      [...list.children].forEach((li, k) => {
+        li.classList.toggle("on", k === j); li.classList.toggle("past", k < j);
+        const b = li.querySelector("b");
+        b.style.transition = "none"; b.style.width = k < j ? "100%" : "0%";
+        if (k === j && !reduceMotion) { void b.offsetWidth; b.style.transition = `width ${last ? HOLD : DWELL}ms linear`; b.style.width = "100%"; }
+      });
     };
     const showPath = i => {
       pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0; window.PATH_ARCS = []; window.PATH_LABEL = null;
       const pth = P[pi];
       ui.classList.add("swap");
       setTimeout(() => {
-        ui.querySelector(".hz-k").textContent = pth.kind + " · " + pth.title;
-        ui.querySelector(".hz-n").textContent = `${pi + 1} / ${P.length}`;
+        ui.querySelector(".hz-k").textContent = pth.kind;
         list.style.setProperty("--n", pth.stops.length);
         list.innerHTML = pth.stops.map(st => `<li><i aria-hidden="true"><b></b></i><span class="hz-p">${escH(st.place)}</span><span class="hz-x">${escH(st.note)}</span></li>`).join("");
-        link.hidden = !pth.url; if (pth.url) link.href = pth.url;
         ui.classList.remove("swap");
         place(); relayout();
         stopAt(0);
@@ -1300,8 +1330,6 @@ if (GV && GVS.includes(GV)) {
     new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; }, { threshold: [0, .5, 1] }).observe(stage);
     const loop = now => {
       if (vis && !document.hidden && si >= 0 && !reduceMotion) {
-        const fills = [...list.querySelectorAll("b")];
-        fills.forEach((b, k) => b.style.width = k < si ? "100%" : k > si ? "0%" : Math.min(100, (now - t0) / (si >= P[pi].stops.length - 1 ? HOLD : DWELL) * 100).toFixed(1) + "%");
         const last = si >= P[pi].stops.length - 1;
         if (!last && now - t0 > DWELL) stopAt(si + 1);
         else if (last && now - t0 > HOLD) showPath(pi + 1);
@@ -1316,7 +1344,7 @@ if (GV && GVS.includes(GV)) {
 
   /* treatment switcher (only when ?globe= is in the URL) */
   if (new URLSearchParams(location.search).has("globe")) {
-    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths", horizon: "Horizon" };
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths", horizon: "Horizon", side: "Side" };
     const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
     bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
   }
@@ -1336,7 +1364,7 @@ GLOBE_PINCH = r'''/* globe: a two-finger pinch zooms the planet, never the page 
       if (!pinch || e.touches.length !== 2) return;
       e.preventDefault();
       fly = null; dragging = false;
-      if (innerWidth > 720) cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
+      if (innerWidth > 720 && !window.GLOBE_LOCK) cur.k = tgt.k = Math.max(.8, Math.min(4, pinch.k * dist(e.touches) / pinch.d));
     }, { passive: false });
     cv.addEventListener("touchend", e => { if (e.touches.length < 2) pinch = null; });
   }
@@ -1854,7 +1882,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="36"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="37"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1864,7 +1892,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="36">', '<meta name="concept11-rev" content="25">'),
+for x, y in (('<meta name="concept10-rev" content="37">', '<meta name="concept11-rev" content="26">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
