@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="40">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="41">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -1858,30 +1858,51 @@ if (new URLSearchParams(location.search).has("rows")) {
 '''
 # real cross-campus paths, each from an NGN story (researched 2026-10-06); one illustrative path, labeled
 BOS, OAK, LON, NYC, POR, BUR = [42.34, -71.09], [37.78, -122.18], [51.51, -0.07], [40.77, -73.98], [43.66, -70.26], [42.48, -71.2]
+NAH, MIA, VAN, SEA, SV, ARL, CLT, TOR = [42.42, -70.91], [25.76, -80.19], [49.28, -123.12], [47.61, -122.33], [37.34, -121.89], [38.88, -77.11], [35.23, -80.84], [43.65, -79.38]
 PATHS = [
  {"kind": "Student", "title": "Start abroad, then Boston",
   "url": NGN + "/2026/01/16/nu-in-students-boston-transition/",
   "stops": [{"place": "Greece", "note": "First semester through N.U.in", "ll": [40.64, 22.94]},
             {"place": "Boston", "note": "Spring semester on the Boston campus", "ll": BOS}]},
+ {"kind": "One possible path", "title": "Biology, from the classroom to the reef", "k": 1.0, "url": "",
+  "stops": [{"place": "Boston", "note": "Biology courses on the Boston campus", "ll": BOS},
+            {"place": "Nahant", "note": "A semester at the Marine Science Center", "ll": NAH},
+            {"place": "Miami", "note": "A co‑op studying coral reefs", "ll": MIA}]},
  {"kind": "Research", "title": "One institute, three campuses", "k": 1.05,
   "url": NGN + "/2026/05/04/network-science-institute-global-presence/",
   "stops": [{"place": "Boston", "note": "Teams on the Boston campus", "ll": BOS},
             {"place": "London", "note": "A hub on the London campus", "ll": LON},
             {"place": "Portland, Maine", "note": "A hub at the Roux Institute", "ll": POR}]},
+ {"kind": "One possible path", "title": "A master's up the West Coast", "k": 1.0, "url": "",
+  "stops": [{"place": "Vancouver", "note": "Computer science courses on the Vancouver campus", "ll": VAN},
+            {"place": "Seattle", "note": "A co‑op in cloud engineering", "ll": SEA},
+            {"place": "Silicon Valley", "note": "A final semester on the Silicon Valley campus", "ll": SV}]},
  {"kind": "Student", "title": "From one lab to the next", "k": 1.0,
   "url": NGN + "/2026/07/22/nematodes-research-labs/",
   "stops": [{"place": "Oakland", "note": "A year of research on the Oakland campus", "ll": OAK},
             {"place": "Boston", "note": "A lab position on the Boston campus", "ll": BOS}]},
+ {"kind": "One possible path", "title": "Security research across an ocean", "k": 1.0, "url": "",
+  "stops": [{"place": "Arlington", "note": "A cybersecurity lab outside Washington, D.C.", "ll": ARL},
+            {"place": "Boston", "note": "Shared work with faculty in Boston", "ll": BOS},
+            {"place": "London", "note": "Partners on the London campus", "ll": LON}]},
  {"kind": "Research", "title": "Chip research on two coasts", "k": 1.0,
   "url": NGN + "/2024/04/29/bicoastal-institute-nanosystems-innovation/",
   "stops": [{"place": "Boston", "note": "A 15,000-square-foot laboratory", "ll": BOS},
             {"place": "Burlington", "note": "A 20,000-square-foot clean room", "ll": BUR},
             {"place": "Oakland", "note": "A new West Coast facility", "ll": OAK}]},
+ {"kind": "One possible path", "title": "Analytics, three cities", "k": 1.0, "url": "",
+  "stops": [{"place": "Charlotte", "note": "A data analytics master's on the Charlotte campus", "ll": CLT},
+            {"place": "Toronto", "note": "A semester on the Toronto campus", "ll": TOR},
+            {"place": "New York City", "note": "A co‑op in finance", "ll": [40.71, -74.01]}]},
  {"kind": "Student", "title": "London, Oakland, then Boston", "k": .95,
   "url": NGN + "/2024/09/12/enrollment-statistics-2024/",
   "stops": [{"place": "London", "note": "One semester on the London campus", "ll": LON},
             {"place": "Oakland", "note": "One semester on the Oakland campus", "ll": OAK},
             {"place": "Boston", "note": "The rest of the degree", "ll": BOS}]},
+ {"kind": "One possible path", "title": "One health AI project", "k": 1.0, "url": "",
+  "stops": [{"place": "Portland, Maine", "note": "An AI model built at the Roux Institute", "ll": POR},
+            {"place": "Toronto", "note": "Hospital partners near the Toronto campus", "ll": TOR},
+            {"place": "Seattle", "note": "Testing with the team in Seattle", "ll": SEA}]},
  {"kind": "Student", "title": "A first year in Oakland", "k": 1.0,
   "url": NGN + "/2026/09/03/new-oakland-students-move-in-2026/",
   "stops": [{"place": "Oakland", "note": "First year on the Oakland campus", "ll": OAK},
@@ -1921,7 +1942,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="40"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="41"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1931,7 +1952,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="40">', '<meta name="concept11-rev" content="29">'),
+for x, y in (('<meta name="concept10-rev" content="41">', '<meta name="concept11-rev" content="30">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
