@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept12-rev" content="8">
+<meta name="concept12-rev" content="9">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -585,13 +585,16 @@
   .f-soc svg{width:22px;height:22px;fill:currentColor}
   /* lockup is 486x180 with the N spanning x 35-192: the link clips to the N's width and the negative margin
      puts the N's left edge on the page gutter */
-  .nav .wordmark{--lh:56px;height:var(--lh);width:calc(var(--lh) * 2.7);margin-left:calc(var(--lh) * -.194);overflow:hidden;flex:none;
+  .nav .wordmark{--lh:64px;height:var(--lh);width:calc(var(--lh) * 2.7);margin-left:calc(var(--lh) * -.194);overflow:hidden;flex:none;
     transition:width .5s,height .5s,margin .5s;transition-timing-function:cubic-bezier(.2,.7,.2,1)}
   .lockup{height:100%;width:auto;display:block;flex:none}
   .lockup .lk-word{fill:#fff;transition:opacity .3s,transform .5s cubic-bezier(.2,.7,.2,1)}
-  .nav.scrolled .wordmark{--lh:42px;width:calc(var(--lh) * 1.12)}
+  .nav.scrolled .wordmark{--lh:46px;width:calc(var(--lh) * 1.12)}
   .nav.scrolled .lockup .lk-word{opacity:0;transform:translateX(-24px)}
-  @media (max-width:720px){ .nav .wordmark{--lh:46px} .nav.scrolled .wordmark{--lh:38px} }
+  @media (max-width:720px){ .nav .wordmark{--lh:50px} .nav.scrolled .wordmark{--lh:40px} }
+  /* links centred on the page, so they also hold still while the logo peels */
+  @media (min-width:961px){ .nav .row{display:grid;grid-template-columns:1fr auto 1fr}
+    .nav .wordmark{justify-self:start} .nav .nvright{justify-self:end;margin-left:0} }
 
   /* phone nav: compact icon controls, one primary button */
   .tkv-open .tko-i{display:none}

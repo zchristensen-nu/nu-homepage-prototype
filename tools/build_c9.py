@@ -107,7 +107,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="49">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="50">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -669,13 +669,16 @@ NEW_CSS = r'''
   .f-soc svg{width:22px;height:22px;fill:currentColor}
   /* lockup is 486x180 with the N spanning x 35-192: the link clips to the N's width and the negative margin
      puts the N's left edge on the page gutter */
-  .nav .wordmark{--lh:56px;height:var(--lh);width:calc(var(--lh) * 2.7);margin-left:calc(var(--lh) * -.194);overflow:hidden;flex:none;
+  .nav .wordmark{--lh:64px;height:var(--lh);width:calc(var(--lh) * 2.7);margin-left:calc(var(--lh) * -.194);overflow:hidden;flex:none;
     transition:width .5s,height .5s,margin .5s;transition-timing-function:cubic-bezier(.2,.7,.2,1)}
   .lockup{height:100%;width:auto;display:block;flex:none}
   .lockup .lk-word{fill:#fff;transition:opacity .3s,transform .5s cubic-bezier(.2,.7,.2,1)}
-  .nav.scrolled .wordmark{--lh:42px;width:calc(var(--lh) * 1.12)}
+  .nav.scrolled .wordmark{--lh:46px;width:calc(var(--lh) * 1.12)}
   .nav.scrolled .lockup .lk-word{opacity:0;transform:translateX(-24px)}
-  @media (max-width:720px){ .nav .wordmark{--lh:46px} .nav.scrolled .wordmark{--lh:38px} }
+  @media (max-width:720px){ .nav .wordmark{--lh:50px} .nav.scrolled .wordmark{--lh:40px} }
+  /* links centred on the page, so they also hold still while the logo peels */
+  @media (min-width:961px){ .nav .row{display:grid;grid-template-columns:1fr auto 1fr}
+    .nav .wordmark{justify-self:start} .nav .nvright{justify-self:end;margin-left:0} }
 
   /* phone nav: compact icon controls, one primary button */
   .tkv-open .tko-i{display:none}
@@ -1981,7 +1984,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="49"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="50"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1991,7 +1994,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="49">', '<meta name="concept11-rev" content="38">'),
+for x, y in (('<meta name="concept10-rev" content="50">', '<meta name="concept11-rev" content="39">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2002,7 +2005,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="38">', '<meta name="concept12-rev" content="8">'),
+for x, y in (('<meta name="concept11-rev" content="39">', '<meta name="concept12-rev" content="9">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
