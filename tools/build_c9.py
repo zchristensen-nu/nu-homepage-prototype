@@ -107,7 +107,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="53">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="54">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -1300,7 +1300,6 @@ if (GV && GVS.includes(GV)) {
     if (SIDE) root.classList.add("gv-horizon");
     window.GV_NOENTRY = true; window.GLOBE_LOCK = true; window.GLOBE_ALL = !SIDE; window.PATH_LIFT = SIDE ? .8 : .45;
     window.FLY_NODIP = true; window.FLY_SLOW = 1.35;  /* no zoom bounce, calmer flights */
-    window.FLY_EASE = t => .5 - Math.cos(Math.PI * t) / 2;  /* sine: moves at once, half the cubic's peak speed */
     stepIO.disconnect();
     window.PATH_ARCS = [];
     const P = __PATHS__;
@@ -2024,7 +2023,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="53"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="54"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -2034,7 +2033,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="53">', '<meta name="concept11-rev" content="42">'),
+for x, y in (('<meta name="concept10-rev" content="54">', '<meta name="concept11-rev" content="43">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2045,7 +2044,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="42">', '<meta name="concept12-rev" content="12">'),
+for x, y in (('<meta name="concept11-rev" content="43">', '<meta name="concept12-rev" content="13">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
