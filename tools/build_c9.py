@@ -107,7 +107,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="54">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="55">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -219,8 +219,8 @@ c2_js = c2_js.replace(_pa, r"""  /* path arcs: thin great-circle arcs that draw 
   }
   if (window.PATH_LABEL) {
     const L = window.PATH_LABEL, pr = project(L.ll[0], L.ll[1], R, cx, cy);
-    const nb = labelBoxes.length;
-    if (pr[2] > 0) label(L.text, pr[0], pr[1], 1);
+    const nb = labelBoxes.length, la = L.at ? Math.max(0, Math.min(1, (now - L.at) / 300)) : 1;
+    if (pr[2] > 0 && la > 0) label(L.text, pr[0], pr[1], la, W <= 720 ? 13 : 14);
     window.PATH_LABEL_BOX = labelBoxes.length > nb ? labelBoxes[labelBoxes.length - 1] : null;
   } else window.PATH_LABEL_BOX = null;
 """ + _pa)
@@ -229,7 +229,17 @@ assert c2_js.count(_e) == 1
 c2_js = c2_js.replace(_e, "const entryUpd = () => {\n  if (window.GV_NOENTRY) return;\n  const r = scEl.getBoundingClientRect();")
 for _a, _b in (("const dip = dist < 12 ? 0 :", "const dip = window.FLY_NODIP || dist < 12 ? 0 :"),
                ("dur: 800 + Math.min(1000, dist * 7) }", "dur: (800 + Math.min(1000, dist * 7)) * (window.FLY_SLOW || 1) }"),
-               ("const e = easeIO(t);", "const e = (window.FLY_EASE || easeIO)(t);")):
+               ("const e = easeIO(t);", "const e = (window.FLY_EASE || easeIO)(t);"),
+               ("function label(text, x, y, a) {\n", """function label(text, x, y, a, px) {
+  if (px) {  /* the paths treatment's single, larger label */
+    ctx.font = "500 " + px + "px 'FF Real Head','Lato',sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    const w = ctx.measureText(text).width, h = Math.round(px * 1.7), pad = Math.round(px * .55), bx = x + 12, by = y - h / 2;
+    labelBoxes.push({ x: bx, y: by, w: w + pad * 2, h });
+    ctx.fillStyle = `rgba(11,11,14,${.6 * a})`; ctx.fillRect(bx, by, w + pad * 2, h);
+    ctx.fillStyle = `rgba(255,255,255,${.97 * a})`; ctx.fillText(text, bx + pad, by + h / 2 + .5);
+    return;
+  }
+""")):
     assert c2_js.count(_a) == 1, _a
     c2_js = c2_js.replace(_a, _b)
 assert c2_js.count("function render(now) {") == 1
@@ -1386,8 +1396,12 @@ if (GV && GVS.includes(GV)) {
         for (let k = 0; k < j; k++) { STORY_PINS.push(pth.stops[k].ll); if (k) window.PATH_ARCS.push({ a: pth.stops[k - 1].ll, b: pth.stops[k].ll, t0: -1e9 }); }
       }
       if (j > 0) window.PATH_ARCS.push({ a: pth.stops[j - 1].ll, b: st.ll, t0 });
-      window.PATH_LABEL = { ll: st.ll, text: st.place };
-      STORY_PINS.push(st.ll); storySel = j;
+      /* a new stop's pin and label wait for the line to arrive (the arc draws in 900ms) */
+      const arrive = j > 0 && !jump && !reduceMotion ? t0 + 900 : 0;
+      window.PATH_LABEL = { ll: st.ll, text: st.place, at: arrive };
+      clearTimeout(stopAt.pinT);
+      const pin = () => { STORY_PINS.push(st.ll); storySel = j; };
+      if (arrive) { const key = pi + ":" + j; stopAt.pinT = setTimeout(() => { if (pi + ":" + si === key) pin(); }, 900); } else pin();
       if (!noFly) flyTo(pth, j);
       paint(j);
       const li = list.children[j];
@@ -2023,7 +2037,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="54"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="55"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -2033,7 +2047,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="54">', '<meta name="concept11-rev" content="43">'),
+for x, y in (('<meta name="concept10-rev" content="55">', '<meta name="concept11-rev" content="44">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2044,7 +2058,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="43">', '<meta name="concept12-rev" content="13">'),
+for x, y in (('<meta name="concept11-rev" content="44">', '<meta name="concept12-rev" content="14">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)

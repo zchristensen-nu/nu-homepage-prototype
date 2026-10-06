@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept12-rev" content="13">
+<meta name="concept12-rev" content="14">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1532,7 +1532,15 @@ function project(lat, lng, R, cx, cy, alt) {
 }
 
 let labelBoxes = [];
-function label(text, x, y, a) {
+function label(text, x, y, a, px) {
+  if (px) {  /* the paths treatment's single, larger label */
+    ctx.font = "500 " + px + "px 'FF Real Head','Lato',sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    const w = ctx.measureText(text).width, h = Math.round(px * 1.7), pad = Math.round(px * .55), bx = x + 12, by = y - h / 2;
+    labelBoxes.push({ x: bx, y: by, w: w + pad * 2, h });
+    ctx.fillStyle = `rgba(11,11,14,${.6 * a})`; ctx.fillRect(bx, by, w + pad * 2, h);
+    ctx.fillStyle = `rgba(255,255,255,${.97 * a})`; ctx.fillText(text, bx + pad, by + h / 2 + .5);
+    return;
+  }
   ctx.font = (W <= 720 ? "500 10.5px" : "500 11px") + " 'FF Real Head','Lato',sans-serif";
   ctx.textAlign = "left"; ctx.textBaseline = "middle";
   const w = ctx.measureText(text).width;
@@ -1726,8 +1734,8 @@ function render(now) {
   }
   if (window.PATH_LABEL) {
     const L = window.PATH_LABEL, pr = project(L.ll[0], L.ll[1], R, cx, cy);
-    const nb = labelBoxes.length;
-    if (pr[2] > 0) label(L.text, pr[0], pr[1], 1);
+    const nb = labelBoxes.length, la = L.at ? Math.max(0, Math.min(1, (now - L.at) / 300)) : 1;
+    if (pr[2] > 0 && la > 0) label(L.text, pr[0], pr[1], la, W <= 720 ? 13 : 14);
     window.PATH_LABEL_BOX = labelBoxes.length > nb ? labelBoxes[labelBoxes.length - 1] : null;
   } else window.PATH_LABEL_BOX = null;
   /* story pins: pulsing markers that open the docked story card */
@@ -2522,8 +2530,12 @@ if (GV && GVS.includes(GV)) {
         for (let k = 0; k < j; k++) { STORY_PINS.push(pth.stops[k].ll); if (k) window.PATH_ARCS.push({ a: pth.stops[k - 1].ll, b: pth.stops[k].ll, t0: -1e9 }); }
       }
       if (j > 0) window.PATH_ARCS.push({ a: pth.stops[j - 1].ll, b: st.ll, t0 });
-      window.PATH_LABEL = { ll: st.ll, text: st.place };
-      STORY_PINS.push(st.ll); storySel = j;
+      /* a new stop's pin and label wait for the line to arrive (the arc draws in 900ms) */
+      const arrive = j > 0 && !jump && !reduceMotion ? t0 + 900 : 0;
+      window.PATH_LABEL = { ll: st.ll, text: st.place, at: arrive };
+      clearTimeout(stopAt.pinT);
+      const pin = () => { STORY_PINS.push(st.ll); storySel = j; };
+      if (arrive) { const key = pi + ":" + j; stopAt.pinT = setTimeout(() => { if (pi + ":" + si === key) pin(); }, 900); } else pin();
       if (!noFly) flyTo(pth, j);
       paint(j);
       const li = list.children[j];
