@@ -98,7 +98,7 @@ header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Global Entre
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="30">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="31">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -1243,7 +1243,7 @@ function mountRow(sec, items) {
 }
 
 /* ============ the reel: each card loops its own clip; the strip drifts rightward ============ */
-{
+if ($(".reel")) {
   const reel = $(".reel"), track = $("#reelTrack"), GAP = 16;
   const vio = new IntersectionObserver(es => es.forEach(e => {
     const v = e.target;
@@ -1494,9 +1494,12 @@ if (new URLSearchParams(location.search).has("rows")) {
 NEW_JS = NEW_JS.replace("__ARROW__", g["ICON_ARROW"]).replace("__CHEV__", CHEV)
 NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).replace("</", "<\\/"))
 
+# the co-op rail is cut (2026-10-06); research stays
+_j0 = sheet_mk.index('<section class="journey"'); _j1 = sheet_mk.index("</section>", _j0) + len("</section>")
+sheet_mk = sheet_mk[:_j0] + sheet_mk[_j1:]
 page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
-        + header_mk + HERO + "<main>\n" + ROWS + globe_mk + sheet_mk + reel_mk + admit_mk + "\n</main>\n" + footer_mk + "\n"
+        + header_mk + HERO + "<main>\n" + ROWS + globe_mk + sheet_mk + admit_mk + "\n</main>\n" + footer_mk + "\n"
         + lenis_js + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + c2_js + GLOBE_PINCH + GLOBE_VARIANTS + NEW_JS
         + "\n" + tail_js + "/* ============ boot ============ */\nnav.classList.toggle(\"solid\", scrollY > 60);\nresize();\nrequestAnimationFrame(frame);\n</script>\n")
 
@@ -1512,9 +1515,9 @@ for a, b in GERUNDS:
     assert a in page or "’" in a, a
     page = page.replace(a, b)
 assert page.count("<header") == 1 and page.count("<footer>") == 1
-assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 16
+assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="30"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', "reelTrack", 'id="xrow"', 'id="jRail"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="31"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1524,7 +1527,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="30">', '<meta name="concept11-rev" content="19">'),
+for x, y in (('<meta name="concept10-rev" content="31">', '<meta name="concept11-rev" content="20">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
