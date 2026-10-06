@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="32">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="33">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -273,7 +273,7 @@ FEATS = [
  feat("Research", "Research", v=HD["research"], h="Breakthroughs begin here",
       syn="Northeastern is an R1 research enterprise that advances work in health, security, and sustainability with partners in industry, government, and communities.",
       cta={"label": "Explore research", "href": "https://research.northeastern.edu/"}),
- feat("Global network", "Global network", v=HD["global"], h="Live, learn, and innovate without boundaries", card="../img/global-london.jpg",
+ feat("Global network", "Global network", v=HD["global"], h="Learn and innovate without boundaries", card="../img/global-london.jpg",
       syn="Our dynamic network of campuses, alumni, and partners is designed to maximize opportunities for powerful educational experiences, influential research, and compelling collaborations in every part of the world.",
       cta={"label": "See the network", "href": "#campuses"}),
  feat("AI", None, v=HD["ai"], h="Responsible, human-centered AI", still=U+"/2026/09/AImakerspace1400.jpg",
@@ -527,6 +527,12 @@ NEW_CSS = r'''
   .rows-bfull .sp-btn:hover{background:rgba(255,255,255,.84);color:#0B0B0E}
   .rows-bfull .cc-t{font-size:14px;padding:0 12px 14px}
   .rows-bfull .cc.on{box-shadow:0 0 0 2px #fff,0 18px 40px rgba(0,0,0,.55)}
+
+  .cc-pb{display:none}
+  .rows-b .cc-pb{display:block;position:absolute;z-index:3;left:10px;right:10px;top:10px;height:3px;border-radius:3px;overflow:hidden;
+    background:rgba(255,255,255,.28);opacity:0;transition:opacity .3s}
+  .rows-b .cc.on .cc-pb{opacity:1}
+  .rows-b .cc-pb::after{content:"";display:block;height:100%;width:calc(var(--pb,0) * 100%);background:#fff;border-radius:inherit}
 
   /* B3 (framed photo) vs B2 (quiet) */
   .sp-fig{display:none}
@@ -1380,6 +1386,7 @@ function spotlight(tp) {
   let cur = -1, layer = 0, t;
   const set = i => {
     if (i === cur) return;
+    cards.forEach(c => c.style.setProperty("--pb", 0));
     cur = i; const it = items[i];
     layer ^= 1;
     const stage = bgs[layer], prev = bgs[layer ^ 1], pic = new Image();
@@ -1419,10 +1426,34 @@ function spotlight(tp) {
       if (performance.now() < quietUntil) return;
       t = setTimeout(() => { set(k); reveal(c); }, 140);
     });
-    c.addEventListener("click", e => { e.preventDefault(); set(k); reveal(c); });
+    c.addEventListener("click", e => { e.preventDefault(); set(k); reveal(c); hold(); });
     c.addEventListener("focus", () => { set(k); reveal(c); });
   });
   set(0);
+  /* auto-advance every 8s with a loader on the focused poster; pauses on hover, after a touch,
+     off screen, in a hidden tab, and under reduced motion; loops after the first ten stories */
+  cards.forEach(c => c.insertAdjacentHTML("beforeend", '<i class="cc-pb" aria-hidden="true"></i>'));
+  const SPOT_MS = 8000, LOOP = Math.min(cards.length, 10);
+  let elapsedS = 0, lastS = 0, visS = false, hoverS = false, holdS = 0;
+  function hold() { holdS = performance.now() + 6000; elapsedS = 0; }
+  new IntersectionObserver(es => { visS = es[0].isIntersecting; }, { threshold: .45 }).observe(sec);
+  if (canHover) { sec.addEventListener("pointerenter", () => hoverS = true); sec.addEventListener("pointerleave", () => { hoverS = false; elapsedS = 0; }); }
+  strip.addEventListener("touchstart", hold, { passive: true });
+  if (!reduceMotion) {
+    const tickS = now => {
+      const dt = lastS ? Math.min(100, now - lastS) : 0; lastS = now;
+      if (visS && !hoverS && !document.hidden && now > holdS) {
+        elapsedS += dt;
+        cards[cur].style.setProperty("--pb", Math.min(1, elapsedS / SPOT_MS).toFixed(4));
+        if (elapsedS >= SPOT_MS) {
+          cards[cur].style.setProperty("--pb", 0); elapsedS = 0;
+          const n = (cur + 1) % LOOP; set(n); reveal(cards[n]);
+        }
+      }
+      requestAnimationFrame(tickS);
+    };
+    requestAnimationFrame(tickS);
+  }
 }
 
 /* C · Coverflow: one module, topic tabs over a 3D coverflow; the centered story carries the details */
@@ -1518,7 +1549,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="32"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="33"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1528,7 +1559,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="32">', '<meta name="concept11-rev" content="21">'),
+for x, y in (('<meta name="concept10-rev" content="33">', '<meta name="concept11-rev" content="22">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
