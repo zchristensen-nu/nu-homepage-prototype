@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept10-rev" content="46">
+<meta name="concept10-rev" content="47">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -586,9 +586,9 @@
     transition:width .5s,height .5s,margin .5s;transition-timing-function:cubic-bezier(.2,.7,.2,1)}
   .lockup{height:100%;width:auto;display:block;flex:none}
   .lockup .lk-word{fill:#fff;transition:opacity .3s,transform .5s cubic-bezier(.2,.7,.2,1)}
-  .nav.solid .wordmark{--lh:42px;width:calc(var(--lh) * 1.12)}
-  .nav.solid .lockup .lk-word{opacity:0;transform:translateX(-24px)}
-  @media (max-width:720px){ .nav .wordmark{--lh:46px} .nav.solid .wordmark{--lh:38px} }
+  .nav.scrolled .wordmark{--lh:42px;width:calc(var(--lh) * 1.12)}
+  .nav.scrolled .lockup .lk-word{opacity:0;transform:translateX(-24px)}
+  @media (max-width:720px){ .nav .wordmark{--lh:46px} .nav.scrolled .wordmark{--lh:38px} }
 
   /* phone nav: compact icon controls, one primary button */
   .tkv-open .tko-i{display:none}
@@ -3084,6 +3084,9 @@ $$(".tkv-g").forEach(b => b.addEventListener("click", () => {
 addEventListener("keydown", e => { if (e.key === "Escape") { tkvClose(); srchClose(); } });
 
 /* ============ boot ============ */
+const navScrolled = () => nav.classList.toggle("scrolled", scrollY > 60);
+addEventListener("scroll", navScrolled, { passive: true });
+navScrolled();
 nav.classList.toggle("solid", scrollY > 60);
 resize();
 requestAnimationFrame(frame);

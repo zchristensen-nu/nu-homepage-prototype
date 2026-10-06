@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="46">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="47">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -662,9 +662,9 @@ NEW_CSS = r'''
     transition:width .5s,height .5s,margin .5s;transition-timing-function:cubic-bezier(.2,.7,.2,1)}
   .lockup{height:100%;width:auto;display:block;flex:none}
   .lockup .lk-word{fill:#fff;transition:opacity .3s,transform .5s cubic-bezier(.2,.7,.2,1)}
-  .nav.solid .wordmark{--lh:42px;width:calc(var(--lh) * 1.12)}
-  .nav.solid .lockup .lk-word{opacity:0;transform:translateX(-24px)}
-  @media (max-width:720px){ .nav .wordmark{--lh:46px} .nav.solid .wordmark{--lh:38px} }
+  .nav.scrolled .wordmark{--lh:42px;width:calc(var(--lh) * 1.12)}
+  .nav.scrolled .lockup .lk-word{opacity:0;transform:translateX(-24px)}
+  @media (max-width:720px){ .nav .wordmark{--lh:46px} .nav.scrolled .wordmark{--lh:38px} }
 
   /* phone nav: compact icon controls, one primary button */
   .tkv-open .tko-i{display:none}
@@ -1946,7 +1946,7 @@ NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).repla
 # the co-op rail is cut (2026-10-06); research stays
 _j0 = sheet_mk.index('<section class="journey"'); _j1 = sheet_mk.index("</section>", _j0) + len("</section>")
 sheet_mk = sheet_mk[:_j0] + sheet_mk[_j1:]
-# the live site's lockup (www.northeastern.edu header); the wordmark peels away to the N once the nav goes solid
+# the live site's lockup (www.northeastern.edu header); the wordmark peels away to the N on scroll only (dropdowns also set .solid)
 _w0 = header_mk.index('<a class="wordmark"'); _w1 = header_mk.index("</a>", _w0)
 header_mk = (header_mk[:_w0] + '<a class="wordmark" href="#" aria-label="Northeastern University home">'
              + open(os.path.join(os.path.dirname(__file__), "nu-lockup.svg")).read() + header_mk[_w1:])
@@ -1954,7 +1954,7 @@ page = (head + nav_css + overlay_css + c2_css + NEW_CSS + "\n" + tailcss
         + "</style>\n\n<body>\n\n"
         + header_mk + HERO + "<main>\n" + ROWS + globe_mk + sheet_mk + admit_mk + "\n</main>\n" + footer_mk + "\n"
         + lenis_js + "\n<script>\n" + land + "\n" + coops + "\n" + helpers + c2_js + GLOBE_PINCH + GLOBE_VARIANTS + NEW_JS
-        + "\n" + tail_js + "/* ============ boot ============ */\nnav.classList.toggle(\"solid\", scrollY > 60);\nresize();\nrequestAnimationFrame(frame);\n</script>\n")
+        + "\n" + tail_js + "/* ============ boot ============ */\nconst navScrolled = () => nav.classList.toggle(\"scrolled\", scrollY > 60);\naddEventListener(\"scroll\", navScrolled, { passive: true });\nnavScrolled();\nnav.classList.toggle(\"solid\", scrollY > 60);\nresize();\nrequestAnimationFrame(frame);\n</script>\n")
 
 GERUNDS = [
  ("Developing cameras for Apple products", "Camera development for Apple products"),
@@ -1970,7 +1970,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="46"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="47"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1980,7 +1980,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="46">', '<meta name="concept11-rev" content="35">'),
+for x, y in (('<meta name="concept10-rev" content="47">', '<meta name="concept11-rev" content="36">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -1991,7 +1991,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="35">', '<meta name="concept12-rev" content="5">'),
+for x, y in (('<meta name="concept11-rev" content="36">', '<meta name="concept12-rev" content="6">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
