@@ -107,7 +107,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="52">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="53">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -200,7 +200,7 @@ c2_js = c2_js.replace(_pa, r"""  /* path arcs: thin great-circle arcs that draw 
       const x = sa * u[0] + sb * w[0], y = sa * u[1] + sb * w[1], z = sa * u[2] + sb * w[2];
       return [Math.asin(Math.max(-1, Math.min(1, z))) / RAD, Math.atan2(y, x) / RAD, om];
     };
-    const fadeA = window.PATH_FADE || 1;
+    const fadeA = window.PATH_FADE ?? 1;  /* ?? so a finished fade (0) stays at 0 */
     for (const arc of window.PATH_ARCS) {
       const f = reduceMotion ? 1 : Math.min(1, (now - arc.t0) / 900), ease = 1 - Math.pow(1 - f, 3);
       const om = slerp(arc.a, arc.b, .5)[2] || 0, lift = Math.min(.22, .05 + om * .12) * (window.PATH_LIFT || 1), N = 48;
@@ -228,7 +228,8 @@ _e = "const entryUpd = () => {\n  const r = scEl.getBoundingClientRect();"
 assert c2_js.count(_e) == 1
 c2_js = c2_js.replace(_e, "const entryUpd = () => {\n  if (window.GV_NOENTRY) return;\n  const r = scEl.getBoundingClientRect();")
 for _a, _b in (("const dip = dist < 12 ? 0 :", "const dip = window.FLY_NODIP || dist < 12 ? 0 :"),
-               ("dur: 800 + Math.min(1000, dist * 7) }", "dur: (800 + Math.min(1000, dist * 7)) * (window.FLY_SLOW || 1) }")):
+               ("dur: 800 + Math.min(1000, dist * 7) }", "dur: (800 + Math.min(1000, dist * 7)) * (window.FLY_SLOW || 1) }"),
+               ("const e = easeIO(t);", "const e = (window.FLY_EASE || easeIO)(t);")):
     assert c2_js.count(_a) == 1, _a
     c2_js = c2_js.replace(_a, _b)
 assert c2_js.count("function render(now) {") == 1
@@ -1299,6 +1300,7 @@ if (GV && GVS.includes(GV)) {
     if (SIDE) root.classList.add("gv-horizon");
     window.GV_NOENTRY = true; window.GLOBE_LOCK = true; window.GLOBE_ALL = !SIDE; window.PATH_LIFT = SIDE ? .8 : .45;
     window.FLY_NODIP = true; window.FLY_SLOW = 1.35;  /* no zoom bounce, calmer flights */
+    window.FLY_EASE = t => .5 - Math.cos(Math.PI * t) / 2;  /* sine: moves at once, half the cubic's peak speed */
     stepIO.disconnect();
     window.PATH_ARCS = [];
     const P = __PATHS__;
@@ -2022,7 +2024,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="52"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="53"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -2032,7 +2034,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="52">', '<meta name="concept11-rev" content="41">'),
+for x, y in (('<meta name="concept10-rev" content="53">', '<meta name="concept11-rev" content="42">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2043,7 +2045,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="41">', '<meta name="concept12-rev" content="11">'),
+for x, y in (('<meta name="concept11-rev" content="42">', '<meta name="concept12-rev" content="12">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
