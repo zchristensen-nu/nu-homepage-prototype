@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="34">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="36">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -154,9 +154,9 @@ globe_mk = globe_mk[:_i].rstrip() + "\n" + globe_mk[_j:]
 assert c2_js.count("W > 900 ? W * 0.62 : W * 0.5") == 3  # render, dot hover, pin click
 c2_js = c2_js.replace("W > 900 ? W * 0.62 : W * 0.5", "globeCX()")
 _n = c2_js.count("const cy = H * 0.52;"); assert _n >= 2, _n
-c2_js = c2_js.replace("const cy = H * 0.52;", "const cy = H * (W > 720 ? 0.52 : (window.GLOBE_CY || 0.6));  /* phones: position set by the mobile treatment */")
+c2_js = c2_js.replace("const cy = H * 0.52;", "const cy = H * ((W > 720 && !window.GLOBE_ALL) ? 0.52 : (window.GLOBE_CY || 0.6));  /* phones: position set by the mobile treatment */")
 _n = c2_js.count("Math.min(W, H) * 0.42"); assert _n == 4, _n
-c2_js = c2_js.replace("Math.min(W, H) * 0.42", "Math.min(W, H) * (W > 720 ? 0.42 : (window.GLOBE_R || 0.42))")
+c2_js = c2_js.replace("Math.min(W, H) * 0.42", "Math.min(W, H) * ((W > 720 && !window.GLOBE_ALL) ? 0.42 : (window.GLOBE_R || 0.42))")
 assert c2_js.count('$("#coopcount").textContent = ') == 1
 c2_js = c2_js.replace('$("#coopcount").textContent = ', '($("#coopcount") || {}).textContent = ')
 _l = """  let bx = cand[0][0], by = cand[0][1];
@@ -179,12 +179,47 @@ c2_js = c2_js.replace(_f, "ctx.font = (W <= 720 ? \"500 10.5px\" : \"500 11px\")
 _d = 'canvas.addEventListener("pointerdown", e => {\n  dragging = true;'
 assert c2_js.count(_d) == 1
 c2_js = c2_js.replace(_d, 'canvas.addEventListener("pointerdown", e => {\n  if (W <= 720) return;  /* phones: the globe is locked; the page scrolls freely */\n  dragging = true;')
+_pa = "  /* story pins: pulsing markers that open the docked story card */"
+assert c2_js.count(_pa) == 1
+c2_js = c2_js.replace(_pa, r"""  /* path arcs: thin great-circle arcs that draw themselves in, led by a soft point; fade as a group */
+  if (window.PATH_ARCS && window.PATH_ARCS.length) {
+    const slerp = (a, b, t) => {
+      const V = (la, lo) => { const p = la * RAD, l = lo * RAD; return [Math.cos(p) * Math.cos(l), Math.cos(p) * Math.sin(l), Math.sin(p)]; };
+      const u = V(a[0], a[1]), w = V(b[0], b[1]);
+      const om = Math.acos(Math.max(-1, Math.min(1, u[0] * w[0] + u[1] * w[1] + u[2] * w[2])));
+      if (om < 1e-6) return [a[0], a[1], 0];
+      const sa = Math.sin((1 - t) * om) / Math.sin(om), sb = Math.sin(t * om) / Math.sin(om);
+      const x = sa * u[0] + sb * w[0], y = sa * u[1] + sb * w[1], z = sa * u[2] + sb * w[2];
+      return [Math.asin(Math.max(-1, Math.min(1, z))) / RAD, Math.atan2(y, x) / RAD, om];
+    };
+    const fadeA = window.PATH_FADE || 1;
+    for (const arc of window.PATH_ARCS) {
+      const f = reduceMotion ? 1 : Math.min(1, (now - arc.t0) / 900), ease = 1 - Math.pow(1 - f, 3);
+      const om = slerp(arc.a, arc.b, .5)[2] || 0, lift = Math.min(.22, .05 + om * .12) * (window.PATH_LIFT || 1), N = 48;
+      let started = false, head = null;
+      ctx.beginPath();
+      for (let i = 0; i <= N * ease; i++) {
+        const t = i / N, q = slerp(arc.a, arc.b, t), pr = project(q[0], q[1], R, cx, cy, Math.sin(Math.PI * t) * lift);
+        if (pr[2] > 0.02) { if (!started) { ctx.moveTo(pr[0], pr[1]); started = true; } else ctx.lineTo(pr[0], pr[1]); head = pr; }
+        else started = false;
+      }
+      ctx.lineCap = "round";
+      ctx.strokeStyle = `rgba(238,85,102,${.16 * fadeA})`; ctx.lineWidth = 5; ctx.stroke();
+      ctx.strokeStyle = `rgba(255,190,200,${.75 * fadeA})`; ctx.lineWidth = 1.3; ctx.stroke();
+      if (head && f < 1) { ctx.beginPath(); ctx.arc(head[0], head[1], 3, 0, 7); ctx.fillStyle = `rgba(255,255,255,${.95 * fadeA})`; ctx.fill(); }
+    }
+  }
+  if (window.PATH_LABEL) {
+    const L = window.PATH_LABEL, pr = project(L.ll[0], L.ll[1], R, cx, cy);
+    if (pr[2] > 0) label(L.text, pr[0], pr[1], 1);
+  }
+""" + _pa)
 _e = "const entryUpd = () => {\n  const r = scEl.getBoundingClientRect();"
 assert c2_js.count(_e) == 1
 c2_js = c2_js.replace(_e, "const entryUpd = () => {\n  if (window.GV_NOENTRY) return;\n  const r = scEl.getBoundingClientRect();")
 assert c2_js.count("function render(now) {") == 1
 c2_js = c2_js.replace("function render(now) {", """let globeShift = 0;
-const globeCX = () => W > 900 ? W * 0.62 - globeShift : W * 0.5;
+const globeCX = () => window.GLOBE_ALL ? W * 0.5 : (W > 900 ? W * 0.62 - globeShift : W * 0.5);
 function render(now) {""")
 assert c2_js.count("function frame(now) {\n  if (stageVisible) {") == 1
 c2_js = c2_js.replace("function frame(now) {\n  if (stageVisible) {", """function frame(now) {
@@ -748,6 +783,9 @@ NEW_CSS = r'''
   .pth-card{padding:20px 22px 16px;border-radius:18px;background:rgba(20,20,26,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
     border:1px solid rgba(255,255,255,.1);transition:opacity .26s}
   .pth-card.swap{opacity:0}
+  .pth-bars{display:flex;gap:4px;margin:0 0 14px}
+  .pth-bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden}
+  .pth-bars b{display:block;height:100%;width:0;background:#fff}
   .pth-k{margin:0;font-size:13px;color:#A9A9B2}
   .pth-t{margin:4px 0 14px;font-size:clamp(18px,1.5vw,22px);font-weight:500;line-height:1.25;color:#fff}
   .pth-stops{list-style:none;margin:0;padding:0;counter-reset:s}
@@ -779,6 +817,45 @@ NEW_CSS = r'''
     .pth-stops b{font-size:14px}
     .pth-stops span{display:none}
     .pth-stops li.on span{display:block;flex-basis:100%}
+  }
+
+  /* HORIZON */
+  .gv-horizon #gt-card,.gv-horizon .stage .hint{display:none!important}
+  .gv-horizon .steps{height:170svh;padding:0}
+  .gv-horizon .steps > *{display:none}
+  .gv-horizon .stage::before{display:none}
+  .gv-horizon .stage::after{height:10svh}
+  .hz{position:absolute;z-index:6;top:clamp(96px,13svh,130px);left:var(--edge);right:var(--edge);transition:opacity .26s}
+  .hz.swap .hz-meta,.hz.swap .hz-stops{opacity:0}
+  .hz-meta,.hz-stops{transition:opacity .26s}
+  .hz-h{margin:0;font-size:clamp(34px,4vw,64px);font-weight:200;letter-spacing:-.035em;line-height:1.04;color:#fff}
+  .hz-meta{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:clamp(18px,3svh,30px)}
+  .hz-t{margin:0;font-size:15px;color:#E5E5E5}
+  .hz-n{margin-left:12px;color:#8A8A93;font-variant-numeric:tabular-nums}
+  .hz-nav{display:flex;align-items:center;gap:8px}
+  .hz-a{margin-right:10px;font-size:14px;font-weight:600;color:#fff}
+  .hz-a[hidden]{display:none}
+  .hz-b{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .hz-b:hover{background:#fff;color:#0B0B0E}
+  .hz-b:focus-visible,.hz-a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .hz-stops{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:12px}
+  .hz-stops li{opacity:.32;transition:opacity .45s}
+  .hz-stops li.past{opacity:.62}
+  .hz-stops li.on{opacity:1}
+  .hz-stops i{display:block;height:3px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
+  .hz-stops b{display:block;height:100%;width:0;background:#fff}
+  .hz-p{display:block;margin-top:10px;font-size:clamp(15px,1.25vw,18px);font-weight:600;color:#fff}
+  .hz-x{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:#C9C9CF}
+  @media (max-width:720px){
+    .hz{top:84px;left:20px;right:20px}
+    .hz-h{font-size:clamp(28px,8vw,36px)}
+    .hz-meta{flex-wrap:wrap;gap:8px}
+    .hz-t{font-size:13.5px;flex-basis:100%}
+    .hz-a{margin-right:auto}
+    .hz-stops{gap:6px}
+    .hz-p{font-size:12.5px;margin-top:7px}
+    .hz-x{display:none}
+    .hz-stops li.on .hz-x{display:block;font-size:11.5px}
   }
 
   /* GUS */
@@ -842,8 +919,8 @@ GLOBE_VARIANTS = r'''
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
 const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
-const GV = (GVP === "gus" || GVP === "paths") ? GVP : (GVM ? (GVP || "a") : null);
-const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths"];
+const GV = ["gus", "paths", "horizon"].includes(GVP) ? GVP : (GVM ? (GVP || "a") : null);
+const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths", "horizon"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
   root.classList.add("gv-" + GV);
@@ -871,7 +948,7 @@ if (GV && GVS.includes(GV)) {
     `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
-  if (!["now", "gus", "paths"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  if (!["now", "gus", "paths", "horizon"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
   /* one tracker: the step under mid-screen is current; it alone moves the camera */
   const trackSteps = fn => {
     let curS;
@@ -884,7 +961,7 @@ if (GV && GVS.includes(GV)) {
   };
 
   /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
-  if (!["now", "gus", "paths"].includes(GV)) {
+  if (!["now", "gus", "paths", "horizon"].includes(GV)) {
     VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
     const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
     const order = ["Boston", "London", "New York City", "Oakland"];
@@ -1095,10 +1172,11 @@ if (GV && GVS.includes(GV)) {
   if (GV === "paths") {
     window.GV_NOENTRY = true;
     stepIO.disconnect();
+    window.PATH_ARCS = [];
     const P = __PATHS__;
     const ui = el("div", "pth");
     ui.innerHTML = `<h2 class="pth-h">No two paths look the same.</h2>` +
-      `<div class="pth-card" aria-live="polite"><p class="pth-k"></p><p class="pth-t"></p><ol class="pth-stops"></ol>` +
+      `<div class="pth-card" aria-live="polite"><div class="pth-bars" aria-hidden="true">${P.map(() => "<i><b></b></i>").join("")}</div><p class="pth-k"></p><p class="pth-t"></p><ol class="pth-stops"></ol>` +
       `<div class="pth-foot"><a class="pth-a" href="#">Read the story<span aria-hidden="true"> →</span></a>` +
       `<div class="pth-nav"><button class="pth-b" data-d="-1" aria-label="Previous path">←</button><span class="pth-n"></span>` +
       `<button class="pth-b" data-d="1" aria-label="Next path">→</button></div></div></div>`;
@@ -1116,16 +1194,23 @@ if (GV && GVS.includes(GV)) {
       window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 4, innerWidth / 2 - 18) / Math.min(innerWidth, H));
     };
     let pi = 0, si = -1, t0 = 0, vis = false;
-    const DWELL = 2600, HOLD = 3600;
+    const DWELL = 1500, HOLD = 2000;
+    const bars = [...ui.querySelectorAll(".pth-bars b")];
+    const total = i => P[i].stops.length * DWELL + HOLD - DWELL;
+    let pathT0 = 0;
     const stopAt = j => {
       si = j; t0 = performance.now();
       const st = P[pi].stops[j];
+      if (j > 0) window.PATH_ARCS.push({ a: P[pi].stops[j - 1].ll, b: st.ll, t0 });
+      window.PATH_LABEL = { ll: st.ll, text: st.place };
       STORY_PINS.push(st.ll); storySel = j;
       startFly({ lon: st.ll[1], lat: st.ll[0] - 6, k: P[pi].k || 1.2 });
       [...list.children].forEach((li, k) => { li.classList.toggle("on", k === j); li.classList.toggle("past", k < j); });
     };
     const showPath = i => {
-      pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0;
+      pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0; window.PATH_ARCS = []; window.PATH_LABEL = null;
+      pathT0 = performance.now();
+      bars.forEach((b, k) => b.style.width = k < pi ? "100%" : "0%");
       const pth = P[pi];
       card.classList.add("swap");
       setTimeout(() => {
@@ -1143,10 +1228,85 @@ if (GV && GVS.includes(GV)) {
     new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; }, { threshold: [0, .5, 1] }).observe(stage);
     const loop = now => {
       if (vis && !document.hidden && si >= 0 && !reduceMotion) {
+        bars[pi].style.width = Math.min(100, (now - pathT0) / total(pi) * 100).toFixed(1) + "%";
         const last = si >= P[pi].stops.length - 1;
         if (!last && now - t0 > DWELL) stopAt(si + 1);
         else if (last && now - t0 > HOLD) showPath(pi + 1);
-      }
+      } else if (si >= 0) { const d = now - (loop.last || now); t0 += d; pathT0 += d; }
+      loop.last = now;
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+    addEventListener("resize", () => { place(); relayout(); });
+    showPath(0);
+  }
+
+  /* HORIZON · the planet rises from the bottom; a path's stops sit across the top like stories,
+     dim until reached; each fills as the globe turns to it */
+  if (GV === "horizon") {
+    window.GV_NOENTRY = true; window.GLOBE_ALL = true; window.PATH_LIFT = .45;
+    stepIO.disconnect();
+    window.PATH_ARCS = [];
+    const P = __PATHS__;
+    const ui = el("div", "hz");
+    ui.innerHTML = `<h2 class="hz-h">No two paths look the same.</h2>` +
+      `<div class="hz-meta" aria-live="polite"><p class="hz-t"><span class="hz-k"></span><span class="hz-n"></span></p>` +
+      `<div class="hz-nav"><a class="hz-a" href="#">Read the story<span aria-hidden="true"> →</span></a>` +
+      `<button class="hz-b" data-d="-1" aria-label="Previous path">←</button><button class="hz-b" data-d="1" aria-label="Next path">→</button></div></div>` +
+      `<ol class="hz-stops"></ol>`;
+    stage.append(ui);
+    const list = ui.querySelector(".hz-stops"), link = ui.querySelector(".hz-a"), meta = ui.querySelector(".hz-meta");
+    const BACK = { campus: .1, nuin: .08, coops: .1, labelC: 0, labelN: 0, spins: 1 };
+    Object.assign(cur, BACK); Object.assign(tgt, BACK);
+    autorotate = false; fly = null;
+    $("#globe").addEventListener("click", e => e.stopImmediatePropagation(), true);
+    let crest = .5;
+    const place = () => {
+      const W = innerWidth, H = innerHeight, phone = W <= 720;
+      const R = phone ? W * 1.15 : Math.max(W * .62, H * 1.0);
+      const topOfDisk = Math.max(ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 30, H * (phone ? .5 : .46));
+      window.GLOBE_R = R / Math.min(W, H); window.GLOBE_CY = (topOfDisk + R) / H;
+      crest = (H - topOfDisk) / R;
+    };
+    let pi = 0, si = -1, t0 = 0, vis = false;
+    const DWELL = 1800, HOLD = 2200;
+    const stopAt = j => {
+      si = j; t0 = performance.now();
+      const st = P[pi].stops[j];
+      if (j > 0) window.PATH_ARCS.push({ a: P[pi].stops[j - 1].ll, b: st.ll, t0 });
+      window.PATH_LABEL = { ll: st.ll, text: st.place };
+      STORY_PINS.push(st.ll); storySel = j;
+      /* tilt so the stop rides just over the crest of the horizon */
+      const tilt = Math.asin(Math.min(.95, 1 - crest * .45)) / RAD;
+      fly = null; tgt.lon = st.ll[1]; tgt.lat = st.ll[0] - tilt; tgt.k = 1;  /* a direct ease, quicker than a flight */
+      [...list.children].forEach((li, k) => { li.classList.toggle("on", k === j); li.classList.toggle("past", k < j); });
+    };
+    const showPath = i => {
+      pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0; window.PATH_ARCS = []; window.PATH_LABEL = null;
+      const pth = P[pi];
+      ui.classList.add("swap");
+      setTimeout(() => {
+        ui.querySelector(".hz-k").textContent = pth.kind + " · " + pth.title;
+        ui.querySelector(".hz-n").textContent = `${pi + 1} / ${P.length}`;
+        list.style.setProperty("--n", pth.stops.length);
+        list.innerHTML = pth.stops.map(st => `<li><i aria-hidden="true"><b></b></i><span class="hz-p">${escH(st.place)}</span><span class="hz-x">${escH(st.note)}</span></li>`).join("");
+        link.hidden = !pth.url; if (pth.url) link.href = pth.url;
+        ui.classList.remove("swap");
+        place(); relayout();
+        stopAt(0);
+      }, reduceMotion ? 0 : 260);
+    };
+    ui.querySelectorAll(".hz-b").forEach(b => b.addEventListener("click", () => showPath(pi + +b.dataset.d)));
+    new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; }, { threshold: [0, .5, 1] }).observe(stage);
+    const loop = now => {
+      if (vis && !document.hidden && si >= 0 && !reduceMotion) {
+        const fills = [...list.querySelectorAll("b")];
+        fills.forEach((b, k) => b.style.width = k < si ? "100%" : k > si ? "0%" : Math.min(100, (now - t0) / (si >= P[pi].stops.length - 1 ? HOLD : DWELL) * 100).toFixed(1) + "%");
+        const last = si >= P[pi].stops.length - 1;
+        if (!last && now - t0 > DWELL) stopAt(si + 1);
+        else if (last && now - t0 > HOLD) showPath(pi + 1);
+      } else if (si >= 0) { t0 += now - (loop.last || now); }
+      loop.last = now;
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
@@ -1156,7 +1316,7 @@ if (GV && GVS.includes(GV)) {
 
   /* treatment switcher (only when ?globe= is in the URL) */
   if (new URLSearchParams(location.search).has("globe")) {
-    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths" };
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths", horizon: "Horizon" };
     const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
     bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
   }
@@ -1632,30 +1792,30 @@ if (new URLSearchParams(location.search).has("rows")) {
 # real cross-campus paths, each from an NGN story (researched 2026-10-06); one illustrative path, labeled
 BOS, OAK, LON, NYC, POR, BUR = [42.34, -71.09], [37.78, -122.18], [51.51, -0.07], [40.77, -73.98], [43.66, -70.26], [42.48, -71.2]
 PATHS = [
- {"kind": "A real path", "title": "Madeline Bell, first-year student",
+ {"kind": "Student", "title": "Start abroad, then Boston",
   "url": NGN + "/2026/01/16/nu-in-students-boston-transition/",
   "stops": [{"place": "Greece", "note": "First semester through N.U.in", "ll": [40.64, 22.94]},
             {"place": "Boston", "note": "Spring semester on the Boston campus", "ll": BOS}]},
- {"kind": "Research across the network", "title": "Network Science Institute", "k": 1.05,
+ {"kind": "Research", "title": "One institute, three campuses", "k": 1.05,
   "url": NGN + "/2026/05/04/network-science-institute-global-presence/",
-  "stops": [{"place": "Boston", "note": "Founded on the Boston campus, 2015", "ll": BOS},
-            {"place": "London", "note": "A hub on the London campus, 2022", "ll": LON},
-            {"place": "Portland, Maine", "note": "A hub at the Roux Institute, 2022", "ll": POR}]},
- {"kind": "A real path", "title": "Bree Joy and Thea Carr, neuroscience students", "k": 1.0,
+  "stops": [{"place": "Boston", "note": "Teams on the Boston campus", "ll": BOS},
+            {"place": "London", "note": "A hub on the London campus", "ll": LON},
+            {"place": "Portland, Maine", "note": "A hub at the Roux Institute", "ll": POR}]},
+ {"kind": "Student", "title": "From one lab to the next", "k": 1.0,
   "url": NGN + "/2026/07/22/nematodes-research-labs/",
-  "stops": [{"place": "Oakland", "note": "A year of research in the Young Lab", "ll": OAK},
-            {"place": "Boston", "note": "Accepted into the Apfeld Lab", "ll": BOS}]},
- {"kind": "Research across the network", "title": "Institute for NanoSystems Innovation", "k": 1.0,
+  "stops": [{"place": "Oakland", "note": "A year of research on the Oakland campus", "ll": OAK},
+            {"place": "Boston", "note": "A lab position on the Boston campus", "ll": BOS}]},
+ {"kind": "Research", "title": "Chip research on two coasts", "k": 1.0,
   "url": NGN + "/2024/04/29/bicoastal-institute-nanosystems-innovation/",
   "stops": [{"place": "Boston", "note": "A 15,000-square-foot laboratory", "ll": BOS},
             {"place": "Burlington", "note": "A 20,000-square-foot clean room", "ll": BUR},
             {"place": "Oakland", "note": "A new West Coast facility", "ll": OAK}]},
- {"kind": "A real path", "title": "Global Scholars", "k": .95,
+ {"kind": "Student", "title": "London, Oakland, then Boston", "k": .95,
   "url": NGN + "/2024/09/12/enrollment-statistics-2024/",
   "stops": [{"place": "London", "note": "One semester on the London campus", "ll": LON},
             {"place": "Oakland", "note": "One semester on the Oakland campus", "ll": OAK},
             {"place": "Boston", "note": "The rest of the degree", "ll": BOS}]},
- {"kind": "A real path", "title": "Anika Nadgauda, PPE and business student", "k": 1.0,
+ {"kind": "Student", "title": "A first year in Oakland", "k": 1.0,
   "url": NGN + "/2026/09/03/new-oakland-students-move-in-2026/",
   "stops": [{"place": "Oakland", "note": "First year on the Oakland campus", "ll": OAK},
             {"place": "Boston", "note": "Then on to the Boston campus", "ll": BOS}]},
@@ -1694,7 +1854,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="34"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="36"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1704,7 +1864,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="34">', '<meta name="concept11-rev" content="23">'),
+for x, y in (('<meta name="concept10-rev" content="36">', '<meta name="concept11-rev" content="25">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
