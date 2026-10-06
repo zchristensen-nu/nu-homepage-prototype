@@ -107,7 +107,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="50">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="51">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -219,8 +219,10 @@ c2_js = c2_js.replace(_pa, r"""  /* path arcs: thin great-circle arcs that draw 
   }
   if (window.PATH_LABEL) {
     const L = window.PATH_LABEL, pr = project(L.ll[0], L.ll[1], R, cx, cy);
+    const nb = labelBoxes.length;
     if (pr[2] > 0) label(L.text, pr[0], pr[1], 1);
-  }
+    window.PATH_LABEL_BOX = labelBoxes.length > nb ? labelBoxes[labelBoxes.length - 1] : null;
+  } else window.PATH_LABEL_BOX = null;
 """ + _pa)
 _e = "const entryUpd = () => {\n  const r = scEl.getBoundingClientRect();"
 assert c2_js.count(_e) == 1
@@ -870,7 +872,13 @@ NEW_CSS = r'''
   @keyframes hzfill{from{width:0}to{width:100%}}
   .hz.held .hz-stops b,.hz.off .hz-stops b{animation-play-state:paused!important}
   .hz-p{display:block;margin-top:10px;font-size:clamp(15px,1.25vw,18px);font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .hz-x{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:#C9C9CF}
+  .hz-x{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:#C9C9CF;visibility:hidden}
+  .hz-stops li.past:not([data-wait]) .hz-x{visibility:visible}
+  .hz-call{position:absolute;left:0;top:0;z-index:5;padding:6px 8px 7px;border-radius:3px;background:rgba(11,11,14,.62);
+    font-size:13.5px;line-height:1.35;color:#fff;pointer-events:none;opacity:0;transition:opacity .35s}
+  .hz-call.on{opacity:1}
+  .hz-glide{position:fixed;z-index:7;pointer-events:none;margin:0}
+  @media (max-width:720px){ .hz-call{font-size:12.5px} }
   @media (max-width:1100px) and (min-width:721px){ .hz-x{font-size:12.5px} }
   @media (max-width:720px){
     .hz{top:80px;left:20px;right:20px}
@@ -881,8 +889,7 @@ NEW_CSS = r'''
     .hz-stops{display:flex;gap:8px;overflow-x:auto;margin:16px -20px 0;padding:0 20px;scroll-padding-inline:20px}
     .hz-stops li{flex:1 0 calc((100% - 8px * (min(var(--n), 3) - 1)) / min(var(--n), 3))}
     .hz-p{font-size:13.5px;margin-top:8px}
-    .hz-x{font-size:12px;opacity:0;transition:opacity .3s}
-    .hz-stops li.on .hz-x{opacity:1}
+    .hz-x{font-size:12px}
   }
   @media (prefers-reduced-motion: reduce){.hz-stops,.hz-stops li{transition:none}}
   /* SIDE: the horizon idea with content on the left and the globe on the right */
@@ -1339,9 +1346,42 @@ if (GV && GVS.includes(GV)) {
       const tilt = SIDE ? 1 : Math.asin(Math.max(-.95, Math.min(.95, (crest.R - crest.cap * .38) / (crest.R * kk)))) / RAD;
       startFly({ lon: st.ll[1], lat: st.ll[0] - tilt, k: kk });
     };
+    /* the current stop's note sits on the map under its city label; when the camera moves on,
+       it glides up into that stop's slot in the row (row notes show for past stops only) */
+    const call = el("div", "hz-call"); call.setAttribute("aria-hidden", "true"); stage.append(call);
+    let callWait = false;
+    const callOff = () => { call.classList.remove("on"); callWait = false; };
+    const callPos = () => {
+      const b = window.PATH_LABEL_BOX;
+      if (!b) { call.style.visibility = "hidden"; return; }
+      const g = $("#globe").getBoundingClientRect(), sr = stage.getBoundingClientRect();
+      const x = g.left - sr.left + b.x, room = innerWidth - (g.left + b.x) - 16;
+      call.style.visibility = "";
+      call.style.maxWidth = Math.max(140, Math.min(260, room)) + "px";
+      call.style.transform = `translate(${Math.round(x)}px,${Math.round(g.top - sr.top + b.y + b.h + 4)}px)`;
+    };
+    const callTick = () => {
+      if (callWait && !fly && !swapping && window.PATH_LABEL_BOX) { call.classList.add("on"); callWait = false; }
+      if (call.classList.contains("on") || callWait) callPos();
+      requestAnimationFrame(callTick);
+    };
+    requestAnimationFrame(callTick);
+    const glide = k => {  /* the note on the map travels to row slot k */
+      const li = list.children[k], to = li && li.querySelector(".hz-x");
+      if (!to || !call.classList.contains("on") || reduceMotion) { callOff(); return; }
+      const a = call.getBoundingClientRect(), b = to.getBoundingClientRect(), cs = getComputedStyle(to);
+      const f = el("div", "hz-glide"); f.textContent = to.textContent;
+      Object.assign(f.style, { left: b.left + "px", top: b.top + "px", width: b.width + "px", fontSize: cs.fontSize, lineHeight: cs.lineHeight });
+      document.body.append(f); li.dataset.wait = "1"; callOff();
+      f.animate([{ transform: `translate(${a.left - b.left + 8}px,${a.top - b.top + 6}px)`, color: "#fff" },
+                 { transform: "none", color: cs.color }], { duration: 700, easing: "cubic-bezier(.3,.7,.2,1)" })
+        .finished.then(() => { delete li.dataset.wait; f.remove(); });
+    };
     const stopAt = (j, jump, noFly) => {
+      if (!jump && si >= 0 && j === si + 1) glide(si); else callOff();
       si = j; t0 = performance.now();
       const pth = P[pi], st = pth.stops[j];
+      call.textContent = st.note; callWait = true;
       if (jump) {  /* rebuild the trail up to this stop, already drawn */
         STORY_PINS.length = 0; window.PATH_ARCS = [];
         for (let k = 0; k < j; k++) { STORY_PINS.push(pth.stops[k].ll); if (k) window.PATH_ARCS.push({ a: pth.stops[k - 1].ll, b: pth.stops[k].ll, t0: -1e9 }); }
@@ -1376,7 +1416,7 @@ if (GV && GVS.includes(GV)) {
       };
       if (instant || reduceMotion) { land(); if (!instant) flyTo(P[ni], 0); return; }
       swapping = true;
-      ui.classList.add("swap"); window.PATH_LABEL = null; tgt.spins = 0;
+      ui.classList.add("swap"); window.PATH_LABEL = null; tgt.spins = 0; callOff();
       flyTo(P[ni], 0);
       const f0 = performance.now();
       const fade = now => { if (!swapping) return; window.PATH_FADE = Math.max(0, 1 - (now - f0) / 420); if (window.PATH_FADE > 0) requestAnimationFrame(fade); };
@@ -1984,7 +2024,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="50"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="51"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1994,7 +2034,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="50">', '<meta name="concept11-rev" content="39">'),
+for x, y in (('<meta name="concept10-rev" content="51">', '<meta name="concept11-rev" content="40">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2005,7 +2045,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="39">', '<meta name="concept12-rev" content="9">'),
+for x, y in (('<meta name="concept11-rev" content="40">', '<meta name="concept12-rev" content="10">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
