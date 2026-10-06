@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept11-rev" content="31">
+<meta name="concept12-rev" content="1">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -2085,7 +2085,7 @@ $$(".line").forEach(el => { if (!el.closest(".v-slide")) lineIO.observe(el); });
 
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
-const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
+const GVP = (new URLSearchParams(location.search).get("globe") || "horizon").toLowerCase();
 const GV = ["gus", "paths", "horizon", "side"].includes(GVP) ? GVP : (GVM ? (GVP || "a") : null);
 const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths", "horizon", "side"];
 if (GV && GVS.includes(GV)) {

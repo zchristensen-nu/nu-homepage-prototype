@@ -5,7 +5,7 @@ then portrait posters, Netflix-style edge paddles); concept 2's scroll-driven
 globe tour, research sheet and co-op rail; concept 4's portrait video reel;
 concept 2's portrait quotes; and v1's "Your turn." closer. Keeps the v1 nav,
 footer and brand. Deploys to concept-10/ (concept-7 belongs to the streaming concepts 7-9 build)."""
-import json, os
+import math, json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="41">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="42">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -1858,63 +1858,65 @@ if (new URLSearchParams(location.search).has("rows")) {
 '''
 # real cross-campus paths, each from an NGN story (researched 2026-10-06); one illustrative path, labeled
 BOS, OAK, LON, NYC, POR, BUR = [42.34, -71.09], [37.78, -122.18], [51.51, -0.07], [40.77, -73.98], [43.66, -70.26], [42.48, -71.2]
-NAH, MIA, VAN, SEA, SV, ARL, CLT, TOR = [42.42, -70.91], [25.76, -80.19], [49.28, -123.12], [47.61, -122.33], [37.34, -121.89], [38.88, -77.11], [35.23, -80.84], [43.65, -79.38]
+# ponytail: places beyond the campus constants above; illustrative paths, any hop under 1,000 km fails the build
+MIA, NAH, SEA, VAN, SV, ARL, CLT, TOR = [25.76, -80.19], [42.42, -70.91], [47.61, -122.33], [49.28, -123.12], [37.34, -121.89], [38.88, -77.11], [35.23, -80.84], [43.65, -79.38]
+MEX, SJU, SIN, BOC, REY, NBO, SAO, TYO, SEL, TLL = [19.43, -99.13], [18.47, -66.11], [1.35, 103.82], [9.34, -82.24], [64.15, -21.94], [-1.29, 36.82], [-23.55, -46.63], [35.68, 139.69], [37.57, 126.98], [59.44, 24.75]
 PATHS = [
  {"kind": "Student", "title": "Start abroad, then Boston",
   "url": NGN + "/2026/01/16/nu-in-students-boston-transition/",
   "stops": [{"place": "Greece", "note": "First semester through N.U.in", "ll": [40.64, 22.94]},
             {"place": "Boston", "note": "Spring semester on the Boston campus", "ll": BOS}]},
- {"kind": "One possible path", "title": "Biology, from the classroom to the reef", "k": 1.0, "url": "",
-  "stops": [{"place": "Boston", "note": "Biology courses on the Boston campus", "ll": BOS},
-            {"place": "Nahant", "note": "A semester at the Marine Science Center", "ll": NAH},
-            {"place": "Miami", "note": "A co‑op studying coral reefs", "ll": MIA}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Engineering, by way of Mexico City",
+  "stops": [{"place": "Boston", "note": "Civil engineering on the Boston campus", "ll": BOS},
+            {"place": "Mexico City", "note": "A co‑op designing water systems", "ll": MEX},
+            {"place": "Miami", "note": "A master's on the Miami campus", "ll": MIA}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Three seas",
+  "stops": [{"place": "Nahant", "note": "A semester at the Marine Science Center", "ll": NAH},
+            {"place": "Panama", "note": "Coral reef fieldwork in Bocas del Toro", "ll": BOC},
+            {"place": "Seattle", "note": "Kelp forest research in the Pacific Northwest", "ll": SEA}]},
  {"kind": "Research", "title": "One institute, three campuses", "k": 1.05,
   "url": NGN + "/2026/05/04/network-science-institute-global-presence/",
   "stops": [{"place": "Boston", "note": "Teams on the Boston campus", "ll": BOS},
             {"place": "London", "note": "A hub on the London campus", "ll": LON},
             {"place": "Portland, Maine", "note": "A hub at the Roux Institute", "ll": POR}]},
- {"kind": "One possible path", "title": "A master's up the West Coast", "k": 1.0, "url": "",
-  "stops": [{"place": "Vancouver", "note": "Computer science courses on the Vancouver campus", "ll": VAN},
-            {"place": "Seattle", "note": "A co‑op in cloud engineering", "ll": SEA},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Across the Pacific",
+  "stops": [{"place": "Vancouver", "note": "Computer science on the Vancouver campus", "ll": VAN},
+            {"place": "Singapore", "note": "A co‑op with a fintech startup", "ll": SIN},
             {"place": "Silicon Valley", "note": "A final semester on the Silicon Valley campus", "ll": SV}]},
- {"kind": "Student", "title": "From one lab to the next", "k": 1.0,
-  "url": NGN + "/2026/07/22/nematodes-research-labs/",
-  "stops": [{"place": "Oakland", "note": "A year of research on the Oakland campus", "ll": OAK},
-            {"place": "Boston", "note": "A lab position on the Boston campus", "ll": BOS}]},
- {"kind": "One possible path", "title": "Security research across an ocean", "k": 1.0, "url": "",
-  "stops": [{"place": "Arlington", "note": "A cybersecurity lab outside Washington, D.C.", "ll": ARL},
-            {"place": "Boston", "note": "Shared work with faculty in Boston", "ll": BOS},
-            {"place": "London", "note": "Partners on the London campus", "ll": LON}]},
- {"kind": "Research", "title": "Chip research on two coasts", "k": 1.0,
-  "url": NGN + "/2024/04/29/bicoastal-institute-nanosystems-innovation/",
-  "stops": [{"place": "Boston", "note": "A 15,000-square-foot laboratory", "ll": BOS},
-            {"place": "Burlington", "note": "A 20,000-square-foot clean room", "ll": BUR},
-            {"place": "Oakland", "note": "A new West Coast facility", "ll": OAK}]},
- {"kind": "One possible path", "title": "Analytics, three cities", "k": 1.0, "url": "",
-  "stops": [{"place": "Charlotte", "note": "A data analytics master's on the Charlotte campus", "ll": CLT},
-            {"place": "Toronto", "note": "A semester on the Toronto campus", "ll": TOR},
-            {"place": "New York City", "note": "A co‑op in finance", "ll": [40.71, -74.01]}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Environmental health",
+  "stops": [{"place": "Boston", "note": "An environmental health lab in Boston", "ll": BOS},
+            {"place": "Puerto Rico", "note": "Water sampling with partners in San Juan", "ll": SJU},
+            {"place": "Arlington", "note": "Findings shared with federal agencies", "ll": ARL}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Arctic to equator",
+  "stops": [{"place": "Portland, Maine", "note": "Ocean data models at the Roux Institute", "ll": POR},
+            {"place": "Reykjavík", "note": "Glacier sensors with partners in Iceland", "ll": REY},
+            {"place": "London", "note": "Climate policy on the London campus", "ll": LON},
+            {"place": "Nairobi", "note": "Drought forecasts with Kenyan researchers", "ll": NBO}]},
  {"kind": "Student", "title": "London, Oakland, then Boston", "k": .95,
   "url": NGN + "/2024/09/12/enrollment-statistics-2024/",
   "stops": [{"place": "London", "note": "One semester on the London campus", "ll": LON},
             {"place": "Oakland", "note": "One semester on the Oakland campus", "ll": OAK},
             {"place": "Boston", "note": "The rest of the degree", "ll": BOS}]},
- {"kind": "One possible path", "title": "One health AI project", "k": 1.0, "url": "",
-  "stops": [{"place": "Portland, Maine", "note": "An AI model built at the Roux Institute", "ll": POR},
-            {"place": "Toronto", "note": "Hospital partners near the Toronto campus", "ll": TOR},
-            {"place": "Seattle", "note": "Testing with the team in Seattle", "ll": SEA}]},
- {"kind": "Student", "title": "A first year in Oakland", "k": 1.0,
-  "url": NGN + "/2026/09/03/new-oakland-students-move-in-2026/",
-  "stops": [{"place": "Oakland", "note": "First year on the Oakland campus", "ll": OAK},
-            {"place": "Boston", "note": "Then on to the Boston campus", "ll": BOS}]},
- {"kind": "One possible path", "title": "Starting abroad, ending in the Bay Area", "k": .95, "url": "",
-  "stops": [{"place": "Rome", "note": "First semester through N.U.in", "ll": [41.9, 12.5]},
-            {"place": "Boston", "note": "Campus", "ll": BOS},
-            {"place": "New York City", "note": "Co‑op", "ll": [40.71, -74.01]},
-            {"place": "New York City", "note": "Campus", "ll": NYC},
-            {"place": "San Francisco", "note": "Co‑op", "ll": [37.77, -122.42]},
-            {"place": "Oakland", "note": "Campus", "ll": OAK}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "A startup on three continents",
+  "stops": [{"place": "Oakland", "note": "A startup idea from an Oakland class", "ll": OAK},
+            {"place": "São Paulo", "note": "First customers in São Paulo", "ll": SAO},
+            {"place": "London", "note": "Investors on the London campus", "ll": LON}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Robotics in Asia",
+  "stops": [{"place": "Charlotte", "note": "A data science master's on the Charlotte campus", "ll": CLT},
+            {"place": "Tokyo", "note": "A co‑op writing robotics software", "ll": TYO},
+            {"place": "Seoul", "note": "A summer research project", "ll": SEL},
+            {"place": "Toronto", "note": "A semester on the Toronto campus", "ll": TOR}]},
+ {"kind": "One possible path", "k": 1.0, "url": "", "title": "Security without borders",
+  "stops": [{"place": "Arlington", "note": "Cybersecurity research outside Washington, D.C.", "ll": ARL},
+            {"place": "Tallinn", "note": "Cyber defense exercises in Estonia", "ll": TLL},
+            {"place": "London", "note": "A master's on the London campus", "ll": LON}]},
 ]
+def _km(a, b):
+    la1, lo1, la2, lo2 = map(math.radians, a + b)
+    return 6371 * 2 * math.asin(math.sqrt(math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2))
+for _p in PATHS:
+    for _a, _b in zip(_p["stops"], _p["stops"][1:]):
+        assert _km(_a["ll"], _b["ll"]) >= 1000, (_p["title"], _a["place"], _b["place"])
 GLOBE_VARIANTS = GLOBE_VARIANTS.replace("__PATHS__", json.dumps(PATHS, ensure_ascii=False))
 NEW_JS = NEW_JS.replace("__ARROW__", g["ICON_ARROW"]).replace("__CHEV__", CHEV)
 NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).replace("</", "<\\/"))
@@ -1942,7 +1944,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="41"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="42"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1952,7 +1954,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="41">', '<meta name="concept11-rev" content="30">'),
+for x, y in (('<meta name="concept10-rev" content="42">', '<meta name="concept11-rev" content="31">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -1960,3 +1962,13 @@ for x, y in (('<meta name="concept10-rev" content="41">', '<meta name="concept11
 os.makedirs(os.path.join(ROOT, "concept-11"), exist_ok=True)
 open(os.path.join(ROOT, "concept-11/index.html"), "w").write(p11)
 print("built", len(p11), "bytes -> concept-11/index.html")
+
+# concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
+p12 = p11
+for x, y in (('<meta name="concept11-rev" content="31">', '<meta name="concept12-rev" content="1">'),
+             ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
+    assert p12.count(x) == 1, x
+    p12 = p12.replace(x, y)
+os.makedirs(os.path.join(ROOT, "concept-12"), exist_ok=True)
+open(os.path.join(ROOT, "concept-12/index.html"), "w").write(p12)
+print("built", len(p12), "bytes -> concept-12/index.html")
