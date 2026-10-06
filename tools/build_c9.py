@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="33">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="34">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -738,6 +738,49 @@ NEW_CSS = r'''
   .gve img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px}
   .gve-b{margin-top:12px}
   .gve-t{margin:4px 0 0;font-size:18px;line-height:1.3;color:#fff}
+  /* PATHS */
+  .gv-paths #gt-card,.gv-paths .stage .hint{display:none!important}
+  .gv-paths .steps{height:170svh;padding:0}
+  .gv-paths .steps > *{display:none}
+  .gv-paths .stage::before{display:none}
+  .pth{position:absolute;z-index:6;left:var(--edge);top:50%;transform:translateY(-50%);width:min(440px,36vw)}
+  .pth-h{margin:0 0 22px;font-size:clamp(34px,3.6vw,56px);font-weight:200;letter-spacing:-.035em;line-height:1.04;color:#fff}
+  .pth-card{padding:20px 22px 16px;border-radius:18px;background:rgba(20,20,26,.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.1);transition:opacity .26s}
+  .pth-card.swap{opacity:0}
+  .pth-k{margin:0;font-size:13px;color:#A9A9B2}
+  .pth-t{margin:4px 0 14px;font-size:clamp(18px,1.5vw,22px);font-weight:500;line-height:1.25;color:#fff}
+  .pth-stops{list-style:none;margin:0;padding:0;counter-reset:s}
+  .pth-stops li{position:relative;padding:8px 0 8px 26px;opacity:.35;transition:opacity .4s}
+  .pth-stops li::before{content:"";position:absolute;left:4px;top:13px;width:9px;height:9px;border-radius:50%;background:#EE5566;
+    box-shadow:0 0 0 0 rgba(238,85,102,.5)}
+  .pth-stops li.past{opacity:.7}
+  .pth-stops li.on{opacity:1}
+  .pth-stops li.on::before{box-shadow:0 0 0 5px rgba(238,85,102,.22)}
+  .pth-stops b{display:block;font-size:15.5px;font-weight:600;color:#fff}
+  .pth-stops span{display:block;margin-top:1px;font-size:13.5px;color:#C9C9CF}
+  .pth-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1)}
+  .pth-a{font-size:14px;font-weight:600;color:#fff}
+  .pth-a[hidden]{visibility:hidden;display:block}
+  .pth-nav{display:flex;align-items:center;gap:8px}
+  .pth-n{font-size:12.5px;color:#A9A9B2;min-width:34px;text-align:center;font-variant-numeric:tabular-nums}
+  .pth-b{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .pth-b:hover{background:#fff;color:#0B0B0E}
+  .pth-b:focus-visible,.pth-a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  @media (max-width:720px){
+    .pth{position:absolute;inset:84px 20px 18px;top:84px;transform:none;width:auto;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+    .pth > *{pointer-events:auto}
+    .pth-h{font-size:clamp(30px,8.6vw,40px);margin:0}
+    .pth-card{padding:14px 16px 10px}
+    .pth-t{margin-bottom:8px;font-size:16.5px}
+    .pth-stops{display:flex;flex-wrap:wrap;gap:4px 14px}
+    .pth-stops li{padding:4px 0 4px 16px}
+    .pth-stops li::before{left:0;top:10px;width:8px;height:8px}
+    .pth-stops b{font-size:14px}
+    .pth-stops span{display:none}
+    .pth-stops li.on span{display:block;flex-basis:100%}
+  }
+
   /* GUS */
   .gv-gus #gt-card,.gv-gus .stage .hint{display:none!important}
   .gv-gus .steps{height:460svh;padding:0}
@@ -799,8 +842,8 @@ GLOBE_VARIANTS = r'''
 /* ============ globe on phones: five treatments to compare (?globe=a..e), "now" is the default ============ */
 const GVM = matchMedia("(max-width:720px)").matches;
 const GVP = (new URLSearchParams(location.search).get("globe") || "").toLowerCase();
-const GV = GVP === "gus" ? "gus" : (GVM ? (GVP || "a") : null);
-const GVS = ["now", "a", "b", "c", "d", "e", "gus"];
+const GV = (GVP === "gus" || GVP === "paths") ? GVP : (GVM ? (GVP || "a") : null);
+const GVS = ["now", "a", "b", "c", "d", "e", "gus", "paths"];
 if (GV && GVS.includes(GV)) {
   const root = document.documentElement, scrolly = $(".scrolly"), stage = $("#stage");
   root.classList.add("gv-" + GV);
@@ -828,7 +871,7 @@ if (GV && GVS.includes(GV)) {
     `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
-  if (GV !== "now" && GV !== "gus") { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
+  if (!["now", "gus", "paths"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
   /* one tracker: the step under mid-screen is current; it alone moves the camera */
   const trackSteps = fn => {
     let curS;
@@ -841,7 +884,7 @@ if (GV && GVS.includes(GV)) {
   };
 
   /* phones: no names on the globe (they can't sit cleanly beside a dense cluster); the caption lists them */
-  if (GV !== "now" && GV !== "gus") {
+  if (!["now", "gus", "paths"].includes(GV)) {
     VIEWS.campuses.labelC = 0; VIEWS.nuin.labelN = 0;
     const list = (step, names) => { const c = $(`.step[data-step="${step}"] .card`); if (c) c.append(el("p", "gv-places", names.map(escH).join('<span aria-hidden="true"> \u00b7 </span>'))); };
     const order = ["Boston", "London", "New York City", "Oakland"];
@@ -1048,9 +1091,72 @@ if (GV && GVS.includes(GV)) {
     requestAnimationFrame(() => { place(); relayout(); upd(); });
   }
 
+  /* PATHS · real journeys across the network, drawn one stop at a time (no connecting lines) */
+  if (GV === "paths") {
+    window.GV_NOENTRY = true;
+    stepIO.disconnect();
+    const P = __PATHS__;
+    const ui = el("div", "pth");
+    ui.innerHTML = `<h2 class="pth-h">No two paths look the same.</h2>` +
+      `<div class="pth-card" aria-live="polite"><p class="pth-k"></p><p class="pth-t"></p><ol class="pth-stops"></ol>` +
+      `<div class="pth-foot"><a class="pth-a" href="#">Read the story<span aria-hidden="true"> →</span></a>` +
+      `<div class="pth-nav"><button class="pth-b" data-d="-1" aria-label="Previous path">←</button><span class="pth-n"></span>` +
+      `<button class="pth-b" data-d="1" aria-label="Next path">→</button></div></div></div>`;
+    stage.append(ui);
+    const card = ui.querySelector(".pth-card"), list = ui.querySelector(".pth-stops"), link = ui.querySelector(".pth-a");
+    /* the planet is a quiet backdrop; the path's stops are the only bright points */
+    const BACK = { campus: .1, nuin: .08, coops: .1, labelC: 0, labelN: 0, spins: 1 };
+    Object.assign(cur, BACK); Object.assign(tgt, BACK);
+    autorotate = false; fly = null;
+    $("#globe").addEventListener("click", e => e.stopImmediatePropagation(), true);
+    const place = () => {
+      if (innerWidth > 720) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
+      const H = innerHeight, top = 84 + ui.querySelector(".pth-h").offsetHeight + 12, bottom = H - card.offsetHeight - 22;
+      window.GLOBE_CY = ((top + bottom) / 2) / H;
+      window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 4, innerWidth / 2 - 18) / Math.min(innerWidth, H));
+    };
+    let pi = 0, si = -1, t0 = 0, vis = false;
+    const DWELL = 2600, HOLD = 3600;
+    const stopAt = j => {
+      si = j; t0 = performance.now();
+      const st = P[pi].stops[j];
+      STORY_PINS.push(st.ll); storySel = j;
+      startFly({ lon: st.ll[1], lat: st.ll[0] - 6, k: P[pi].k || 1.2 });
+      [...list.children].forEach((li, k) => { li.classList.toggle("on", k === j); li.classList.toggle("past", k < j); });
+    };
+    const showPath = i => {
+      pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0;
+      const pth = P[pi];
+      card.classList.add("swap");
+      setTimeout(() => {
+        card.querySelector(".pth-k").textContent = pth.kind;
+        card.querySelector(".pth-t").textContent = pth.title;
+        list.innerHTML = pth.stops.map(st => `<li><b>${escH(st.place)}</b><span>${escH(st.note)}</span></li>`).join("");
+        link.hidden = !pth.url; if (pth.url) link.href = pth.url;
+        ui.querySelector(".pth-n").textContent = `${pi + 1} / ${P.length}`;
+        card.classList.remove("swap");
+        place(); relayout();
+        stopAt(0);
+      }, reduceMotion ? 0 : 260);
+    };
+    ui.querySelectorAll(".pth-b").forEach(b => b.addEventListener("click", () => showPath(pi + +b.dataset.d)));
+    new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; }, { threshold: [0, .5, 1] }).observe(stage);
+    const loop = now => {
+      if (vis && !document.hidden && si >= 0 && !reduceMotion) {
+        const last = si >= P[pi].stops.length - 1;
+        if (!last && now - t0 > DWELL) stopAt(si + 1);
+        else if (last && now - t0 > HOLD) showPath(pi + 1);
+      }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+    addEventListener("resize", () => { place(); relayout(); });
+    showPath(0);
+  }
+
   /* treatment switcher (only when ?globe= is in the URL) */
   if (new URLSearchParams(location.search).has("globe")) {
-    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS" };
+    const NAMES = { now: "Now", a: "A · Stage", b: "B · Tabs", c: "C · Horizon", d: "D · Stories", e: "E · Split", gus: "GUS", paths: "Paths" };
     const bar = el("nav", "gvswitch", GVS.map(x => `<a href="?globe=${x}#campuses" class="${x === GV ? "on" : ""}">${x === GV ? NAMES[x] : (x === "now" ? "Now" : x.toUpperCase())}</a>`).join(""));
     bar.setAttribute("aria-label", "Globe treatments"); document.body.append(bar);
   }
@@ -1523,6 +1629,45 @@ if (new URLSearchParams(location.search).has("rows")) {
 }
 }
 '''
+# real cross-campus paths, each from an NGN story (researched 2026-10-06); one illustrative path, labeled
+BOS, OAK, LON, NYC, POR, BUR = [42.34, -71.09], [37.78, -122.18], [51.51, -0.07], [40.77, -73.98], [43.66, -70.26], [42.48, -71.2]
+PATHS = [
+ {"kind": "A real path", "title": "Madeline Bell, first-year student",
+  "url": NGN + "/2026/01/16/nu-in-students-boston-transition/",
+  "stops": [{"place": "Greece", "note": "First semester through N.U.in", "ll": [40.64, 22.94]},
+            {"place": "Boston", "note": "Spring semester on the Boston campus", "ll": BOS}]},
+ {"kind": "Research across the network", "title": "Network Science Institute", "k": 1.05,
+  "url": NGN + "/2026/05/04/network-science-institute-global-presence/",
+  "stops": [{"place": "Boston", "note": "Founded on the Boston campus, 2015", "ll": BOS},
+            {"place": "London", "note": "A hub on the London campus, 2022", "ll": LON},
+            {"place": "Portland, Maine", "note": "A hub at the Roux Institute, 2022", "ll": POR}]},
+ {"kind": "A real path", "title": "Bree Joy and Thea Carr, neuroscience students", "k": 1.0,
+  "url": NGN + "/2026/07/22/nematodes-research-labs/",
+  "stops": [{"place": "Oakland", "note": "A year of research in the Young Lab", "ll": OAK},
+            {"place": "Boston", "note": "Accepted into the Apfeld Lab", "ll": BOS}]},
+ {"kind": "Research across the network", "title": "Institute for NanoSystems Innovation", "k": 1.0,
+  "url": NGN + "/2024/04/29/bicoastal-institute-nanosystems-innovation/",
+  "stops": [{"place": "Boston", "note": "A 15,000-square-foot laboratory", "ll": BOS},
+            {"place": "Burlington", "note": "A 20,000-square-foot clean room", "ll": BUR},
+            {"place": "Oakland", "note": "A new West Coast facility", "ll": OAK}]},
+ {"kind": "A real path", "title": "Global Scholars", "k": .95,
+  "url": NGN + "/2024/09/12/enrollment-statistics-2024/",
+  "stops": [{"place": "London", "note": "One semester on the London campus", "ll": LON},
+            {"place": "Oakland", "note": "One semester on the Oakland campus", "ll": OAK},
+            {"place": "Boston", "note": "The rest of the degree", "ll": BOS}]},
+ {"kind": "A real path", "title": "Anika Nadgauda, PPE and business student", "k": 1.0,
+  "url": NGN + "/2026/09/03/new-oakland-students-move-in-2026/",
+  "stops": [{"place": "Oakland", "note": "First year on the Oakland campus", "ll": OAK},
+            {"place": "Boston", "note": "Then on to the Boston campus", "ll": BOS}]},
+ {"kind": "One possible path", "title": "Starting abroad, ending in the Bay Area", "k": .95, "url": "",
+  "stops": [{"place": "Rome", "note": "First semester through N.U.in", "ll": [41.9, 12.5]},
+            {"place": "Boston", "note": "Campus", "ll": BOS},
+            {"place": "New York City", "note": "Co‑op", "ll": [40.71, -74.01]},
+            {"place": "New York City", "note": "Campus", "ll": NYC},
+            {"place": "San Francisco", "note": "Co‑op", "ll": [37.77, -122.42]},
+            {"place": "Oakland", "note": "Campus", "ll": OAK}]},
+]
+GLOBE_VARIANTS = GLOBE_VARIANTS.replace("__PATHS__", json.dumps(PATHS, ensure_ascii=False))
 NEW_JS = NEW_JS.replace("__ARROW__", g["ICON_ARROW"]).replace("__CHEV__", CHEV)
 NEW_JS = NEW_JS.replace("__FEATS__", json.dumps(FEATS, ensure_ascii=False).replace("</", "<\\/"))
 
@@ -1549,7 +1694,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="33"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="34"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1559,7 +1704,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="33">', '<meta name="concept11-rev" content="22">'),
+for x, y in (('<meta name="concept10-rev" content="34">', '<meta name="concept11-rev" content="23">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
