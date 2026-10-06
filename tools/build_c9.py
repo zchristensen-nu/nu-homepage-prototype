@@ -107,7 +107,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="48">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="49">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -1318,9 +1318,9 @@ if (GV && GVS.includes(GV)) {
     const angDeg = (a, b) => { const p1 = a[0] * RAD, p2 = b[0] * RAD, dl = (b[1] - a[1]) * RAD;
       return Math.acos(Math.max(-1, Math.min(1, Math.sin(p1) * Math.sin(p2) + Math.cos(p1) * Math.cos(p2) * Math.cos(dl)))) / RAD; };
     const zoomFor = (pth, j) => {
-      const nb = pth.stops[j - 1] || pth.stops[j + 1]; if (!nb) return SIDE ? 2.4 : 1.9;
+      const nb = pth.stops[j - 1] || pth.stops[j + 1]; if (!nb) return SIDE ? 1.95 : 1.45;
       const d = angDeg(nb.ll, pth.stops[j].ll), near = d < 6 ? 1 : d < 25 ? .45 : 0;
-      return SIDE ? 2.2 + near * .45 : 1.7 + near * .36;  /* the co-op tour's close camera */
+      return SIDE ? 1.75 + near * .35 : 1.3 + near * .3;  /* pulled back from the co-op tour's camera: less sweep per move */
     };
     const dur = j => j >= P[pi].stops.length - 1 ? HOLD : DWELL;
     const paint = j => [...list.children].forEach((li, k) => {
@@ -1981,7 +1981,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="48"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="49"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1991,7 +1991,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="48">', '<meta name="concept11-rev" content="37">'),
+for x, y in (('<meta name="concept10-rev" content="49">', '<meta name="concept11-rev" content="38">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2002,7 +2002,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="37">', '<meta name="concept12-rev" content="7">'),
+for x, y in (('<meta name="concept11-rev" content="38">', '<meta name="concept12-rev" content="8">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
