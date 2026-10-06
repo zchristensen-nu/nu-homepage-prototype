@@ -30,17 +30,17 @@ def nav_edit(src, a, b, n=1):
     assert src.count(a) == n, (src.count(a), a[:70]); return src.replace(a, b)
 header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>
       <button class="mnav-btn" data-panel="mp-academics" aria-expanded="false">Academics</button>""",
-    """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Academics</button>""")
+    """      <button class="mnav-btn" data-panel="mp-admissions" aria-expanded="false">Admissions</button>""")
 header_mk = nav_edit(header_mk, """      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global &amp; Campuses</button>""",
     f"""      <button class="mnav-btn" data-panel="mp-global" aria-expanded="false">Global Network</button>
-      <a class="mnav-a" href="{ENT_URL}">Entrepreneurship</a>
+      <button class="mnav-btn" data-panel="mp-ent" aria-expanded="false">Entrepreneurship</button>
       <a class="mnav-a" href="{AI_URL}">AI</a>""")
 _a0 = header_mk.index('<div class="mpanel" id="mp-admissions"'); _a1 = header_mk.index('<div class="mpanel" id="mp-experiential"')
 _feat = header_mk[_a0:_a1]
 _feat = _feat[_feat.index('<a class="mp-feat"'):]
 _feat = _feat[:_feat.index("</a>") + 4]
 header_mk = header_mk[:_a0] + f"""<div class="mpanel" id="mp-admissions" hidden><div class="wrap mp-in">
-      <div class="mp-lead mp-lead-wide"><div class="mp-title">Academics</div><p>However you learn best, there is a path here.</p>
+      <div class="mp-lead mp-lead-wide"><div class="mp-title">Admissions</div><p>However you learn best, there is a path here.</p>
         <a class="storylink" href="https://www.northeastern.edu/admissions/">Admissions</a>
         <a class="storylink" href="https://www.northeastern.edu/academics/">Academics</a></div>
       <div class="mp-col"><div class="mp-h">Apply</div><div class="mp-links">
@@ -72,7 +72,7 @@ header_mk = nav_edit(header_mk, '<button class="tkv-open mobilemenu" id="tkv-ope
 _t0 = header_mk.index('<button class="tkv-g" data-sub="tsub-0"'); _t0 = header_mk.rindex('<div class="tkv-grp">', 0, _t0)
 _t1 = header_mk.index('<button class="tkv-g" data-sub="tsub-2"'); _t1 = header_mk.rindex('<div class="tkv-grp">', 0, _t1)
 header_mk = header_mk[:_t0] + """<div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Academics<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions<span class="tkv-c" aria-hidden="true">+</span></button>
       <div class="tkv-sub" id="tsub-0">
         <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
         <a href="https://www.northeastern.edu/academics/">Academics overview</a>
@@ -92,11 +92,24 @@ header_mk = header_mk[:_t0] + """<div class="tkv-grp">
     """ + header_mk[_t1:]
 header_mk = nav_edit(header_mk, 'aria-expanded="false">Global<span class="tkv-c"', 'aria-expanded="false">Global Network<span class="tkv-c"')
 _t2 = header_mk.index('<button class="tkv-g" data-sub="tsub-5"'); _t2 = header_mk.rindex('<div class="tkv-grp">', 0, _t2)
-header_mk = header_mk[:_t2] + f"""<a class="tkv-l" href="{ENT_URL}">Entrepreneurship<span aria-hidden="true">&#8594;</span></a>
+header_mk = header_mk[:_t2] + f"""<div class="tkv-grp">
+      <button class="tkv-g" data-sub="tsub-ent" aria-expanded="false">Entrepreneurship<span class="tkv-c" aria-hidden="true">+</span></button>
+      <div class="tkv-sub" id="tsub-ent">
+        <a href="{ENT_URL}">Global Entrepreneurship</a>
+      </div>
+    </div>
     <a class="tkv-l" href="{AI_URL}">AI<span aria-hidden="true">&#8594;</span></a>
     """ + header_mk[_t2:]
 header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admit">Apply</a></span>',
-                     '<span class="apply"><a class="pill" href="https://giving.northeastern.edu/">Donate</a></span>')
+                     '<span class="apply"><a class="pill" href="https://giving.northeastern.edu/">Giving</a></span>')
+_m = header_mk.index('<div class="mpanel" id="mp-more"')
+header_mk = header_mk[:_m] + f"""<div class="mpanel" id="mp-ent" hidden><div class="wrap mp-in">
+      <div class="mp-lead"><div class="mp-title">Entrepreneurship</div><p>Start something, anywhere.</p></div>
+      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
+        <a href="{ENT_URL}">Global Entrepreneurship</a>
+      </div></div>
+  </div></div>
+  """ + header_mk[_m:]
 # social links as the live site's icons (WordPress core social-link SVGs), text kept as the accessible name
 _SOC = json.load(open(os.path.join(os.path.dirname(__file__), "social-icons.json")))
 for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/northeastern"), ("twitter", "X", "https://x.com/northeastern"),
@@ -108,7 +121,7 @@ for _k, _name, _url in (("facebook", "Facebook", "https://www.facebook.com/north
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="58">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="59">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -221,7 +234,7 @@ c2_js = c2_js.replace(_pa, r"""  /* path arcs: thin great-circle arcs that draw 
   if (window.PATH_LABEL) {
     const L = window.PATH_LABEL, pr = project(L.ll[0], L.ll[1], R, cx, cy);
     const nb = labelBoxes.length, la = L.at ? Math.max(0, Math.min(1, (now - L.at) / 300)) : 1;
-    if (pr[2] > 0 && la > 0) label(L.text, pr[0], pr[1], la, W <= 720 ? 16 : 18);
+    if (pr[2] > 0 && la > 0) label(L.text, pr[0], pr[1], la, W <= 720 ? 19 : 24);
     window.PATH_LABEL_BOX = labelBoxes.length > nb ? labelBoxes[labelBoxes.length - 1] : null;
   } else window.PATH_LABEL_BOX = null;
 """ + _pa)
@@ -892,14 +905,14 @@ NEW_CSS = r'''
   .hz-stops li.past b{width:100%}
   @keyframes hzfill{from{width:0}to{width:100%}}
   .hz.held .hz-stops b,.hz.off .hz-stops b{animation-play-state:paused!important}
-  .hz-p{display:block;margin-top:10px;font-size:clamp(15px,1.25vw,18px);font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .hz-x{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:#C9C9CF;opacity:0;transition:opacity .2s}
+  .hz-p{display:block;margin-top:10px;font-size:clamp(17px,1.5vw,22px);font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hz-x{display:block;margin-top:3px;font-size:15px;line-height:1.38;color:#C9C9CF;opacity:0;transition:opacity .2s}
   .hz-stops li.past .hz-x{opacity:1;transition:opacity .5s .3s}  /* after the map note has faded */
-  .hz-call{position:absolute;left:0;top:0;z-index:5;font-size:14px;line-height:1.4;color:#D4D4DA;
+  .hz-call{position:absolute;left:0;top:0;z-index:5;font-size:18px;line-height:1.38;color:#E2E2E7;
     text-shadow:0 1px 10px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.6);pointer-events:none;opacity:0;transition:opacity .35s}
   .hz-call.on{opacity:1}
-  @media (max-width:720px){ .hz-call{font-size:13px} }
-  @media (max-width:1100px) and (min-width:721px){ .hz-x{font-size:12.5px} }
+  @media (max-width:720px){ .hz-call{font-size:15px} }
+  @media (max-width:1100px) and (min-width:721px){ .hz-x{font-size:14px} }
   @media (max-width:720px){
     .hz{top:80px;left:20px;right:20px}
     .hz-head{align-items:center}
@@ -908,8 +921,8 @@ NEW_CSS = r'''
     .hz-b{width:34px;height:34px}
     .hz-stops{display:flex;gap:8px;overflow-x:auto;margin:16px -20px 0;padding:0 20px;scroll-padding-inline:20px}
     .hz-stops li{flex:1 0 calc((100% - 8px * (min(var(--n), 3) - 1)) / min(var(--n), 3))}
-    .hz-p{font-size:13.5px;margin-top:8px}
-    .hz-x{font-size:12px}
+    .hz-p{font-size:15px;margin-top:8px}
+    .hz-x{font-size:13px}
   }
   @media (prefers-reduced-motion: reduce){.hz-stops,.hz-stops li{transition:none}}
   /* SIDE: the horizon idea with content on the left and the globe on the right */
@@ -1382,7 +1395,7 @@ if (GV && GVS.includes(GV)) {
       const g = $("#globe").getBoundingClientRect(), sr = stage.getBoundingClientRect();
       const x = g.left - sr.left + b.x, room = innerWidth - (g.left + b.x) - 16;
       call.style.visibility = "";
-      call.style.maxWidth = Math.max(140, Math.min(260, room)) + "px";
+      call.style.maxWidth = Math.max(160, Math.min(340, room)) + "px";
       call.style.transform = `translate(${Math.round(x)}px,${Math.round(g.top - sr.top + b.y + b.h + 2)}px)`;
     };
     const callTick = () => {
@@ -2043,7 +2056,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="58"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="59"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -2053,7 +2066,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="58">', '<meta name="concept11-rev" content="47">'),
+for x, y in (('<meta name="concept10-rev" content="59">', '<meta name="concept11-rev" content="48">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
@@ -2064,7 +2077,7 @@ print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
 p12 = p11
-for x, y in (('<meta name="concept11-rev" content="47">', '<meta name="concept12-rev" content="17">'),
+for x, y in (('<meta name="concept11-rev" content="48">', '<meta name="concept12-rev" content="18">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
     p12 = p12.replace(x, y)
