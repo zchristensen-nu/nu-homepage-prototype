@@ -99,7 +99,7 @@ header_mk = nav_edit(header_mk, '<span class="apply"><a class="pill" href="#admi
 footer_mk = nav_edit(footer_mk, """<a href="#">Entrepreneurship</a>""", f"""<a href="{ENT_URL}">Entrepreneurship</a>""")
 
 assert head.count('<meta name="concept6-rev" content="4">') == 1
-head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="37">')
+head = head.replace('<meta name="concept6-rev" content="4">', '<meta name="concept10-rev" content="40">')
 
 # expose Lenis (handy for scripted checks; anchors already route through it)
 assert tail_js.count("const lenis = new Lenis({ lerp: 0.12 });") == 1
@@ -825,46 +825,55 @@ NEW_CSS = r'''
   .gv-horizon .steps > *{display:none}
   .gv-horizon .stage::before{display:none}
   .gv-horizon .stage::after{height:10svh}
-  .hz{position:absolute;z-index:6;top:clamp(96px,13svh,130px);left:var(--edge);right:var(--edge);transition:opacity .26s}
-  .hz.swap .hz-meta,.hz.swap .hz-stops{opacity:0}
-  .hz-meta,.hz-stops{transition:opacity .26s}
+  .gv-horizon:not(.gv-side) .stage::before{display:block;height:46svh;z-index:4;background:linear-gradient(var(--dark) 0%,rgba(11,11,14,.85) 55%,transparent)}
+  .hz{position:absolute;z-index:6;top:clamp(96px,13svh,130px);left:var(--edge);right:var(--edge)}
+  .hz-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+  .hz.swap .hz-stops{opacity:0;transform:translateY(6px)}
+  .hz-stops{transition:opacity .42s ease,transform .42s ease}
   .hz-h{margin:0;font-size:clamp(34px,4vw,64px);font-weight:200;letter-spacing:-.035em;line-height:1.04;color:#fff}
-  .hz-meta{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:clamp(18px,3svh,30px)}
-  .hz-t{margin:0;font-size:15px;color:#E5E5E5}
-  .hz-n{margin-left:12px;color:#8A8A93;font-variant-numeric:tabular-nums}
-  .hz-nav{display:flex;align-items:center;gap:8px}
-  .hz-a{margin-right:10px;font-size:14px;font-weight:600;color:#fff}
-  .hz-a[hidden]{display:none}
-  .hz-b{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .hz-nav{display:flex;align-items:center;gap:8px;flex:none;padding-bottom:6px}
+  .hz-b{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;transition:background .2s,color .2s}
   .hz-b:hover{background:#fff;color:#0B0B0E}
-  .hz-b:focus-visible,.hz-a:focus-visible{outline:2px solid #fff;outline-offset:3px}
-  .hz-stops{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:12px}
-  .hz-stops li{opacity:.32;transition:opacity .45s}
+  .hz-b:focus-visible,.hz-stops li:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:6px}
+  .hz-stops{list-style:none;margin:clamp(20px,3svh,30px) 0 0;padding:0;display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px;scrollbar-width:none}
+  .hz-stops::-webkit-scrollbar{display:none}
+  .hz-stops li{cursor:pointer;opacity:.34;transition:opacity .45s;min-width:0}
+  .hz-stops li:hover{opacity:.8}
   .hz-stops li.past{opacity:.62}
   .hz-stops li.on{opacity:1}
   .hz-stops i{display:block;height:3px;border-radius:2px;background:rgba(255,255,255,.22);overflow:hidden}
   .hz-stops b{display:block;height:100%;width:0;background:#fff}
-  .hz-p{display:block;margin-top:10px;font-size:clamp(15px,1.25vw,18px);font-weight:600;color:#fff}
+  .hz-stops li.past b{width:100%}
+  @keyframes hzfill{from{width:0}to{width:100%}}
+  .hz.held .hz-stops b,.hz.off .hz-stops b{animation-play-state:paused!important}
+  .hz-p{display:block;margin-top:10px;font-size:clamp(15px,1.25vw,18px);font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .hz-x{display:block;margin-top:2px;font-size:13.5px;line-height:1.35;color:#C9C9CF}
+  @media (max-width:1100px) and (min-width:721px){ .hz-x{font-size:12.5px} }
   @media (max-width:720px){
-    .hz{top:84px;left:20px;right:20px}
-    .hz-h{font-size:clamp(28px,8vw,36px)}
-    .hz-meta{flex-wrap:wrap;gap:8px}
-    .hz-t{font-size:13.5px;flex-basis:100%}
-    .hz-a{margin-right:auto}
-    .hz-stops{gap:6px}
-    .hz-p{font-size:12.5px;margin-top:7px}
-    .hz-x{display:none}
-    .hz-stops li.on .hz-x{display:block;font-size:11.5px}
+    .hz{top:80px;left:20px;right:20px}
+    .hz-head{align-items:center}
+    .hz-h{font-size:clamp(26px,7.6vw,34px)}
+    .hz-nav{padding-bottom:0}
+    .hz-b{width:34px;height:34px}
+    .hz-stops{display:flex;gap:8px;overflow-x:auto;margin:16px -20px 0;padding:0 20px;scroll-padding-inline:20px}
+    .hz-stops li{flex:1 0 calc((100% - 8px * (min(var(--n), 3) - 1)) / min(var(--n), 3))}
+    .hz-p{font-size:13.5px;margin-top:8px}
+    .hz-x{font-size:12px;opacity:0;transition:opacity .3s}
+    .hz-stops li.on .hz-x{opacity:1}
   }
-
+  @media (prefers-reduced-motion: reduce){.hz-stops,.hz-stops li{transition:none}}
   /* SIDE: the horizon idea with content on the left and the globe on the right */
-  .gv-side .hz{top:50%;transform:translateY(-50%);right:auto;width:min(440px,36vw)}
-  .gv-side .hz-stops{grid-template-columns:1fr;gap:16px;margin-top:20px}
+  .gv-side .hz{top:clamp(96px,16svh,200px);right:auto;width:min(440px,36vw)}  /* anchored at the top: controls never move */
+  .gv-side .hz-head{flex-direction:column;align-items:flex-start;gap:18px}
+  .gv-side .hz-stops{grid-template-columns:1fr;gap:clamp(6px,1.6svh,16px);margin-top:clamp(12px,2.4svh,22px)}
   .gv-side .hz-p{margin-top:8px}
+  .gv-side .stage::before{display:block;top:0;bottom:0;right:auto;left:0;width:56%;height:auto;z-index:4;
+    background:linear-gradient(to right,rgba(11,11,14,.9) 0%,rgba(11,11,14,.72) 55%,transparent)}
+  @media (min-width:721px) and (max-height:820px){ .gv-side .hz-stops li:not(.on) .hz-x{display:none} }  /* short laptops: only the current stop keeps its note */
   @media (max-width:720px){
-    .gv-side .hz{top:84px;transform:none;left:20px;right:20px;width:auto}
-    .gv-side .hz-stops{grid-template-columns:repeat(var(--n,3),1fr);gap:6px;margin-top:12px}
+    .gv-side .hz{top:80px;transform:none;left:20px;right:20px;width:auto}
+    .gv-side .hz-head{flex-direction:row;align-items:center}
+    .gv-side .stage::before{width:auto;right:0;height:52svh;bottom:auto;background:linear-gradient(var(--dark) 0%,rgba(11,11,14,.85) 60%,transparent)}
   }
 
   /* GUS */
@@ -1250,8 +1259,8 @@ if (GV && GVS.includes(GV)) {
     showPath(0);
   }
 
-  /* HORIZON · the planet rises from the bottom; a path's stops sit across the top like stories,
-     dim until reached; each fills as the globe turns to it */
+  /* HORIZON / SIDE · a path's stops sit in a row like stories, dim until reached; each fills as the globe
+     flies to it (co-op tour camera). Tap a stop to jump; hover or focus pauses; the globe is locked. */
   if (GV === "horizon" || GV === "side") {
     const SIDE = GV === "side";
     if (SIDE) root.classList.add("gv-horizon");
@@ -1260,10 +1269,9 @@ if (GV && GVS.includes(GV)) {
     window.PATH_ARCS = [];
     const P = __PATHS__;
     const ui = el("div", "hz");
-    ui.innerHTML = `<h2 class="hz-h">No two paths look the same.</h2>` +
-      `<div class="hz-meta" aria-live="polite"><p class="hz-t"><span class="hz-k"></span></p>` +
+    ui.innerHTML = `<div class="hz-head"><h2 class="hz-h">No two paths look the same.</h2>` +
       `<div class="hz-nav"><button class="hz-b" data-d="-1" aria-label="Previous path">←</button><button class="hz-b" data-d="1" aria-label="Next path">→</button></div></div>` +
-      `<ol class="hz-stops"></ol>`;
+      `<ol class="hz-stops" aria-live="polite"></ol>`;
     stage.append(ui);
     const list = ui.querySelector(".hz-stops");
     const BACK = { campus: .1, nuin: .08, coops: .1, labelC: 0, labelN: 0, spins: 1 };
@@ -1273,73 +1281,104 @@ if (GV && GVS.includes(GV)) {
     let crest = { R: 1000, cap: 400 };
     const place = () => {
       const W = innerWidth, H = innerHeight, phone = W <= 720;
+      const below = ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top;
       if (SIDE) {
         if (!phone) { window.GLOBE_CY = undefined; window.GLOBE_R = undefined; return; }
-        const top = ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 18, bottom = H - 24;
+        const top = below + 18, bottom = H - 24;
         window.GLOBE_CY = ((top + bottom) / 2) / H; window.GLOBE_R = Math.max(.2, Math.min((bottom - top) / 2 - 4, W / 2 - 18) / Math.min(W, H));
         return;
       }
       const R = phone ? W * 1.15 : Math.max(W * .62, H * 1.0);
-      const topOfDisk = Math.max(ui.getBoundingClientRect().bottom - stage.getBoundingClientRect().top + 30, H * (phone ? .5 : .46));
+      const topOfDisk = Math.min(H - 120, Math.max(below + 30, H * (phone ? .5 : .46)));
       window.GLOBE_R = R / Math.min(W, H); window.GLOBE_CY = (topOfDisk + R) / H;
       crest = { R, cap: H - topOfDisk };
     };
-    let pi = 0, si = -1, t0 = 0, vis = false;
+    let pi = 0, si = -1, t0 = 0, vis = false, held = false;
     const DWELL = 2400, HOLD = 3000;
-    /* zoom with the hop: close stops get a close camera, ocean crossings stay wide */
     const angDeg = (a, b) => { const p1 = a[0] * RAD, p2 = b[0] * RAD, dl = (b[1] - a[1]) * RAD;
       return Math.acos(Math.max(-1, Math.min(1, Math.sin(p1) * Math.sin(p2) + Math.cos(p1) * Math.cos(p2) * Math.cos(dl)))) / RAD; };
     const zoomFor = (pth, j) => {
-      const prev = pth.stops[j - 1] || pth.stops[j + 1]; if (!prev) return 1;
-      const d = angDeg(prev.ll, pth.stops[j].ll), near = d < 6 ? 1 : d < 25 ? .45 : 0;
-      return SIDE ? 1.05 + near * .65 : 1 + near * .45;
+      const nb = pth.stops[j - 1] || pth.stops[j + 1]; if (!nb) return SIDE ? 2.4 : 1.9;
+      const d = angDeg(nb.ll, pth.stops[j].ll), near = d < 6 ? 1 : d < 25 ? .45 : 0;
+      return SIDE ? 2.4 + near * .5 : 1.9 + near * .4;  /* the co-op tour's close camera */
     };
-    const stopAt = j => {
+    const dur = j => j >= P[pi].stops.length - 1 ? HOLD : DWELL;
+    const paint = j => [...list.children].forEach((li, k) => {
+      li.classList.toggle("on", k === j); li.classList.toggle("past", k < j);
+      li.setAttribute("aria-current", k === j ? "step" : "false");
+      const b = li.querySelector("b");
+      b.style.animation = "none"; void b.offsetWidth;
+      b.style.animation = k === j && !reduceMotion ? `hzfill ${dur(j)}ms linear forwards` : "";
+    });
+    const flyTo = (pth, j) => {
+      const st = pth.stops[j], kk = zoomFor(pth, j);
+      /* horizon: the stop sits a third of the way down the visible cap at this zoom */
+      const tilt = SIDE ? 1 : Math.asin(Math.max(-.95, Math.min(.95, (crest.R - crest.cap * .38) / (crest.R * kk)))) / RAD;
+      startFly({ lon: st.ll[1], lat: st.ll[0] - tilt, k: kk });
+    };
+    const stopAt = (j, jump, noFly) => {
       si = j; t0 = performance.now();
-      const st = P[pi].stops[j];
-      if (j > 0) window.PATH_ARCS.push({ a: P[pi].stops[j - 1].ll, b: st.ll, t0 });
+      const pth = P[pi], st = pth.stops[j];
+      if (jump) {  /* rebuild the trail up to this stop, already drawn */
+        STORY_PINS.length = 0; window.PATH_ARCS = [];
+        for (let k = 0; k < j; k++) { STORY_PINS.push(pth.stops[k].ll); if (k) window.PATH_ARCS.push({ a: pth.stops[k - 1].ll, b: pth.stops[k].ll, t0: -1e9 }); }
+      }
+      if (j > 0) window.PATH_ARCS.push({ a: pth.stops[j - 1].ll, b: st.ll, t0 });
       window.PATH_LABEL = { ll: st.ll, text: st.place };
       STORY_PINS.push(st.ll); storySel = j;
-      /* tilt so the stop rides just over the crest of the horizon */
-      /* horizon: tilt so the stop sits a third of the way down the visible cap at this zoom */
-      const kk = zoomFor(P[pi], j);
-      const tilt = SIDE ? 4 : Math.asin(Math.max(-.95, Math.min(.95, (crest.R - crest.cap * .38) / (crest.R * kk)))) / RAD;
-      fly = null; tgt.lon = st.ll[1]; tgt.lat = st.ll[0] - tilt; tgt.k = zoomFor(P[pi], j);  /* a direct ease, smoother than a flight */
-      const last = j >= P[pi].stops.length - 1;
-      [...list.children].forEach((li, k) => {
-        li.classList.toggle("on", k === j); li.classList.toggle("past", k < j);
-        const b = li.querySelector("b");
-        b.style.transition = "none"; b.style.width = k < j ? "100%" : "0%";
-        if (k === j && !reduceMotion) { void b.offsetWidth; b.style.transition = `width ${last ? HOLD : DWELL}ms linear`; b.style.width = "100%"; }
-      });
+      if (!noFly) flyTo(pth, j);
+      paint(j);
+      const li = list.children[j];
+      if (li && list.scrollWidth > list.clientWidth) list.scrollTo({ left: li.offsetLeft - 20, behavior: reduceMotion ? "auto" : "smooth" });
     };
-    const showPath = i => {
-      pi = (i + P.length) % P.length; si = -1; STORY_PINS.length = 0; window.PATH_ARCS = []; window.PATH_LABEL = null;
-      const pth = P[pi];
-      ui.classList.add("swap");
-      setTimeout(() => {
-        ui.querySelector(".hz-k").textContent = pth.kind;
-        list.style.setProperty("--n", pth.stops.length);
-        list.innerHTML = pth.stops.map(st => `<li><i aria-hidden="true"><b></b></i><span class="hz-p">${escH(st.place)}</span><span class="hz-x">${escH(st.note)}</span></li>`).join("");
+    /* path hand-off: the old trail fades while the camera is already flying to the next first stop,
+       the stop row crossfades, and the new trail fades in where the camera lands */
+    let swapT = 0, swapping = false, pending = 0;
+    const fill = pth => {
+      list.style.setProperty("--n", pth.stops.length);
+      list.innerHTML = pth.stops.map((st, k) => `<li tabindex="0" data-k="${k}"><i aria-hidden="true"><b></b></i>` +
+        `<span class="hz-p">${escH(st.place)}</span><span class="hz-x">${escH(st.note)}</span></li>`).join("");
+      list.scrollLeft = 0;
+    };
+    const showPath = (i, instant) => {
+      const ni = (i + P.length) % P.length;
+      pending = ni;
+      clearTimeout(swapT);
+      const land = () => {
+        swapping = false; pi = ni; si = -1;
+        STORY_PINS.length = 0; window.PATH_ARCS = []; window.PATH_LABEL = null; window.PATH_FADE = 1; tgt.spins = 1;
+        fill(P[pi]); place(); relayout();
         ui.classList.remove("swap");
-        place(); relayout();
-        stopAt(0);
-      }, reduceMotion ? 0 : 260);
+        stopAt(0, false, !instant);
+      };
+      if (instant || reduceMotion) { land(); if (!instant) flyTo(P[ni], 0); return; }
+      swapping = true;
+      ui.classList.add("swap"); window.PATH_LABEL = null; tgt.spins = 0;
+      flyTo(P[ni], 0);
+      const f0 = performance.now();
+      const fade = now => { if (!swapping) return; window.PATH_FADE = Math.max(0, 1 - (now - f0) / 420); if (window.PATH_FADE > 0) requestAnimationFrame(fade); };
+      requestAnimationFrame(fade);
+      swapT = setTimeout(land, 520);
     };
-    ui.querySelectorAll(".hz-b").forEach(b => b.addEventListener("click", () => showPath(pi + +b.dataset.d)));
-    new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; }, { threshold: [0, .5, 1] }).observe(stage);
+    ui.querySelectorAll(".hz-b").forEach(b => b.addEventListener("click", () => showPath((swapping ? pending : pi) + +b.dataset.d)));
+    list.addEventListener("click", e => { const li = e.target.closest("li"); if (li) stopAt(+li.dataset.k, true); });
+    list.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches("li")) { e.preventDefault(); stopAt(+e.target.dataset.k, true); } });
+    /* hover or keyboard focus on the content holds the path (and its bar) in place */
+    const hold = on => { held = on; ui.classList.toggle("held", on); };
+    if (matchMedia("(hover: hover)").matches) { ui.addEventListener("pointerenter", () => hold(true)); ui.addEventListener("pointerleave", () => hold(false)); }
+    ui.addEventListener("focusin", () => hold(true)); ui.addEventListener("focusout", e => { if (!ui.contains(e.relatedTarget)) hold(false); });
+    new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; ui.classList.toggle("off", !vis); }, { threshold: [0, .5, 1] }).observe(stage);
     const loop = now => {
-      if (vis && !document.hidden && si >= 0 && !reduceMotion) {
+      if (vis && !held && !document.hidden && si >= 0 && !reduceMotion) {
         const last = si >= P[pi].stops.length - 1;
-        if (!last && now - t0 > DWELL) stopAt(si + 1);
-        else if (last && now - t0 > HOLD) showPath(pi + 1);
+        if (!swapping && now - t0 > dur(si)) { if (!last) stopAt(si + 1); else showPath(pi + 1); }
       } else if (si >= 0) { t0 += now - (loop.last || now); }
       loop.last = now;
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
-    addEventListener("resize", () => { place(); relayout(); });
-    showPath(0);
+    let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { place(); relayout(); if (si >= 0 && !swapping) stopAt(si, true); }, 150); });
+    showPath(0, true);
   }
 
   /* treatment switcher (only when ?globe= is in the URL) */
@@ -1882,7 +1921,7 @@ for a, b in GERUNDS:
 assert page.count("<header") == 1 and page.count("<footer>") == 1
 assert HERO.count('class="ln"') == 5 and page.count('class="crow"') == 5 and page.count('class="vidcard"') == 0 and 'class="journey"' not in page
 assert 'class="voices-c"' not in page and "SMEET" not in page
-for tok in ['id="srch"', 'concept10-rev" content="37"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
+for tok in ['id="srch"', 'concept10-rev" content="40"', 'id="stage"', "TOUR_STORIES", "stepIO", 'class="admit"', 'id="xrow"', "lineIO"]:
     assert tok in page, tok
 for gone in ['data-panel="mp-academics"', "Learning by doing", "Shaping responsible", "Developing cameras", "Harvesting oysters", "Learning how global", "Walking the future", 'href="#">Entrepreneurship', "Global &amp; Campuses", "Ideas into ventures", "kbs ", "Only at Northeastern", "tabs-1", "placement", "one way in", "one part.", 'data-step="outro"', "and counting", "Continue browsing", "hx-meta", "opens doors", "Now showing", "hxSound", "makeGlobe", "qtrack", 'class="hero"', 'class="grain"', "—"]:
     assert gone not in page, gone
@@ -1892,7 +1931,7 @@ print("built", len(page), "bytes ->", OUT[0])
 
 # concept 11: the same page as a standalone concept, with the image Spotlight as its story rows
 p11 = page
-for x, y in (('<meta name="concept10-rev" content="37">', '<meta name="concept11-rev" content="26">'),
+for x, y in (('<meta name="concept10-rev" content="40">', '<meta name="concept11-rev" content="29">'),
              ('const RV = (new URLSearchParams(location.search).get("rows") || "").toLowerCase();',
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
