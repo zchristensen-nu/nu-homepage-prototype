@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept21-rev" content="1">
+<meta name="concept21-rev" content="2">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1454,6 +1454,42 @@
     .hx-copy .w,.hx-btn.tail,.hx-eps.tail{animation:none;opacity:1;filter:none}
     .cmp-nav{transition:none!important}
   }
+
+  /* ===== posters, after concept 17: clean, gridded, titles beneath the image ===== */
+  .rows .crow.crow{--pw:var(--posterw,150px);--pgap:16px;--capl:3;
+    --striph:calc(12px + var(--pw) * 1.25 + 10px + 14px * 1.38 * var(--capl));--stageh:clamp(380px,52svh,580px)}
+  .rows-bfull .crow .crow-body{margin:0 var(--edge);overflow:hidden}
+  .rows-bfull .crow .crow-body::before{display:none}
+  .rows-bfull .crow .crow-strip{gap:var(--pgap);padding:0 0 4px;scroll-snap-type:x mandatory;scroll-padding-inline:0}
+  .rows-bfull .crow .cc,.rows-bfull .crow .cc.on,.rows-bfull .crow.sp .cc,.rows-bfull .crow.sp .cc.on{width:var(--pw);height:auto;display:flex;flex-direction:column;
+    padding-top:12px;border-radius:0;overflow:visible;background:none;color:var(--fg);box-shadow:none;transform:none;scroll-snap-align:start}
+  .rows-bfull .crow .cc::after{display:none}
+  .rows-bfull .crow .cc img,.rows-b .crow .cc img,.rows-b .crow .cc:not(.on) img,.rows-b .crow .crow-strip:hover .cc:not(.on) img{position:relative;inset:auto;width:100%;height:auto;
+    aspect-ratio:4/5;object-fit:cover;background:#141419;border-radius:2px;filter:none;transform:none;transition:opacity .3s var(--ease-out)}
+  .rows-bfull .crow .cc:hover img{opacity:.86}
+  .rows-bfull .crow .cc-t{position:static;display:-webkit-box;-webkit-line-clamp:var(--capl);-webkit-box-orient:vertical;overflow:hidden;
+    min-height:calc(1.38em * var(--capl));padding:10px 0 0;font-size:14px;font-weight:400;line-height:1.38;letter-spacing:0;color:var(--mute);
+    text-shadow:none;text-wrap:pretty;transition:color .3s var(--ease-out)}
+  .rows-bfull .crow .cc:hover .cc-t,.rows-bfull .crow .cc.on .cc-t{color:var(--fg)}
+  .rows-b .crow .cc-pb{display:block;position:absolute;left:0;right:0;top:0;height:1px;border-radius:0;background:rgba(255,255,255,.18);opacity:1;overflow:visible}
+  .rows-b .crow .cc.on .cc-pb{height:2px;top:-.5px}
+  .rows-b .crow .cc-pb::after{background:var(--red);border-radius:0}
+  .rows-bfull .crow .cc:focus-visible{outline:2px solid var(--fg);outline-offset:-2px}
+  .rows-bfull .crow .pad{top:12px;bottom:auto;height:calc(var(--pw) * 1.25);width:56px}
+  .rows-bfull .crow .pad.prev{background:linear-gradient(to right,rgba(11,11,14,.9),rgba(11,11,14,0));justify-content:flex-start;padding-left:8px}
+  .rows-bfull .crow .pad.next{background:linear-gradient(to left,rgba(11,11,14,.9),rgba(11,11,14,0));justify-content:flex-end;padding-right:8px}
+  /* the stage ends above the strip: the posters sit on the ground beneath it, not over the photo */
+  @media (min-width:721px){
+    .rows-bfull .crow.sp{min-height:calc(var(--mt) + var(--stageh) + 28px + var(--striph))}
+    .rows-bfull .crow.sp .sp-bg,.rows-bfull #ngnRow[aria-busy="true"]::before{bottom:calc(var(--striph) + 28px);box-shadow:none}
+    .rows-bfull .crow.sp .sp-in{margin-bottom:calc(28px + clamp(24px,3.4svh,40px))}
+    .rows-bfull .crow.sp .sp-bg::after{background:
+      linear-gradient(to right,rgba(11,11,14,.92) 0%,rgba(11,11,14,.6) 36%,rgba(11,11,14,.05) 68%),
+      linear-gradient(to top,rgba(11,11,14,.85) 0%,rgba(11,11,14,.4) 30%,transparent 55%),var(--vignette)}
+  }
+  @media (max-width:720px){ .rows .crow.crow{--pgap:12px} }
+  .crow[aria-busy="true"] .crow-strip{height:var(--striph);background:linear-gradient(to right,#141419 var(--pw),transparent var(--pw)) 0 12px/calc(var(--pw) + var(--pgap)) calc(var(--pw) * 1.25) repeat-x;
+    background-origin:padding-box;background-clip:padding-box}
 </style>
 
 <body>
@@ -3390,6 +3426,19 @@ $$(".cmp").forEach(f => {
 
 /* ============ rows: a featured card, then portrait posters ============ */
 const PP_ICONS = `<svg class="pp-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><svg class="pp-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.6v8.8a.5.5 0 0 0 .76.43l7-4.4a.5.5 0 0 0 0-.86l-7-4.4a.5.5 0 0 0-.76.43z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
+/* every row shares one poster size, chosen so a whole number of posters spans the content box exactly
+   (6 at desktop widths, 5 around 1024, 4 on tablets, 2 on phones); with scroll snap, paddles and auto-advance
+   only ever land on that grid */
+function sizePosters() {
+  const rows = $(".rows"), body = $(".crow-body"), strip = $(".crow-strip");
+  if (!rows || !body || !strip) return;
+  const inner = body.clientWidth, gap = parseFloat(getComputedStyle(strip).columnGap) || 16;
+  if (!inner) return;
+  const n = inner >= 1100 ? 6 : inner >= 860 ? 5 : inner >= 600 ? 4 : 2;
+  rows.style.setProperty("--posterw", ((inner - (n - 1) * gap) / n).toFixed(3) + "px");
+}
+addEventListener("resize", sizePosters);
+requestAnimationFrame(sizePosters);
 const card = c => `<a class="cc" href="${esc(c.u)}">` +
   `<img src="${esc(c.img)}" alt="" loading="lazy"><span class="cc-t">${esc(c.t)}</span></a>`;
 function mountRow(sec, items) {
@@ -3399,7 +3448,8 @@ function mountRow(sec, items) {
     prev.disabled = strip.scrollLeft < 4;
     next.disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
   };
-  const by = d => strip.scrollBy({ left: d * (strip.clientWidth - 2 * parseFloat(getComputedStyle(strip).paddingLeft)), behavior: reduceMotion ? "auto" : "smooth" });
+  sizePosters();
+  const by = d => strip.scrollBy({ left: d * (strip.clientWidth + (parseFloat(getComputedStyle(strip).columnGap) || 0)), behavior: reduceMotion ? "auto" : "smooth" });
   prev.onclick = () => by(-1); next.onclick = () => by(1);
   strip.addEventListener("scroll", () => requestAnimationFrame(sync), { passive: true });
   addEventListener("resize", sync);
@@ -3597,7 +3647,7 @@ function spotlight(tp) {
       if (c.classList.contains("on") || t) return;
       clearTimeout(t);
       if (performance.now() < quietUntil) return;
-      t = setTimeout(() => { t = 0; set(k); reveal(c); }, 140);
+      t = setTimeout(() => { t = 0; set(k); }, 140);  /* hover focuses; it never scrolls the strip */
     });
     if (canHover) c.addEventListener("pointerleave", () => { clearTimeout(t); t = 0; });
     c.addEventListener("click", e => { e.preventDefault(); set(k); reveal(c); hold(); });
