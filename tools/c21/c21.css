@@ -1,0 +1,141 @@
+
+  /* =====================================================================
+     CINEMA CONVERSATION (concept 21)
+     Concept 14's projection world with concept 16's conversational hero:
+     the film is the screen, the answer streams onto its darkened side,
+     sources and suggestions sit beneath it, and the site search waits
+     at the foot of the column as a translucent composer. Red only on the
+     composer's send when it can send, the active chip's dot, and progress.
+     ===================================================================== */
+  .hx-shade{background:
+      linear-gradient(to right,rgba(11,11,14,.9) 0%,rgba(11,11,14,.66) 30%,rgba(11,11,14,.18) 56%,rgba(11,11,14,0) 72%),
+      linear-gradient(to top,var(--ground) 0%,rgba(11,11,14,.78) 20%,rgba(11,11,14,.3) 48%,rgba(11,11,14,0) 70%),
+      linear-gradient(to bottom,rgba(0,0,0,.4) 0%,transparent 22%)}
+  /* the response column */
+  .hx-chat{position:absolute;z-index:2;left:var(--edge);bottom:clamp(28px,5svh,56px);width:min(720px,58vw);display:flex;flex-direction:column}
+  .hx-in{position:static;display:block;padding:0;bottom:auto;gap:0}
+  .hx-copy{max-width:none}
+  .hx-title{display:block;min-height:0;font-size:clamp(3rem,1.2rem + 5vw,6rem);font-weight:200;letter-spacing:-.03em;line-height:1.02;text-wrap:balance}
+  .hx-title .tl > .w,.hx-title .tl > .w0{display:inline-block;transition:none}
+  .hx-title .tl{background:none;overflow:clip;overflow-clip-margin:.1em}
+  .hx-copy .hx-title .w{opacity:0;transform:translateY(80%);filter:none;animation:tlIn .9s var(--ease-out) forwards;animation-delay:calc(var(--i) * 70ms)}
+  @keyframes tlIn{to{opacity:1;transform:none}}
+  .hx-syn{margin-top:var(--s4);max-width:27em}
+  .hx-btn{margin-top:var(--s5)}
+  /* streaming: each word resolves out of a soft blur; the button and sources follow the last word */
+  .hx-copy .w{display:inline-block;opacity:0;filter:blur(6px);animation:wIn .6s var(--ease-out) forwards;animation-delay:calc(var(--i) * 40ms)}
+  @keyframes wIn{to{opacity:1;filter:blur(0)}}
+  .hx-btn.tail,.hx-eps.tail{opacity:0;animation:tIn .55s var(--ease-out) forwards;animation-delay:calc(var(--i) * 40ms)}
+  @keyframes tIn{to{opacity:1}}
+  /* swaps: a chip choice clears quickly, then streams; autoplay is a plain fade */
+  .hx-syn,.hx-btn,.hx-eps{transition:opacity .3s var(--ease-out),filter .3s var(--ease-out),background .25s}
+  .hx-in.fade .hx-title,.hx-in.fade .hx-syn,.hx-in.fade .hx-btn,.hx-in.fade .hx-eps{filter:none!important;transition:opacity .42s var(--ease-out) 0s}
+  html.intro .hx-syn,html.intro .hx-btn,html.intro .hx-eps{transition-delay:0s}
+
+  /* source pills: the answer's own stories, whole titles, one list */
+  .hx-eps{display:flex;flex-direction:column;align-items:stretch;gap:6px;width:100%;margin-top:var(--s4)}
+  .hx-eps .ep{display:flex;align-items:center;gap:10px;max-width:100%;min-height:38px;margin:0;padding:4px 16px 4px 4px;border:1px solid var(--hair);
+    border-radius:20px;background:rgba(11,11,14,.5);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    transition:background-color .25s var(--ease-out),border-color .25s}
+  .hx-eps .ep:last-child{border-bottom:1px solid var(--hair)}
+  .hx-eps .ep img{width:28px;height:28px;flex:none;border-radius:50%;object-fit:cover;filter:none}
+  .hx-eps .ep span{font-size:13.5px;line-height:1.3;color:var(--fg2);text-shadow:none;white-space:normal}
+  .hx-eps .ep:hover{background:rgba(250,250,250,.1);border-color:var(--hair2)}
+  .hx-eps .ep:hover span{text-decoration:none;color:#fff}
+  /* phones: the sources become one scrolling row that ends in the same fade as the chips */
+  @media (max-width:899px){
+    .hx-eps{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-top:var(--s4);padding-right:40px;
+      -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent)}
+    .hx-eps::-webkit-scrollbar{display:none}
+    .hx-eps .ep{flex:none;max-width:none}
+    .hx-eps .ep span{white-space:nowrap}
+  }
+
+  /* shorter laptop screens: the sources run as one row (same fade), so the headline keeps clear room under the bar */
+  @media (min-width:900px) and (max-height:860px){
+    .hx-eps{gap:4px;margin-top:var(--s3)}
+    .hx-eps .ep{min-height:30px;padding:3px 14px 3px 3px;gap:8px;border-radius:16px}
+    .hx-eps .ep img{width:22px;height:22px}
+    .hx-eps .ep span{font-size:12.5px;line-height:1.25}
+    .hx-syn{font-size:16px;margin-top:var(--s3)}
+    .hx-btn{margin-top:var(--s4);height:44px}
+    .hx-shows{margin-top:var(--s4)}
+    .hx-chat > .cmp{margin-top:var(--s3)}
+    .hx-title{font-size:clamp(3rem,min(1.2rem + 5vw,9.6svh),6rem)}
+  }
+
+  /* suggestion chips (the lineup) with the pause control */
+  .hx-shows{position:static;display:flex;align-items:center;gap:var(--s3);margin-top:var(--s5);padding:0}
+  .hx-lineup{display:flex;flex:1 1 auto;min-width:0;gap:var(--s2);flex-wrap:nowrap;overflow-x:auto;padding:0;scrollbar-width:none;
+    -webkit-mask-image:none;mask-image:none}
+  .hx-lineup.ovf{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);padding-right:40px}
+  .hx-lineup .ln{all:unset;box-sizing:border-box;position:relative;flex:none;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;
+    border-radius:999px;border:1px solid var(--hair2);background:rgba(11,11,14,.45);color:var(--mute);cursor:pointer;overflow:hidden;
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    transition:background-color .25s var(--ease-out),border-color .25s,color .25s}
+  .hx-lineup .ln-t{font-size:14px!important;font-weight:400;letter-spacing:0;line-height:1;color:inherit;white-space:nowrap}
+  .hx-lineup .ln:hover{background:rgba(250,250,250,.1);color:var(--fg)}
+  .hx-lineup .ln[aria-pressed="true"]{border-color:rgba(250,250,250,.6);background:rgba(250,250,250,.08);color:var(--fg)}
+  .hx-lineup .ln[aria-pressed="true"]::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);flex:none}
+  .hx-lineup .ln-pb{left:16px;right:16px;top:auto;bottom:6px;height:1px;background:transparent;opacity:0;transform:none}
+  .hx-lineup .ln[aria-pressed="true"] .ln-pb{opacity:1;background:rgba(250,250,250,.16)}
+  .hx-lineup .ln-pb::after{top:0;height:1px}
+  .hx-lineup .ln:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+  html.intro .hx-lineup .ln{opacity:0}
+  .hx-lineup .ln{transition:background-color .25s,border-color .25s,color .25s,opacity .9s var(--ease-out) .5s}
+
+  /* the composer: the real site search, and the hero's memorable object: larger, deeper, lifted off the film */
+  .cmp{display:flex;align-items:center;gap:12px;height:56px;padding:0 8px 0 20px;border-radius:999px;color:var(--fg);
+    background:linear-gradient(rgba(255,255,255,.06),rgba(255,255,255,0) 60%),rgba(255,255,255,.09);border:0;
+    -webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);
+    transition:background-color .25s var(--ease-out),box-shadow .25s var(--ease-out)}
+  .hx-chat > .cmp{height:64px;width:100%;max-width:none;padding:0 10px 0 24px;margin-top:var(--s5);
+    box-shadow:inset 0 0 0 1px rgba(250,250,250,.4),0 22px 48px -14px rgba(0,0,0,.7),0 3px 10px rgba(0,0,0,.35)}
+  .hx-chat > .cmp:focus-within{background:linear-gradient(rgba(255,255,255,.06),rgba(255,255,255,0) 60%),rgba(255,255,255,.13);
+    box-shadow:inset 0 0 0 1px rgba(250,250,250,.62),0 26px 56px -14px rgba(0,0,0,.78),0 3px 10px rgba(0,0,0,.4)}
+  .cmp:has(input:focus-visible){outline:2px solid var(--fg);outline-offset:3px}
+  .cmp .ic-s{color:var(--fg2);flex:none}
+  .cmp input{flex:1;min-width:0;height:100%;border:0;background:none;outline:none;font:inherit;font-size:16px;font-weight:300;color:var(--fg);
+    -webkit-appearance:none;appearance:none}
+  .hx-chat > .cmp input{font-size:18px}
+  .cmp input::placeholder{color:var(--mute);opacity:1}
+  .cmp input::-webkit-search-cancel-button{-webkit-appearance:none}
+  .cmp-send{flex:none;width:40px;height:40px;border-radius:50%;border:0;padding:0;display:grid;place-items:center;cursor:pointer;
+    background:rgba(250,250,250,.14);color:var(--fg2);transition:background-color .25s var(--ease-out),color .25s}
+  .hx-chat > .cmp .cmp-send{width:46px;height:46px}
+  .cmp.has .cmp-send{background:var(--red);color:#fff}
+  .cmp.has .cmp-send:hover{background:#A50D26}
+  .cmp-send:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+  html.intro .hx-chat > .cmp{opacity:0}
+  .hx-chat > .cmp{transition:box-shadow .25s,opacity 1s var(--ease-out) .7s}
+
+  /* the bar's composer: fades in beside the N in the room the peeled lockup frees; the links never move */
+  .cmp-nav{display:none}
+  @media (min-width:1280px){
+    .nav .row{position:relative}
+    .cmp-nav{display:flex;position:absolute;top:50%;border:1px solid var(--hair2);left:calc(clamp(20px,4vw,48px) + 56px);width:188px;height:40px;margin-top:-20px;
+      padding:0 4px 0 12px;gap:4px;box-shadow:none;opacity:0;visibility:hidden;
+      transition:opacity .3s var(--ease-out),visibility 0s linear .3s}
+    .nav.cmp-on .cmp-nav{opacity:1;visibility:visible;transition:opacity .3s var(--ease-out),visibility 0s}
+    .nav.cmp-on #srch-open{visibility:hidden}
+    .cmp-nav .ic-s{display:none}
+    .cmp-nav input{font-size:13px}
+    .cmp-nav .cmp-send{width:28px;height:28px}
+    .cmp-nav .cmp-send svg{width:14px;height:14px}
+  }
+
+  @media (max-width:899px){
+    .hx-chat{left:20px;right:20px;width:auto;bottom:20px}
+    .hx-title{font-size:clamp(2.375rem,10vw,3rem)}
+    .hx-syn{font-size:16px;margin-top:var(--s3)}
+    .hx-btn{margin-top:var(--s4)}
+    .hx-shows{margin-top:var(--s5)}
+    .hx-chat > .cmp{height:56px;margin-top:var(--s4);padding:0 8px 0 18px}
+    .hx-chat > .cmp input{font-size:16px}
+    .hx-chat > .cmp .cmp-send{width:42px;height:42px}
+  }
+  @media (max-width:1100px) and (min-width:900px){ .hx-chat{width:min(680px,70vw)} }
+  @media (prefers-reduced-motion: reduce){
+    .hx-copy .w,.hx-btn.tail,.hx-eps.tail{animation:none;opacity:1;filter:none}
+    .cmp-nav{transition:none!important}
+  }
