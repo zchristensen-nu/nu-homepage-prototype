@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept14-rev" content="2">
+<meta name="concept14-rev" content="3">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -31,17 +31,17 @@
   body{font-family:var(--sans);font-weight:300;color:var(--ink);background:var(--paper);line-height:1.5;
     -webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
-  a:focus-visible,button:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+  a:focus-visible,button:focus-visible{outline:2px solid #FAFAFA;outline-offset:3px}
   img{max-width:100%;display:block}
   .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
   .display{font-weight:200;letter-spacing:-.025em;line-height:1.02;color:var(--ink)}
   .storylink{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-top:18px;
-    border-bottom:1px solid transparent;transition:.2s}
-  .storylink::after{content:"\2192";transition:transform .25s var(--ease)}
+    border-bottom:1px solid transparent;transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
+  .storylink::after{content:"";transition:transform .25s var(--ease)}
   .storylink:hover::after{transform:translateX(5px)}
   .storylink:hover{color:var(--red)}
   .pill{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;
-    padding:14px 32px;border-radius:999px;border:1.5px solid currentColor;transition:.22s var(--ease);cursor:pointer}
+    padding:14px 32px;border-radius:999px;border:1.5px solid currentColor;transition:color .25s,background-color .25s,border-color .25s,opacity .25s;cursor:pointer}
   .pill.solid{background:var(--ink);border-color:var(--ink);color:#fff}
   .pill.solid:hover{background:var(--red);border-color:var(--red)}
   .pill.red{background:var(--red);border-color:var(--red);color:#fff}
@@ -81,11 +81,11 @@
   .srch-x{border:0;background:none;font-size:26px;color:#8a8a92;cursor:pointer;padding:4px 8px}
   .srch-x:hover{color:#fff}
   .nvicon{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;
-    border:0;background:none;color:#fff;cursor:pointer;border-radius:50%;transition:.2s}
+    border:0;background:none;color:#fff;cursor:pointer;border-radius:50%;transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
   .nvicon:hover{background:rgba(128,128,136,.18)}
   .nvright{margin-left:auto;display:flex;align-items:center;gap:10px}
   .tkv-open{font:inherit;font-size:14px;font-weight:500;color:#fff;background:none;
-    border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 20px;cursor:pointer;transition:.2s}
+    border:1.5px solid rgba(255,255,255,.6);border-radius:999px;padding:8px 20px;cursor:pointer;transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
   .tkv-open:hover{background:rgba(128,128,136,.18)}
   .tkv{position:fixed;inset:0;z-index:240;background:var(--dark);color:#fff;overflow-y:auto;padding-bottom:70px}
   .tkv-head{display:flex;justify-content:space-between;align-items:center;height:72px}
@@ -113,10 +113,10 @@
   /* mega-dropdown bar */
   .mnav{display:flex;gap:22px;align-items:center}
   .mnav-btn{font:inherit;font-size:14px;font-weight:400;color:#fff;opacity:.85;background:none;border:0;
-    cursor:pointer;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s}
+    cursor:pointer;padding:6px 2px;border-bottom:2px solid transparent;transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
   .mnav-btn:hover{opacity:1}
   .mnav-btn[aria-expanded="true"]{opacity:1;border-bottom-color:currentColor}
-  .morebtn{opacity:.7;font-size:13.5px}
+  .morebtn{font-size:14px}
   .mpanel{position:absolute;left:0;right:0;top:100%;background:rgba(11,11,14,.96);
     backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);box-shadow:0 30px 60px rgba(0,0,0,.45)}
   .mpanel[hidden]{display:none}
@@ -136,7 +136,7 @@
     transition:transform .5s var(--ease)}
   .mp-feat:hover img{transform:scale(1.02)}
   .mp-feat .ft{display:block;margin-top:12px;font-size:14.5px;font-weight:500;line-height:1.35;color:#fff}
-  .mp-feat .fl{display:block;margin-top:8px;font-size:13px;color:#8a8a92;transition:.2s}
+  .mp-feat .fl{display:block;margin-top:8px;font-size:13px;color:#8a8a92;transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
   .mp-feat:hover .fl{color:#FFB3BE}
   .navx .tkv-open{display:none}
   @media(max-width:960px){
@@ -177,7 +177,7 @@
   .gt-step{display:flex;align-items:center;justify-content:space-between;gap:10px;
     padding:10px 14px;border-top:1px solid rgba(255,255,255,.1);font-size:12.5px;color:#A9A9B2}
   .gt-arrow{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.35);
-    background:transparent;color:#fff;font-size:15px;cursor:pointer;transition:.2s;
+    background:transparent;color:#fff;font-size:15px;cursor:pointer;transition:color .25s,background-color .25s,border-color .25s,opacity .25s;
     display:flex;align-items:center;justify-content:center}
   .gt-arrow:hover{background:#fff;color:var(--ink);border-color:#fff}
   @media(max-width:720px){
@@ -508,7 +508,7 @@
   /* row mockup C · Coverflow */
   .cf{margin-top:clamp(24px,4svh,44px);overflow-x:clip;--chh:clamp(320px,44svh,470px);--cw:calc(var(--chh) * 2 / 3)}
   .cf-tabs{display:flex;gap:8px;flex-wrap:wrap}
-  .cf-tab{all:unset;cursor:pointer;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;color:#D4D4D4;border:1px solid rgba(255,255,255,.22);transition:.2s}
+  .cf-tab{all:unset;cursor:pointer;padding:10px 18px;border-radius:999px;font-size:15px;font-weight:500;color:#D4D4D4;border:1px solid rgba(255,255,255,.22);transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
   .cf-tab:hover{border-color:#fff;color:#fff}
   .cf-tab[aria-selected="true"]{background:#fff;color:#0B0B0E;border-color:#fff}
   .cf-tab:focus-visible,.cf-nav:focus-visible,.cf-stage:focus-visible{outline:2px solid #fff;outline-offset:3px}
@@ -531,7 +531,7 @@
   @media (max-width:720px){.cf-info{grid-template-columns:1fr}.cf-nav{display:none}}
 
   /* nav: top-level links beside the dropdowns, and the mobile menu's direct links */
-  .mnav-a{font-size:14px;color:#fff;opacity:.85;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+  .mnav-a{font-size:14px;color:#fff;opacity:.85;padding:6px 2px;border-bottom:2px solid transparent;transition:color .25s,background-color .25s,border-color .25s,opacity .25s;white-space:nowrap}
   .mnav-a:hover{opacity:1}
   .mnav-btn{white-space:nowrap}
   .tkv-l{display:flex;justify-content:space-between;align-items:center;font-size:clamp(21px,2.4vw,28px);font-weight:300;color:#fff;
@@ -662,7 +662,7 @@
   .gv-b .stage::before,.gv-b .stage::after{display:none}
   .gvb{padding:0 20px 8px}
   .gvb-tabs{display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
-  .gvb-tabs button{all:unset;flex:1;text-align:center;padding:10px 0;border-radius:999px;font-size:14.5px;font-weight:600;color:#C9C9CF;cursor:pointer;transition:.25s}
+  .gvb-tabs button{all:unset;flex:1;text-align:center;padding:10px 0;border-radius:999px;font-size:14.5px;font-weight:600;color:#C9C9CF;cursor:pointer;transition:color .25s,background-color .25s,border-color .25s,opacity .25s}
   .gvb-tabs button[aria-selected="true"]{background:#fff;color:#0B0B0E}
   .gvb-panes{padding:0 20px}
   .gvb-pane{display:none}
@@ -915,7 +915,7 @@
   .f-cookie{font:inherit;color:var(--n5);background:none;border:0;padding:0;cursor:pointer}
   .f-cookie:hover{color:#fff}
   .f-giant{line-height:0;margin-top:34px}
-  .f-giant svg{display:block;width:100%;height:auto;transform:translateY(22%)}
+  .f-giant svg{display:block;width:100%;height:auto}
   .f-giant svg path,.f-giant svg polygon{fill:#fff}
 
   /* =====================================================================
@@ -985,8 +985,8 @@
   /* text links: an arrow drawn, not typed; hover underlines instead of turning red */
   .storylink{font-weight:600;letter-spacing:.005em}
   .storylink::after{content:"";width:16px;height:16px;flex:none;background:currentColor;
-    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8h9M8.5 4l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
-            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8h9M8.5 4l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+    -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8h9M8.5 4l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8h9M8.5 4l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
     transition:transform .35s var(--ease-out)}
   .storylink:hover{color:inherit;text-decoration:underline}
   .storylink:hover::after{transform:translateX(4px)}
@@ -1212,34 +1212,106 @@
     background:linear-gradient(to bottom,var(--ground) 0%,rgba(0,0,0,0) 24%,rgba(0,0,0,0) 46%,rgba(0,0,0,.78) 82%,#000 100%)}
   .admit .bg{filter:brightness(.52) saturate(.85)}
 
-  /* ----- story rows as a programme: feature, three shorts, feature ----- */
+  /* ===== polish pass ===== */
+  :root{--ease:cubic-bezier(.16,1,.3,1)}  /* every legacy transition now shares the exponential ease-out */
+  .hz-stops{transition:opacity .42s var(--ease-out),transform .42s var(--ease-out)}
+  .tkv-c{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px}
+  .srch-x,.tkv-x{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border-radius:50%;
+    color:var(--fg2);transition:color .25s,background-color .25s}
+  .srch-x:hover,.tkv-x:hover{color:#fff;background:rgba(250,250,250,.1)}
+  .tkv-g:hover .tkv-c,.tkv-g[aria-expanded="true"] .tkv-c{color:var(--fg)}
+  /* the hero's story list reads on any film: a soft scrim under the lower right */
+  .hx-shade{background:
+      radial-gradient(48% 50% at 88% 78%,rgba(11,11,14,.6),rgba(11,11,14,0) 72%),
+      linear-gradient(to right,rgba(11,11,14,.82) 0%,rgba(11,11,14,.42) 34%,rgba(11,11,14,0) 60%),
+      linear-gradient(to top,var(--ground) 0%,rgba(11,11,14,.9) 18%,rgba(11,11,14,.55) 42%,rgba(11,11,14,0) 68%),
+      linear-gradient(to bottom,rgba(0,0,0,.35) 0%,transparent 22%)}
+  /* the end title: the scene holds longer before it sinks to black */
+  .admit::after{background:linear-gradient(to bottom,var(--ground) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 60%,rgba(0,0,0,.7) 88%,#000 100%)}
+  /* loading: the leading row holds its matte and poster slots until the stories arrive */
+  .crow[aria-busy="true"] .crow-strip{height:calc(var(--ch) + 28px);
+    background:linear-gradient(to right,#141419 var(--pw),transparent var(--pw)) 0 0/calc(var(--pw) + 12px) 100% repeat-x;
+    background-origin:content-box;background-clip:content-box}  /* poster slots held while stories load */
   @media (min-width:721px){
-    /* Latest opens the programme on a matted screen: the photo is framed inside the page edges */
-    .rows-bfull #ngnRow .sp-bg{left:var(--edge);right:var(--edge);width:auto;top:clamp(76px,10svh,104px);bottom:0;transform:none;
+    .rows-bfull #ngnRow[aria-busy="true"]::before{content:"";position:absolute;left:var(--edge);right:var(--edge);top:clamp(76px,10svh,104px);bottom:0;
+      background:#111114;border-radius:2px}
+    .rows-bfull #ngnRow[aria-busy="true"] .crow-body{margin-top:auto}
+  }
+  .rc .n,.hz-n,.pth-n{font-variant-numeric:tabular-nums lining-nums}
+  .hz-call{transition:opacity .35s var(--ease-out)}
+  .hz-x{transition-timing-function:var(--ease-out)}
+
+  /* ===== review pass 3 ===== */
+  /* shared pause/play control: one hairline circle, drawn icons, state in the accessible name */
+  .pp{all:unset;box-sizing:border-box;flex:none;width:40px;height:40px;border-radius:50%;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;color:var(--fg);border:1px solid var(--hair2);
+    transition:background-color .25s var(--ease-out),color .25s,border-color .25s}
+  .pp svg{width:16px;height:16px}
+  .pp .pp-play{display:none}
+  .pp.is-paused .pp-play{display:block}
+  .pp.is-paused .pp-pause{display:none}
+  .pp:hover{background:var(--fg);color:var(--ground);border-color:var(--fg)}
+  .pp:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+  @media (max-width:760px){.pp{width:44px;height:44px}}
+  .ad-pp{position:absolute;z-index:3;right:var(--edge);bottom:clamp(20px,4svh,40px)}
+
+  /* row titles are the programme's intertitles: they outrank the story they introduce */
+  .crow > .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--s5)}
+  .crow h3{font-size:var(--fs-h2);font-weight:200;letter-spacing:-.03em;line-height:1.05;color:var(--fg)}
+
+  /* one frame for every spotlight: a matted screen inside the page edges; programme scale steps down */
+  .rows-bfull .crow{--mt:calc(clamp(32px,5svh,56px) + var(--fs-h2) * 1.05 + clamp(20px,3svh,32px))}
+  @media (min-width:721px){
+    .rows-bfull .crow.sp .sp-bg,.rows-bfull #ngnRow[aria-busy="true"]::before{left:var(--edge);right:var(--edge);width:auto;top:var(--mt);bottom:0;transform:none;
       -webkit-mask-image:none;mask-image:none;border-radius:2px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
-    .rows-bfull #ngnRow .sp-bg::after{background:
-      linear-gradient(to right,rgba(11,11,14,.92) 0%,rgba(11,11,14,.6) 34%,rgba(11,11,14,.05) 66%),
-      linear-gradient(to top,var(--ground) 0%,rgba(11,11,14,.7) 26%,transparent 52%),var(--vignette)}
-    .rows-bfull #ngnRow .sp-in{padding-left:calc(var(--edge) + clamp(24px,3.5vw,56px))}
-    /* the three shorts: a compressed stage, photo set to the right, a smaller strip */
-    .rows-bfull :is(#entRow,#aiRow,#uniRow){min-height:clamp(440px,58svh,580px);--ch:clamp(168px,12.5vw,200px)}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-bg{left:auto;right:0;width:min(66%,1060px);transform:none;
-      -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 34%);mask-image:linear-gradient(to right,transparent 0%,#000 34%)}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-bg::after{background:
-      linear-gradient(to top,var(--ground) 0%,rgba(11,11,14,.55) 30%,transparent 56%),
-      linear-gradient(to bottom,var(--ground) 0%,transparent 20%),var(--vignette)}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-copy{max-width:500px}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) > .wrap{margin-bottom:clamp(40px,7svh,80px)}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-t{font-size:clamp(1.75rem,1rem + 1.6vw,2.5rem);-webkit-line-clamp:3}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-x{-webkit-line-clamp:2}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) + :is(#entRow,#aiRow,#uniRow){margin-top:clamp(32px,5svh,64px)}
+    .rows-bfull #ngnRow[aria-busy="true"]::before{content:"";position:absolute;background:#111114}
+    .rows-bfull .crow.sp .sp-bg::after{background:
+      linear-gradient(to right,rgba(11,11,14,.92) 0%,rgba(11,11,14,.6) 36%,rgba(11,11,14,.05) 68%),
+      linear-gradient(to top,var(--ground) 0%,rgba(11,11,14,.72) 26%,transparent 52%),var(--vignette)}
+    .rows-bfull .crow.sp .sp-in{padding-left:calc(var(--edge) + clamp(24px,3.5vw,56px));padding-right:var(--edge)}
+    .rows-bfull .crow.sp .sp-t{font-size:clamp(1.75rem,1rem + 1.9vw,2.75rem);font-weight:200;-webkit-line-clamp:3}
+    /* the feature: Latest */
+    .rows-bfull #ngnRow{min-height:clamp(640px,90svh,900px)}
+    /* the shorter spotlights: Entrepreneurship, Human-Centered AI, Research */
+    .rows-bfull :is(#entRow,#aiRow,#researchRow){min-height:clamp(500px,66svh,660px);--ch:clamp(168px,12.5vw,200px)}
+    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-t{font-size:clamp(1.5rem,1rem + 1.3vw,2.25rem)}
+    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-x{-webkit-line-clamp:2}
   }
+  /* University News: a poster shelf, no spotlight */
+  .rows-bfull #uniRow.shelf{min-height:0;--ch:clamp(250px,20vw,320px)}
+  .rows-bfull #uniRow.shelf > .wrap{margin-bottom:var(--s3)}
+  .rows-b #uniRow.shelf .cc img,.rows-b #uniRow.shelf .crow-strip:hover .cc img{filter:none}
+  .rows-b #uniRow.shelf .cc:hover img{filter:brightness(1.1)}
   @media (max-width:720px){
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-bg{aspect-ratio:2/1}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-t{font-size:23px}
-    .rows-bfull :is(#entRow,#aiRow,#uniRow) .sp-copy{min-height:196px}
-    .rows-bfull #ngnRow .sp-bg{width:auto;margin:0 var(--edge);border-radius:2px;overflow:hidden}
+    .crow h3{font-size:clamp(2rem,8.6vw,2.5rem)}
+    .rows-bfull .crow.sp .sp-bg{width:auto;margin:0 var(--edge);border-radius:2px;overflow:hidden}
+    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-bg{aspect-ratio:2/1}
+    .rows-bfull .crow.sp .sp-t{font-size:24px;font-weight:300}
+    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-t{font-size:21px}
+    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-copy{min-height:184px}
+    .rows-bfull #uniRow.shelf{--ch:210px;--pw:150px}
   }
+
+  /* poster captions: three lines at most, on a scrim that reaches under the whole caption */
+  .cc::after{background:linear-gradient(to top,rgba(0,0,0,.94) 0%,rgba(0,0,0,.86) 34%,rgba(0,0,0,.45) 58%,rgba(0,0,0,0) 78%)}
+  .cc-t{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 8px rgba(0,0,0,.7)}
+  .cc-t{padding-bottom:0!important;margin-bottom:12px}
+
+  /* nav panel: display leading on the panel title; an opaque panel that dims the page beneath it */
+  .mp-title{line-height:1.08;text-wrap:balance}
+  .mpanel{background:var(--ground);-webkit-backdrop-filter:none;backdrop-filter:none}
+  .mpanel::after{content:"";position:absolute;left:0;right:0;top:100%;height:100vh;background:rgba(0,0,0,.6);pointer-events:none}
+
+  /* phone menu: the section control is a chevron that turns, never the close cross */
+  .tkv-g[aria-expanded="true"] .tkv-c{transform:rotate(180deg)}
+
+  /* closer on phones: all three actions on one row */
+  @media (max-width:480px){
+    .admit .ctas{flex-wrap:nowrap;gap:var(--s2)}
+    .admit .pill{padding:0 18px;font-size:15px;height:46px;white-space:nowrap}
+  }
+  /* footer: the wordmark sits whole, descender included */
+  .f-giant{margin-top:var(--s6);padding-bottom:var(--s5)}
 </style>
 
 <body>
@@ -1370,20 +1442,20 @@
   <form action="https://search.northeastern.edu" method="get" role="search" class="wrap">
     <input type="search" name="query" id="srch-in" placeholder="Search Northeastern" autocomplete="off">
     <button type="submit" class="pill ghostw">Search</button>
-    <button type="button" class="srch-x" id="srch-x" aria-label="Close search">&times;</button>
+    <button type="button" class="srch-x" id="srch-x" aria-label="Close search"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
   </form>
 </div>
 <div class="tkv" id="tkv" hidden data-lenis-prevent>
   <div class="wrap">
     <div class="tkv-head">
       <span class="tkv-title">Menu</span>
-      <button class="tkv-x" id="tkv-x" aria-label="Close menu">&times;</button>
+      <button class="tkv-x" id="tkv-x" aria-label="Close menu"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     </div>
     <form action="https://search.northeastern.edu" method="get" role="search" class="tkv-search">
       <input type="search" name="query" placeholder="Search Northeastern" autocomplete="off">
     </form>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-0" aria-expanded="false">Admissions<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-0">
         <a href="https://www.northeastern.edu/admissions/">Admissions overview</a>
         <a href="https://www.northeastern.edu/academics/">Academics overview</a>
@@ -1401,7 +1473,7 @@
       </div>
     </div>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-2" aria-expanded="false">Experiential Learning<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-2" aria-expanded="false">Experiential Learning<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-2">
         <a href="https://experientiallearning.northeastern.edu/">Experiential Learning overview</a>
         <a href="https://experientiallearning.northeastern.edu/experiential-opportunities/">Experiential Opportunities</a>
@@ -1410,7 +1482,7 @@
       </div>
     </div>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-3" aria-expanded="false">Research<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-3" aria-expanded="false">Research<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-3">
         <a href="https://research.northeastern.edu/">Research overview</a>
         <a href="https://research.northeastern.edu/institutes-and-centers/">Institutes and Centers</a>
@@ -1423,7 +1495,7 @@
       </div>
     </div>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global Network<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-4" aria-expanded="false">Global Network<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-4">
         <a href="https://www.northeastern.edu/our-global-university-system/">Global overview</a>
         <a href="https://www.northeastern.edu/our-global-university-system/">Our Global University System</a>
@@ -1436,14 +1508,14 @@
       </div>
     </div>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-ent" aria-expanded="false">Entrepreneurship<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-ent" aria-expanded="false">Entrepreneurship<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-ent">
         <a href="https://entrepreneurship.northeastern.edu/">Global Entrepreneurship</a>
       </div>
     </div>
-    <a class="tkv-l" href="https://www.northeastern.edu/ai/">AI<svg class="tkv-arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a class="tkv-l" href="https://www.northeastern.edu/ai/">AI<svg class="tkv-arr" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-5" aria-expanded="false">Campuses<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-5" aria-expanded="false">Campuses<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-5">
         <a href="https://arlington.northeastern.edu/">Arlington, VA</a>
         <a href="https://www.northeastern.edu/campuses/boston/">Boston, MA</a>
@@ -1462,7 +1534,7 @@
       </div>
     </div>
     <div class="tkv-grp">
-      <button class="tkv-g" data-sub="tsub-6" aria-expanded="false">About<span class="tkv-c" aria-hidden="true">+</span></button>
+      <button class="tkv-g" data-sub="tsub-6" aria-expanded="false">About<span class="tkv-c" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
       <div class="tkv-sub" id="tsub-6">
         <a href="https://www.northeastern.edu/about/about-northeastern/">About Northeastern</a>
         <a href="https://president.northeastern.edu/">President Aoun</a>
@@ -1495,12 +1567,12 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { document.document
     <div class="hx-copy" aria-live="polite">
       <h2 class="hx-title" id="hxTitle">Breakthroughs begin here</h2>
       <p class="hx-syn" id="hxSyn">Northeastern is an R1 research enterprise that advances work in health, security, and sustainability with partners in industry, government, and communities.</p>
-      <a class="hx-btn" id="hxCta" href="#" hidden><span id="hxCtaL"></span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="hx-btn" id="hxCta" href="#" hidden><span id="hxCtaL"></span><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
     <aside class="hx-eps" id="hxEps" aria-label="Stories from this feature"></aside>
   </div>
   <div class="hx-shows" id="hxShows">
-    <div class="hx-lineup" role="group" aria-label="Choose a feature"><button class="ln" style="--k:0" data-i="0" aria-pressed="true"><span class="ln-t">Research</span><i class="ln-pb"></i></button><button class="ln" style="--k:1" data-i="1" aria-pressed="false"><span class="ln-t">Global network</span><i class="ln-pb"></i></button><button class="ln" style="--k:2" data-i="2" aria-pressed="false"><span class="ln-t">Co‑op</span><i class="ln-pb"></i></button><button class="ln" style="--k:3" data-i="3" aria-pressed="false"><span class="ln-t">AI</span><i class="ln-pb"></i></button><button class="ln" style="--k:4" data-i="4" aria-pressed="false"><span class="ln-t">Entrepreneurship</span><i class="ln-pb"></i></button></div><button class="hx-pp" id="hxPP" type="button" aria-label="Pause the films"><svg class="pp-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><svg class="pp-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.6v8.8a.5.5 0 0 0 .76.43l7-4.4a.5.5 0 0 0 0-.86l-7-4.4a.5.5 0 0 0-.76.43z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+    <div class="hx-lineup" role="group" aria-label="Choose a feature"><button class="ln" style="--k:0" data-i="0" aria-pressed="true"><span class="ln-t">Research</span><i class="ln-pb"></i></button><button class="ln" style="--k:1" data-i="1" aria-pressed="false"><span class="ln-t">Global network</span><i class="ln-pb"></i></button><button class="ln" style="--k:2" data-i="2" aria-pressed="false"><span class="ln-t">Co‑op</span><i class="ln-pb"></i></button><button class="ln" style="--k:3" data-i="3" aria-pressed="false"><span class="ln-t">AI</span><i class="ln-pb"></i></button><button class="ln" style="--k:4" data-i="4" aria-pressed="false"><span class="ln-t">Entrepreneurship</span><i class="ln-pb"></i></button></div><button class="hx-pp pp" id="hxPP" type="button" aria-label="Pause the films"><svg class="pp-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><svg class="pp-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.6v8.8a.5.5 0 0 0 .76.43l7-4.4a.5.5 0 0 0 0-.86l-7-4.4a.5.5 0 0 0-.76.43z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
   </div>
 </section>
 <main>
@@ -1571,11 +1643,11 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { document.document
 
     </g>
 </svg></a></h2><p class="rows-tag">Stories from the university and the world.</p></div>
-<section class="crow" data-q="" id="ngnRow" aria-label="Latest"><div class="wrap"><h3>Latest</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap"><h3>Entrepreneurship</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="Human-Centered AI"><div class="wrap"><h3>Human-Centered AI</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Human-Centered AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Human-Centered AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="categories=7" id="uniRow" aria-label="University News"><div class="wrap"><h3>University News</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll University News back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll University News forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="categories=21443" id="researchRow" aria-label="Research"><div class="wrap"><h3>Research</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Research back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Research forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" data-q="" id="ngnRow" aria-label="Latest" aria-busy="true"><div class="wrap"><h3>Latest</h3></div><div class="crow-body"><button class="pad prev" tabindex="-1" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" tabindex="-1" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap"><h3>Entrepreneurship</h3></div><div class="crow-body"><button class="pad prev" tabindex="-1" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" tabindex="-1" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="Human-Centered AI"><div class="wrap"><h3>Human-Centered AI</h3></div><div class="crow-body"><button class="pad prev" tabindex="-1" aria-label="Scroll Human-Centered AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" tabindex="-1" aria-label="Scroll Human-Centered AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="categories=7" id="uniRow" aria-label="University News"><div class="wrap"><h3>University News</h3></div><div class="crow-body"><button class="pad prev" tabindex="-1" aria-label="Scroll University News back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" tabindex="-1" aria-label="Scroll University News forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="categories=21443" id="researchRow" aria-label="Research"><div class="wrap"><h3>Research</h3></div><div class="crow-body"><button class="pad prev" tabindex="-1" aria-label="Scroll Research back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" tabindex="-1" aria-label="Scroll Research forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
 </section>
 <div class="scrolly" id="campuses">
   <div class="stage" id="stage">
@@ -1694,6 +1766,7 @@ if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { document.document
 
 <section class="admit" id="admit">
   <div class="bg" data-plx="34"><img class="on" src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" loading="lazy" alt="" decoding="async"><img src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" loading="lazy" alt="" decoding="async"></div>
+  <button class="pp ad-pp" id="adPP" type="button" aria-label="Pause the photos"><svg class="pp-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><svg class="pp-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.6v8.8a.5.5 0 0 0 .76.43l7-4.4a.5.5 0 0 0 0-.86l-7-4.4a.5.5 0 0 0-.76.43z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
   <div class="inner">
     <h2>Your turn.</h2>
     <p>The world doesn’t wait. Neither do you. Undergraduate, graduate, transfer, and online programs across our campus network.</p>
@@ -2459,7 +2532,7 @@ if (GV && GVS.includes(GV)) {
   };
   const storyCard = (st, i, cls) => `<div class="${cls}" data-i="${i}"><img src="${escH(st.img)}" alt="" loading="lazy">` +
     `<div class="${cls}-b"><p class="${cls}-loc">${escH(st.loc)}</p><p class="${cls}-t">${escH(st.t)}</p>` +
-    `<a class="${cls}-a" href="${escH(st.url)}">Read the story<span aria-hidden="true"> →</span></a></div></div>`;
+    `<a class="${cls}-a" href="${escH(st.url)}">Read the story<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-left:6px"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div></div>`;
   const relayout = () => { if (typeof resize === "function") resize(); };
   /* phone zoom levels: the whole network stays in frame instead of overflowing the sides */
   if (!["now", "gus", "paths", "horizon", "side"].includes(GV)) { Object.assign(VIEWS.campuses, { lon: -92, lat: 40, k: 1.08 }); Object.assign(VIEWS.nuin, { lon: 6, lat: 46, k: 1.3 }); }
@@ -2599,7 +2672,7 @@ if (GV && GVS.includes(GV)) {
       setTimeout(() => {
         [...cap.children].forEach(n => n.classList.contains("card") ? keep.append(n) : n.remove());
         if (sg.kind === "beat") { cap.append(sg.card); view(sg.name); }
-        else { cap.innerHTML = `<p class="gvd-kick">Co‑op story · ${escH(sg.st.loc)}</p><p class="gvd-t">${escH(sg.st.t)}</p><a class="gvd-a" href="${escH(sg.st.url)}">Read the story<span aria-hidden="true"> →</span></a>`; story(sg.i); }
+        else { cap.innerHTML = `<p class="gvd-kick">Co‑op story · ${escH(sg.st.loc)}</p><p class="gvd-t">${escH(sg.st.t)}</p><a class="gvd-a" href="${escH(sg.st.url)}">Read the story<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-left:6px"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>`; story(sg.i); }
         cap.classList.remove("swap");
       }, k === 0 && !cap.children.length ? 0 : 220);
     };
@@ -2691,9 +2764,9 @@ if (GV && GVS.includes(GV)) {
     const ui = el("div", "pth");
     ui.innerHTML = `<h2 class="pth-h">Where a Northeastern path can go.</h2>` +
       `<div class="pth-card" aria-live="polite"><div class="pth-bars" aria-hidden="true">${P.map(() => "<i><b></b></i>").join("")}</div><p class="pth-k"></p><p class="pth-t"></p><ol class="pth-stops"></ol>` +
-      `<div class="pth-foot"><a class="pth-a" href="#">Read the story<span aria-hidden="true"> →</span></a>` +
-      `<div class="pth-nav"><button class="pth-b" data-d="-1" aria-label="Previous path">←</button><span class="pth-n"></span>` +
-      `<button class="pth-b" data-d="1" aria-label="Next path">→</button></div></div></div>`;
+      `<div class="pth-foot"><a class="pth-a" href="#">Read the story<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-left:6px"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` +
+      `<div class="pth-nav"><button class="pth-b" data-d="-1" aria-label="Previous path"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M13 8H4M7.5 4l-4 4 4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="pth-n"></span>` +
+      `<button class="pth-b" data-d="1" aria-label="Next path"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div></div>`;
     stage.append(ui);
     const card = ui.querySelector(".pth-card"), list = ui.querySelector(".pth-stops"), link = ui.querySelector(".pth-a");
     /* the planet is a quiet backdrop; the path's stops are the only bright points */
@@ -3099,7 +3172,11 @@ addEventListener("load", () => setTimeout(() => layers.forEach(l => { const v = 
 /* ============ closer: photos crossfade every 5s while it's on screen ============ */
 {
   const admit = $(".admit"), shots = $$(".admit .bg img");
-  let k = 0, vis = false, started = false;
+  let k = 0, vis = false, started = false, adPaused = reduceMotion;
+  const adPP = $("#adPP");
+  const syncA = () => { adPP.setAttribute("aria-label", adPaused ? "Play the photos" : "Pause the photos"); adPP.classList.toggle("is-paused", adPaused); };
+  adPP.addEventListener("click", () => { adPaused = !adPaused; syncA(); });
+  syncA();
   /* each photo is fully decoded before it fades in, so nothing decodes mid-fade */
   const ready = img => { if (!img.src) img.src = img.dataset.src; return img.decode().catch(() => {}); };
   /* the upcoming photo is decoded and kept painted at near-zero opacity, so its fade-in never stalls */
@@ -3107,7 +3184,7 @@ addEventListener("load", () => setTimeout(() => layers.forEach(l => { const v = 
   const step = async () => {
     const next = shots[(k + 1) % shots.length];
     await prime(next);
-    if (vis && !document.hidden) {
+    if (vis && !adPaused && !document.hidden) {
       shots[k].classList.remove("on"); k = (k + 1) % shots.length;
       next.classList.remove("pre"); next.classList.add("on");
       setTimeout(() => prime(shots[(k + 1) % shots.length]), 2000);
@@ -3116,11 +3193,12 @@ addEventListener("load", () => setTimeout(() => layers.forEach(l => { const v = 
   };
   new IntersectionObserver(es => es.forEach(e => {
     vis = e.isIntersecting;
-    if (vis && !started) { started = true; ready(shots[0]); prime(shots[1]); if (!reduceMotion) setTimeout(step, 5000); }
+    if (vis && !started) { started = true; ready(shots[0]); prime(shots[1]); setTimeout(step, 5000); }
   }), { rootMargin: "800px 0px" }).observe(admit);
 }
 
 /* ============ rows: a featured card, then portrait posters ============ */
+const PP_ICONS = `<svg class="pp-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><svg class="pp-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.6v8.8a.5.5 0 0 0 .76.43l7-4.4a.5.5 0 0 0 0-.86l-7-4.4a.5.5 0 0 0-.76.43z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
 const card = c => `<a class="cc" href="${esc(c.u)}">` +
   `<img src="${esc(c.img)}" alt="" loading="lazy"><span class="cc-t">${esc(c.t)}</span></a>`;
 function mountRow(sec, items) {
@@ -3134,7 +3212,7 @@ function mountRow(sec, items) {
   prev.onclick = () => by(-1); next.onclick = () => by(1);
   strip.addEventListener("scroll", () => requestAnimationFrame(sync), { passive: true });
   addEventListener("resize", sync);
-  sec.hidden = false;
+  sec.hidden = false; sec.removeAttribute("aria-busy");
   sync();
 }
 
@@ -3199,7 +3277,7 @@ const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase
 const RVK = ["a", "b", "b2", "b3", "c"].includes(RV) ? RV : "current";
 document.documentElement.classList.add("rows-" + RVK, ...({ b: ["rows-b", "rows-bfull"], b2: ["rows-b"], b3: ["rows-b", "rows-bimg"] }[RV] || []));
 const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
-const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, CHEV = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`, CHEV = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 (async () => {
   const API = "https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=24&_embed=wp:featuredmedia&_fields=link,title,excerpt,date,_links,_embedded&";
   const rows = $$(".crow[data-q]");
@@ -3221,7 +3299,7 @@ const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true
     items.forEach(c => shown.add(c.u));
     topics.push({ sec, label, items });
   });
-  if (["b", "b2", "b3"].includes(RV)) topics.forEach(spotlight);
+  if (["b", "b2", "b3"].includes(RV)) topics.forEach(tp => tp.sec.id === "uniRow" ? (tp.sec.classList.add("shelf"), mountRow(tp.sec, tp.items)) : spotlight(tp));
   else if (RV === "c") coverflow(topics);
   else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
@@ -3267,6 +3345,14 @@ function previews(topics) {
 function spotlight(tp) {
   const sec = tp.sec, items = tp.items;
   sec.classList.add("sp");
+  /* the row's auto-advance has its own visible pause control beside the row title */
+  const label = sec.getAttribute("aria-label");
+  sec.querySelector(":scope > .wrap").insertAdjacentHTML("beforeend", `<button class="pp sp-pp" type="button">${PP_ICONS}</button>`);
+  const spp = sec.querySelector(".sp-pp");
+  let pausedS = reduceMotion;
+  const syncS = () => { spp.setAttribute("aria-label", (pausedS ? "Play " : "Pause ") + label + " stories"); spp.classList.toggle("is-paused", pausedS); };
+  spp.addEventListener("click", () => { pausedS = !pausedS; syncS(); });
+  syncS();
   sec.insertAdjacentHTML("afterbegin", `<div class="sp-bg" aria-hidden="true"><i></i><i></i></div>` +
     `<div class="sp-in"><div class="sp-copy" aria-live="polite"><p class="sp-t"></p><p class="sp-x"></p>` +
     `<a class="storylink sp-btn" href="#">Read story</a></div><div class="sp-fig" aria-hidden="true"><img alt=""><img alt=""></div></div>`);
@@ -3328,10 +3414,10 @@ function spotlight(tp) {
   new IntersectionObserver(es => { visS = es[0].isIntersecting; }, { threshold: .45 }).observe(sec);
   if (canHover) { sec.addEventListener("pointerenter", () => hoverS = true); sec.addEventListener("pointerleave", () => { hoverS = false; elapsedS = 0; }); }
   strip.addEventListener("touchstart", hold, { passive: true });
-  if (!reduceMotion) {
+  {
     const tickS = now => {
       const dt = lastS ? Math.min(100, now - lastS) : 0; lastS = now;
-      if (visS && !hoverS && !document.hidden && now > holdS) {
+      if (!pausedS && visS && !hoverS && !document.hidden && now > holdS) {
         elapsedS += dt;
         cards[cur].style.setProperty("--pb", Math.min(1, elapsedS / SPOT_MS).toFixed(4));
         if (elapsedS >= SPOT_MS) {

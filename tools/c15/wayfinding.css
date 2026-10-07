@@ -351,3 +351,90 @@
     .mnav{gap:16px}
     .nvright{gap:8px}
   }
+
+  /* polish: one motion curve everywhere */
+  :root{--ease:var(--expo)}
+  /* hero films: pause/play sits on the film's bottom edge, on the headline's left line */
+  .hx-pause{all:unset;box-sizing:border-box;position:absolute;z-index:4;bottom:0;
+    left:max(clamp(20px,4vw,48px), calc((100cqw - 1280px) / 2 + clamp(20px,4vw,48px)));
+    width:48px;height:48px;display:grid;place-items:center;background:var(--k);color:var(--w);cursor:pointer;transition:background .2s}
+  .hx-pause:hover{background:var(--g6)}
+  .hx-pause .ic-play,.hx-pause.is-paused .ic-pause{display:none}
+  .hx-pause.is-paused .ic-play{display:block}
+  .hx-pause:focus-visible{outline-offset:-3px}
+  @media (max-width:899px){ .hx-pause{left:20px;width:44px;height:44px} }
+  /* polish: smallest phones keep the bar on one line (the N alone, as on scroll) */
+  @media (max-width:360px){
+    .nav .wordmark{width:calc(var(--lh) * 1.12)}
+    .nav .lockup .lk-word{opacity:0}
+  }
+  /* polish: story text on research photos keeps AA over bright frames */
+  .xshade{background:linear-gradient(to top,rgba(0,0,0,.86) 0%,rgba(0,0,0,.62) 42%,rgba(0,0,0,.18) 70%,transparent 85%)}
+  /* polish: phone tap targets in the menu and footer reach 44px */
+  @media (max-width:720px){
+    .tkv-sub .tkv-sec a,.tkv-more a{padding:11px 0}
+    .f-col a{padding:11px 0}
+    .f-legal a,.f-cookie{padding:11px 0}
+  }
+  @media (max-width:360px){
+    .rows-head h2,.rows-head h2 a{display:block;width:100%}
+    .rows-head .ngn-lockup{width:100%;height:auto}
+  }
+  /* polish: an open dropdown owns the red underline; the hero's nav marker steps aside */
+  .nav:has(.mpanel:not([hidden])) .here:not([aria-expanded="true"]){border-bottom-color:transparent}
+
+  /* row headings are directory signs: a real heading, a real destination, a pause for the row */
+  .rows .crow > .crow-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+    padding-bottom:clamp(16px,2.4svh,24px);border-bottom:1px solid currentColor}
+  .rows .crow h3{padding-bottom:0;border-bottom:0;min-width:0}
+  .rowlink{position:relative;display:inline-flex;align-items:center;gap:16px;color:inherit;transition:padding .45s var(--expo)}
+  .rowlink .ar{width:clamp(24px,2.2vw,34px);height:clamp(24px,2.2vw,34px);transition:transform .45s var(--expo)}
+  .rowlink:hover .ar,.rowlink:focus-visible .ar{transform:translateX(8px)}
+  .rowlink::before{content:"";position:absolute;left:0;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--red);
+    transform:scale(0);transition:transform .45s var(--expo)}
+  .rowlink:focus-visible{padding-left:28px;outline-offset:6px}
+  .rowlink:focus-visible::before{transform:scale(1)}
+  .rp{all:unset;box-sizing:border-box;flex:none;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;
+    border:1px solid currentColor;color:inherit;transition:background .2s,color .2s}
+  .rows .face-w .rp:hover{background:var(--k);color:var(--w);border-color:var(--k)}
+  .rows .face-k .rp:hover{background:var(--w);color:var(--k);border-color:var(--w)}
+  .rp .ic-play,.rp.is-paused .ic-pause{display:none}
+  .rp.is-paused .ic-play{display:block}
+  .rp:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+  @media (prefers-reduced-motion: reduce){ .rowlink,.rowlink .ar,.rowlink::before{transition:none} }
+
+  /* research figures: ruled directory rows, figure then label, no arrows (they go nowhere) */
+  .rc-rows{display:block;border-top:0;padding-top:0;margin-top:clamp(48px,7svh,80px)}
+  .rc-rows .rc,.rc-rows .rc:first-child{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);align-items:baseline;gap:clamp(16px,3vw,48px);
+    border-left:0;border-top:1px solid var(--k);padding:clamp(18px,2.6svh,26px) 0}
+  .rc-rows .rc:last-child{border-bottom:0}
+  .rc-rows .rc .n{font-size:clamp(40px,4.4vw,68px);font-weight:300;letter-spacing:-.03em;line-height:1}
+  .rc-rows .rc .l{margin:0;max-width:40ch;font-size:clamp(17px,1.4vw,21px);font-weight:400;line-height:1.35;color:var(--g6)}
+  .rc-rows + .onward{margin-top:0}
+  @media (max-width:760px){
+    .rc-rows .rc,.rc-rows .rc:first-child{grid-template-columns:minmax(0,5fr) minmax(0,7fr);padding:20px 0;border-bottom:0}
+    .rc-rows .rc .l{font-size:15.5px}
+  }
+
+  /* globe ground: flat black field, no tinted wash */
+  .gv-horizon:not(.gv-side) .stage::before{background:linear-gradient(#000 0%,rgba(0,0,0,.85) 55%,rgba(0,0,0,0))}
+  .stage::before{background:linear-gradient(#000,rgba(0,0,0,0))}
+  .stage::after{background:linear-gradient(rgba(0,0,0,0),#000)}
+
+  /* closer: on the page's content line; photo crossfade gets its own pause */
+  .admit{container-type:inline-size}
+  .admit .inner{padding-left:max(clamp(20px,4vw,48px), calc((100cqw - 1280px) / 2 + clamp(20px,4vw,48px)))}
+  .admit .bg{inset:0;transform:none!important}
+  .ad-pause{left:auto;right:0;bottom:0}
+  @media (max-width:820px){ .ad-pause{left:auto;right:0} }
+
+  /* phone footer: the legal links are one tight wrapping list */
+  @media (max-width:720px){
+    footer .base{display:block}
+    footer .base > span:first-child{display:block;margin-bottom:6px}
+    .f-legal{gap:0 20px}
+    .f-legal a,.f-cookie{padding:9px 0}
+  }
+  /* the row rule sits on the content line, not the padded box */
+  .rows .crow > .crow-head{position:relative;border-bottom:0}
+  .rows .crow > .crow-head::after{content:"";position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:0;height:1px;background:currentColor}

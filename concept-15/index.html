@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept15-rev" content="1">
+<meta name="concept15-rev" content="2">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -37,7 +37,6 @@
   .display{font-weight:200;letter-spacing:-.025em;line-height:1.02;color:var(--ink)}
   .storylink{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-top:18px;
     border-bottom:1px solid transparent;transition:.2s}
-  .storylink::after{content:"\2192";transition:transform .25s var(--ease)}
   .storylink:hover::after{transform:translateX(5px)}
   .storylink:hover{color:var(--red)}
   .pill{display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;
@@ -1273,6 +1272,93 @@
     .mnav{gap:16px}
     .nvright{gap:8px}
   }
+
+  /* polish: one motion curve everywhere */
+  :root{--ease:var(--expo)}
+  /* hero films: pause/play sits on the film's bottom edge, on the headline's left line */
+  .hx-pause{all:unset;box-sizing:border-box;position:absolute;z-index:4;bottom:0;
+    left:max(clamp(20px,4vw,48px), calc((100cqw - 1280px) / 2 + clamp(20px,4vw,48px)));
+    width:48px;height:48px;display:grid;place-items:center;background:var(--k);color:var(--w);cursor:pointer;transition:background .2s}
+  .hx-pause:hover{background:var(--g6)}
+  .hx-pause .ic-play,.hx-pause.is-paused .ic-pause{display:none}
+  .hx-pause.is-paused .ic-play{display:block}
+  .hx-pause:focus-visible{outline-offset:-3px}
+  @media (max-width:899px){ .hx-pause{left:20px;width:44px;height:44px} }
+  /* polish: smallest phones keep the bar on one line (the N alone, as on scroll) */
+  @media (max-width:360px){
+    .nav .wordmark{width:calc(var(--lh) * 1.12)}
+    .nav .lockup .lk-word{opacity:0}
+  }
+  /* polish: story text on research photos keeps AA over bright frames */
+  .xshade{background:linear-gradient(to top,rgba(0,0,0,.86) 0%,rgba(0,0,0,.62) 42%,rgba(0,0,0,.18) 70%,transparent 85%)}
+  /* polish: phone tap targets in the menu and footer reach 44px */
+  @media (max-width:720px){
+    .tkv-sub .tkv-sec a,.tkv-more a{padding:11px 0}
+    .f-col a{padding:11px 0}
+    .f-legal a,.f-cookie{padding:11px 0}
+  }
+  @media (max-width:360px){
+    .rows-head h2,.rows-head h2 a{display:block;width:100%}
+    .rows-head .ngn-lockup{width:100%;height:auto}
+  }
+  /* polish: an open dropdown owns the red underline; the hero's nav marker steps aside */
+  .nav:has(.mpanel:not([hidden])) .here:not([aria-expanded="true"]){border-bottom-color:transparent}
+
+  /* row headings are directory signs: a real heading, a real destination, a pause for the row */
+  .rows .crow > .crow-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+    padding-bottom:clamp(16px,2.4svh,24px);border-bottom:1px solid currentColor}
+  .rows .crow h3{padding-bottom:0;border-bottom:0;min-width:0}
+  .rowlink{position:relative;display:inline-flex;align-items:center;gap:16px;color:inherit;transition:padding .45s var(--expo)}
+  .rowlink .ar{width:clamp(24px,2.2vw,34px);height:clamp(24px,2.2vw,34px);transition:transform .45s var(--expo)}
+  .rowlink:hover .ar,.rowlink:focus-visible .ar{transform:translateX(8px)}
+  .rowlink::before{content:"";position:absolute;left:0;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--red);
+    transform:scale(0);transition:transform .45s var(--expo)}
+  .rowlink:focus-visible{padding-left:28px;outline-offset:6px}
+  .rowlink:focus-visible::before{transform:scale(1)}
+  .rp{all:unset;box-sizing:border-box;flex:none;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;
+    border:1px solid currentColor;color:inherit;transition:background .2s,color .2s}
+  .rows .face-w .rp:hover{background:var(--k);color:var(--w);border-color:var(--k)}
+  .rows .face-k .rp:hover{background:var(--w);color:var(--k);border-color:var(--w)}
+  .rp .ic-play,.rp.is-paused .ic-pause{display:none}
+  .rp.is-paused .ic-play{display:block}
+  .rp:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+  @media (prefers-reduced-motion: reduce){ .rowlink,.rowlink .ar,.rowlink::before{transition:none} }
+
+  /* research figures: ruled directory rows, figure then label, no arrows (they go nowhere) */
+  .rc-rows{display:block;border-top:0;padding-top:0;margin-top:clamp(48px,7svh,80px)}
+  .rc-rows .rc,.rc-rows .rc:first-child{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);align-items:baseline;gap:clamp(16px,3vw,48px);
+    border-left:0;border-top:1px solid var(--k);padding:clamp(18px,2.6svh,26px) 0}
+  .rc-rows .rc:last-child{border-bottom:0}
+  .rc-rows .rc .n{font-size:clamp(40px,4.4vw,68px);font-weight:300;letter-spacing:-.03em;line-height:1}
+  .rc-rows .rc .l{margin:0;max-width:40ch;font-size:clamp(17px,1.4vw,21px);font-weight:400;line-height:1.35;color:var(--g6)}
+  .rc-rows + .onward{margin-top:0}
+  @media (max-width:760px){
+    .rc-rows .rc,.rc-rows .rc:first-child{grid-template-columns:minmax(0,5fr) minmax(0,7fr);padding:20px 0;border-bottom:0}
+    .rc-rows .rc .l{font-size:15.5px}
+  }
+
+  /* globe ground: flat black field, no tinted wash */
+  .gv-horizon:not(.gv-side) .stage::before{background:linear-gradient(#000 0%,rgba(0,0,0,.85) 55%,rgba(0,0,0,0))}
+  .stage::before{background:linear-gradient(#000,rgba(0,0,0,0))}
+  .stage::after{background:linear-gradient(rgba(0,0,0,0),#000)}
+
+  /* closer: on the page's content line; photo crossfade gets its own pause */
+  .admit{container-type:inline-size}
+  .admit .inner{padding-left:max(clamp(20px,4vw,48px), calc((100cqw - 1280px) / 2 + clamp(20px,4vw,48px)))}
+  .admit .bg{inset:0;transform:none!important}
+  .ad-pause{left:auto;right:0;bottom:0}
+  @media (max-width:820px){ .ad-pause{left:auto;right:0} }
+
+  /* phone footer: the legal links are one tight wrapping list */
+  @media (max-width:720px){
+    footer .base{display:block}
+    footer .base > span:first-child{display:block;margin-bottom:6px}
+    .f-legal{gap:0 20px}
+    .f-legal a,.f-cookie{padding:9px 0}
+  }
+  /* the row rule sits on the content line, not the padded box */
+  .rows .crow > .crow-head{position:relative;border-bottom:0}
+  .rows .crow > .crow-head::after{content:"";position:absolute;left:clamp(20px,4vw,48px);right:clamp(20px,4vw,48px);bottom:0;height:1px;background:currentColor}
 </style>
 
 <body>
@@ -1521,7 +1607,7 @@
 <script>if (/[?&]hero=b\b/.test(location.search)) document.documentElement.classList.add("hero-b")</script>
 <section class="hx" id="top" aria-label="Featured">
   <h1 class="vh">Northeastern University</h1>
-  <div class="hx-film"><div class="hx-media" id="hxMedia"><div class="hl on"><video muted loop playsinline preload="auto" poster="../img/apple-coop.jpg" src="https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" src="https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" src="https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg" src="https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg" src="https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm"></video></div></div></div>
+  <div class="hx-film"><button class="hx-pause" id="hxPause" type="button" aria-label="Pause films"><svg class="ic ic-pause" viewBox="0 0 22 22" aria-hidden="true"><path d="M8 5v12M14 5v12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><svg class="ic ic-play" viewBox="0 0 22 22" aria-hidden="true"><path d="M7 4.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button><div class="hx-media" id="hxMedia"><div class="hl on"><video muted loop playsinline preload="auto" poster="../img/apple-coop.jpg" src="https://www.northeastern.edu/wp-content/uploads/The-Co-Op-Experience_Video-2-Fusion-v3.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/Xufeng-Zhang_1400.jpg" src="https://research.northeastern.edu/wp-content/uploads/2024/06/VID_Homepage-Hero_Small.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/090726_CV_MoveIn_009.jpg" src="https://admissions.northeastern.edu/wp-content/uploads/2023/08/07.21.26_UG-Website-Hero-Video.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/09/AImakerspace1400.jpg" src="https://roux.northeastern.edu/wp-content/uploads/MAGGIE-VIDEO-4-2.mp4"></video></div><div class="hl"><video muted loop playsinline preload="none" poster="https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg" src="https://damore-mckim.northeastern.edu/wp-content/uploads/2026/03/dmsb-hero-noaudio.webm"></video></div></div></div>
   <div class="hx-in" id="hxIn">
     <div class="hx-copy" aria-live="polite">
       <h2 class="hx-title" id="hxTitle">Learn by doing</h2>
@@ -1602,28 +1688,15 @@
 
     </g>
 </svg></a></h2><p class="rows-tag">Stories from the university and the world.</p></div>
-<section class="crow" data-q="" id="ngnRow" aria-label="Latest"><div class="wrap"><h3>Latest</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
-<section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap"><h3>Entrepreneurship</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
-<section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="Human-Centered AI"><div class="wrap"><h3>Human-Centered AI</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Human-Centered AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Human-Centered AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
-<section class="crow" hidden data-q="categories=7" id="uniRow" aria-label="University News"><div class="wrap"><h3>University News</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll University News back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll University News forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
-<section class="crow" hidden data-q="categories=21443" id="researchRow" aria-label="Research"><div class="wrap"><h3>Research</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Research back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Research forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
+<section class="crow" data-q="" id="ngnRow" aria-label="Latest"><div class="wrap crow-head"><h3><a class="rowlink" href="https://news.northeastern.edu/"><span>Latest</span><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a></h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
+<section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap crow-head"><h3><a class="rowlink" href="https://news.northeastern.edu/tag/entrepreneurship/"><span>Entrepreneurship</span><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a></h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
+<section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="Human-Centered AI"><div class="wrap crow-head"><h3><a class="rowlink" href="https://news.northeastern.edu/tag/artificial-intelligence/"><span>Human-Centered AI</span><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a></h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Human-Centered AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Human-Centered AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
+<section class="crow" hidden data-q="categories=7" id="uniRow" aria-label="University News"><div class="wrap crow-head"><h3><a class="rowlink" href="https://news.northeastern.edu/category/university-news/"><span>University News</span><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a></h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll University News back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll University News forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
+<section class="crow" hidden data-q="categories=21443" id="researchRow" aria-label="Research"><div class="wrap crow-head"><h3><a class="rowlink" href="https://news.northeastern.edu/category/research/"><span>Research</span><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a></h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Research back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Research forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button></div></section>
 </section>
 <div class="scrolly" id="campuses">
   <div class="stage" id="stage">
     <canvas id="globe" role="img" aria-label="A globe that plays journeys between Northeastern locations, one stop at a time. Use the arrow buttons to change journey."></canvas>
-    <aside class="gt-card" id="gt-card" hidden aria-label="Co‑op story">
-      <img id="gtc-img" alt="">
-      <div class="gtc-body">
-        <div class="gt-loc" id="gtc-loc"></div>
-        <h3 id="gtc-t"></h3>
-        <a class="storylink" id="gtc-url" href="#">Read the story on NGN</a>
-      </div>
-      <div class="gt-step">
-        <button class="gt-arrow" id="gtc-prev" aria-label="Previous story"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12H4M10.5 5.5 4 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
-        <span id="gtc-n"></span>
-        <button class="gt-arrow" id="gtc-next" aria-label="Next story"><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></button>
-      </div>
-    </aside>
   </div>
   <div class="steps" id="steps">
 
@@ -1709,10 +1782,10 @@
         </article>
       </div>
 
-      <div class="rc-grid" id="counters">
-        <div class="rc"><div class="n">$<span data-count="296">0</span>M</div><div class="l">external research awards last year</div></div>
-        <div class="rc"><div class="n"><span data-count="50">0</span>+</div><div class="l">federally funded centers and institutes</div></div>
-        <div class="rc"><div class="n"><span data-count="510">0</span></div><div class="l">patents</div></div>
+      <div class="rc-grid rc-rows" id="counters">
+        <div class="rc"><div class="n">$296M</div><div class="l">external research awards last year</div></div>
+        <div class="rc"><div class="n">50+</div><div class="l">federally funded centers and institutes</div></div>
+        <div class="rc"><div class="n">510</div><div class="l">patents</div></div>
       </div>
       <a class="onward" href="https://news.northeastern.edu/category/research/"><span>More research on NGN</span><svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
     </div>
@@ -1725,7 +1798,7 @@
 
 
 <section class="admit" id="admit">
-  <div class="admit-media"><div class="bg" data-plx="34"><img class="on" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" alt="" decoding="async"></div></div>
+  <div class="admit-media"><button class="hx-pause ad-pause" id="adPause" type="button" aria-label="Pause photos"><svg class="ic ic-pause" viewBox="0 0 22 22" aria-hidden="true"><path d="M8 5v12M14 5v12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><svg class="ic ic-play" viewBox="0 0 22 22" aria-hidden="true"><path d="M7 4.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></button><div class="bg"><img class="on" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" alt="" decoding="async"></div></div>
   <div class="inner">
     <h2>Your turn.</h2>
     <p>The world doesn’t wait. Neither do you. Undergraduate, graduate, transfer, and online programs across our campus network.</p>
@@ -1923,7 +1996,7 @@ function label(text, x, y, a, px) {
   }
   if (!placed && W <= 720) return;  /* phones: a label that can't sit clear of the others is dropped, its dot stays */
   labelBoxes.push({ x: bx, y: by, w: w + 12, h: 18 });
-  ctx.fillStyle = `rgba(11,11,14,${.55 * a})`;
+  ctx.fillStyle = `rgba(0,0,0,${.6 * a})`;
   ctx.fillRect(bx, by, w + 12, 18);
   ctx.fillStyle = `rgba(255,255,255,${.95 * a})`;
   ctx.fillText(text, bx + 6, by + 9.5);
@@ -1942,7 +2015,7 @@ function render(now) {
   /* atmosphere glow just outside the limb */
   const atm = ctx.createRadialGradient(cx, cy, R * 0.97, cx, cy, R * 1.06);
   atm.addColorStop(0, "rgba(229,229,229,0)");
-  atm.addColorStop(0.4, "rgba(229,229,229,.04)");
+  atm.addColorStop(0.4, "rgba(229,229,229,0)");
   atm.addColorStop(1, "rgba(229,229,229,0)");
   ctx.beginPath(); ctx.arc(cx, cy, R * 1.06, 0, 7);
   ctx.fillStyle = atm; ctx.fill();
@@ -2058,10 +2131,8 @@ function render(now) {
     for (const [lat, lng, name] of CAMPUSES) {
       const [x, y, v] = project(lat, lng, R, cx, cy);
       if (v <= 0) continue;
-      ctx.beginPath(); ctx.arc(x, y, 8.5, 0, 7);
-      ctx.fillStyle = `rgba(200,16,46,${.28 * cur.campus})`; ctx.fill();
       ctx.beginPath(); ctx.arc(x, y, 4.6, 0, 7);
-      ctx.fillStyle = `rgba(200,16,46,${cur.campus})`; ctx.fill();
+      ctx.fillStyle = `rgba(163,163,163,${cur.campus})`; ctx.fill();
       ctx.lineWidth = 1.4;
       ctx.strokeStyle = `rgba(255,255,255,${.85 * cur.campus})`; ctx.stroke();
       if (cur.labelC > .02) label(name, x, y, cur.labelC);
@@ -2091,8 +2162,9 @@ function render(now) {
         else started = false;
       }
       ctx.lineCap = "round";
-      ctx.strokeStyle = `rgba(200,16,46,${.16 * fadeA})`; ctx.lineWidth = 5; ctx.stroke();
-      ctx.strokeStyle = `rgba(255,255,255,${.75 * fadeA})`; ctx.lineWidth = 1.3; ctx.stroke();
+      /* the leg in flight is the red one; once the camera lands it settles to white */
+      ctx.strokeStyle = f < 1 ? `rgba(200,16,46,${fadeA})` : `rgba(255,255,255,${.75 * fadeA})`;
+      ctx.lineWidth = f < 1 ? 1.8 : 1.3; ctx.stroke();
       if (head && f < 1) { ctx.beginPath(); ctx.arc(head[0], head[1], 3, 0, 7); ctx.fillStyle = `rgba(255,255,255,${.95 * fadeA})`; ctx.fill(); }
     }
   }
@@ -2107,13 +2179,9 @@ function render(now) {
     for (let i = 0; i < STORY_PINS.length; i++) {
       const [x, y, v] = project(STORY_PINS[i][0], STORY_PINS[i][1], R, cx, cy);
       if (v <= 0) continue;
-      const p = ((now + i * 400) % 2400) / 2400;
-      ctx.beginPath(); ctx.arc(x, y, 7 + p * 16, 0, 7);
-      ctx.strokeStyle = `rgba(200,16,46,${(1 - p) * .5 * cur.spins})`;
-      ctx.lineWidth = 1.6; ctx.stroke();
-      const boost = (typeof storySel !== "undefined" && i === storySel) ? 1.4 : 1;
-      ctx.beginPath(); ctx.arc(x, y, 5 * boost, 0, 7);
-      ctx.fillStyle = `rgba(200,16,46,${.95 * cur.spins})`; ctx.fill();
+      const on = typeof storySel !== "undefined" && i === storySel;  /* the active stop is the only red pin */
+      ctx.beginPath(); ctx.arc(x, y, on ? 6.5 : 4.5, 0, 7);
+      ctx.fillStyle = on ? `rgba(200,16,46,${cur.spins})` : `rgba(229,229,229,${.95 * cur.spins})`; ctx.fill();
       ctx.lineWidth = 1.5;
       ctx.strokeStyle = `rgba(255,255,255,${.9 * cur.spins})`; ctx.stroke();
     }
@@ -2124,8 +2192,6 @@ function render(now) {
     const [x, y, v] = project(focus[0], focus[1], R, cx, cy);
     if (v > 0) {
       const p = (now % 2200) / 2200;
-      ctx.beginPath(); ctx.arc(x, y, 6 + p * 22, 0, 7);
-      ctx.strokeStyle = `rgba(200,16,46,${(1 - p) * .9})`; ctx.lineWidth = 2; ctx.stroke();
       ctx.beginPath(); ctx.arc(x, y, 5.5, 0, 7);
       ctx.fillStyle = "#C8102E"; ctx.fill();
       ctx.lineWidth = 1.6; ctx.strokeStyle = "#fff"; ctx.stroke();
@@ -2287,9 +2353,10 @@ const STORY_PINS = TOUR_STORIES.map(st => st.focus);
 LAYER_KEYS.push("spins");
 cur.spins = 0; tgt.spins = 0;
 let storySel = -1;
-const gtCard = $("#gt-card");
+const gtCard = $("#gt-card") || { hidden: true, getBoundingClientRect: () => null };
 
 function fillCard(i) {
+  if (!$("#gtc-img")) return;
   const st = TOUR_STORIES[i];
   $("#gtc-img").src = st.img;
   $("#gtc-img").alt = st.t;
@@ -2307,8 +2374,8 @@ function openStory(i) {
   autorotate = false;
   gtCard.hidden = false;
 }
-$("#gtc-prev").addEventListener("click", () => openStory(storySel - 1));
-$("#gtc-next").addEventListener("click", () => openStory(storySel + 1));
+$("#gtc-prev")?.addEventListener("click", () => openStory(storySel - 1));
+$("#gtc-next")?.addEventListener("click", () => openStory(storySel + 1));
 
 /* click a pulsing pin (ignore clicks that were drags) */
 let downPt = null;
@@ -2383,24 +2450,6 @@ const entryUpd = () => {
 };
 addEventListener("scroll", () => requestAnimationFrame(entryUpd), { passive: true });
 
-/* ============ research counters ============ */
-function countUp(el, to, ms) {
-  const t0 = performance.now();
-  const tick = now => {
-    const p = ms ? Math.min(1, (now - t0) / ms) : 1;
-    el.textContent = Math.round(to * easeOut(p)).toLocaleString("en-US");
-    if (p < 1) requestAnimationFrame(tick);
-  };
-  requestAnimationFrame(tick);
-}
-let countersDone = false;
-new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting && !countersDone) {
-    countersDone = true;
-    $$("#counters [data-count]").forEach(el =>
-      countUp(el, +el.dataset.count, reduceMotion ? 0 : 1400));
-  }
-}), { threshold: 0.4 }).observe($("#counters"));
 
 /* ============ research expanding row ============ */
 $$(".xcard").forEach(c => {
@@ -3011,7 +3060,8 @@ const FEATS = [{"t": "Co‑op", "v": "https://www.northeastern.edu/wp-content/up
 const hx = $(".hx"), hxIn = $("#hxIn"), layers = $$(".hl"), lnBtns = $$(".ln");
 let cur = 0, elapsed = 0, hxVisible = true, hoverShows = false;
 const vidOf = i => layers[i].querySelector("video");
-const playI = i => { const v = vidOf(i); if (v && !reduceMotion) v.play().catch(() => {}); };
+let paused = reduceMotion;  /* reduced motion starts paused: posters, no advance */
+const playI = i => { const v = vidOf(i); if (v && !paused) v.play().catch(() => {}); };
 function fillHero(f) {
   $("#hxTitle").textContent = f.h;
   $("#hxSyn").textContent = f.syn;
@@ -3050,7 +3100,8 @@ function selectF(i) {
 }
 lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i)));
 const NAVFOR = [1, 2, 3, 5, 4].map(k => $$("#nav .mnav > *")[k]);  /* Co-op: Experiential Learning; then Research, Global Network, AI, Entrepreneurship */
-function navHere() { NAVFOR.forEach((n, k) => n && n.classList.toggle("here", hxVisible && k === cur)); }
+function navHere() { const on = hxVisible && scrollY < innerHeight * .5; NAVFOR.forEach((n, k) => n && n.classList.toggle("here", on && k === cur)); }
+addEventListener("scroll", () => requestAnimationFrame(navHere), { passive: true });
 /* pointing at a destination is enough: hover (with a short intent delay) or keyboard focus switches the film */
 const here = $(".hx-here");
 function placeHere() { const b = lnBtns[cur]; if (here && b) here.style.setProperty("--here-y", (b.offsetTop + b.offsetHeight / 2) + "px"); }
@@ -3064,11 +3115,11 @@ lnBtns.forEach(b => {
 const ROTATE_MS = 12000;
 $("#hxShows").addEventListener("pointerenter", () => hoverShows = true);
 $("#hxShows").addEventListener("pointerleave", () => hoverShows = false);
-if (!reduceMotion) {
+{
   let lastT = 0;
   const tick = now => {
     const dt = lastT ? Math.min(100, now - lastT) : 0; lastT = now;
-    if (hxVisible && !hoverShows && !document.hidden && scrollY < innerHeight * .3) {
+    if (hxVisible && !paused && !hoverShows && !document.hidden && scrollY < innerHeight * .3) {
       elapsed += dt;
       lnBtns[cur].style.setProperty("--pb", Math.min(1, elapsed / ROTATE_MS).toFixed(4));
       if (elapsed >= ROTATE_MS) selectF((cur + 1) % FEATS.length);
@@ -3096,12 +3147,23 @@ const layout = () => { fitTitles(); fitHeroTitle(); placeHere(); };
 addEventListener("resize", layout);
 document.fonts.ready.then(layout); layout();
 fillHero(FEATS[0]);
+/* pause/play: one control for the film and the lineup advance; its name says what it will do */
+const pauseBtn = $("#hxPause");
+function setPaused(v) {
+  paused = v;
+  pauseBtn.setAttribute("aria-label", v ? "Play films" : "Pause films");
+  pauseBtn.classList.toggle("is-paused", v);
+  const vd = vidOf(cur);
+  if (vd) { if (v) vd.pause(); else if (hxVisible) vd.play().catch(() => {}); }
+}
+pauseBtn.addEventListener("click", () => setPaused(!paused));
+setPaused(paused);
 playI(0);
 
 /* ============ closer: photos crossfade every 5s while it's on screen ============ */
 {
   const admit = $(".admit"), shots = $$(".admit .bg img");
-  let k = 0, vis = false, started = false;
+  let k = 0, vis = false, started = false, adPaused = reduceMotion;
   /* each photo is fully decoded before it fades in, so nothing decodes mid-fade */
   const ready = img => { if (!img.src) img.src = img.dataset.src; return img.decode().catch(() => {}); };
   /* the upcoming photo is decoded and kept painted at near-zero opacity, so its fade-in never stalls */
@@ -3109,7 +3171,7 @@ playI(0);
   const step = async () => {
     const next = shots[(k + 1) % shots.length];
     await prime(next);
-    if (vis && !document.hidden) {
+    if (vis && !adPaused && !document.hidden) {
       shots[k].classList.remove("on"); k = (k + 1) % shots.length;
       next.classList.remove("pre"); next.classList.add("on");
       setTimeout(() => prime(shots[(k + 1) % shots.length]), 2000);
@@ -3118,8 +3180,12 @@ playI(0);
   };
   new IntersectionObserver(es => es.forEach(e => {
     vis = e.isIntersecting;
-    if (vis && !started) { started = true; ready(shots[0]); prime(shots[1]); if (!reduceMotion) setTimeout(step, 5000); }
+    if (vis && !started) { started = true; ready(shots[0]); prime(shots[1]); setTimeout(step, 5000); }
   }), { rootMargin: "800px 0px" }).observe(admit);
+  const ap = $("#adPause");
+  const setAd = v => { adPaused = v; ap.classList.toggle("is-paused", v); ap.setAttribute("aria-label", v ? "Play photos" : "Pause photos"); };
+  ap.addEventListener("click", () => setAd(!adPaused));
+  setAd(adPaused);
 }
 
 /* ============ rows: a featured card, then portrait posters ============ */
@@ -3200,6 +3266,7 @@ const FALLBACK = FEATS.flatMap(f => f.eps).slice(0, 10).map(e => ({ t: e.t, u: e
 const RV = (new URLSearchParams(location.search).get("rows") || "b3").toLowerCase();
 const RVK = ["a", "b", "b2", "b3", "c"].includes(RV) ? RV : "current";
 document.documentElement.classList.add("rows-" + RVK, ...({ b: ["rows-b", "rows-bfull"], b2: ["rows-b"], b3: ["rows-b", "rows-bimg"] }[RV] || []));
+const PAUSE_ICONS = `<svg class="ic ic-pause" viewBox="0 0 22 22" aria-hidden="true"><path d="M8 5v12M14 5v12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><svg class="ic ic-play" viewBox="0 0 22 22" aria-hidden="true"><path d="M7 4.5v13l11-6.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
 const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
 const ARROW = `<svg class="ar" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>`, CHEV = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17M13.5 5.5 20 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>`;
 (async () => {
@@ -3331,10 +3398,17 @@ function spotlight(tp) {
   new IntersectionObserver(es => { visS = es[0].isIntersecting; }, { threshold: .45 }).observe(sec);
   if (canHover) { sec.addEventListener("pointerenter", () => hoverS = true); sec.addEventListener("pointerleave", () => { hoverS = false; elapsedS = 0; }); }
   strip.addEventListener("touchstart", hold, { passive: true });
-  if (!reduceMotion) {
+  let pausedS = reduceMotion;
+  const head = sec.querySelector(":scope > .wrap");
+  head.insertAdjacentHTML("beforeend", '<button class="rp" type="button" aria-label="Pause stories">' + PAUSE_ICONS + '</button>');
+  const rp = head.querySelector(".rp");
+  const setRowPaused = v => { pausedS = v; rp.classList.toggle("is-paused", v); rp.setAttribute("aria-label", v ? "Play stories" : "Pause stories"); };
+  rp.addEventListener("click", () => setRowPaused(!pausedS));
+  setRowPaused(pausedS);
+  {
     const tickS = now => {
       const dt = lastS ? Math.min(100, now - lastS) : 0; lastS = now;
-      if (visS && !hoverS && !document.hidden && now > holdS) {
+      if (visS && !pausedS && !hoverS && !document.hidden && now > holdS) {
         elapsedS += dt;
         cards[cur].style.setProperty("--pb", Math.min(1, elapsedS / SPOT_MS).toFixed(4));
         if (elapsedS >= SPOT_MS) {
