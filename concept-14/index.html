@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept14-rev" content="3">
+<meta name="concept14-rev" content="4">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1270,27 +1270,28 @@
       linear-gradient(to top,var(--ground) 0%,rgba(11,11,14,.72) 26%,transparent 52%),var(--vignette)}
     .rows-bfull .crow.sp .sp-in{padding-left:calc(var(--edge) + clamp(24px,3.5vw,56px));padding-right:var(--edge)}
     .rows-bfull .crow.sp .sp-t{font-size:clamp(1.75rem,1rem + 1.9vw,2.75rem);font-weight:200;-webkit-line-clamp:3}
-    /* the feature: Latest */
-    .rows-bfull #ngnRow{min-height:clamp(640px,90svh,900px)}
-    /* the shorter spotlights: Entrepreneurship, Human-Centered AI, Research */
-    .rows-bfull :is(#entRow,#aiRow,#researchRow){min-height:clamp(500px,66svh,660px);--ch:clamp(168px,12.5vw,200px)}
-    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-t{font-size:clamp(1.5rem,1rem + 1.3vw,2.25rem)}
-    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-x{-webkit-line-clamp:2}
+    /* every row gets the same full stage at the same height */
+    .rows-bfull .crow.sp{min-height:clamp(640px,90svh,900px)}
   }
-  /* University News: a poster shelf, no spotlight */
-  .rows-bfull #uniRow.shelf{min-height:0;--ch:clamp(250px,20vw,320px)}
-  .rows-bfull #uniRow.shelf > .wrap{margin-bottom:var(--s3)}
-  .rows-b #uniRow.shelf .cc img,.rows-b #uniRow.shelf .crow-strip:hover .cc img{filter:none}
-  .rows-b #uniRow.shelf .cc:hover img{filter:brightness(1.1)}
   @media (max-width:720px){
     .crow h3{font-size:clamp(2rem,8.6vw,2.5rem)}
     .rows-bfull .crow.sp .sp-bg{width:auto;margin:0 var(--edge);border-radius:2px;overflow:hidden}
-    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-bg{aspect-ratio:2/1}
     .rows-bfull .crow.sp .sp-t{font-size:24px;font-weight:300}
-    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-t{font-size:21px}
-    .rows-bfull :is(#entRow,#aiRow,#researchRow) .sp-copy{min-height:184px}
-    .rows-bfull #uniRow.shelf{--ch:210px;--pw:150px}
   }
+
+  /* the poster strip sits a step in front of the stage: a soft floor of shade and a lifted shadow */
+  .rows-bfull .crow.sp .crow-body::before{content:"";position:absolute;left:0;right:0;top:-24px;bottom:-8px;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(11,11,14,0) 0%,rgba(11,11,14,.55) 38%,rgba(11,11,14,.7) 100%)}
+  .rows-bfull .crow.sp .crow-strip{position:relative;z-index:1}
+  /* the strip lives inside the content box: it starts on the left content edge and is cut at the right one,
+     the same right edge as the matted stage, the row title and its pause control */
+  .rows-bfull .crow .crow-body{margin:0 var(--edge) -16px;overflow:hidden}
+  .rows-bfull .crow .crow-strip{padding:14px 0 30px;scroll-padding-inline:0;scroll-snap-type:x mandatory}
+  .rows-bfull .crow .cc{scroll-snap-align:start}
+  .rows-bfull .crow .pad{top:14px;bottom:30px;width:64px}
+  .rows-bfull .crow[aria-busy="true"] .crow-strip{background-origin:content-box}
+  .rows-bfull .crow.sp .cc{box-shadow:0 10px 26px rgba(0,0,0,.5)}
+  .rows-bfull .crow.sp .cc.on{box-shadow:inset 0 0 0 1px var(--hair2),0 14px 32px rgba(0,0,0,.6)}
 
   /* poster captions: three lines at most, on a scrim that reaches under the whole caption */
   .cc::after{background:linear-gradient(to top,rgba(0,0,0,.94) 0%,rgba(0,0,0,.86) 34%,rgba(0,0,0,.45) 58%,rgba(0,0,0,0) 78%)}
@@ -3299,7 +3300,7 @@ const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true
     items.forEach(c => shown.add(c.u));
     topics.push({ sec, label, items });
   });
-  if (["b", "b2", "b3"].includes(RV)) topics.forEach(tp => tp.sec.id === "uniRow" ? (tp.sec.classList.add("shelf"), mountRow(tp.sec, tp.items)) : spotlight(tp));
+  if (["b", "b2", "b3"].includes(RV)) topics.forEach(spotlight);
   else if (RV === "c") coverflow(topics);
   else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
@@ -3389,22 +3390,31 @@ function spotlight(tp) {
   let quietUntil = 0;
   const reveal = c => {
     const s = strip.getBoundingClientRect(), pl = parseFloat(getComputedStyle(strip).paddingLeft), r = c.getBoundingClientRect();
-    const d = r.right > s.right - pl ? r.right - (s.right - pl) : r.left < s.left + pl ? r.left - (s.left + pl) : 0;
+    /* only move when the poster is out of the clear lane, and then land a poster flush on the content edge,
+       so the strip reads the same at first paint and after every advance */
+    const out = r.right > s.right - pl || r.left < s.left + pl;
+    if (!out) return;
+    const step = c.offsetWidth + parseFloat(getComputedStyle(strip).columnGap || 0);
+    const want = Math.max(0, Math.min(strip.scrollWidth - strip.clientWidth, c.offsetLeft - strip.offsetLeft - pl));
+    const d = Math.round(want / step) * step - strip.scrollLeft;
     if (Math.abs(d) < 2) return;
     quietUntil = performance.now() + 700;
     strip.scrollBy({ left: d, behavior: reduceMotion ? "auto" : "smooth" });
   };
   const canHover = matchMedia("(hover: hover)").matches;
   cards.forEach((c, k) => {
-    if (canHover) c.addEventListener("pointerenter", () => {
+    if (canHover) c.addEventListener("pointermove", () => {
+      if (c.classList.contains("on") || t) return;
       clearTimeout(t);
       if (performance.now() < quietUntil) return;
-      t = setTimeout(() => { set(k); reveal(c); }, 140);
+      t = setTimeout(() => { t = 0; set(k); reveal(c); }, 140);
     });
+    if (canHover) c.addEventListener("pointerleave", () => { clearTimeout(t); t = 0; });
     c.addEventListener("click", e => { e.preventDefault(); set(k); reveal(c); hold(); });
     c.addEventListener("focus", () => { set(k); reveal(c); });
   });
   set(0);
+  strip.scrollLeft = 0;  /* first paint: the first poster on the content edge */
   /* auto-advance every 8s with a loader on the focused poster; pauses on hover, after a touch,
      off screen, in a hidden tab, and under reduced motion; loops after the first ten stories */
   cards.forEach(c => c.insertAdjacentHTML("beforeend", '<i class="cc-pb" aria-hidden="true"></i>'));
