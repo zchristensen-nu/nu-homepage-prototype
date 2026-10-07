@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept19-rev" content="2">
+<meta name="concept19-rev" content="3">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -915,25 +915,6 @@
   footer .base,.f-cookie{color:#A3A3A3}
   footer .mp-h{color:#A3A3A3}
 
-  /* review batch: the news room as a room, not a feed */
-  .rows-index{display:flex;flex-wrap:wrap;gap:0 clamp(20px,2.6vw,40px);margin-top:clamp(28px,4svh,44px);border-top:1px solid var(--hair);padding-top:4px}
-  .ri{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:10px;min-height:44px;font-size:17px;color:var(--wall-2);transition:color .25s}
-  .ri:hover,.ri[aria-pressed="true"]{color:var(--wall-ink)}
-  .ri[aria-pressed="true"] .ln-m{background:var(--red)}
-  .ri .ln-m{display:block;width:8px;height:8px;flex:none}
-  .rows-bimg .crow.off{display:none}
-  .rows-bimg .crow{margin-top:clamp(48px,7svh,80px)}
-  .rows-bimg .crow + .crow > .wrap{border-top:0;padding-top:0}
-  .rows-bimg .sp-fig.plate{box-shadow:0 26px 48px -30px rgba(17,17,17,.38),0 2px 6px rgba(17,17,17,.06)}
-  .rows-bimg .crow-body{padding:0 var(--edge)}
-  .rows-bimg .crow-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(20px,2.4vw,40px);overflow:visible;padding:clamp(40px,6svh,64px) 0 0}
-  .rows-bimg .crow-strip .cc:nth-child(n+5){display:none}
-  .rows-bimg .cc{width:auto}
-  .rows-bimg .cc-f{height:auto;aspect-ratio:4/3;box-shadow:0 18px 34px -24px rgba(17,17,17,.35)}
-  .rows-bimg .cc-f img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .rows-bimg .pad{display:none}
-  @media (max-width:820px){ .rows-bimg .crow-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px} .ri{font-size:16px} }
-
   /* review batch: first viewport on the page's wall line, copy and index hung together */
   .hx{padding-left:var(--edge);padding-right:var(--edge)}
   .hx-grid{max-width:none;grid-template-rows:auto auto 1fr auto;grid-template-areas:"plate copy" "plate index" "plate ." "eps .";
@@ -966,6 +947,36 @@
   /* raise: the research figures read as wall text in the label voice */
   .rc .n{font-size:clamp(40px,4.4vw,72px)}
   .rc .l{font-size:15px;color:var(--wall-2)}
+
+  /* user feedback: no rules above headings (the wall shift and plate lift carry the rooms) */
+  .hx-copy::before,.rows-head::before,.hz::before,.sechead::before,.admit .inner::before{display:none!important}
+  .rows-b .crow + .crow > .wrap{border-top:0;padding-top:0}
+  .rows-b .crow{margin-top:clamp(88px,13svh,144px)}
+
+  /* user feedback: every row keeps its scrolling carousel, clipped to the content edges, one poster size */
+  .rows-bimg .crow{--ch:clamp(220px,17vw,264px);--pw:calc(var(--ch) * 2 / 3)}
+  .rows-bimg .crow-body{margin:clamp(28px,4svh,44px) var(--edge) 0;overflow:hidden}
+  .rows-bimg .crow-strip{padding:0 0 4px;scroll-padding-inline:0}
+  .rows-bimg .sp-fig.plate{box-shadow:0 26px 48px -30px rgba(17,17,17,.38),0 2px 6px rgba(17,17,17,.06)}
+  .rows-bimg .pad{top:0;bottom:auto;height:var(--ch);width:64px}
+  @media (max-width:820px){ .rows-bimg .crow{--ch:200px;--pw:150px} }
+
+  /* user feedback: the closing room is a full-bleed slideshow with the copy over a scrim */
+  .admit{position:relative;min-height:max(92svh,620px);display:flex;align-items:center;overflow:hidden;padding:0;color:#FAFAFA}
+  .admit-grid{display:block;width:100%;position:static}
+  .admit .bg{position:absolute;inset:0;aspect-ratio:auto;max-height:none;border-radius:0;box-shadow:none;background:#111111}
+  .admit .bg::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(70% 60% at 50% 50%,rgba(17,17,17,.45),transparent 75%),linear-gradient(rgba(17,17,17,.5),rgba(17,17,17,.5))}
+  .admit .bg .pp-plate{z-index:3;right:var(--edge);bottom:28px}
+  .admit .inner{position:relative;z-index:2;text-align:center;width:100%;padding:120px 20px}
+  .admit h2{color:#FAFAFA;font-size:clamp(56px,9vw,140px)}
+  .admit p{margin:20px auto 0;color:#F5F5F5;max-width:44ch}
+  .admit .ctas{justify-content:center}
+  .pill.bright{background:#FAFAFA;border-color:#FAFAFA;color:#111111}
+  .pill.bright:hover{background:#E5E5E5;border-color:#E5E5E5}
+  .admit .pill.ghostw{color:#FAFAFA;border-color:rgba(250,250,250,.75)}
+  .admit .pill.ghostw:hover{background:#FAFAFA;color:#111111;border-color:#FAFAFA}
+  @media (max-width:820px){ .admit .bg::after{background:radial-gradient(80% 50% at 50% 45%,rgba(17,17,17,.4),transparent 80%),linear-gradient(rgba(17,17,17,.6),rgba(17,17,17,.6))} .admit .bg{aspect-ratio:auto;max-height:none} .admit .inner{padding:96px 20px 120px} .admit .bg .pp-plate{right:16px;bottom:20px} }
 </style>
 
 <body>
@@ -1300,11 +1311,11 @@
 
     </g>
 </svg></a></h2><p class="rows-tag">Stories from the university and the world.</p></div>
-<section class="crow" data-q="" id="ngnRow" aria-label="Latest"><div class="wrap"><h3>Latest</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap"><h3>Entrepreneurship</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="Human-Centered AI"><div class="wrap"><h3>Human-Centered AI</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Human-Centered AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Human-Centered AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="categories=7" id="uniRow" aria-label="University News"><div class="wrap"><h3>University News</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll University News back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll University News forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
-<section class="crow" hidden data-q="categories=21443" id="researchRow" aria-label="Research"><div class="wrap"><h3>Research</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Research back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Research forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" data-q="" id="ngnRow" aria-label="Latest"><div class="wrap"><h3>Latest</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Latest back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Latest forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="tags=9287" id="entRow" aria-label="Entrepreneurship"><div class="wrap"><h3>Entrepreneurship</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Entrepreneurship back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Entrepreneurship forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="tags=9865,9843" id="aiRow" aria-label="Human-Centered AI"><div class="wrap"><h3>Human-Centered AI</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Human-Centered AI back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Human-Centered AI forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="categories=7" id="uniRow" aria-label="University News"><div class="wrap"><h3>University News</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll University News back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll University News forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
+<section class="crow" hidden data-q="categories=21443" id="researchRow" aria-label="Research"><div class="wrap"><h3>Research</h3></div><div class="crow-body"><button class="pad prev" aria-label="Scroll Research back" disabled><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="crow-strip"></div><button class="pad next" aria-label="Scroll Research forward"><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></section>
 </section>
 <div class="scrolly room" data-wall="dark" id="campuses">
   <div class="stage" id="stage">
@@ -1421,14 +1432,14 @@
 
 
 
-<section class="admit room" data-wall="light" id="admit">
-  <div class="wrap admit-grid">
-  <div class="bg plate"><img class="on" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" alt="" decoding="async"></div>
+<section class="admit room" data-wall="dark" id="admit">
+  <div class="admit-grid">
+  <div class="bg"><img class="on" data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091026_CV_London_Convocation_041.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_RW_NUOAK_TasteConvocation_022.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/090826_AS_NYC_convocation_072.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2024/07/Convocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/08/LondonConvocation1400.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/091626_MMU_Parade_of_Flags_007.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/1400_1a30c6.jpg" alt="" decoding="async"><img data-src="https://news.northeastern.edu/wp-content/uploads/2026/09/Fenway1400.jpg" alt="" decoding="async"></div>
   <div class="inner">
     <h2>Your turn.</h2>
     <p>The world doesn’t wait. Neither do you. Undergraduate, graduate, transfer, and online programs across our campus network.</p>
     <div class="ctas">
-      <a class="pill solid" href="https://admissions.northeastern.edu/">Apply</a>
+      <a class="pill bright" href="https://admissions.northeastern.edu/">Apply</a>
       <a class="pill ghostw" href="https://admissions.northeastern.edu/visit/">Visit</a>
       <a class="pill ghostw" href="https://studentfinance.northeastern.edu/">Financial aid</a>
     </div>
@@ -2800,7 +2811,7 @@ playI(0);
 
 /* ============ rows: a featured card, then portrait posters ============ */
 const card = c => `<a class="cc" href="${esc(c.u)}">` +
-  `<span class="cc-f"><img src="${esc(RV === "b3" ? (c.wide || c.img) : c.img)}" alt="" loading="lazy"></span><span class="cc-t">${esc(c.t)}</span></a>`;
+  `<span class="cc-f"><img src="${esc(c.img)}" alt="" loading="lazy"></span><span class="cc-t">${esc(c.t)}</span></a>`;
 function mountRow(sec, items) {
   const strip = sec.querySelector(".crow-strip"), prev = sec.querySelector(".pad.prev"), next = sec.querySelector(".pad.next");
   strip.innerHTML = items.map(card).join("");
@@ -2877,7 +2888,7 @@ const RV = (new URLSearchParams(location.search).get("rows") || "b3").toLowerCas
 const RVK = ["a", "b", "b2", "b3", "c"].includes(RV) ? RV : "current";
 document.documentElement.classList.add("rows-" + RVK, ...({ b: ["rows-b", "rows-bfull"], b2: ["rows-b"], b3: ["rows-b", "rows-bimg"] }[RV] || []));
 const fmtDate = d => d ? new Date(d).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : "";
-const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, CHEV = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`, CHEV = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 (async () => {
   const API = "https://news.northeastern.edu/wp-json/wp/v2/newspost?per_page=24&_embed=wp:featuredmedia&_fields=link,title,excerpt,date,_links,_embedded&";
   const rows = $$(".crow[data-q]");
@@ -2899,27 +2910,10 @@ const ARROW = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true
     items.forEach(c => shown.add(c.u));
     topics.push({ sec, label, items });
   });
-  if (["b", "b2", "b3"].includes(RV)) { topics.forEach(spotlight); if (RV === "b3") roomIndex(topics); }
+  if (["b", "b2", "b3"].includes(RV)) topics.forEach(spotlight);
   else if (RV === "c") coverflow(topics);
   else { topics.forEach(tp => mountRow(tp.sec, tp.items)); if (RV === "a") previews(topics); }
 })();
-
-/* the news room hangs one topic at a time; a room index (like the films room's) picks which */
-function roomIndex(topics) {
-  if (topics.length < 2) return;
-  const nav = document.createElement("div");
-  nav.className = "rows-index"; nav.setAttribute("role", "group"); nav.setAttribute("aria-label", "Choose a topic");
-  nav.innerHTML = topics.map((tp, i) => `<button type="button" class="ri" aria-pressed="${i ? "false" : "true"}" aria-controls="${tp.sec.id}">` +
-    `<i class="ln-m" aria-hidden="true"></i><span>${esc(tp.label)}</span></button>`).join("");
-  $(".rows-head").append(nav);
-  const btns = [...nav.children];
-  const show = i => {
-    topics.forEach((tp, k) => tp.sec.classList.toggle("off", k !== i));
-    btns.forEach((b, k) => b.setAttribute("aria-pressed", k === i ? "true" : "false"));
-  };
-  btns.forEach((b, i) => b.addEventListener("click", () => show(i)));
-  show(0);
-}
 
 /* A · Preview: hovering a poster grows a floating story card out of it (it overlays, nothing reflows) */
 function previews(topics) {
@@ -3018,7 +3012,7 @@ function spotlight(tp) {
   /* auto-advance every 8s with a loader on the focused poster; pauses on hover, after a touch,
      off screen, in a hidden tab, and under reduced motion; loops after the first ten stories */
   cards.forEach(c => c.insertAdjacentHTML("beforeend", '<i class="cc-pb" aria-hidden="true"></i>'));
-  const SPOT_MS = 8000, LOOP = Math.min(cards.length, RV === "b3" ? 4 : 10);
+  const SPOT_MS = 8000, LOOP = Math.min(cards.length, 10);
   let elapsedS = 0, lastS = 0, visS = false, hoverS = false, holdS = 0, pausedS = reduceMotion;
   sec.querySelector(".wrap").append(mkPause(tp.label + " stories", "pp-row", p => { pausedS = p; }, reduceMotion));
   function hold() { holdS = performance.now() + 6000; elapsedS = 0; }

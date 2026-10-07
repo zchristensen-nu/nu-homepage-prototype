@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept17-rev" content="1">
+<meta name="concept17-rev" content="2">
 <script>if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js-settle")</script>
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
@@ -1286,6 +1286,14 @@
   .admit{align-items:start}
   .admit .ctas{margin-top:0;padding-top:32px}
   .admit .ad-cap .hc{margin:0;column-gap:10px;font-size:13.5px;line-height:1.4;color:var(--mute);max-width:none}
+
+  /* ---------- user feedback: aligned poster strips ---------- */
+  .rows .crow.crow{--pw:var(--posterw,180px)}
+  .crow-strip::after{display:none}
+  .rows-b .crow-strip{scroll-snap-type:x mandatory;scroll-padding-inline:var(--edge);
+    clip-path:inset(-24px var(--edge) -24px var(--edge))}
+  .rows-b .cc{scroll-snap-align:start;scroll-snap-stop:normal}
+  .rows-b .cc:focus-visible{outline-offset:-2px}
 </style>
 
 <body>
@@ -1967,7 +1975,7 @@ function render(now) {
 
   /* sphere */
   const g = ctx.createRadialGradient(cx - R * .28, cy - R * .35, R * .1, cx, cy, R);
-  g.addColorStop(0, "#FFFFFF"); g.addColorStop(1, "#F5F5F5");
+  g.addColorStop(0, "#EBEBEB"); g.addColorStop(1, "#E3E3E3");
   ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7);
   ctx.fillStyle = g; ctx.fill();
 
@@ -1975,7 +1983,7 @@ function render(now) {
   ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.clip();
 
   /* graticule */
-  ctx.strokeStyle = "rgba(17,17,17,.065)"; ctx.lineWidth = 1;
+  ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.lineWidth = 1;
   for (let lng = -180; lng < 180; lng += 30) {
     ctx.beginPath(); let pen = false;
     for (let lat = -90; lat <= 90; lat += 4) {
@@ -1995,8 +2003,8 @@ function render(now) {
 
   /* land: visible segments joined by arcs along the horizon, so rings that
      wrap the far side (Antarctica) close correctly instead of flooding the disk */
-  ctx.fillStyle = "#E9E9E9";
-  ctx.strokeStyle = "rgba(64,64,64,.36)"; ctx.lineWidth = .7;
+  ctx.fillStyle = "#FFFFFF";
+  ctx.strokeStyle = "rgba(163,163,163,.75)"; ctx.lineWidth = .7;
   const horizonArc = (a0, a1) => {
     let d = a1 - a0;
     while (d > Math.PI) d -= 2 * Math.PI;
@@ -2034,7 +2042,7 @@ function render(now) {
 
   /* rim */
   ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7);
-  ctx.strokeStyle = "rgba(17,17,17,.3)"; ctx.lineWidth = 1; ctx.stroke();
+  ctx.strokeStyle = "rgba(115,115,115,.35)"; ctx.lineWidth = 1; ctx.stroke();
 
   /* co‑op dots: crisp cartographic marks; hubs get a quiet ring */
   if (cur.coops > .01) {
@@ -3153,6 +3161,18 @@ playI(0);
 }
 
 /* ============ rows: a featured card, then portrait posters ============ */
+/* every row shares one poster size, chosen so a whole number of posters spans the content edges exactly:
+   the strip starts on the left edge and ends on the right edge from first paint, and paging/auto-advance
+   (with scroll snap) only ever lands on that grid */
+function sizePosters() {
+  const rows = $(".rows"), head = $(".rows-head"), strip = $(".crow-strip");
+  if (!rows || !head || !strip) return;
+  const cs = getComputedStyle(head), inner = head.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const gap = parseFloat(getComputedStyle(strip).columnGap) || 16;
+  const n = inner >= 1100 ? 6 : inner >= 860 ? 5 : inner >= 600 ? 4 : 2;
+  rows.style.setProperty("--posterw", ((inner - (n - 1) * gap) / n).toFixed(3) + "px");
+}
+addEventListener("resize", sizePosters);
 const card = c => `<a class="cc" href="${esc(c.u)}">` +
   `<img src="${esc(c.img)}" alt="" loading="lazy"><span class="cc-t">${esc(c.t)}</span></a>`;
 function mountRow(sec, items) {
@@ -3162,7 +3182,8 @@ function mountRow(sec, items) {
     prev.disabled = strip.scrollLeft < 4;
     next.disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
   };
-  const by = d => strip.scrollBy({ left: d * (strip.clientWidth - 2 * parseFloat(getComputedStyle(strip).paddingLeft)), behavior: reduceMotion ? "auto" : "smooth" });
+  sizePosters();
+  const by = d => strip.scrollBy({ left: d * (strip.clientWidth - 2 * parseFloat(getComputedStyle(strip).paddingLeft) + parseFloat(getComputedStyle(strip).columnGap || 0)), behavior: reduceMotion ? "auto" : "smooth" });
   prev.onclick = () => by(-1); next.onclick = () => by(1);
   strip.addEventListener("scroll", () => requestAnimationFrame(sync), { passive: true });
   addEventListener("resize", sync);
