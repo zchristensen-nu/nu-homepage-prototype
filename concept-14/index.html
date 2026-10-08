@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept14-rev" content="5">
+<meta name="concept14-rev" content="6">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1349,6 +1349,38 @@
   @media (max-width:720px){ .rows .crow.crow{--pgap:12px} }
   .crow[aria-busy="true"] .crow-strip{height:var(--striph);background:linear-gradient(to right,#141419 var(--pw),transparent var(--pw)) 0 12px/calc(var(--pw) + var(--pgap)) calc(var(--pw) * 1.25) repeat-x;
     background-origin:padding-box;background-clip:padding-box}
+
+  /* ===== tabs, after concept 12: small 2:3 posters with the title on the photo, kept clean (no shadow, no floor);
+     the selected tab carries a white ring and its progress, hover rings and lifts the rest ===== */
+  .rows .crow.crow{--pgap:12px;--striph:calc(var(--pw) * 1.5);--stageh:clamp(400px,calc(100svh - var(--mt,140px) - var(--striph) - 120px),680px)}
+  .rows-bfull .crow .crow-strip{padding:6px 0 8px}
+  .rows-bfull .crow .cc,.rows-bfull .crow .cc.on,.rows-bfull .crow.sp .cc,.rows-bfull .crow.sp .cc.on{position:relative;display:block;
+    height:calc(var(--pw) * 1.5);padding:0;border-radius:4px;overflow:hidden;background:#141419;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0);transition:transform .35s var(--ease-out),box-shadow .25s var(--ease-out)}
+  .rows-bfull .crow .cc img,.rows-b .crow .cc img,.rows-b .crow .cc:not(.on) img,.rows-b .crow .crow-strip:hover .cc:not(.on) img{position:absolute;inset:0;
+    width:100%;height:100%;aspect-ratio:auto;border-radius:0;opacity:.62;transition:opacity .3s var(--ease-out)}
+  .rows-bfull .crow .cc::after{display:block;content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.9) 0%,rgba(0,0,0,.6) 30%,rgba(0,0,0,0) 60%)}
+  .rows-bfull .crow .cc-t{position:absolute;z-index:2;left:10px;right:10px;bottom:10px;min-height:0;padding:0;
+    font-size:13px;font-weight:500;line-height:1.3;color:rgba(255,255,255,.82)}
+  .rows-bfull .crow .cc.on img,.rows-bfull .crow .cc:hover img,.rows-bfull .crow .cc:focus-visible img{opacity:1}
+  .rows-bfull .crow .cc.on .cc-t,.rows-bfull .crow .cc:hover .cc-t{color:#fff}
+  /* the ring rides the scrim layer: an inset shadow on the tab itself would sit under the photo */
+  .rows-bfull .crow .cc::after{border-radius:inherit;box-shadow:inset 0 0 0 2px rgba(255,255,255,0);transition:box-shadow .25s var(--ease-out)}
+  .rows-bfull .crow .cc:hover{transform:translateY(-4px)}
+  .rows-bfull .crow .cc:hover::after{box-shadow:inset 0 0 0 2px rgba(255,255,255,.75)}
+  .rows-bfull .crow .cc.on::after{box-shadow:inset 0 0 0 2px #fff}
+  .rows-b .crow .cc-pb,.rows-b .crow .cc.on .cc-pb{z-index:3;left:10px;right:10px;top:10px;height:2px;border-radius:2px;background:rgba(255,255,255,.3);opacity:0}
+  .rows-b .crow .cc.on .cc-pb{opacity:1}
+  .rows-bfull .crow .pad{top:6px;height:calc(var(--pw) * 1.5)}
+  @media (min-width:721px){
+    .rows-bfull .crow.sp{min-height:calc(var(--mt) + var(--stageh) + 20px + var(--striph) + 14px)}
+    .rows-bfull .crow.sp .sp-bg,.rows-bfull #ngnRow[aria-busy="true"]::before{bottom:calc(var(--striph) + 34px)}
+    .rows-bfull .crow.sp .sp-in{margin-bottom:calc(20px + clamp(24px,3.4svh,40px))}
+  }
+  @media (max-width:720px){ .rows .crow.crow{--pgap:10px} .rows-bfull .crow .cc-t{font-size:12px;left:8px;right:8px;bottom:8px} }
+  @media (hover:none){ .rows-bfull .crow .cc:hover{transform:none} }
+  .crow[aria-busy="true"] .crow-strip{background-position:0 6px;background-size:calc(var(--pw) + var(--pgap)) calc(var(--pw) * 1.5)}
 </style>
 
 <body>
@@ -3237,14 +3269,14 @@ addEventListener("load", () => setTimeout(() => layers.forEach(l => { const v = 
 /* ============ rows: a featured card, then portrait posters ============ */
 const PP_ICONS = `<svg class="pp-pause" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><svg class="pp-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.6v8.8a.5.5 0 0 0 .76.43l7-4.4a.5.5 0 0 0 0-.86l-7-4.4a.5.5 0 0 0-.76.43z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
 /* every row shares one poster size, chosen so a whole number of posters spans the content box exactly
-   (6 at desktop widths, 5 around 1024, 4 on tablets, 2 on phones); with scroll snap, paddles and auto-advance
+   (8 at desktop widths, 7 around 1024, 5 on tablets, 3 on phones); with scroll snap, paddles and auto-advance
    only ever land on that grid */
 function sizePosters() {
   const rows = $(".rows"), body = $(".crow-body"), strip = $(".crow-strip");
   if (!rows || !body || !strip) return;
   const inner = body.clientWidth, gap = parseFloat(getComputedStyle(strip).columnGap) || 16;
   if (!inner) return;
-  const n = inner >= 1100 ? 6 : inner >= 860 ? 5 : inner >= 600 ? 4 : 2;
+  const n = inner >= 1100 ? 8 : inner >= 860 ? 7 : inner >= 600 ? 5 : 3;
   rows.style.setProperty("--posterw", ((inner - (n - 1) * gap) / n).toFixed(3) + "px");
 }
 addEventListener("resize", sizePosters);
