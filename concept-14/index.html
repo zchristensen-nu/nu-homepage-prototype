@@ -1399,6 +1399,10 @@
       linear-gradient(to bottom,rgba(0,0,0,.35) 0%,transparent 22%)}
     /* phones: the spotlight photo runs edge to edge */
     .rows-bfull .crow.sp .sp-bg{margin:0;border-radius:0}
+    /* phones: rows hug their content; thumbnails sit 32px above the next divider (8px strip padding + 24px),
+       the same 32px the divider sits above the next heading */
+    .rows-bfull .crow{min-height:0}
+    .rows-bfull .crow + .crow{margin-top:24px}
   }
 </style>
 
