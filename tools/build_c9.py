@@ -5,7 +5,7 @@ then portrait posters, Netflix-style edge paddles); concept 2's scroll-driven
 globe tour, research sheet and co-op rail; concept 4's portrait video reel;
 concept 2's portrait quotes; and v1's "Your turn." closer. Keeps the v1 nav,
 footer and brand. Deploys to concept-10/ (concept-7 belongs to the streaming concepts 7-9 build)."""
-import math, json, os
+import re, math, json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -2071,12 +2071,59 @@ for x, y in (('<meta name="concept10-rev" content="59">', '<meta name="concept11
               'const RV = (new URLSearchParams(location.search).get("rows") || "b").toLowerCase();')):
     assert p11.count(x) == 1, x
     p11 = p11.replace(x, y)
+p11_base = p11  # concept 12 stays the frozen baseline (tag concept-12-v1); only concept 11 takes the Oct 9 copy
+
+# concept 11 · Oct 9 copy deck: four hero features (Global network is shown by the globe below instead),
+# new hero copy, the campus film on Co-op (the old film was an interview), and the revised globe notes
+def _feats_edit(m):
+    fs = [f for f in json.loads(m.group(1).replace("<\\/", "</")) if f["t"] != "Global network"]
+    for f in fs:
+        if f["t"] == "Co‑op":
+            f.update(h="Experience the world", v=HD["global"], img=U + "/2026/09/090726_CV_MoveIn_009.jpg",
+                     syn="As the world leader in experiential learning, Northeastern provides unparalleled opportunities to integrate classroom learning with global experiences.")
+        elif f["t"] == "Research":
+            f.update(h="Breakthrough discoveries, without boundaries",
+                     syn="Northeastern’s global research enterprise spans its 14 campuses and unearths discoveries across the fields of health, security, and sustainability.")
+        elif f["t"] == "AI":
+            f["syn"] = "We bring together scholars, students, and industry partners to harness the transformative power of AI in ways that serve humanity."
+        elif f["t"] == "Entrepreneurship":
+            f.update(t="Global entrepreneurship", syn="Learn, create, launch, and scale with one of the most extensive entrepreneurship support networks in the world.")
+    assert len(fs) == 4
+    return "const FEATS = " + json.dumps(fs, ensure_ascii=False).replace("</", "<\\/") + ";"
+p11, _n = re.subn(r"const FEATS = (\[.*?\]);(?=\n)", _feats_edit, p11, count=1)
+assert _n == 1
+_coop_old = '<video muted loop playsinline preload="auto" poster="../img/apple-coop.jpg" src="%s">' % HD["coop"]
+_glob = '<div class="hl"><video muted loop playsinline preload="none" poster="%s/2026/09/090726_CV_MoveIn_009.jpg" src="%s"></video></div>' % (U, HD["global"])
+_tab = re.search(r'<button class="ln" data-i="2" aria-pressed="false">.*?Global network.*?</button>', p11).group(0)
+for x, y, n in ((_glob, "", 1), (_tab, "", 1),
+        (_coop_old, '<video muted loop playsinline preload="auto" poster="%s/2026/09/090726_CV_MoveIn_009.jpg" src="%s">' % (U, HD["global"]), 1),
+        ('<button class="ln" data-i="3" ', '<button class="ln" data-i="2" ', 1),
+        ('<button class="ln" data-i="4" ', '<button class="ln" data-i="3" ', 1),
+        ('<span class="ln-t">Entrepreneurship</span>', '<span class="ln-t">Global entrepreneurship</span>', 1),
+        ('<h2 class="hx-title" id="hxTitle">Learn by doing</h2>', '<h2 class="hx-title" id="hxTitle">Experience the world</h2>', 1),
+        ('<p class="hx-syn" id="hxSyn">Every part of your journey at Northeastern is built for immersive learning, innovation, and integrating emerging technologies, like AI, to enhance creativity and career readiness.</p>',
+         '<p class="hx-syn" id="hxSyn">As the world leader in experiential learning, Northeastern provides unparalleled opportunities to integrate classroom learning with global experiences.</p>', 1),
+        ('"A semester of marine biology at the Marine Science Center"', '"A semester of sustainability research"', 2),
+        ('"Kelp forest research in the Pacific Northwest"', '"Biodiversity research in the Pacific Northwest"', 2),
+        ('"Tap water samples from homes across Puerto Rico"', '"Analyze water samples from homes across Puerto Rico"', 2),
+        ('"Models of warming in the Gulf of Maine, built at the Roux Institute"', '"Models of warming in the Gulf of Maine, designed at the Roux Institute"', 2),
+        ('"The data turned into climate policy on the London campus"', '"Data turned into climate policy on the London campus"', 2),
+        ('"One semester on the London campus"', '"A semester of finance on the London campus"', 2),
+        ('"One semester on the Oakland campus"', '"A startup experience on the Oakland campus"', 2),
+        ('"The rest of the degree"', '"Complete your degree"', 2),
+        ('{"place": "Oakland", "note": "Students join the project from the Oakland campus", "ll": [37.78, -122.18]}',
+         '{"place": "Portland, Maine", "note": "Analyze potential impacts in rural Maine", "ll": [43.66, -70.26]}', 2),
+        (', {"place": "Toronto", "note": "A semester on the Toronto campus", "ll": [43.65, -79.38]}', "", 2),
+        ('<meta name="concept11-rev" content="48">', '<meta name="concept11-rev" content="49">', 1)):
+    assert p11.count(x) == n, x[:70]
+    p11 = p11.replace(x, y)
+assert p11.count('class="ln"') == 4 and "Global network" not in p11.split("const FEATS")[1][:20000]
 os.makedirs(os.path.join(ROOT, "concept-11"), exist_ok=True)
 open(os.path.join(ROOT, "concept-11/index.html"), "w").write(p11)
 print("built", len(p11), "bytes -> concept-11/index.html")
 
 # concept 12: concept 11 with the Horizon globe as the only treatment (no switcher, since ?globe= is absent)
-p12 = p11
+p12 = p11_base
 for x, y in (('<meta name="concept11-rev" content="48">', '<meta name="concept12-rev" content="18">'),
              ('get("globe") || "").toLowerCase();', 'get("globe") || "horizon").toLowerCase();')):
     assert p12.count(x) == 1, x
