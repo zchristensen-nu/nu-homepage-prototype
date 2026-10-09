@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept14-rev" content="8">
+<meta name="concept14-rev" content="9">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1376,7 +1376,8 @@
   @media (min-width:721px){
     .rows-bfull .crow.sp{min-height:calc(var(--mt) + var(--stageh) + 20px + var(--striph) + 14px)}
     .rows-bfull .crow.sp .sp-bg,.rows-bfull #ngnRow[aria-busy="true"]::before{bottom:calc(var(--striph) + 34px)}
-    .rows-bfull .crow.sp .sp-in{margin-bottom:calc(20px + clamp(24px,3.4svh,40px))}
+    /* the copy sits as far off the stage's bottom edge as off its left: the same clamp on both sides (20px is the stage-to-strip gap) */
+    .rows-bfull .crow.sp .sp-in{margin-bottom:calc(20px + clamp(24px,3.5vw,56px))}
   }
   @media (max-width:720px){ .rows .crow.crow{--pgap:10px} .rows-bfull .crow .cc-t{font-size:12px;left:8px;right:8px;bottom:8px} }
   @media (hover:none){ .rows-bfull .crow .cc:hover{transform:none} }
