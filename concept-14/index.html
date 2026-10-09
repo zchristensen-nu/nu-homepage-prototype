@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Northeastern University</title>
-<meta name="concept14-rev" content="7">
+<meta name="concept14-rev" content="8">
 <style>
   /* FF Real Head, hotlinked from northeastern.edu (see nu-homepage-assets.md) */
   @font-face{font-family:"FF Real Head";font-weight:200;font-style:normal;font-display:swap;
@@ -1381,6 +1381,14 @@
   @media (max-width:720px){ .rows .crow.crow{--pgap:10px} .rows-bfull .crow .cc-t{font-size:12px;left:8px;right:8px;bottom:8px} }
   @media (hover:none){ .rows-bfull .crow .cc:hover{transform:none} }
   .crow[aria-busy="true"] .crow-strip{background-position:0 6px;background-size:calc(var(--pw) + var(--pgap)) calc(var(--pw) * 1.5)}
+
+  /* hero rhythm steps up toward the tabs: title→paragraph 24, paragraph→button 32, button→tabs 64 (--s8),
+     so the copy reads as one group sitting clear of the lineup rather than resting on it */
+  .hx{--shows-b:clamp(24px,4.5svh,44px)}
+  .hx-shows{bottom:var(--shows-b)}
+  .hx-in{bottom:calc(var(--shh,42px) + var(--shows-b) + var(--s8))}
+  /* globe arrows keep their circle when focused */
+  .hz-b:focus-visible{border-radius:50%}
 </style>
 
 <body>
@@ -3035,8 +3043,9 @@ if (GV && GVS.includes(GV)) {
     list.addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.matches("li")) { e.preventDefault(); stopAt(+e.target.dataset.k, true); } });
     /* hover or keyboard focus on the content holds the path (and its bar) in place */
     const hold = on => { held = on; ui.classList.toggle("held", on); };
-    if (matchMedia("(hover: hover)").matches) { ui.addEventListener("pointerenter", () => hold(true)); ui.addEventListener("pointerleave", () => hold(false)); }
-    ui.addEventListener("focusin", () => hold(true)); ui.addEventListener("focusout", e => { if (!ui.contains(e.relatedTarget)) hold(false); });
+    const onNav = e => !!e.target.closest(".hz-nav");  /* the arrows ask the journey to play, so they never hold it */
+    if (matchMedia("(hover: hover)").matches) { ui.addEventListener("pointerover", e => hold(!onNav(e))); ui.addEventListener("pointerleave", () => hold(false)); }
+    ui.addEventListener("focusin", e => hold(!onNav(e))); ui.addEventListener("focusout", e => { if (!ui.contains(e.relatedTarget)) hold(false); });
     new IntersectionObserver(es => { vis = es[0].intersectionRatio > .5; ui.classList.toggle("off", !vis); }, { threshold: [0, .5, 1] }).observe(stage);
     const loop = now => {
       if (vis && !held && !document.hidden && si >= 0 && !reduceMotion) {
