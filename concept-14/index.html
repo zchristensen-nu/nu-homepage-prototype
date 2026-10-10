@@ -3200,8 +3200,8 @@ function selectF(i) {
   }
 }
 lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i)));
-/* auto-rotate every 12s; the loader fills per frame on the active card */
-const ROTATE_MS = 12000;
+/* auto-rotate every 10s (?rotate=12 to preview other timings, in seconds); the loader fills per frame on the active card */
+const ROTATE_MS = (+new URLSearchParams(location.search).get("rotate") || 10) * 1000;
 $("#hxShows").addEventListener("pointerenter", () => hoverShows = true);
 $("#hxShows").addEventListener("pointerleave", () => hoverShows = false);
 {

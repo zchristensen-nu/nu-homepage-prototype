@@ -1496,10 +1496,8 @@
       <div class="mp-col mp-featcol"><div class="mp-h">From the newsroom</div><a class="mp-feat" href="https://news.northeastern.edu/2023/11/27/dialogue-of-civilizations-geneva-anniversary/"><img src="https://news.northeastern.edu/wp-content/uploads/2023/11/Dialogue-of-Civilization_1400.jpg" alt="" loading="lazy"><span class="ft">How global negotiation really works</span><span class="fl">Read on NGN<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-left:6px"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
   </div></div>
   <div class="mpanel" id="mp-ent" hidden><div class="wrap mp-in">
-      <div class="mp-lead"><div class="mp-title">Entrepreneurship</div><p>Start something, anywhere.</p></div>
-      <div class="mp-col"><div class="mp-h">Explore</div><div class="mp-links">
-        <a href="https://entrepreneurship.northeastern.edu/">Global Entrepreneurship</a>
-      </div></div>
+      <div class="mp-lead"><div class="mp-title">Global Entrepreneurship</div><p>Start something, anywhere.</p><a class="storylink" href="https://entrepreneurship.northeastern.edu/">Overview</a></div>
+      <div class="mp-col mp-featcol"><div class="mp-h">From the newsroom</div><a class="mp-feat" href="https://news.northeastern.edu/2026/06/05/startup-pitch-competition-london-summit/"><img src="https://news.northeastern.edu/wp-content/uploads/2026/06/060426_CV_GLS_day1_048.jpg" alt="" loading="lazy"><span class="ft">Founders pitch startups in Dragons’ Den-style event for funding</span><span class="fl">Read on NGN<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" style="vertical-align:-2px;margin-left:6px"><path d="M3 8h9M8.5 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
   </div></div>
   <div class="mpanel" id="mp-more" hidden><div class="wrap mp-in">
       <div class="mp-col"><div class="mp-h">About</div><div class="mp-links">
@@ -3087,7 +3085,7 @@ if (GV && GVS.includes(GV)) {
 }
 /* phone menu: each section mirrors its desktop dropdown (overview pills, then labeled link groups) */
 {
-  const MAP = { "tsub-0": "mp-admissions", "tsub-2": "mp-experiential", "tsub-3": "mp-research", "tsub-4": "mp-global", "tsub-6": "mp-more" };
+  const MAP = { "tsub-0": "mp-admissions", "tsub-2": "mp-experiential", "tsub-3": "mp-research", "tsub-4": "mp-global", "tsub-ent": "mp-ent", "tsub-6": "mp-more" };
   const ah = a => `<a href="${a.getAttribute("href")}">${a.textContent.trim()}</a>`;
   for (const [sub, panel] of Object.entries(MAP)) {
     const sEl = document.getElementById(sub), pEl = document.getElementById(panel);
@@ -3180,8 +3178,8 @@ function selectF(i) {
   }
 }
 lnBtns.forEach(b => b.addEventListener("click", () => selectF(+b.dataset.i)));
-/* auto-rotate every 12s; the loader fills per frame on the active card */
-const ROTATE_MS = 12000;
+/* auto-rotate every 10s (?rotate=12 to preview other timings, in seconds); the loader fills per frame on the active card */
+const ROTATE_MS = (+new URLSearchParams(location.search).get("rotate") || 10) * 1000;
 $("#hxShows").addEventListener("pointerenter", () => hoverShows = true);
 $("#hxShows").addEventListener("pointerleave", () => hoverShows = false);
 {
