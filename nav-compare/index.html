@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Nav Before and After</title>
+<style>
+  :root{--bg:#0b0b0e;--panel:#141419;--fg:#f4f4f5;--mute:#a1a1aa;--hair:rgba(255,255,255,.12);--red:#c8102e;--add:#4ade80}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+  .wrap{max-width:1680px;margin:0 auto;padding:0 32px}
+  header.top{padding:48px 0 24px;border-bottom:1px solid var(--hair)}
+  h1{font-size:clamp(28px,4vw,44px);font-weight:300;letter-spacing:-.02em;margin:0 0 8px}
+  .lede{color:var(--mute);max-width:72ch;margin:0}
+  .lede a{color:var(--fg)}
+  nav.jump{position:sticky;top:0;z-index:5;background:rgba(11,11,14,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+  nav.jump .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px}
+  nav.jump a{flex:none;color:var(--mute);text-decoration:none;font-size:14px;padding:6px 12px;border-radius:99px;border:1px solid transparent}
+  nav.jump a:hover{color:var(--fg);border-color:var(--hair)}
+  section{padding:40px 0;border-bottom:1px solid var(--hair);scroll-margin-top:56px}
+  .sh{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;margin-bottom:16px}
+  h2{font-size:24px;font-weight:400;margin:0}
+  .count{font-size:14px;color:var(--mute)}
+  .count b{color:var(--fg);font-weight:600}
+  .notes{margin:0 0 20px;padding-left:18px;color:var(--mute);max-width:110ch}
+  .notes li{margin:2px 0}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .col h3{margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .col.after h3{color:var(--fg)}
+  .col.after h3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--red);margin-right:8px;vertical-align:1px}
+  .shot{display:block;border:1px solid var(--hair);border-radius:4px;overflow:hidden;background:var(--panel)}
+  .shot img{display:block;width:100%;height:auto}
+  .mobile .pair{grid-template-columns:repeat(2,minmax(0,390px));justify-content:start;gap:32px}
+  footer{padding:32px 0 64px;color:var(--mute);font-size:13px}
+  @media (max-width:900px){
+    .wrap{padding:0 16px}
+    .pair{grid-template-columns:1fr}
+    .mobile .pair{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>Navigation: before and after</h1>
+  <p class="lede">Left: <a href="../concept-14/">Concept 14</a> (current nav). Right: <a href="../concept-22/">Concept 22</a> (pruned nav). Desktop at 1440px wide; phone menu at 390px with every group open. Click any screenshot to open it full size. Grey boxes are newsroom photos that couldn’t load when these were captured; they show on the live pages.</p>
+</div></header>
+
+<nav class="jump" aria-label="Sections"><div class="wrap">
+  <a href="#bar">Top bar</a><a href="#admissions">Admissions → Study</a><a href="#experiential">Experiential Learning</a><a href="#research">Research</a><a href="#global">Global Network</a><a href="#ent">Entrepreneurship</a><a href="#more">More</a><a href="#mobile">Phone menu</a>
+</div></nav>
+
+<main class="wrap">
+  <section id="bar">
+    <div class="sh"><h2>Top bar</h2><span class="count">Same seven items</span></div>
+    <ul class="notes"><li>“Admissions” is renamed “Study”: the dropdown holds academics as well as applying.</li></ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-bar.png"><img src="shots/c14-bar.png" alt="Concept 14 top navigation bar"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-bar.png"><img src="shots/c22-bar.png" alt="Concept 22 top navigation bar"></a></div>
+    </div>
+  </section>
+
+  <section id="admissions">
+    <div class="sh"><h2>Admissions → Study</h2><span class="count">Links <b>13 → 9</b></span></div>
+    <ul class="notes">
+      <li>Removed: Admissions overview (a chooser page for the three admissions links already listed), Bachelor’s degree completion (an Online program), Orientation and family programs, Academic plan.</li>
+      <li>“Academics” becomes the panel’s “Explore academics” link; Financial aid moves into Apply.</li>
+    </ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mp-admissions.png"><img src="shots/c14-mp-admissions.png" alt="Concept 14 Admissions dropdown" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mp-admissions.png"><img src="shots/c22-mp-admissions.png" alt="Concept 22 Study dropdown" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section id="experiential">
+    <div class="sh"><h2>Experiential Learning</h2><span class="count">Links <b>4 → 2</b> · newsroom card kept</span></div>
+    <ul class="notes"><li>Removed: Experiential Opportunities (repeats the overview page), Office of the Chancellor.</li></ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mp-experiential.png"><img src="shots/c14-mp-experiential.png" alt="Concept 14 Experiential Learning dropdown" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mp-experiential.png"><img src="shots/c22-mp-experiential.png" alt="Concept 22 Experiential Learning dropdown" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section id="research">
+    <div class="sh"><h2>Research</h2><span class="count">Links <b>8 → 4</b> · newsroom card kept</span></div>
+    <ul class="notes"><li>Removed: PhD Research (overlaps Doctoral programs under Study), the Health / Security / Sustainability focus areas.</li><li>Column heading “For researchers” becomes “Explore”, since Undergraduate Research is for students.</li></ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mp-research.png"><img src="shots/c14-mp-research.png" alt="Concept 14 Research dropdown" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mp-research.png"><img src="shots/c22-mp-research.png" alt="Concept 22 Research dropdown" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section id="global">
+    <div class="sh"><h2>Global Network</h2><span class="count">Links <b>21 → 17</b> (14 are campuses) · newsroom card kept</span></div>
+    <ul class="notes"><li>Removed: Our Global Campuses (the campus list does its job), Global Learning Experiences (parent of Study Abroad), Office of Global Services (part of the International Student Hub), Global Safety and Support.</li><li>Two columns of general links merge into one.</li></ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mp-global.png"><img src="shots/c14-mp-global.png" alt="Concept 14 Global Network dropdown" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mp-global.png"><img src="shots/c22-mp-global.png" alt="Concept 22 Global Network dropdown" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section id="ent">
+    <div class="sh"><h2>Entrepreneurship</h2><span class="count">Unchanged · 1 link</span></div>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mp-ent.png"><img src="shots/c14-mp-ent.png" alt="Concept 14 Entrepreneurship dropdown" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mp-ent.png"><img src="shots/c22-mp-ent.png" alt="Concept 22 Entrepreneurship dropdown" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section id="more">
+    <div class="sh"><h2>More</h2><span class="count">Links <b>14 → 9</b> · newsroom card kept</span></div>
+    <ul class="notes"><li>Removed: Make a Gift (the Giving button is always visible), Senior Leadership, Public Art.</li><li>Moved to the footer: Belonging, Partnerships.</li></ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mp-more.png"><img src="shots/c14-mp-more.png" alt="Concept 14 More dropdown" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mp-more.png"><img src="shots/c22-mp-more.png" alt="Concept 22 More dropdown" loading="lazy"></a></div>
+    </div>
+  </section>
+
+  <section id="mobile" class="mobile">
+    <div class="sh"><h2>Phone menu</h2><span class="count">Links <b>63 → 43</b> · every group shown open</span></div>
+    <ul class="notes"><li>Same removals as desktop, plus the duplicate “Global overview” link (it went to the same page as “Our Global University System”).</li></ul>
+    <div class="pair">
+      <div class="col"><h3>Before · Concept 14</h3><a class="shot" href="shots/c14-mobile.png"><img src="shots/c14-mobile.png" alt="Concept 14 phone menu, all groups open" loading="lazy"></a></div>
+      <div class="col after"><h3>After · Concept 22</h3><a class="shot" href="shots/c22-mobile.png"><img src="shots/c22-mobile.png" alt="Concept 22 phone menu, all groups open" loading="lazy"></a></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap">Desktop dropdown links: 61 → 42. Captured October 10, 2026.</div></footer>
+</body>
+</html>
