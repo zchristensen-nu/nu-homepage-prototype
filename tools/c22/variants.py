@@ -1,7 +1,7 @@
 """Concept 22 head tags (favicon, Open Graph) and its two story-row variants.
 
 Concept 22 is hand-edited; rerun this after any edit to it:  python3 tools/c22/variants.py
-  concept-22a: the "Latest" row removed
+  concept-22a: the "Latest" row removed; rows lead with University News, then Global Entrepreneurship; HIDE stories held out
   concept-22b: two stories kept out of every row (HIDE below)
 """
 import os, re
@@ -38,6 +38,15 @@ def with_head(page, folder):
     assert page.count("<title>Northeastern University</title>\n") == 1
     return page.replace("<title>Northeastern University</title>\n", "<title>Northeastern University</title>\n" + head(folder) + "\n", 1)
 
+def hold_out(page):
+    """the HIDE stories never reach a row; each row backfills from the rest of its 24 fetched stories"""
+    old = '.filter(p => !/^Photos:/i.test(p.title.rendered) && !shown.has(p.link))'
+    assert page.count(old) == 1
+    page = page.replace(old, '.filter(p => !/^Photos:/i.test(p.title.rendered) && !shown.has(p.link) && !HIDE.has(p.link))')
+    page = page.replace("(async () => {\n  const API", "const HIDE = new Set(%r);\n(async () => {\n  const API" % HIDE, 1)
+    assert "const HIDE" in page
+    return page
+
 def write(folder, page):
     os.makedirs(os.path.join(ROOT, folder), exist_ok=True)
     open(os.path.join(ROOT, folder, "index.html"), "w").write(page)
@@ -50,12 +59,12 @@ write("concept-22", base)
 # 22a: no Latest row (the next row takes its place and its first-row fallback)
 a, n = re.subn(r'<section class="crow" data-q="" id="ngnRow" aria-label="Latest".*?</section>\n', "", base, count=1, flags=re.S)
 assert n == 1
-write("concept-22a", with_head(a, "concept-22a"))
+# rows lead with University News, then Global Entrepreneurship; Human-Centered AI and Research follow
+sec = {k: re.search(r'<section class="crow"[^>]* id="%s".*?</section>\n' % k, a, flags=re.S).group(0) for k in ("entRow", "aiRow", "uniRow", "researchRow")}
+run = sec["entRow"] + sec["aiRow"] + sec["uniRow"] + sec["researchRow"]
+assert a.count(run) == 1, "rows are no longer consecutive in concept 22"
+a = a.replace(run, sec["uniRow"] + sec["entRow"] + sec["aiRow"] + sec["researchRow"])
+write("concept-22a", with_head(hold_out(a), "concept-22a"))
 
-# 22b: the hidden stories never reach a row; each row backfills from the rest of its 24 fetched stories
-old = '.filter(p => !/^Photos:/i.test(p.title.rendered) && !shown.has(p.link))'
-assert base.count(old) == 1
-b = base.replace(old, '.filter(p => !/^Photos:/i.test(p.title.rendered) && !shown.has(p.link) && !HIDE.has(p.link))')
-b = b.replace("(async () => {\n  const API", "const HIDE = new Set(%r);\n(async () => {\n  const API" % HIDE, 1)
-assert "const HIDE" in b
-write("concept-22b", with_head(b, "concept-22b"))
+# 22b: the HIDE stories held out of every row
+write("concept-22b", with_head(hold_out(base), "concept-22b"))
