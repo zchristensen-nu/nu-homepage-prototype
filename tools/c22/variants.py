@@ -1,7 +1,7 @@
 """Concept 22 head tags (favicon, Open Graph) and its two story-row variants.
 
 Concept 22 is hand-edited; rerun this after any edit to it:  python3 tools/c22/variants.py
-  concept-22a: the "Latest" row removed; rows lead with University News, then Global Entrepreneurship; HIDE stories held out
+  concept-22a: the "Latest" row removed; rows run University News, Research, Global Entrepreneurship, AI; HIDE stories held out
   concept-22b: two stories kept out of every row (HIDE below)
 """
 import os, re
@@ -59,11 +59,11 @@ write("concept-22", base)
 # 22a: no Latest row (the next row takes its place and its first-row fallback)
 a, n = re.subn(r'<section class="crow" data-q="" id="ngnRow" aria-label="Latest".*?</section>\n', "", base, count=1, flags=re.S)
 assert n == 1
-# rows lead with University News, then Global Entrepreneurship; Human-Centered AI and Research follow
+# rows run University News, Research, Global Entrepreneurship, Human-Centered AI
 sec = {k: re.search(r'<section class="crow"[^>]* id="%s".*?</section>\n' % k, a, flags=re.S).group(0) for k in ("entRow", "aiRow", "uniRow", "researchRow")}
 run = sec["entRow"] + sec["aiRow"] + sec["uniRow"] + sec["researchRow"]
 assert a.count(run) == 1, "rows are no longer consecutive in concept 22"
-a = a.replace(run, sec["uniRow"] + sec["entRow"] + sec["aiRow"] + sec["researchRow"])
+a = a.replace(run, sec["uniRow"] + sec["researchRow"] + sec["entRow"] + sec["aiRow"])
 write("concept-22a", with_head(hold_out(a), "concept-22a"))
 
 # 22b: the HIDE stories held out of every row
